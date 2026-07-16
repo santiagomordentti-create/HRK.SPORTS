@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRK Sports — Convertimos deportistas en marcas</title>
+<meta name="description" content="HRK Sports: asesoría de imagen y marketing deportivo. Imagen, redes y posicionamiento para deportistas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f5f6f8;
+    --ink:#0e0f12;
+    --ink-soft:#5b616e;
+    --line:#e6e8ec;
+    --accent:#e6332a;
+    --accent-dark:#c22219;
+    --radius:18px;
+    --font:'Archivo',system-ui,sans-serif;
+    --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  img,video{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.12;letter-spacing:-.01em}
+  .section-head{max-width:640px;margin-bottom:56px}
+  .section-head p{color:var(--ink-soft);margin-top:14px;font-size:1.05rem}
+
+  /* ---------- NAV ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:100;transition:background .3s,box-shadow .3s}
+  header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{font-family:var(--display);font-weight:900;font-size:1.3rem;letter-spacing:.02em;color:#fff;transition:color .3s}
+  .logo span{color:var(--accent)}
+  header.scrolled .logo{color:var(--ink)}
+  .nav-links{display:flex;gap:34px;align-items:center}
+  .nav-links a{font-size:.92rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s}
+  header.scrolled .nav-links a{color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#fff !important;padding:10px 22px;border-radius:6px;font-weight:700;transition:background .2s}
+  .nav-cta:hover{background:var(--accent-dark);color:#fff !important}
+  .burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;position:relative;z-index:110}
+  .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
+  header.scrolled .burger span{background:var(--ink)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;color:#fff;overflow:hidden;padding:0}
+  .hero-media{position:absolute;inset:0;background:linear-gradient(135deg,#101318 0%,#1c2027 45%,#2a2f38 100%)}
+  .hero-media video{width:100%;height:100%;object-fit:cover}
+  .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,12,.85) 0%,rgba(8,9,12,.35) 45%,rgba(8,9,12,.25) 100%)}
+  .hero-content{position:relative;z-index:2;width:100%;padding:0 0 90px}
+  .hero-tag{display:inline-block;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:22px}
+  .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,6.5vw,5rem);line-height:1.02;letter-spacing:-.01em;max-width:14ch}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{margin-top:22px;max-width:520px;font-size:1.12rem;color:rgba(255,255,255,.82)}
+  .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:6px;font-weight:700;font-size:1rem;transition:background .2s,border-color .2s;cursor:pointer;border:0}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-dark)}
+  .btn-ghost{border:1.5px solid rgba(255,255,255,.5);color:#fff;background:transparent}
+  .btn-ghost:hover{border-color:#fff}
+  .hero-scroll{position:absolute;right:40px;bottom:40px;z-index:2;writing-mode:vertical-rl;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+
+  /* ---------- SERVICIOS ---------- */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .service{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px}
+  .service .icon{width:52px;height:52px;border-radius:14px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+  .service .icon svg{width:24px;height:24px}
+  .service h3{font-family:var(--display);font-weight:700;font-size:1.12rem;margin-bottom:10px}
+  .service p{color:var(--ink-soft);font-size:.95rem}
+
+  /* ---------- VIDEO / TRABAJO ---------- */
+  .reel{background:var(--ink);color:#fff}
+  .reel .section-head p{color:rgba(255,255,255,.7)}
+  .reel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .reel-card{position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;background:linear-gradient(160deg,#23262d,#15171c);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
+  .reel-card .ph{text-align:center;color:rgba(255,255,255,.45);font-size:.85rem;font-weight:600;letter-spacing:.06em;padding:0 20px}
+  .reel-card .ph svg{width:44px;height:44px;margin:0 auto 14px;display:block;opacity:.6}
+  .reel-card .tag{position:absolute;top:16px;left:16px;background:rgba(230,51,42,.9);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px}
+
+  /* ---------- DEPORTISTAS ---------- */
+  .talents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+  .talent{position:relative;aspect-ratio:3/4;border-radius:var(--radius);overflow:hidden;background:linear-gradient(165deg,#e9ebef 0%,#d5d9df 100%);display:flex;align-items:flex-end}
+  .talent .silhouette{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#b8bdc6}
+  .talent .silhouette svg{width:44%;height:auto}
+  .talent .info{position:relative;z-index:2;width:100%;padding:18px;background:linear-gradient(to top,rgba(14,15,18,.82),transparent)}
+  .talent .info b{display:block;font-family:var(--display);font-weight:800;color:#fff;font-size:1.02rem;letter-spacing:.02em;text-transform:uppercase}
+  .talent .info span{font-size:.78rem;color:rgba(255,255,255,.75);font-weight:500}
+
+  /* ---------- MARCAS ---------- */
+  .brands{background:var(--bg-soft)}
+  .brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+  .brand{aspect-ratio:3/2;background:#fff;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#c3c8d0;font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;transition:border-color .2s,color .2s}
+  .brand:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- PROCESO ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
+  .step{border-top:2px solid var(--ink);padding-top:26px}
+  .step::before{counter-increment:step;content:"0" counter(step);font-family:var(--display);font-weight:900;font-size:2rem;color:var(--accent);display:block;margin-bottom:12px}
+  .step h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin-bottom:8px}
+  .step p{color:var(--ink-soft);font-size:.95rem}
+
+  /* ---------- CTA / CONTACTO ---------- */
+  .cta{background:var(--ink);color:#fff;border-radius:calc(var(--radius) + 8px);padding:72px 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;position:relative;overflow:hidden}
+  .cta::after{content:"HRK";position:absolute;right:-30px;bottom:-60px;font-family:var(--display);font-weight:900;font-size:14rem;color:rgba(255,255,255,.04);pointer-events:none;line-height:1}
+  .cta h2{color:#fff}
+  .cta p{color:rgba(255,255,255,.72);margin-top:14px;max-width:420px}
+  .cta-box{display:flex;flex-direction:column;gap:14px;position:relative;z-index:2}
+  .contact-link{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 22px;font-weight:600;transition:background .2s,border-color .2s}
+  .contact-link:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
+  .contact-link svg{width:22px;height:22px;flex:none;color:var(--accent)}
+  .contact-link small{display:block;font-weight:500;color:rgba(255,255,255,.55);font-size:.78rem}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:36px 0}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot .logo{color:var(--ink);font-size:1.1rem}
+  .foot p{color:var(--ink-soft);font-size:.85rem}
+  .foot-social{display:flex;gap:18px}
+  .foot-social a{color:var(--ink-soft);font-size:.88rem;font-weight:600}
+  .foot-social a:hover{color:var(--accent)}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.on{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:960px){
+    .services-grid,.reel-grid,.steps{grid-template-columns:repeat(2,1fr)}
+    .talents-grid{grid-template-columns:repeat(3,1fr)}
+    .brands-grid{grid-template-columns:repeat(3,1fr)}
+    .cta{grid-template-columns:1fr;padding:52px 32px}
+  }
+  @media(max-width:680px){
+    section{padding:72px 0}
+    .nav-links{position:fixed;inset:0;background:#fff;flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:105}
+    .nav-links.open{transform:none}
+    .nav-links a{color:var(--ink) !important;font-size:1.2rem}
+    .burger{display:block}
+    body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
+    body.menu-open .burger span:nth-child(2){opacity:0}
+    body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
+    .services-grid,.reel-grid,.steps{grid-template-columns:1fr}
+    .talents-grid{grid-template-columns:repeat(2,1fr)}
+    .brands-grid{grid-template-columns:repeat(2,1fr)}
+    .hero-scroll{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="#" class="logo">HRK<span>.</span>SPORTS</a>
+    <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#servicios">Servicios</a>
+      <a href="#trabajo">Trabajo</a>
+      <a href="#deportistas">Deportistas</a>
+      <a href="#marcas">Marcas</a>
+      <a href="#contacto" class="nav-cta">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-media">
+    <!--
+      █ REEMPLAZAR VIDEO DEL HERO █
+      Cambiá el src por el video de HRK (mp4, idealmente 10-25seg, sin audio necesario).
+      Ej: <source src="assets/hero-hrk.mp4" type="video/mp4">
+      Si el video no carga, queda el fondo oscuro degradé como fallback.
+    -->
+    <video autoplay muted loop playsinline poster="">
+      <source src="https://videos.pexels.com/video-files/3192305/3192305-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="wrap hero-content">
+    <span class="hero-tag">Asesoría de imagen · Marketing deportivo</span>
+    <h1>Convertimos <em>deportistas</em> en marcas.</h1>
+    <p>Imagen, redes y posicionamiento para deportistas profesionales.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn btn-primary">Contacto</a>
+      <a href="#trabajo" class="btn btn-ghost">Nuestro trabajo</a>
+    </div>
+  </div>
+  <span class="hero-scroll">Scroll</span>
+</section>
+
+<!-- ============ SERVICIOS ============ -->
+<section id="servicios">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Servicios</h2>
+      <p>Trabajamos la imagen y la comunicación de cada deportista de forma integral.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div>
+        <h3>Asesoría de imagen</h3>
+        <p>Definimos la identidad visual y el estilo de cada deportista: cómo se muestra, qué comunica y qué lo diferencia.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></div>
+        <h3>Gestión de redes</h3>
+        <p>Planificación, contenido y comunidad. Hacemos crecer los perfiles con una estrategia clara y constante.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="3"/></svg></div>
+        <h3>Producción audiovisual</h3>
+        <p>Videos, fotografía y piezas gráficas de alta calidad: anuncios de fichajes, highlights, campañas y contenido diario.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+        <h3>Posicionamiento</h3>
+        <p>Estrategia de marca personal para que cada atleta gane visibilidad, relevancia y valor en el mercado.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 8.5l6.3-.9z"/></svg></div>
+        <h3>Vinculación con marcas</h3>
+        <p>Conectamos deportistas con sponsors y marcas que comparten sus valores, generando acuerdos que suman a ambos.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>Acompañamiento integral</h3>
+        <p>Seguimiento cercano de cada carrera: comunicación en momentos clave, prensa y manejo de la exposición pública.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRABAJO / REEL ============ -->
+<section id="trabajo" class="reel">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Nuestro trabajo</h2>
+      <p>Anuncios de fichajes, highlights y campañas producidas por HRK.</p>
+    </div>
+    <div class="reel-grid">
+      <!--
+        █ REEMPLAZAR VIDEOS/PIEZAS █
+        Cada tarjeta puede llevar un <video> o <img> con object-fit:cover.
+        Ej: <video src="assets/pieza1.mp4" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+      -->
+      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
+        <span class="tag">Anuncio</span>
+        <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
+      </a>
+      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
+        <span class="tag">Highlights</span>
+        <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
+      </a>
+      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
+        <span class="tag">Campaña</span>
+        <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPORTISTAS ============ -->
+<section id="deportistas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Deportistas</h2>
+      <p>Algunos de los deportistas que trabajan con HRK.</p>
+    </div>
+    <div class="talents-grid">
+      <!-- Reemplazá el fondo de cada tarjeta con la foto real: style="background-image:url(assets/razzeto.jpg);background-size:cover;background-position:top center" -->
+      <div class="talent reveal">
+        <div class="silhouette"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="info"><b>Razzeto</b><span>Fútbol profesional</span></div>
+      </div>
+      <div class="talent reveal">
+        <div class="silhouette"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="info"><b>Spertino</b><span>Fútbol profesional</span></div>
+      </div>
+      <div class="talent reveal">
+        <div class="silhouette"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="info"><b>Neira</b><span>Fútbol profesional</span></div>
+      </div>
+      <div class="talent reveal">
+        <div class="silhouette"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="info"><b>Garayalde</b><span>Fútbol profesional</span></div>
+      </div>
+      <div class="talent reveal">
+        <div class="silhouette"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="info"><b>Vanega</b><span>Fútbol profesional</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARCAS ============ -->
+<section id="marcas" class="brands">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Marcas que confían en HRK</h2>
+      <p>Marcas y clubes con los que trabajamos.</p>
+    </div>
+    <div class="brands-grid">
+      <!-- Reemplazá cada bloque con: <div class="brand"><img src="assets/logo-marca.png" alt="Marca" style="max-height:60%;max-width:70%;object-fit:contain"></div> -->
+      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal">Logo marca</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESO ============ -->
+<section id="proceso">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Cómo trabajamos</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <h3>Diagnóstico</h3>
+        <p>Analizamos la imagen actual del deportista, sus redes y su potencial de marca.</p>
+      </div>
+      <div class="step reveal">
+        <h3>Estrategia</h3>
+        <p>Definimos identidad, tono, calendario de contenido y objetivos de posicionamiento.</p>
+      </div>
+      <div class="step reveal">
+        <h3>Ejecución</h3>
+        <p>Producimos, publicamos y medimos. Ajustamos la estrategia para maximizar oportunidades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section id="contacto" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div>
+        <h2>Contacto</h2>
+        <p>Escribinos y coordinamos una reunión.</p>
+      </div>
+      <div class="cta-box">
+        <!-- Reemplazá con el mail real de HRK -->
+        <a class="contact-link" href="mailto:contacto@hrksports.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
+          <span>contacto@hrksports.com<small>Escribinos por mail</small></span>
+        </a>
+        <a class="contact-link" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>@hrk.sports<small>Seguinos en Instagram</small></span>
+        </a>
+        <a class="contact-link" href="https://wa.me/5491100000000" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
+          <span>WhatsApp<small>Reemplazá con el número real</small></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="#" class="logo">HRK<span>.</span>SPORTS</a>
+    <p>© 2026 HRK Sports — Asesoría de imagen y marketing deportivo</p>
+    <div class="foot-social">
+      <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:contacto@hrksports.com">Mail</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav on scroll
+  const header = document.getElementById('header');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 40), {passive:true});
+
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    links.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
