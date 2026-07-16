@@ -106,18 +106,24 @@
   .step h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin-bottom:8px}
   .step p{color:var(--ink-soft);font-size:.95rem}
 
-  /* ---------- CTA / CONTACTO ---------- */
-  .cta{background:var(--ink);color:#fff;border-radius:calc(var(--radius) + 8px);padding:72px 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;position:relative;overflow:hidden}
-  .cta::after{content:"HRK";position:absolute;right:-30px;bottom:-60px;font-family:var(--display);font-weight:900;font-size:14rem;color:rgba(255,255,255,.04);pointer-events:none;line-height:1}
-  .cta h2{color:#fff}
-  .cta p{color:rgba(255,255,255,.72);margin-top:14px;max-width:420px}
-  .cta-copy{text-align:center}
-  .cta-copy p{margin:14px auto 0}
-  .cta-box{display:flex;flex-direction:column;gap:14px;position:relative;z-index:2}
-  .contact-link{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 22px;font-weight:600;transition:background .2s,border-color .2s}
-  .contact-link:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
-  .contact-link svg{width:22px;height:22px;flex:none;color:var(--accent)}
-  .contact-link small{display:block;font-weight:500;color:rgba(255,255,255,.55);font-size:.78rem}
+  /* ---------- CONTACTO ---------- */
+  .contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
+  .contact-info h2{margin-bottom:14px}
+  .contact-info p{color:var(--ink-soft);font-size:1.05rem;max-width:440px;margin-bottom:32px}
+  .contact-cards{display:flex;flex-direction:column;gap:14px}
+  .contact-card{display:flex;align-items:center;gap:14px;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px 22px;transition:border-color .2s,background .2s}
+  .contact-card:hover{border-color:var(--accent);background:#fff}
+  .contact-card svg{width:22px;height:22px;flex:none;color:var(--accent)}
+  .contact-card b{display:block;font-weight:700;font-size:.98rem}
+  .contact-card small{display:block;font-weight:500;color:var(--ink-soft);font-size:.82rem;margin-top:2px}
+  .contact-form-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:40px}
+  .contact-form{display:flex;flex-direction:column;gap:20px}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field label{font-size:.85rem;font-weight:700;letter-spacing:.01em}
+  .field input,.field select,.field textarea{font-family:var(--font);font-size:.95rem;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);transition:border-color .2s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+  .field textarea{resize:vertical;min-height:110px}
+  .contact-submit{width:100%;justify-content:center;margin-top:4px}
 
   /* ---------- FOOTER ---------- */
   footer{border-top:1px solid var(--line);padding:36px 0}
@@ -137,7 +143,7 @@
     .services-grid,.reel-grid,.steps{grid-template-columns:repeat(2,1fr)}
     .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
-    .cta{grid-template-columns:1fr;padding:52px 32px}
+    .contact-grid{grid-template-columns:1fr;gap:40px}
   }
   @media(max-width:680px){
     section{padding:72px 0}
@@ -343,26 +349,60 @@
 </section>
 
 <!-- ============ CONTACTO ============ -->
-<section id="contacto" style="padding-top:0">
+<section id="contacto">
   <div class="wrap">
-    <div class="cta reveal">
-      <div class="cta-copy">
-        <h2>Contacto</h2>
-        <p>Escribinos y coordinamos una reunión.</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2>¿Listo para dar el siguiente paso?</h2>
+        <p>Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
+        <div class="contact-cards">
+          <a class="contact-card" href="mailto:hrk.sports2025@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
+            <span><b>hrk.sports2025@gmail.com</b><small>Escribinos por mail</small></span>
+          </a>
+          <a class="contact-card" href="https://wa.me/5491100000000" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
+            <span><b>WhatsApp</b><small>Escribinos directo</small></span>
+          </a>
+          <a class="contact-card" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <span><b>@hrk.sports</b><small>Seguinos en Instagram</small></span>
+          </a>
+        </div>
       </div>
-      <div class="cta-box">
-        <a class="contact-link" href="mailto:hrk.sports2025@gmail.com">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
-          <span>hrk.sports2025@gmail.com<small>Escribinos por mail</small></span>
-        </a>
-        <a class="contact-link" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          <span>@hrk.sports<small>Seguinos en Instagram</small></span>
-        </a>
-        <a class="contact-link" href="https://wa.me/5491100000000" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
-          <span>WhatsApp<small>Reemplazá con el número real</small></span>
-        </a>
+      <div class="contact-form-card reveal">
+        <form class="contact-form" action="https://formsubmit.co/hrk.sports2025@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Nueva consulta desde la web HRK">
+          <input type="hidden" name="_captcha" value="false">
+          <div class="field">
+            <label for="cf-nombre">Nombre y apellido</label>
+            <input type="text" id="cf-nombre" name="Nombre y apellido" required>
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="Email" required>
+          </div>
+          <div class="field">
+            <label for="cf-telefono">Teléfono (opcional)</label>
+            <input type="tel" id="cf-telefono" name="Teléfono">
+          </div>
+          <div class="field">
+            <label for="cf-quien">¿Quién sos?</label>
+            <select id="cf-quien" name="Quién sos">
+              <option>Deportista</option>
+              <option>Agencia</option>
+              <option>Marca</option>
+              <option>Club</option>
+              <option>Evento deportivo</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-mensaje">Contanos sobre tu proyecto</label>
+            <textarea id="cf-mensaje" name="Mensaje" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary contact-submit">Enviar consulta</button>
+        </form>
       </div>
     </div>
   </div>
