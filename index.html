@@ -18,10 +18,6 @@
     --ink-soft:rgba(255,255,255,.65);
     --line:rgba(255,255,255,.12);
     --accent:#ffffff;
-    --glow-sm:0 0 18px rgba(255,255,255,.45);
-    --glow-lg:0 0 40px rgba(255,255,255,.15);
-    --glow-sm-hover:0 0 26px rgba(255,255,255,.65);
-    --glow-lg-hover:0 0 60px rgba(255,255,255,.25);
     --radius:18px;
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
@@ -45,11 +41,9 @@
   .logo span{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
   header.scrolled .logo{color:var(--ink)}
   .nav-links{display:flex;gap:34px;align-items:center}
-  .nav-links a{font-size:.92rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s,text-shadow .2s}
-  header.scrolled .nav-links a{color:var(--ink-soft)}
-  .nav-links a:hover{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
-  .nav-cta{background:#fff;color:#000 !important;padding:10px 22px;border-radius:6px;font-weight:700;transition:box-shadow .2s;box-shadow:var(--glow-sm),var(--glow-lg)}
-  .nav-cta:hover{box-shadow:var(--glow-sm-hover),var(--glow-lg-hover)}
+  .nav-links a:not(.btn){font-size:.92rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s,text-shadow .2s}
+  header.scrolled .nav-links a:not(.btn){color:var(--ink-soft)}
+  .nav-links a:not(.btn):hover{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
   .burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;position:relative;z-index:110}
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
   header.scrolled .burger span{background:var(--ink)}
@@ -65,11 +59,8 @@
   .hero h1 em{font-style:normal;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.8),0 0 32px rgba(255,255,255,.4)}
   .hero p{margin:22px auto 0;max-width:520px;font-size:1.12rem;color:rgba(255,255,255,.82)}
   .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;justify-content:center}
-  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:6px;font-weight:700;font-size:1rem;transition:background .2s,border-color .2s,box-shadow .2s;cursor:pointer;border:0}
-  .btn-primary{background:#fff;color:#000;box-shadow:var(--glow-sm),var(--glow-lg)}
-  .btn-primary:hover{box-shadow:var(--glow-sm-hover),var(--glow-lg-hover)}
-  .btn-ghost{border:1.5px solid rgba(255,255,255,.5);color:#fff;background:transparent;box-shadow:0 0 14px rgba(255,255,255,.12)}
-  .btn-ghost:hover{border-color:#fff;box-shadow:0 0 22px rgba(255,255,255,.25)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#000 !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:none;transition:box-shadow .2s ease}
+  .btn:hover{box-shadow:0 0 20px rgba(255,255,255,.6),0 0 45px rgba(255,255,255,.25)}
   .hero-scroll{position:absolute;right:40px;bottom:40px;z-index:2;writing-mode:vertical-rl;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 
   /* ---------- SERVICIOS ---------- */
@@ -128,7 +119,7 @@
   .field input,.field select,.field textarea{font-family:var(--font);font-size:.95rem;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:var(--input-bg);color:var(--ink);transition:border-color .2s,box-shadow .2s}
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
   .field textarea{resize:vertical;min-height:110px}
-  .contact-submit{width:100%;justify-content:center;margin-top:4px}
+  .contact-submit{width:100%;margin-top:4px}
 
   /* ---------- FOOTER ---------- */
   footer{border-top:1px solid var(--line);padding:36px 0}
@@ -154,7 +145,7 @@
     section{padding:72px 0}
     .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:105}
     .nav-links.open{transform:none}
-    .nav-links a{color:var(--ink) !important;font-size:1.2rem}
+    .nav-links a:not(.btn){color:var(--ink) !important;font-size:1.2rem}
     .burger{display:block}
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
@@ -177,7 +168,7 @@
       <a href="#trabajo">Trabajo</a>
       <a href="#deportistas">Deportistas</a>
       <a href="#marcas">Marcas</a>
-      <a href="#contacto" class="nav-cta">Contacto</a>
+      <a href="#contacto" class="btn">Contacto</a>
     </nav>
   </div>
 </header>
@@ -200,8 +191,8 @@
     <h1>Convertimos <em>deportistas</em> en marcas.</h1>
     <p>Imagen, redes y posicionamiento para deportistas profesionales.</p>
     <div class="hero-actions">
-      <a href="#contacto" class="btn btn-primary">Contacto</a>
-      <a href="#trabajo" class="btn btn-ghost">Nuestro trabajo</a>
+      <a href="#contacto" class="btn">Contacto</a>
+      <a href="#trabajo" class="btn">Nuestro trabajo</a>
     </div>
   </div>
   <span class="hero-scroll">Scroll</span>
@@ -406,7 +397,7 @@
             <label for="cf-mensaje">Contanos sobre tu proyecto</label>
             <textarea id="cf-mensaje" name="Mensaje" rows="4" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary contact-submit">Enviar consulta</button>
+          <button type="submit" class="btn contact-submit">Enviar consulta</button>
         </form>
       </div>
     </div>
