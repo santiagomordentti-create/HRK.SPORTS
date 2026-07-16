@@ -29,7 +29,7 @@
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
   section{padding:96px 0}
   h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.12;letter-spacing:-.01em}
-  .section-head{max-width:640px;margin-bottom:56px}
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
   .section-head p{color:var(--ink-soft);margin-top:14px;font-size:1.05rem}
 
   /* ---------- NAV ---------- */
@@ -54,12 +54,12 @@
   .hero-media{position:absolute;inset:0;background:linear-gradient(135deg,#101318 0%,#1c2027 45%,#2a2f38 100%)}
   .hero-media video{width:100%;height:100%;object-fit:cover}
   .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,12,.85) 0%,rgba(8,9,12,.35) 45%,rgba(8,9,12,.25) 100%)}
-  .hero-content{position:relative;z-index:2;width:100%;padding:0 0 90px}
+  .hero-content{position:relative;z-index:2;width:100%;padding:0 0 90px;text-align:center}
   .hero-tag{display:inline-block;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:22px}
-  .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,6.5vw,5rem);line-height:1.02;letter-spacing:-.01em;max-width:14ch}
+  .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,6.5vw,5rem);line-height:1.02;letter-spacing:-.01em;max-width:14ch;margin:0 auto}
   .hero h1 em{font-style:normal;color:var(--accent)}
-  .hero p{margin-top:22px;max-width:520px;font-size:1.12rem;color:rgba(255,255,255,.82)}
-  .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap}
+  .hero p{margin:22px auto 0;max-width:520px;font-size:1.12rem;color:rgba(255,255,255,.82)}
+  .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;justify-content:center}
   .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:6px;font-weight:700;font-size:1rem;transition:background .2s,border-color .2s;cursor:pointer;border:0}
   .btn-primary{background:var(--accent);color:#fff}
   .btn-primary:hover{background:var(--accent-dark)}
@@ -111,6 +111,8 @@
   .cta::after{content:"HRK";position:absolute;right:-30px;bottom:-60px;font-family:var(--display);font-weight:900;font-size:14rem;color:rgba(255,255,255,.04);pointer-events:none;line-height:1}
   .cta h2{color:#fff}
   .cta p{color:rgba(255,255,255,.72);margin-top:14px;max-width:420px}
+  .cta-copy{text-align:center}
+  .cta-copy p{margin:14px auto 0}
   .cta-box{display:flex;flex-direction:column;gap:14px;position:relative;z-index:2}
   .contact-link{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 22px;font-weight:600;transition:background .2s,border-color .2s}
   .contact-link:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
@@ -344,7 +346,7 @@
 <section id="contacto" style="padding-top:0">
   <div class="wrap">
     <div class="cta reveal">
-      <div>
+      <div class="cta-copy">
         <h2>Contacto</h2>
         <p>Escribinos y coordinamos una reunión.</p>
       </div>
