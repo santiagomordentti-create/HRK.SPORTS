@@ -41,9 +41,10 @@
   .logo span{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
   header.scrolled .logo{color:var(--ink)}
   .nav-links{display:flex;gap:34px;align-items:center}
-  .nav-links a:not(.btn){font-size:.92rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s,text-shadow .2s}
+  .nav-links a:not(.btn){font-size:.92rem;font-weight:600;color:rgba(255,255,255,.85);padding:10px 20px;border-radius:6px;background:transparent;box-shadow:none;transition:background-color .25s ease,color .25s ease,box-shadow .25s ease,text-shadow .2s ease}
   header.scrolled .nav-links a:not(.btn){color:var(--ink-soft)}
-  .nav-links a:not(.btn):hover{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
+  .nav-links a:not(.btn):not(.active):hover{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.35)}
+  .nav-links a.active{background:#fff;color:#000 !important;box-shadow:0 0 14px rgba(255,255,255,.3)}
   .nav-links .btn{padding:10px 20px}
   .burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;position:relative;z-index:110}
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
@@ -146,7 +147,8 @@
     section{padding:72px 0}
     .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:105}
     .nav-links.open{transform:none}
-    .nav-links a:not(.btn){color:var(--ink) !important;font-size:1.2rem}
+    .nav-links a:not(.btn):not(.active){color:var(--ink) !important;font-size:1.2rem}
+    .nav-links a.active{font-size:1.2rem}
     .burger{display:block}
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
@@ -165,10 +167,10 @@
     <a href="#" class="logo">HRK<span>.</span>SPORTS</a>
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
     <nav class="nav-links" id="navLinks">
-      <a href="#servicios" class="btn">Servicios</a>
-      <a href="#trabajo" class="btn">Trabajo</a>
-      <a href="#deportistas" class="btn">Deportistas</a>
-      <a href="#marcas" class="btn">Marcas</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#trabajo">Trabajo</a>
+      <a href="#deportistas">Deportistas</a>
+      <a href="#marcas">Marcas</a>
       <a href="#contacto" class="btn">Contacto</a>
     </nav>
   </div>
@@ -438,6 +440,25 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Scrollspy nav
+  const spySections = ['servicios', 'trabajo', 'deportistas', 'marcas'];
+  const navLinkMap = {};
+  spySections.forEach(id => { navLinkMap[id] = document.querySelector(`.nav-links a[href="#${id}"]`); });
+  const sectionState = {};
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => { sectionState[entry.target.id] = entry.isIntersecting; });
+    let activeId = null;
+    spySections.forEach(id => { if (sectionState[id]) activeId = id; });
+    spySections.forEach(id => {
+      const link = navLinkMap[id];
+      if (link) link.classList.toggle('active', id === activeId);
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  spySections.forEach(id => {
+    const section = document.getElementById(id);
+    if (section) spy.observe(section);
+  });
 </script>
 </body>
 </html>
