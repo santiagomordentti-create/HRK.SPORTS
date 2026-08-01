@@ -108,11 +108,8 @@
   /* ---------- VIDEO / TRABAJO ---------- */
   .reel{background:var(--bg-soft);color:#fff}
   .reel .section-head p{color:rgba(255,255,255,.7)}
-  .reel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .reel-card{position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;background:linear-gradient(160deg,#23262d,#0a0a0c);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
-  .reel-card .ph{text-align:center;color:rgba(255,255,255,.45);font-size:.85rem;font-weight:600;letter-spacing:.06em;padding:0 20px}
-  .reel-card .ph svg{width:44px;height:44px;margin:0 auto 14px;display:block;opacity:.6}
-  .reel-card .tag{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.92);color:#000;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px;box-shadow:0 0 14px rgba(255,255,255,.35)}
+  .reel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+  .reel-card{display:flex;justify-content:center}
 
   /* ---------- DEPORTISTAS ---------- */
   .talents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
@@ -300,23 +297,15 @@
       <p>Anuncios de fichajes, highlights y campañas producidas por HRK.</p>
     </div>
     <div class="reel-grid">
-      <!--
-        █ REEMPLAZAR VIDEOS/PIEZAS █
-        Cada tarjeta puede llevar un <video> o <img> con object-fit:cover.
-        Ej: <video src="assets/pieza1.mp4" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
-      -->
-      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" aria-label="Ver anuncio de fichaje de HRK Sports en Instagram">
-        <span class="tag">Anuncio</span>
-        <div class="ph"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
-      </a>
-      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" aria-label="Ver highlights de HRK Sports en Instagram">
-        <span class="tag">Highlights</span>
-        <div class="ph"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
-      </a>
-      <a class="reel-card reveal" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" aria-label="Ver campaña de HRK Sports en Instagram">
-        <span class="tag">Campaña</span>
-        <div class="ph"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>Video placeholder<br>— pieza de HRK —</div>
-      </a>
+      <div class="reel-card reveal">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/hrk.sports/reel/DbcWY08N6HH/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
+      </div>
+      <div class="reel-card reveal">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/hrk.sports/reel/DbOZzbQJnCg/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
+      </div>
+      <div class="reel-card reveal">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/hrk.sports/reel/DbMfq2TpMYG/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
+      </div>
     </div>
   </div>
 </section>
@@ -538,5 +527,6 @@
     if (section) spy.observe(section);
   });
 </script>
+<script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>
