@@ -48,6 +48,9 @@
     --ink-soft:rgba(255,255,255,.65);
     --line:rgba(255,255,255,.12);
     --accent:#ffffff;
+    --glow-hover:0 0 16px rgba(255,255,255,.4);
+    --glow-primary-rest:0 0 12px rgba(255,255,255,.28);
+    --glow-text:0 0 14px rgba(255,255,255,.55);
     --radius:18px;
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
@@ -71,10 +74,10 @@
   .logo span{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
   header.scrolled .logo{color:var(--ink)}
   .nav-links{display:flex;gap:34px;align-items:center}
-  .nav-links a{font-size:.92rem;font-weight:600;color:#fff;border:1.5px solid rgba(255,255,255,.5);background:transparent;padding:10px 20px;border-radius:6px;box-shadow:none;transition:background-color .25s ease,color .25s ease,border-color .2s ease,box-shadow .25s ease}
+  .nav-links a:not(.btn){display:flex;align-items:center;justify-content:center;min-height:44px;font-size:.92rem;font-weight:600;color:#fff;border:1.5px solid rgba(255,255,255,.5);background:transparent;padding:10px 20px;border-radius:6px;box-shadow:none;transition:background-color .25s ease,color .25s ease,border-color .2s ease,box-shadow .25s ease}
   header.scrolled .nav-links a:not(.active){color:var(--ink-soft)}
-  .nav-links a:not(.active):hover{border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,.3)}
-  .nav-links a.active{background:#fff;color:#000 !important;border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,.3)}
+  .nav-links a:not(.active):not(.btn):hover{border-color:#fff;box-shadow:var(--glow-hover)}
+  .nav-links a.active:not(.btn){border-color:#fff;box-shadow:var(--glow-hover)}
   .burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;position:relative;z-index:110}
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
   header.scrolled .burger span{background:var(--ink)}
@@ -87,12 +90,14 @@
   .hero-content{position:relative;z-index:2;width:100%;padding:0 0 90px;text-align:center}
   .hero-tag{display:inline-block;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:22px}
   .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,6.5vw,5rem);line-height:1.02;letter-spacing:-.01em;max-width:14ch;margin:0 auto}
-  .hero h1 em{font-style:normal;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.8),0 0 32px rgba(255,255,255,.4)}
+  .hero h1 em{font-style:normal;color:#fff;text-shadow:var(--glow-text)}
   .hero p{margin:22px auto 0;max-width:520px;font-size:1.12rem;color:rgba(255,255,255,.82)}
   .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;justify-content:center}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#000 !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:none;transition:box-shadow .2s ease}
-  .btn:hover{box-shadow:0 0 20px rgba(255,255,255,.6),0 0 45px rgba(255,255,255,.25)}
-  .hero-scroll{position:absolute;right:40px;bottom:40px;z-index:2;writing-mode:vertical-rl;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:#fff;color:#000 !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease}
+  .btn:hover{box-shadow:var(--glow-hover)}
+  .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;box-shadow:none;transition:border-color .2s ease,box-shadow .25s ease}
+  .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
+  .hero-scroll{position:absolute;right:100px;bottom:40px;z-index:2;writing-mode:vertical-rl;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 
   /* ---------- SERVICIOS ---------- */
   .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -124,12 +129,12 @@
   .brands{background:var(--bg-soft)}
   .brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
   .brand{aspect-ratio:3/2;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.35);font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;transition:border-color .2s,color .2s,box-shadow .2s}
-  .brand:hover{border-color:#fff;color:#fff;box-shadow:0 0 18px rgba(255,255,255,.22)}
+  .brand:hover{border-color:#fff;color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- PROCESO ---------- */
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
   .step{border-top:2px solid rgba(255,255,255,.5);padding-top:26px}
-  .step::before{counter-increment:step;content:"0" counter(step);font-family:var(--display);font-weight:900;font-size:2rem;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.6),0 0 30px rgba(255,255,255,.25);display:block;margin-bottom:12px}
+  .step::before{counter-increment:step;content:"0" counter(step);font-family:var(--display);font-weight:900;font-size:2rem;color:#fff;text-shadow:var(--glow-text);display:block;margin-bottom:12px}
   .step h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin-bottom:8px}
   .step p{color:var(--ink-soft);font-size:.95rem}
 
@@ -148,7 +153,7 @@
   .contact-info p{color:var(--ink-soft);font-size:1.05rem;max-width:440px;margin-bottom:32px}
   .contact-cards{display:flex;flex-direction:column;gap:14px}
   .contact-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;transition:border-color .2s,background .2s,box-shadow .2s}
-  .contact-card:hover{border-color:#fff;background:#1d1d22;box-shadow:0 0 20px rgba(255,255,255,.15)}
+  .contact-card:hover{border-color:#fff;box-shadow:var(--glow-hover)}
   .contact-card svg{width:22px;height:22px;flex:none;color:var(--accent);filter:drop-shadow(0 0 6px rgba(255,255,255,.5))}
   .contact-card b{display:block;font-weight:700;font-size:.98rem}
   .contact-card small{display:block;font-weight:500;color:var(--ink-soft);font-size:.82rem;margin-top:2px}
@@ -159,7 +164,9 @@
   .field input,.field select,.field textarea{font-family:var(--font);font-size:.95rem;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:var(--input-bg);color:var(--ink);transition:border-color .2s,box-shadow .2s}
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
   .field textarea{resize:vertical;min-height:110px}
-  .contact-submit{width:100%;margin-top:4px}
+  .form-submit-group{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:4px}
+  .contact-submit{width:100%}
+  .form-note{color:var(--ink-soft);font-size:.82rem}
 
   /* ---------- FOOTER ---------- */
   footer{border-top:1px solid var(--line);padding:36px 0}
@@ -169,6 +176,11 @@
   .foot-social{display:flex;gap:18px}
   .foot-social a{color:var(--ink-soft);font-size:.88rem;font-weight:600;transition:color .2s,text-shadow .2s}
   .foot-social a:hover{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.6)}
+
+  /* ---------- WHATSAPP FLOTANTE ---------- */
+  .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
+  .whatsapp-float:hover{box-shadow:var(--glow-hover)}
+  .whatsapp-float svg{width:28px;height:28px}
 
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
@@ -187,8 +199,9 @@
     section{padding:72px 0}
     .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:105}
     .nav-links.open{transform:none}
-    .nav-links a:not(.active){color:var(--ink) !important;font-size:1.2rem}
-    .nav-links a.active{font-size:1.2rem}
+    .nav-links a:not(.btn){font-size:1.2rem}
+    .nav-links a:not(.active):not(.btn){color:var(--ink) !important}
+    .nav-links a.btn{font-size:1.2rem}
     .burger{display:block}
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
@@ -197,6 +210,7 @@
     .talents-grid{grid-template-columns:repeat(2,1fr)}
     .brands-grid{grid-template-columns:repeat(2,1fr)}
     .hero-scroll{display:none}
+    footer{padding-bottom:96px}
   }
 </style>
 </head>
@@ -211,7 +225,7 @@
       <a href="#trabajo">Trabajo</a>
       <a href="#deportistas">Deportistas</a>
       <a href="#marcas">Marcas</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#contacto" class="btn">Contacto</a>
     </nav>
   </div>
 </header>
@@ -224,9 +238,11 @@
       █ REEMPLAZAR VIDEO DEL HERO █
       Cambiá el src por el video de HRK (mp4, idealmente 10-25seg, sin audio necesario).
       Ej: <source src="assets/hero-hrk.mp4" type="video/mp4">
-      Si el video no carga, queda el fondo oscuro degradé como fallback.
+      Reemplazá el poster por un frame real (assets/hero-poster.jpg) para que se vea algo
+      al instante mientras carga el video. Si el video no carga, queda el fondo oscuro
+      degradé como fallback.
     -->
-    <video autoplay muted loop playsinline poster="" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
       <source src="https://videos.pexels.com/video-files/3192305/3192305-hd_1920_1080_25fps.mp4" type="video/mp4">
     </video>
   </div>
@@ -236,7 +252,6 @@
     <p>Imagen, redes y posicionamiento para deportistas profesionales.</p>
     <div class="hero-actions">
       <a href="#contacto" class="btn">Contacto</a>
-      <a href="#trabajo" class="btn">Nuestro trabajo</a>
     </div>
   </div>
   <span class="hero-scroll">Scroll</span>
@@ -271,14 +286,14 @@
         <p>Estrategia de marca personal para que cada atleta gane visibilidad, relevancia y valor en el mercado.</p>
       </div>
       <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 8.5l6.3-.9z"/></svg></div>
-        <h3>Vinculación con marcas</h3>
-        <p>Conectamos deportistas con sponsors y marcas que comparten sus valores, generando acuerdos que suman a ambos.</p>
-      </div>
-      <div class="service reveal">
         <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
         <h3>Acompañamiento integral</h3>
         <p>Seguimiento cercano de cada carrera: comunicación en momentos clave, prensa y manejo de la exposición pública.</p>
+      </div>
+      <div class="service reveal">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 8.5l6.3-.9z"/></svg></div>
+        <h3>Vinculación con marcas</h3>
+        <p>Conectamos deportistas con sponsors y marcas que comparten sus valores, generando acuerdos que suman a ambos.</p>
       </div>
     </div>
   </div>
@@ -403,7 +418,7 @@
         <span class="press-card-tag">PERFIL · Julio 2026</span>
         <h3>Fuego Sagrado 2026: el programa que transforma ideas universitarias en negocios reales</h3>
         <p>Fuimos seleccionados por UADE HUB para Fuego Sagrado 2026, su programa de incubación de negocios. La nota nos describe como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento» — exactamente lo que hacemos.</p>
-        <a class="btn" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener">Leer la nota en Perfil</a>
+        <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener">Leer la nota en Perfil</a>
       </div>
     </div>
   </div>
@@ -421,7 +436,7 @@
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
             <span><b>hrk.sports2025@gmail.com</b><small>Escribinos por mail</small></span>
           </a>
-          <a class="contact-card" href="https://wa.me/5491100000000" target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
+          <a class="contact-card" href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
             <span><b>WhatsApp</b><small>Escribinos directo</small></span>
           </a>
@@ -462,13 +477,20 @@
             <label for="cf-mensaje">Contanos sobre tu proyecto</label>
             <textarea id="cf-mensaje" name="Mensaje" rows="4" required></textarea>
           </div>
-          <button type="submit" class="btn contact-submit">Enviar consulta</button>
+          <div class="form-submit-group">
+            <button type="submit" class="btn contact-submit">Enviar consulta</button>
+            <p class="form-note">Respondemos en menos de 24 hs.</p>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </section>
 </main>
+
+<a class="whatsapp-float" href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
+</a>
 
 <footer>
   <div class="wrap foot">
