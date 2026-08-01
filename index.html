@@ -142,6 +142,15 @@
   .step h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin-bottom:8px}
   .step p{color:var(--ink-soft);font-size:.95rem}
 
+  /* ---------- PRENSA (SECCIÓN) ---------- */
+  .press-card{max-width:900px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
+  .press-card-media{position:relative;min-height:260px}
+  .press-card-media img{width:100%;height:100%;object-fit:cover}
+  .press-card-body{padding:34px 36px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px}
+  .press-card-tag{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .press-card-body h3{font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.25}
+  .press-card-body p{color:var(--ink-soft);font-size:.95rem}
+
   /* ---------- CONTACTO ---------- */
   .contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
   .contact-info h2{margin-bottom:14px}
@@ -180,6 +189,8 @@
     .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
+    .press-card{grid-template-columns:1fr}
+    .press-card-media{min-height:220px}
   }
   @media(max-width:680px){
     section{padding:72px 0}
@@ -246,7 +257,7 @@
     <span class="press-text">Destacados en <b>PERFIL</b></span>
     <span class="press-sep" aria-hidden="true">·</span>
     <span class="press-text">Incubados por <b>UADE HUB</b></span>
-    <a class="press-link" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener">Leer la nota →</a>
+    <a class="press-link" href="#prensa">Ver más →</a>
   </div>
 </div>
 
@@ -391,6 +402,27 @@
       <div class="step reveal">
         <h3>Ejecución</h3>
         <p>Producimos, publicamos y medimos. Ajustamos la estrategia para maximizar oportunidades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRENSA (SECCIÓN) ============ -->
+<section id="prensa">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>HRK en los medios</h2>
+      <p>Perfil destacó a HRK entre la nueva generación de emprendimientos argentinos.</p>
+    </div>
+    <div class="press-card reveal">
+      <div class="press-card-media">
+        <img src="https://fotos.perfil.com/2026/07/14/trim/1140/641/emprendedores-de-uade-hub-2282308.jpg" alt="Emprendedores de UADE HUB — nota de Perfil" loading="lazy">
+      </div>
+      <div class="press-card-body">
+        <span class="press-card-tag">PERFIL · Julio 2026</span>
+        <h3>Fuego Sagrado 2026: el programa que transforma ideas universitarias en negocios reales</h3>
+        <p>Fuimos seleccionados por UADE HUB para Fuego Sagrado 2026, su programa de incubación de negocios. La nota nos describe como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento» — exactamente lo que hacemos.</p>
+        <a class="btn" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener">Leer la nota en Perfil</a>
       </div>
     </div>
   </div>
