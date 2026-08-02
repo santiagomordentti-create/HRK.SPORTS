@@ -48,9 +48,9 @@
     --ink-soft:rgba(255,255,255,.75);
     --line:rgba(255,255,255,.16);
     --accent:#ffffff;
-    --glow-hover:0 0 16px rgba(255,255,255,.4);
-    --glow-primary-rest:0 0 12px rgba(255,255,255,.28);
-    --glow-text:0 0 14px rgba(255,255,255,.55);
+    --glow-hover:0 0 8px rgba(255,255,255,.2);
+    --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
+    --glow-text:0 0 7px rgba(255,255,255,.28);
     --radius:18px;
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
@@ -71,7 +71,7 @@
   header.scrolled{background:rgba(10,10,12,.75);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
   .logo{font-family:var(--display);font-weight:900;font-size:1.3rem;letter-spacing:.02em;color:#fff;transition:color .3s}
-  .logo span{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.7)}
+  .logo span{color:var(--accent);text-shadow:0 0 5px rgba(255,255,255,.35)}
   header.scrolled .logo{color:var(--ink)}
   .nav-links{display:flex;gap:34px;align-items:center}
   .nav-links a:not(.btn){display:flex;align-items:center;justify-content:center;min-height:44px;font-size:.92rem;font-weight:600;color:#fff;border:1.5px solid rgba(255,255,255,.5);background:transparent;padding:10px 20px;border-radius:6px;box-shadow:none;transition:background-color .25s ease,color .25s ease,border-color .2s ease,box-shadow .25s ease}
@@ -99,7 +99,7 @@
   .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .service{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;height:190px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease}
   .service:hover{border-color:#fff;box-shadow:var(--glow-hover)}
-  .service .icon{width:44px;height:44px;border-radius:14px;background:#000;border:1px solid var(--line);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 0 14px rgba(255,255,255,.12);flex-shrink:0}
+  .service .icon{width:44px;height:44px;border-radius:14px;background:#000;border:1px solid var(--line);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 0 7px rgba(255,255,255,.06);flex-shrink:0}
   .service .icon svg{width:22px;height:22px}
   .service h3{font-family:var(--display);font-weight:700;font-size:1.12rem;margin-bottom:0}
   .service p{color:var(--ink-soft);font-size:.95rem;max-height:0;opacity:0;margin-top:0;overflow:hidden;transform:translateY(-6px);transition:max-height .25s ease,opacity .25s ease,transform .25s ease,margin-top .25s ease}
@@ -174,7 +174,7 @@
   .contact-cards{display:flex;flex-direction:column;gap:14px}
   .contact-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;transition:border-color .2s,background .2s,box-shadow .2s}
   .contact-card:hover{border-color:#fff;box-shadow:var(--glow-hover)}
-  .contact-card svg{width:22px;height:22px;flex:none;color:var(--accent);filter:drop-shadow(0 0 6px rgba(255,255,255,.5))}
+  .contact-card svg{width:22px;height:22px;flex:none;color:var(--accent);filter:drop-shadow(0 0 3px rgba(255,255,255,.25))}
   .contact-card b{display:block;font-weight:700;font-size:.98rem}
   .contact-card small{display:block;font-weight:500;color:var(--ink-soft);font-size:.82rem;margin-top:2px}
   .contact-form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:40px}
@@ -195,7 +195,7 @@
   .foot p{color:var(--ink-soft);font-size:.85rem}
   .foot-social{display:flex;gap:18px}
   .foot-social a{color:var(--ink-soft);font-size:.88rem;font-weight:600;transition:color .2s,text-shadow .2s}
-  .foot-social a:hover{color:var(--accent);text-shadow:0 0 10px rgba(255,255,255,.6)}
+  .foot-social a:hover{color:var(--accent);text-shadow:0 0 5px rgba(255,255,255,.3)}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
