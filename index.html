@@ -74,10 +74,9 @@
   .logo span{color:var(--accent);text-shadow:0 0 5px rgba(255,255,255,.35)}
   header.scrolled .logo{color:var(--ink)}
   .nav-links{display:flex;gap:34px;align-items:center}
-  .nav-links a:not(.btn){display:flex;align-items:center;justify-content:center;min-height:44px;font-size:.92rem;font-weight:600;color:#fff;border:1.5px solid rgba(255,255,255,.5);background:transparent;padding:10px 20px;border-radius:6px;box-shadow:none;transition:background-color .25s ease,color .25s ease,border-color .2s ease,box-shadow .25s ease}
-  header.scrolled .nav-links a:not(.active){color:var(--ink-soft)}
-  .nav-links a:not(.active):not(.btn):hover{border-color:#fff;box-shadow:var(--glow-hover)}
-  .nav-links a.active:not(.btn){border-color:#fff;box-shadow:var(--glow-hover)}
+  .nav-links a:not(.btn){display:flex;align-items:center;justify-content:center;min-height:44px;font-size:.92rem;font-weight:600;color:rgba(255,255,255,.7);background:transparent;border:0;padding:10px 12px;transition:color .2s ease}
+  .nav-links a:not(.active):not(.btn):hover{color:#fff}
+  .nav-links a.active:not(.btn){color:#fff;text-decoration:underline;text-decoration-color:#fff;text-decoration-thickness:2px;text-underline-offset:6px}
   .burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;position:relative;z-index:110}
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
   header.scrolled .burger span{background:var(--ink)}
@@ -106,7 +105,7 @@
   .service:hover p{max-height:70px;opacity:1;margin-top:10px;transform:translateY(0)}
 
   /* ---------- TRABAJOS ---------- */
-  .work{background:#faf8f6;color:#111}
+  .work{background:#faf8f6;color:#111;border-top:1px solid rgba(17,17,17,.08);border-bottom:1px solid rgba(17,17,17,.08)}
   .work .section-head p{color:#57534d}
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
   .work-card{background:#fff;border:1px solid #e8e4e0;border-radius:var(--radius);box-shadow:0 4px 24px rgba(17,17,17,.06);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -201,7 +200,7 @@
   .whatsapp-float svg{width:28px;height:28px}
 
   /* ---------- REVEAL ---------- */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
   .reveal.on{opacity:1;transform:none}
 
   /* ---------- RESPONSIVE ---------- */
@@ -218,7 +217,6 @@
     .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:105}
     .nav-links.open{transform:none}
     .nav-links a:not(.btn){font-size:1.2rem}
-    .nav-links a:not(.active):not(.btn){color:var(--ink) !important}
     .nav-links a.btn{font-size:1.2rem}
     .burger{display:block}
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
@@ -650,8 +648,13 @@
   // Reveal on scroll
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, {threshold:.12});
+  }, {threshold:.12, rootMargin:'0px 0px -10% 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Fallback: si el observer no llega a disparar por algún motivo, mostramos igual
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.on)').forEach(el => el.classList.add('on'));
+  }, 2500);
 
   // Flip de tarjetas de Deportistas (toggle táctil; en desktop el hover ya lo hace por CSS)
   document.querySelectorAll('.talent-flip').forEach(card => {
