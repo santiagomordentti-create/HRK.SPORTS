@@ -112,10 +112,8 @@
   .work-card{background:#fff;border:1px solid #e8e4e0;border-radius:var(--radius);box-shadow:0 4px 24px rgba(17,17,17,.06);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
   .work-card h3{font-family:var(--display);font-weight:800;color:#111;font-size:1.15rem;margin-bottom:16px}
   .work-photo{position:relative;width:100%;flex:1;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background-image:var(--photo,none),linear-gradient(165deg,#2a2a2a 0%,#111 100%);background-size:cover;background-position:center}
-  .work-photo-fade{position:absolute;left:0;right:0;bottom:0;height:42%;display:flex;align-items:flex-end;justify-content:center;padding:18px 20px;background:linear-gradient(to top,rgba(224,138,128,.65) 0%,rgba(224,138,128,0) 100%);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-  .work-photo-fade p{color:#fff;font-size:.88rem;line-height:1.45;text-shadow:0 1px 6px rgba(0,0,0,.45)}
-  .work-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 26px;margin-top:18px;background:#e08a80;color:#fff;font-weight:700;border-radius:6px;transition:background-color .2s ease}
-  .work-btn:hover{background:#d4776d}
+  .work-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:36%;pointer-events:none}
+  .work-card p{color:#222;font-size:1.05rem;line-height:1.6;margin-top:16px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
   .work-card.wide{grid-column:1/-1}
   .work-card.wide .work-photo{aspect-ratio:21/9}
 
@@ -327,27 +325,67 @@
       <div class="work-card reveal">
         <h3>Eze Neira</h3>
         <div class="work-photo" style="--photo:url(assets/neira.jpg)">
-          <div class="work-photo-fade">
-            <p>Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.</p>
-          </div>
+          <svg class="work-wave" viewBox="0 0 400 150" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="waveGradNeira" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c96a5f"/>
+                <stop offset="100%" stop-color="#e08a80"/>
+              </linearGradient>
+              <filter id="waveBlurNeira" x="-20%" y="-60%" width="140%" height="220%">
+                <feGaussianBlur stdDeviation="9"/>
+              </filter>
+            </defs>
+            <g filter="url(#waveBlurNeira)">
+              <path d="M-20,75 C70,25 150,115 230,60 C310,15 370,95 420,55 L420,150 L-20,150 Z" fill="url(#waveGradNeira)" opacity="0.5"/>
+              <path d="M-20,105 C90,140 160,55 250,100 C330,135 380,75 420,105 L420,150 L-20,150 Z" fill="url(#waveGradNeira)" opacity="0.38"/>
+            </g>
+          </svg>
         </div>
-        <a class="work-btn" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Ver proyecto</a>
+        <p>Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.</p>
       </div>
       <div class="work-card reveal">
         <h3>La Legión Producciones</h3>
         <div class="work-photo" style="--photo:url(assets/legion.jpg)">
-          <div class="work-photo-fade">
-            <p>Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
-          </div>
+          <svg class="work-wave" viewBox="0 0 400 150" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="waveGradLegion" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c96a5f"/>
+                <stop offset="100%" stop-color="#e08a80"/>
+              </linearGradient>
+              <filter id="waveBlurLegion" x="-20%" y="-60%" width="140%" height="220%">
+                <feGaussianBlur stdDeviation="9"/>
+              </filter>
+            </defs>
+            <g filter="url(#waveBlurLegion)">
+              <path d="M-20,60 C60,110 140,30 220,80 C300,125 360,45 420,85 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.48"/>
+              <path d="M-20,100 C80,55 170,120 260,70 C340,35 380,110 420,65 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.4"/>
+              <path d="M-20,125 C100,145 200,105 300,135 C350,150 390,120 420,140 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.32"/>
+            </g>
+          </svg>
         </div>
+        <p>Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
       </div>
       <div class="work-card wide reveal">
         <h3>Street Clash</h3>
         <div class="work-photo" style="--photo:url(assets/street-clash.jpg)">
-          <div class="work-photo-fade">
-            <p>Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
-          </div>
+          <svg class="work-wave" viewBox="0 0 900 150" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="waveGradStreet" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c96a5f"/>
+                <stop offset="100%" stop-color="#e08a80"/>
+              </linearGradient>
+              <filter id="waveBlurStreet" x="-20%" y="-60%" width="140%" height="220%">
+                <feGaussianBlur stdDeviation="12"/>
+              </filter>
+            </defs>
+            <g filter="url(#waveBlurStreet)">
+              <path d="M-40,70 C150,10 300,130 450,55 C600,-10 750,110 940,50 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.48"/>
+              <path d="M-40,110 C180,150 330,45 500,100 C650,145 800,70 940,105 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.38"/>
+              <path d="M-40,130 C200,150 400,110 600,140 C700,155 850,125 940,135 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.3"/>
+            </g>
+          </svg>
         </div>
+        <p>Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
       </div>
     </div>
   </div>
