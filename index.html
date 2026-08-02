@@ -105,10 +105,17 @@
   .service p{color:var(--ink-soft);font-size:.95rem;max-height:0;opacity:0;margin-top:0;overflow:hidden;transform:translateY(-6px);transition:max-height .25s ease,opacity .25s ease,transform .25s ease,margin-top .25s ease}
   .service:hover p{max-height:70px;opacity:1;margin-top:10px;transform:translateY(0)}
 
-  /* ---------- VIDEO / TRABAJO ---------- */
-  .reel{background:var(--bg-soft);color:#fff}
-  .reel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
-  .reel-card{display:flex;justify-content:center}
+  /* ---------- TRABAJOS ---------- */
+  .work{background:var(--bg-soft);color:#fff}
+  .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .work-card{position:relative;aspect-ratio:5/4;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background-image:var(--photo,none),linear-gradient(165deg,#23262d 0%,#0a0a0c 100%);background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .2s ease,box-shadow .25s ease}
+  .work-card:hover{border-color:#fff;box-shadow:var(--glow-hover)}
+  .work-card.wide{grid-column:1/-1;aspect-ratio:21/9}
+  .work-card-top{position:relative;z-index:2;padding:20px 24px}
+  .work-card-top h3{font-family:var(--display);font-weight:800;color:#fff;font-size:1.2rem;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+  .work-card-bottom{position:relative;z-index:2;padding:22px 24px;background:linear-gradient(to top,rgba(8,9,12,.92) 0%,rgba(8,9,12,.78) 60%,transparent 100%);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .work-card-bottom p{color:rgba(255,255,255,.85);font-size:.92rem;line-height:1.5}
+  .work-card-bottom .btn-secondary{margin-top:14px}
 
   /* ---------- DEPORTISTAS ---------- */
   .talents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
@@ -199,7 +206,7 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
-    .services-grid,.reel-grid,.steps{grid-template-columns:repeat(2,1fr)}
+    .services-grid,.steps{grid-template-columns:repeat(2,1fr)}
     .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
@@ -217,7 +224,9 @@
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
     body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
-    .services-grid,.reel-grid,.steps{grid-template-columns:1fr}
+    .services-grid,.steps{grid-template-columns:1fr}
+    .work-grid{grid-template-columns:1fr}
+    .work-card,.work-card.wide{aspect-ratio:4/3}
     .service{height:auto;justify-content:flex-start}
     .service p{max-height:none;opacity:1;margin-top:10px;transform:none}
     .talents-grid{grid-template-columns:repeat(2,1fr)}
@@ -234,7 +243,7 @@
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
     <nav class="nav-links" id="navLinks">
       <a href="#servicios">Servicios</a>
-      <a href="#trabajo">Trabajo</a>
+      <a href="#trabajo">Trabajos</a>
       <a href="#deportistas">Deportistas</a>
       <a href="#marcas">Marcas</a>
       <a href="#contacto" class="btn">Contacto</a>
@@ -305,28 +314,32 @@
   </div>
 </section>
 
-<!-- ============ TRABAJO / REEL ============ -->
-<section id="trabajo" class="reel">
+<!-- ============ TRABAJOS ============ -->
+<section id="trabajo" class="work">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>Nuestro trabajo</h2>
-      <p>Anuncios de fichajes, highlights y campañas producidas por HRK.</p>
+      <h2>Trabajos</h2>
+      <p>Selección de proyectos que llevamos adelante.</p>
     </div>
-    <div class="reel-grid">
-      <div class="reel-card reveal">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DbcWY08N6HH/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;">
-          <a href="https://www.instagram.com/reel/DbcWY08N6HH/" target="_blank" rel="noopener">Ver reel en Instagram</a>
-        </blockquote>
+    <div class="work-grid">
+      <div class="work-card reveal" style="--photo:url(assets/neira.jpg)">
+        <div class="work-card-top"><h3>Eze Neira</h3></div>
+        <div class="work-card-bottom">
+          <p>Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.</p>
+          <a class="btn-secondary" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Ver proyecto</a>
+        </div>
       </div>
-      <div class="reel-card reveal">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DbOZzbQJnCg/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;">
-          <a href="https://www.instagram.com/reel/DbOZzbQJnCg/" target="_blank" rel="noopener">Ver reel en Instagram</a>
-        </blockquote>
+      <div class="work-card reveal" style="--photo:url(assets/street-clash.jpg)">
+        <div class="work-card-top"><h3>Street Clash</h3></div>
+        <div class="work-card-bottom">
+          <p>Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
+        </div>
       </div>
-      <div class="reel-card reveal">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DbMfq2TpMYG/" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;">
-          <a href="https://www.instagram.com/reel/DbMfq2TpMYG/" target="_blank" rel="noopener">Ver reel en Instagram</a>
-        </blockquote>
+      <div class="work-card wide reveal" style="--photo:url(assets/legion.jpg)">
+        <div class="work-card-top"><h3>La Legión Producciones</h3></div>
+        <div class="work-card-bottom">
+          <p>Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -618,6 +631,5 @@
     if (section) spy.observe(section);
   });
 </script>
-<script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>
