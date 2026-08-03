@@ -141,31 +141,41 @@
   .work-card.wide{grid-column:1/-1}
   .work-card.wide .work-photo{aspect-ratio:21/9}
 
-  /* ---------- DEPORTISTAS ---------- */
-  .talents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-  .talent-flip{position:relative;aspect-ratio:3/4;border-radius:var(--radius);perspective:1200px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  .talent-flip:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:4px}
-  .talent-flip-inner{position:relative;width:100%;height:100%;transition:transform .6s ease;transform-style:preserve-3d}
-  .talent-flip:focus-visible .talent-flip-inner{transform:rotateY(180deg)}
-  @media(hover:hover) and (pointer:fine){
-    .talent-flip:hover .talent-flip-inner{transform:rotateY(180deg)}
+  /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
+  .athletes-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+  .athletes-head h2{font-size:3.5rem;letter-spacing:-.04em;color:#fff;margin-bottom:0}
+  .athletes-head p{margin-top:14px;font-size:1.125rem;color:#9a9aa5}
+  .athletes-active-name{font-size:.85rem;font-weight:600;color:#8a8a94;white-space:nowrap}
+  .athletes-strip{display:flex;gap:12px;height:560px}
+  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
+  .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+  .athlete-panel.active{flex:3.2;border-color:#4a4a55}
+  .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
+  .athlete-num{position:absolute;top:16px;left:16px;z-index:2;width:36px;height:36px;border-radius:50%;background:rgba(22,22,26,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:.85rem;color:#fff}
+  .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
+  .athlete-name{font-family:var(--display);font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.01em;font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1)}
+  .athlete-panel.active .athlete-name{font-size:2.5rem}
+  .athlete-role{max-height:0;opacity:0;overflow:hidden;margin-top:2px;color:rgba(255,255,255,.75);font-size:.95rem;font-weight:600;transition:max-height .35s ease,opacity .3s ease}
+  .athlete-panel.active .athlete-role{max-height:30px;opacity:1}
+  .athlete-stats{display:flex;align-items:flex-start;gap:10px;height:0;opacity:0;overflow:hidden;margin-top:14px;transition:height .45s cubic-bezier(.22,1,.36,1),opacity .35s ease}
+  .athlete-panel.active .athlete-stats{height:58px;opacity:1}
+  .athlete-stat{display:flex;flex-direction:column;gap:4px;padding-right:10px;border-right:1px solid rgba(255,255,255,.18);flex:none;max-width:82px;min-width:0}
+  .athlete-stat:last-of-type{border-right:0}
+  .athlete-stat-label{font-size:.656rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .athlete-stat-value{font-size:1.1875rem;font-weight:700;color:#fff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .athlete-quote{flex:1 1 0%;min-width:0;font-size:.85rem;line-height:1.3;color:rgba(255,255,255,.82);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  @media(max-width:900px){
+    .athletes-head{flex-direction:column;align-items:flex-start;gap:6px}
+    .athletes-strip{flex-direction:column;height:auto}
+    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
+    .athlete-body{position:relative;padding:180px 20px 20px}
+    .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem}
+    .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
+    .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:12px}
+    .athlete-stat{max-width:none}
+    .athlete-stat-label,.athlete-stat-value{overflow:visible;text-overflow:clip}
+    .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:unset;display:block}
   }
-  @media(hover:none){
-    .talent-flip.is-flipped .talent-flip-inner{transform:rotateY(180deg)}
-  }
-  .talent,.talent-back{position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-  .talent{background:linear-gradient(165deg,var(--input-bg) 0%,var(--bg) 100%);border:1px solid var(--line);display:flex;align-items:flex-end}
-  .talent .info{position:relative;z-index:2;width:100%;padding:18px;background:linear-gradient(to top,rgba(22,22,26,.82),transparent)}
-  .talent .info b{display:block;font-family:var(--display);font-weight:800;color:#fff;font-size:1.02rem;letter-spacing:.02em;text-transform:uppercase}
-  .talent .info span{font-size:.78rem;color:var(--ink-faint);font-weight:500}
-  .talent-back{background-color:#faf8f6;border:1px solid var(--accent);transform:rotateY(180deg);display:flex;align-items:center;justify-content:center}
-  .talent-back::before{content:"";position:absolute;inset:0;background-image:var(--photo);background-size:cover;background-position:top center;filter:grayscale(1);opacity:.1}
-  .talent-back-content{position:relative;z-index:1;padding:22px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
-  .talent-back-content b{font-family:var(--display);font-weight:800;color:#161513;font-size:1rem;letter-spacing:.02em;text-transform:uppercase}
-  .talent-back-content p{color:#5a5450;font-size:.82rem;line-height:1.45}
-  .achievements{list-style:none;display:flex;flex-direction:column;gap:6px;width:100%;margin-top:2px}
-  .achievements li{color:#4a4541;font-size:.78rem;text-align:left;padding-left:16px;position:relative;line-height:1.4}
-  .achievements li::before{content:"—";position:absolute;left:0;top:0;color:var(--accent);font-weight:700}
 
   /* ---------- MARCAS ---------- */
   .brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
@@ -288,7 +298,6 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
-    .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
   }
@@ -304,7 +313,6 @@
     body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
     .work-grid{grid-template-columns:1fr}
     .work-card.wide .work-photo{aspect-ratio:4/5}
-    .talents-grid{grid-template-columns:repeat(2,1fr)}
     .brands-grid{grid-template-columns:repeat(2,1fr)}
     footer{padding-bottom:96px}
     .process h2{font-size:2.125rem}
@@ -495,97 +503,14 @@
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
   <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Deportistas</h2>
-      <p>Algunos de los deportistas que trabajan con HRK.</p>
+    <div class="athletes-head reveal">
+      <div>
+        <h2>Deportistas</h2>
+        <p>Cinco deportistas, cinco historias. Pasá el mouse por encima.</p>
+      </div>
+      <span class="athletes-active-name" id="athletesActiveName"></span>
     </div>
-    <div class="talents-grid">
-      <div class="talent-flip reveal" tabindex="0">
-        <div class="talent-flip-inner">
-          <div class="talent" style="background-image:url(assets/razzeto.jpg);background-size:cover;background-position:top center">
-            <div class="info"><b>Razzeto</b><span>Futbolista profesional</span></div>
-          </div>
-          <div class="talent-back" style="--photo:url(assets/razzeto.jpg)">
-            <div class="talent-back-content">
-              <b>Razzeto</b>
-              <p>Arquero profesional con trayectoria internacional.</p>
-              <ul class="achievements">
-                <li>[Logro 1]</li>
-                <li>[Logro 2]</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="talent-flip reveal" tabindex="0">
-        <div class="talent-flip-inner">
-          <div class="talent" style="background-image:url(assets/spertino.jpg);background-size:cover;background-position:top center">
-            <div class="info"><b>Spertino</b><span>Futbolista profesional</span></div>
-          </div>
-          <div class="talent-back" style="--photo:url(assets/spertino.jpg)">
-            <div class="talent-back-content">
-              <b>Spertino</b>
-              <p>Juvenil en formación con proyección profesional.</p>
-              <ul class="achievements">
-                <li>[Logro 1]</li>
-                <li>[Logro 2]</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="talent-flip reveal" tabindex="0">
-        <div class="talent-flip-inner">
-          <div class="talent" style="background-image:url(assets/neira.jpg);background-size:cover;background-position:top center">
-            <div class="info"><b>Neira</b><span>Futbolista profesional</span></div>
-          </div>
-          <div class="talent-back" style="--photo:url(assets/neira.jpg)">
-            <div class="talent-back-content">
-              <b>Neira</b>
-              <p>Futbolista profesional con paso por el exterior.</p>
-              <ul class="achievements">
-                <li>[Logro 1]</li>
-                <li>[Logro 2]</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="talent-flip reveal" tabindex="0">
-        <div class="talent-flip-inner">
-          <div class="talent" style="background-image:url(assets/garayalde.jpg);background-size:cover;background-position:top center">
-            <div class="info"><b>Garayalde</b><span>Tenista de playa profesional</span></div>
-          </div>
-          <div class="talent-back" style="--photo:url(assets/garayalde.jpg)">
-            <div class="talent-back-content">
-              <b>Garayalde</b>
-              <p>Tenista de playa profesional en el circuito competitivo.</p>
-              <ul class="achievements">
-                <li>[Logro 1]</li>
-                <li>[Logro 2]</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="talent-flip reveal" tabindex="0">
-        <div class="talent-flip-inner">
-          <div class="talent" style="background-image:url(assets/vanega.jpg);background-size:cover;background-position:top center">
-            <div class="info"><b>Vanega</b><span>Futbolista profesional</span></div>
-          </div>
-          <div class="talent-back" style="--photo:url(assets/vanega.jpg)">
-            <div class="talent-back-content">
-              <b>Vanega</b>
-              <p>Futbolista profesional.</p>
-              <ul class="achievements">
-                <li>[Logro 1]</li>
-                <li>[Logro 2]</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="athletes-strip" id="athletesStrip"></div>
   </div>
 </section>
 
@@ -973,10 +898,109 @@
     goTo(0);
   })();
 
-  // Flip de tarjetas de Deportistas (toggle táctil; en desktop el hover ya lo hace por CSS)
-  document.querySelectorAll('.talent-flip').forEach(card => {
-    card.addEventListener('click', () => card.classList.toggle('is-flipped'));
-  });
+  // Deportistas — acordeón (datos provisorios, fáciles de editar acá)
+  const ATHLETES = [
+    {
+      photo: 'assets/razzeto.jpg',
+      surname: 'Razzeto',
+      fullName: 'Lucas Razzeto',
+      role: 'Mediocampista central',
+      stats: [
+        { label: 'Posición', value: 'Volante' },
+        { label: 'Edad', value: '23' },
+        { label: 'Altura', value: '1,78' },
+        { label: 'Club', value: 'Sportivo SF' }
+      ],
+      quote: '“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”'
+    },
+    {
+      photo: 'assets/spertino.jpg',
+      surname: 'Spertino',
+      fullName: 'Tomás Spertino',
+      role: 'Delantero',
+      stats: [
+        { label: 'Posición', value: 'Delantero' },
+        { label: 'Edad', value: '19' },
+        { label: 'Altura', value: '1,81' },
+        { label: 'Club', value: 'Central Cba.' }
+      ],
+      quote: '“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”'
+    },
+    {
+      photo: 'assets/neira.jpg',
+      surname: 'Neira',
+      fullName: 'Matías Neira',
+      role: 'Lateral derecho',
+      stats: [
+        { label: 'Posición', value: 'Lateral' },
+        { label: 'Edad', value: '25' },
+        { label: 'Altura', value: '1,75' },
+        { label: 'Club', value: 'Dep. Lara' }
+      ],
+      quote: '“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”'
+    },
+    {
+      photo: 'assets/garayalde.jpg',
+      surname: 'Garayalde',
+      fullName: 'Ivo Garayalde',
+      role: 'Tenis de playa',
+      stats: [
+        { label: 'Edad', value: '21' },
+        { label: 'Ranking', value: 'Top 10' },
+        { label: 'Altura', value: '1,83' },
+        { label: 'Desde', value: '2018' }
+      ],
+      quote: '“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”'
+    },
+    {
+      photo: 'assets/vanega.jpg',
+      surname: 'Vanega',
+      fullName: 'Julián Vanega',
+      role: 'Arquero',
+      stats: [
+        { label: 'Posición', value: 'Arquero' },
+        { label: 'Edad', value: '27' },
+        { label: 'Altura', value: '1,89' },
+        { label: 'Club', value: 'Dep. Morón' }
+      ],
+      quote: '“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”'
+    }
+  ];
+
+  (function () {
+    const strip = document.getElementById('athletesStrip');
+    const activeNameEl = document.getElementById('athletesActiveName');
+    if (!strip) return;
+
+    strip.innerHTML = ATHLETES.map((a, i) => `
+      <div class="athlete-panel${i === 0 ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="Ver a ${a.fullName}" style="background-image:url(${a.photo})">
+        <div class="athlete-num">${String(i + 1).padStart(2, '0')}</div>
+        <div class="athlete-body">
+          <div class="athlete-name">${a.surname}</div>
+          <div class="athlete-role">${a.role}</div>
+          <div class="athlete-stats">
+            ${a.stats.map(s => `<div class="athlete-stat"><span class="athlete-stat-label">${s.label}</span><span class="athlete-stat-value">${s.value}</span></div>`).join('')}
+            <div class="athlete-quote">${a.quote}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const panels = Array.from(strip.querySelectorAll('.athlete-panel'));
+
+    function setActive(index) {
+      panels.forEach((p, i) => p.classList.toggle('active', i === index));
+      if (activeNameEl) activeNameEl.textContent = ATHLETES[index].fullName;
+    }
+
+    panels.forEach((panel, i) => {
+      panel.addEventListener('mouseenter', () => setActive(i));
+      panel.addEventListener('focus', () => setActive(i));
+      panel.addEventListener('click', () => setActive(i));
+    });
+
+    setActive(0);
+  })();
 
   // Scrollspy nav
   const spySections = ['servicios', 'trabajo', 'deportistas', 'marcas', 'contacto'];
