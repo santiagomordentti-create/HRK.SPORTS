@@ -50,7 +50,7 @@
     --line:rgba(255,255,255,.16);
     --accent:#e08a80;
     --bg-light:#faf8f6;
-    --press-bg:#0a0a0c;
+    --bg-deep:#0a0a0c;
     --accent-glow:0 0 8px rgba(224,138,128,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
@@ -104,14 +104,28 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- SERVICIOS ---------- */
-  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .service{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;height:190px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease}
-  .service:hover{border-color:var(--accent);box-shadow:var(--glow-hover)}
-  .service .icon{width:44px;height:44px;border-radius:14px;background:#000;border:1px solid var(--line);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 0 7px rgba(255,255,255,.06);flex-shrink:0}
-  .service .icon svg{width:22px;height:22px}
-  .service h3{font-family:var(--display);font-weight:700;font-size:1.12rem;margin-bottom:0}
-  .service p{color:var(--ink-soft);font-size:.95rem;max-height:0;opacity:0;margin-top:0;overflow:hidden;transform:translateY(-6px);transition:max-height .25s ease,opacity .25s ease,transform .25s ease,margin-top .25s ease}
-  .service:hover p{max-height:70px;opacity:1;margin-top:10px;transform:translateY(0)}
+  .services{background:var(--bg-deep);padding:96px 80px}
+  .services-inner{max-width:1280px;margin:0 auto}
+  .services h2{font-size:3.5rem;letter-spacing:-.04em;color:#fff}
+  .services .section-head p{color:#9a9aa5;font-size:1.125rem}
+  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:#141418;border:1px solid #232329;border-radius:10px;padding:6px}
+  .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#9a9aa5;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
+  .services-tab:not(.active):hover{background:#1f1f25;color:#fff}
+  .services-tab.active{background:#fff;color:#000}
+  .services-panels{position:relative}
+  .services-grid{display:none;grid-template-columns:repeat(3,1fr);gap:14px;opacity:0;transition:opacity .25s ease}
+  .services-grid.active{display:grid}
+  .services-grid.active.fade-in{opacity:1}
+  .svc-card{background:#17171b;border:1px solid #26262b;border-radius:12px;padding:20px 22px;transition:background .2s ease,border-color .2s ease}
+  .svc-card:hover{background:#1c1c21;border-color:#38383f}
+  .svc-card h3{font-size:1.0625rem;font-weight:700;color:#fff;margin-bottom:6px}
+  .svc-card p{font-size:.906rem;line-height:1.5;color:#8a8a94}
+  @media(max-width:1100px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:720px){
+    .services{padding:64px 20px}
+    .services h2{font-size:2.25rem}
+    .services-grid{grid-template-columns:1fr}
+  }
 
   /* ---------- TRABAJOS ---------- */
   .work{background:#faf8f6;color:#111}
@@ -182,7 +196,7 @@
   .step p{color:var(--ink-soft);font-size:.95rem}
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
-  .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--press-bg);color:#fff}
+  .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--bg-deep);color:#fff}
   .press-media{position:absolute;inset:0}
   .press-media img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
   .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,12,.97) 0%,rgba(10,10,12,.92) 38%,rgba(10,10,12,.35) 72%,rgba(10,10,12,.55) 100%)}
@@ -249,7 +263,7 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
-    .services-grid,.steps{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
     .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
@@ -264,11 +278,9 @@
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
     body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
-    .services-grid,.steps{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
     .work-grid{grid-template-columns:1fr}
     .work-card.wide .work-photo{aspect-ratio:4/5}
-    .service{height:auto;justify-content:flex-start}
-    .service p{max-height:none;opacity:1;margin-top:10px;transform:none}
     .talents-grid{grid-template-columns:repeat(2,1fr)}
     .brands-grid{grid-template-columns:repeat(2,1fr)}
     footer{padding-bottom:96px}
@@ -304,7 +316,7 @@
     </video>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg-deep)"/>
         <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -315,48 +327,67 @@
 </section>
 
 <!-- ============ SERVICIOS ============ -->
-<section id="servicios">
-  <div class="wrap">
+<section id="servicios" class="services">
+  <div class="services-inner">
     <div class="section-head reveal">
       <h2>Servicios</h2>
-      <p>Trabajamos la imagen y la comunicación de cada deportista de forma integral.</p>
+      <p>Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
-    <div class="services-grid">
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div>
-        <h3>Asesoría de imagen</h3>
-        <p>Definimos cómo te mostrás y qué te diferencia.</p>
+
+    <div class="services-tabs" role="tablist" aria-label="Servicios por público">
+      <button type="button" class="services-tab active" role="tab" aria-selected="true" aria-controls="panel-deportista" id="tab-deportista" data-tab="deportista">Soy deportista</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-representante" id="tab-representante" data-tab="representante">Represento jugadores</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-marca" id="tab-marca" data-tab="marca">Tengo una marca</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-evento" id="tab-evento" data-tab="evento">Organizo un evento</button>
+    </div>
+
+    <div class="services-panels">
+      <div class="services-grid active fade-in" id="panel-deportista" role="tabpanel" aria-labelledby="tab-deportista">
+        <div class="svc-card"><h3>Imagen personal</h3><p>Definimos cómo te mostrás y qué te diferencia.</p></div>
+        <div class="svc-card"><h3>Perfil ordenado</h3><p>Bio, destacados y feed listos para que te encuentren.</p></div>
+        <div class="svc-card"><h3>Plan de contenido</h3><p>Qué publicar y cuándo. Se termina el improvisar.</p></div>
+        <div class="svc-card"><h3>Día de partido</h3><p>Matchday, resultados y fechas especiales, a tiempo.</p></div>
+        <div class="svc-card"><h3>Highlights</h3><p>Tus mejores jugadas, editadas y listas para compartir.</p></div>
+        <div class="svc-card"><h3>Player Dossier</h3><p>Tu carrera en un PDF que abre puertas en clubes.</p></div>
+        <div class="svc-card"><h3>Cobertura en vivo</h3><p>Seguimos tu partido desde tus redes.</p></div>
+        <div class="svc-card"><h3>Fotos profesionales</h3><p>Coordinamos sesiones con fotógrafos del deporte.</p></div>
+        <div class="svc-card"><h3>Puente con marcas</h3><p>Te acercamos sponsors que van con lo que sos.</p></div>
       </div>
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></div>
-        <h3>Gestión de redes</h3>
-        <p>Estrategia, contenido y comunidad para hacer crecer tus perfiles.</p>
+
+      <div class="services-grid" id="panel-representante" role="tabpanel" aria-labelledby="tab-representante" hidden>
+        <div class="svc-card"><h3>Imagen del plantel</h3><p>Todos tus representados con el mismo estándar.</p></div>
+        <div class="svc-card"><h3>Contenido por jugador</h3><p>Piezas propias para cada perfil, todos los meses.</p></div>
+        <div class="svc-card"><h3>Edición de video</h3><p>Highlights y resúmenes listos para publicar.</p></div>
+        <div class="svc-card"><h3>Diseño gráfico</h3><p>Fichajes, resultados y anuncios con tu identidad.</p></div>
+        <div class="svc-card"><h3>Cobertura de partidos</h3><p>Material del día del partido sin mover a tu gente.</p></div>
+        <div class="svc-card"><h3>Material de scouting</h3><p>Videos y fichas armados para mostrar jugadores.</p></div>
+        <div class="svc-card"><h3>Player Dossiers</h3><p>Un dossier profesional por representado.</p></div>
+        <div class="svc-card"><h3>La marca de la agencia</h3><p>También comunicamos a la agencia, no solo a sus jugadores.</p></div>
       </div>
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="3"/></svg></div>
-        <h3>Producción audiovisual</h3>
-        <p>Videos, fotos y piezas gráficas de alta calidad.</p>
+
+      <div class="services-grid" id="panel-marca" role="tabpanel" aria-labelledby="tab-marca" hidden>
+        <div class="svc-card"><h3>Campañas con atletas</h3><p>De la idea a la publicación, con quien encaje.</p></div>
+        <div class="svc-card"><h3>Embajadores</h3><p>Vínculos de temporada, no una foto suelta.</p></div>
+        <div class="svc-card"><h3>Activaciones digitales</h3><p>Acciones pensadas para que la gente participe.</p></div>
+        <div class="svc-card"><h3>Producción</h3><p>Video y fotos con calidad de campaña.</p></div>
+        <div class="svc-card"><h3>Cobertura de eventos</h3><p>Tu presencia contada en tiempo real.</p></div>
+        <div class="svc-card"><h3>Alianzas</h3><p>Clubes, torneos y agencias para llegar más lejos.</p></div>
       </div>
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
-        <h3>Posicionamiento</h3>
-        <p>Visibilidad, relevancia y valor para tu marca personal.</p>
-      </div>
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-        <h3>Acompañamiento integral</h3>
-        <p>Seguimiento cercano en cada momento clave de tu carrera.</p>
-      </div>
-      <div class="service reveal">
-        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 8.5l6.3-.9z"/></svg></div>
-        <h3>Vinculación con marcas</h3>
-        <p>Te conectamos con sponsors que comparten tus valores.</p>
+
+      <div class="services-grid" id="panel-evento" role="tabpanel" aria-labelledby="tab-evento" hidden>
+        <div class="svc-card"><h3>Fotografía</h3><p>Fotos editadas y entregadas el mismo día.</p></div>
+        <div class="svc-card"><h3>Audiovisual</h3><p>Todo lo que pasa, filmado con criterio.</p></div>
+        <div class="svc-card"><h3>Reels y aftermovie</h3><p>Las piezas que hacen que el año que viene vengan más.</p></div>
+        <div class="svc-card"><h3>Historias en vivo</h3><p>El evento contado mientras sucede.</p></div>
+        <div class="svc-card"><h3>Entrevistas</h3><p>Las voces de los protagonistas y del público.</p></div>
+        <div class="svc-card"><h3>Material para sponsors</h3><p>Contenido propio para cada marca que te acompaña.</p></div>
+        <div class="svc-card"><h3>Streaming</h3><p>Transmisión y comunicación durante todo el evento.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-deep)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ TRABAJOS ============ -->
 <section id="trabajo" class="work">
@@ -720,6 +751,41 @@
   setTimeout(() => {
     document.querySelectorAll('.reveal:not(.on)').forEach(el => el.classList.add('on'));
   }, 2500);
+
+  // Tabs de Servicios (por público)
+  const svcTabs = Array.from(document.querySelectorAll('.services-tab'));
+  const svcPanels = Array.from(document.querySelectorAll('.services-grid'));
+  function activateSvcTab(tab) {
+    svcTabs.forEach(t => {
+      const active = t === tab;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.tabIndex = active ? 0 : -1;
+    });
+    svcPanels.forEach(panel => {
+      if (panel.id === `panel-${tab.dataset.tab}`) {
+        panel.hidden = false;
+        panel.classList.add('active');
+        panel.classList.remove('fade-in');
+        requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('fade-in')));
+      } else {
+        panel.hidden = true;
+        panel.classList.remove('active', 'fade-in');
+      }
+    });
+  }
+  svcTabs.forEach(tab => {
+    tab.addEventListener('click', () => activateSvcTab(tab));
+    tab.addEventListener('keydown', e => {
+      const i = svcTabs.indexOf(tab);
+      let next = null;
+      if (e.key === 'ArrowRight') next = svcTabs[(i + 1) % svcTabs.length];
+      else if (e.key === 'ArrowLeft') next = svcTabs[(i - 1 + svcTabs.length) % svcTabs.length];
+      else if (e.key === 'Home') next = svcTabs[0];
+      else if (e.key === 'End') next = svcTabs[svcTabs.length - 1];
+      if (next) { e.preventDefault(); next.focus(); activateSvcTab(next); }
+    });
+  });
 
   // Flip de tarjetas de Deportistas (toggle táctil; en desktop el hover ya lo hace por CSS)
   document.querySelectorAll('.talent-flip').forEach(card => {
