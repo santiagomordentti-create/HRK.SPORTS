@@ -142,16 +142,14 @@
   .work-card.wide .work-photo{aspect-ratio:21/9}
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  .athletes-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:40px}
-  .athletes-head h2{font-size:3.5rem;letter-spacing:-.04em;color:#fff;margin-bottom:0}
-  .athletes-head p{margin-top:14px;font-size:1.125rem;color:#9a9aa5}
-  .athletes-active-name{font-size:.85rem;font-weight:600;color:#8a8a94;white-space:nowrap}
+  #deportistas{padding:56px 0}
+  #deportistas .wrap{max-width:1440px;padding:0 16px}
+  .athletes-title{font-size:3.5rem;letter-spacing:-.04em;color:#fff;margin-bottom:18px}
   .athletes-strip{display:flex;gap:12px;height:560px}
   .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
   .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .athlete-panel.active{flex:3.2;border-color:#4a4a55}
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
-  .athlete-num{position:absolute;top:16px;left:16px;z-index:2;width:36px;height:36px;border-radius:50%;background:rgba(22,22,26,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:.85rem;color:#fff}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
   .athlete-name{font-family:var(--display);font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.01em;font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1)}
   .athlete-panel.active .athlete-name{font-size:2.5rem}
@@ -165,10 +163,12 @@
   .athlete-stat-value{font-size:1.1875rem;font-weight:700;color:#fff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .athlete-quote{flex:1 1 0%;min-width:0;font-size:.85rem;line-height:1.3;color:rgba(255,255,255,.82);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
   @media(max-width:900px){
-    .athletes-head{flex-direction:column;align-items:flex-start;gap:6px}
-    .athletes-strip{flex-direction:column;height:auto}
+    #deportistas{padding:40px 0}
+    #deportistas .wrap{padding:0 14px}
+    .athletes-title{font-size:2.25rem;margin-bottom:14px}
+    .athletes-strip{flex-direction:column;height:auto;gap:14px}
     .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
-    .athlete-body{position:relative;padding:180px 20px 20px}
+    .athlete-body{position:relative;padding:180px 18px 18px}
     .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
     .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:12px}
@@ -502,13 +502,7 @@
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
   <div class="wrap">
-    <div class="athletes-head reveal">
-      <div>
-        <h2>Deportistas</h2>
-        <p>Cinco deportistas, cinco historias. Pasá el mouse por encima.</p>
-      </div>
-      <span class="athletes-active-name" id="athletesActiveName"></span>
-    </div>
+    <h2 class="athletes-title reveal">Deportistas</h2>
     <div class="athletes-strip" id="athletesStrip"></div>
   </div>
 </section>
@@ -967,12 +961,10 @@
 
   (function () {
     const strip = document.getElementById('athletesStrip');
-    const activeNameEl = document.getElementById('athletesActiveName');
     if (!strip) return;
 
     strip.innerHTML = ATHLETES.map((a, i) => `
       <div class="athlete-panel${i === 0 ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="Ver a ${a.fullName}" style="background-image:url(${a.photo})">
-        <div class="athlete-num">${String(i + 1).padStart(2, '0')}</div>
         <div class="athlete-body">
           <div class="athlete-name">${a.surname}</div>
           <div class="athlete-role">${a.role}</div>
@@ -988,7 +980,6 @@
 
     function setActive(index) {
       panels.forEach((p, i) => p.classList.toggle('active', i === index));
-      if (activeNameEl) activeNameEl.textContent = ATHLETES[index].fullName;
     }
 
     panels.forEach((panel, i) => {
