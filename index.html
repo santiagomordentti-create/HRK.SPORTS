@@ -188,12 +188,35 @@
   .band-light .btn{background:#111;color:#fff !important;box-shadow:none}
   .band-light .btn:hover{box-shadow:0 0 8px rgba(17,17,17,.25)}
 
-  /* ---------- PROCESO ---------- */
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
-  .step{border-top:2px solid rgba(255,255,255,.5);padding-top:26px}
-  .step::before{counter-increment:step;content:"0" counter(step);font-family:var(--display);font-weight:900;font-size:2rem;color:var(--accent);text-shadow:var(--accent-glow);display:block;margin-bottom:12px}
-  .step h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin-bottom:8px}
-  .step p{color:var(--ink-soft);font-size:.95rem}
+  /* ---------- PROCESO (STEPPER AUTO-GUIADO) ---------- */
+  .process-layout{display:flex;gap:64px;align-items:center}
+  .process-col-left{flex:0 0 380px;max-width:380px}
+  .process-col-right{flex:1;min-width:0}
+  .process h2{font-size:2.875rem;letter-spacing:-.035em;color:#fff;margin-bottom:0}
+  .process-steps{display:flex;flex-direction:column;gap:8px;margin-top:28px}
+  .process-step{position:relative;display:block;width:100%;text-align:left;background:#0d0d11;border:1px solid #1d1d23;border-radius:10px;padding:15px 18px;cursor:pointer;overflow:hidden;font-family:var(--font);transition:background .2s ease,border-color .2s ease}
+  .process-step:hover{background:#15151b;border-color:#3a3a44}
+  .process-step.active{background:#131319;border-color:#3d3038}
+  .process-step-top{display:flex;align-items:baseline;gap:12px}
+  .process-step-num{font-family:var(--display);font-weight:800;font-size:1rem;color:#6b6b74;flex:none;min-width:1.4em}
+  .process-step.active .process-step-num{color:var(--accent)}
+  .process-step-name{font-weight:700;color:#9a9aa5;flex:1}
+  .process-step.active .process-step-name{color:#fff}
+  .process-step-time{font-size:.82rem;color:#6b6b74;flex:none}
+  .process-step-bar{margin-top:13px;width:100%;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+  .process-step-bar span{display:block;height:100%;width:0%;background:var(--accent)}
+  .process-panel{background:#0e0e12;border:1px solid #1d1d23;border-radius:14px;padding:48px 44px;min-height:300px;display:none;opacity:0;transition:opacity .3s ease}
+  .process-panel.active{display:block}
+  .process-panel.active.fade-in{opacity:1}
+  .process-panel-title{font-family:var(--display);font-weight:800;font-size:2.25rem;line-height:1.2;color:#fff;max-width:600px;margin-bottom:28px}
+  .process-chips{display:flex;flex-direction:column;gap:10px}
+  .process-chip{display:flex;align-items:center;gap:12px;background:#131319;border:1px solid #21212a;border-radius:10px;padding:13px 16px}
+  .process-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#0a0a0c;font-size:.68rem;font-weight:700;flex:none}
+  .process-chip-label{font-size:.9375rem;color:#e4e4e8}
+  @media(max-width:900px){
+    .process-layout{flex-direction:column;align-items:stretch}
+    .process-col-left{flex:none;max-width:none;width:100%}
+  }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
   .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--bg-deep);color:#fff}
@@ -263,7 +286,6 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
-    .steps{grid-template-columns:repeat(2,1fr)}
     .talents-grid{grid-template-columns:repeat(3,1fr)}
     .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
@@ -278,12 +300,12 @@
     body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
     body.menu-open .burger span:nth-child(2){opacity:0}
     body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
-    .steps{grid-template-columns:1fr}
     .work-grid{grid-template-columns:1fr}
     .work-card.wide .work-photo{aspect-ratio:4/5}
     .talents-grid{grid-template-columns:repeat(2,1fr)}
     .brands-grid{grid-template-columns:repeat(2,1fr)}
     footer{padding-bottom:96px}
+    .process h2{font-size:2.125rem}
     .press{min-height:560px;height:auto;padding:120px 0 64px}
     .press-media::after{background:linear-gradient(to bottom,rgba(10,10,12,.55) 0%,rgba(10,10,12,.97) 100%)}
     .press-content{padding:0 24px}
@@ -589,23 +611,63 @@
 <div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,36 C180,36 180,90 360,90 C540,90 540,36 720,36 C900,36 900,90 1080,90 C1260,90 1260,36 1440,36 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,36 C180,36 180,90 360,90 C540,90 540,36 720,36 C900,36 900,90 1080,90 C1260,90 1260,36 1440,36" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ PROCESO ============ -->
-<section id="proceso">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Cómo trabajamos</h2>
-    </div>
-    <div class="steps">
-      <div class="step reveal">
-        <h3>Diagnóstico</h3>
-        <p>Analizamos la imagen actual del deportista, sus redes y su potencial de marca.</p>
+<section id="proceso" class="process">
+  <div class="wrap reveal">
+    <div class="process-layout">
+      <div class="process-col-left">
+        <h2>Cómo trabajamos</h2>
+        <div class="process-steps" role="tablist" aria-label="Etapas del proceso" aria-orientation="vertical">
+          <button type="button" class="process-step active" role="tab" aria-selected="true" aria-controls="process-panel-0" id="process-tab-0" data-step="0">
+            <div class="process-step-top">
+              <span class="process-step-num">01</span>
+              <span class="process-step-name">Diagnóstico</span>
+              <span class="process-step-time">Semana 1</span>
+            </div>
+            <div class="process-step-bar"><span></span></div>
+          </button>
+          <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-1" id="process-tab-1" data-step="1">
+            <div class="process-step-top">
+              <span class="process-step-num">02</span>
+              <span class="process-step-name">Estrategia</span>
+              <span class="process-step-time">Semanas 2–3</span>
+            </div>
+            <div class="process-step-bar"><span></span></div>
+          </button>
+          <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-2" id="process-tab-2" data-step="2">
+            <div class="process-step-top">
+              <span class="process-step-num">03</span>
+              <span class="process-step-name">Ejecución</span>
+              <span class="process-step-time">Mes a mes</span>
+            </div>
+            <div class="process-step-bar"><span></span></div>
+          </button>
+        </div>
       </div>
-      <div class="step reveal">
-        <h3>Estrategia</h3>
-        <p>Definimos identidad, tono, calendario de contenido y objetivos de posicionamiento.</p>
-      </div>
-      <div class="step reveal">
-        <h3>Ejecución</h3>
-        <p>Producimos, publicamos y medimos. Ajustamos la estrategia para maximizar oportunidades.</p>
+      <div class="process-col-right">
+        <div class="process-panel active fade-in" id="process-panel-0" role="tabpanel" aria-labelledby="process-tab-0">
+          <h3 class="process-panel-title">Vemos dónde estás parado y qué te está frenando.</h3>
+          <div class="process-chips">
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Auditoría de redes</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Informe de imagen</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Reunión de devolución</span></div>
+          </div>
+        </div>
+        <div class="process-panel" id="process-panel-1" role="tabpanel" aria-labelledby="process-tab-1" hidden>
+          <h3 class="process-panel-title">Definimos quién sos públicamente y qué vas a publicar.</h3>
+          <div class="process-chips">
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Guía de marca</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Plan de 3 meses</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Objetivos claros</span></div>
+          </div>
+        </div>
+        <div class="process-panel" id="process-panel-2" role="tabpanel" aria-labelledby="process-tab-2" hidden>
+          <h3 class="process-panel-title">Producimos, publicamos y medimos, mes a mes.</h3>
+          <div class="process-chips">
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Contenido y cobertura</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Reporte mensual</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Contacto con marcas</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -786,6 +848,128 @@
       if (next) { e.preventDefault(); next.focus(); activateSvcTab(next); }
     });
   });
+
+  // Stepper auto-guiado de "Cómo trabajamos"
+  (function () {
+    const section = document.getElementById('proceso');
+    if (!section) return;
+    const steps = Array.from(section.querySelectorAll('.process-step'));
+    const panels = Array.from(section.querySelectorAll('.process-panel'));
+    const bars = steps.map(s => s.querySelector('.process-step-bar span'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DURATION = 6000;
+    let current = 0;
+    let autoAdvance = true;
+    let paused = false;
+    let timer = null;
+    let startTime = 0;
+    let remaining = DURATION;
+
+    function render(index) {
+      steps.forEach((step, i) => {
+        const isActive = i === index;
+        step.classList.toggle('active', isActive);
+        step.classList.toggle('done', i < index);
+        step.setAttribute('aria-selected', String(isActive));
+        step.tabIndex = isActive ? 0 : -1;
+        step.querySelector('.process-step-num').textContent = i < index ? '✓' : String(i + 1).padStart(2, '0');
+      });
+      panels.forEach((panel, i) => {
+        const isActive = i === index;
+        panel.hidden = !isActive;
+        panel.classList.toggle('active', isActive);
+        if (isActive) {
+          panel.classList.remove('fade-in');
+          requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('fade-in')));
+        }
+      });
+    }
+
+    function resetBar(index) {
+      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
+      void bars[index].offsetWidth;
+    }
+
+    function playBar(index, duration) {
+      if (reduceMotion) return;
+      const bar = bars[index];
+      bar.style.transition = `width ${duration}ms linear`;
+      requestAnimationFrame(() => { bar.style.width = '100%'; });
+    }
+
+    function clearTimer() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    function goTo(index) {
+      current = index;
+      render(current);
+      resetBar(current);
+      clearTimer();
+      if (autoAdvance) {
+        remaining = DURATION;
+        startTime = Date.now();
+        playBar(current, DURATION);
+        timer = setTimeout(next, DURATION);
+      }
+    }
+
+    function next() {
+      goTo((current + 1) % steps.length);
+    }
+
+    function stopAuto(index) {
+      autoAdvance = false;
+      paused = false;
+      clearTimer();
+      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
+      current = index;
+      render(current);
+    }
+
+    function pause() {
+      if (!autoAdvance || paused) return;
+      paused = true;
+      clearTimer();
+      remaining -= (Date.now() - startTime);
+      const bar = bars[current];
+      const computed = getComputedStyle(bar).width;
+      bar.style.transition = 'none';
+      bar.style.width = computed;
+    }
+
+    function resume() {
+      if (!autoAdvance || !paused) return;
+      paused = false;
+      startTime = Date.now();
+      const bar = bars[current];
+      if (!reduceMotion) {
+        requestAnimationFrame(() => {
+          bar.style.transition = `width ${remaining}ms linear`;
+          bar.style.width = '100%';
+        });
+      }
+      timer = setTimeout(next, remaining);
+    }
+
+    steps.forEach((step, i) => {
+      step.addEventListener('click', () => stopAuto(i));
+      step.addEventListener('keydown', e => {
+        const j = steps.indexOf(step);
+        let target = null;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') target = steps[(j + 1) % steps.length];
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') target = steps[(j - 1 + steps.length) % steps.length];
+        else if (e.key === 'Home') target = steps[0];
+        else if (e.key === 'End') target = steps[steps.length - 1];
+        if (target) { e.preventDefault(); target.focus(); stopAuto(steps.indexOf(target)); }
+      });
+    });
+
+    section.addEventListener('mouseenter', pause);
+    section.addEventListener('mouseleave', resume);
+
+    goTo(0);
+  })();
 
   // Flip de tarjetas de Deportistas (toggle táctil; en desktop el hover ya lo hace por CSS)
   document.querySelectorAll('.talent-flip').forEach(card => {
