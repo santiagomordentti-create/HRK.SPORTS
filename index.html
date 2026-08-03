@@ -74,6 +74,14 @@
   .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
   .section-head p{color:var(--ink-soft);margin-top:14px;font-size:1.25rem}
 
+  /* ---------- KICKER (patrón de encabezado) ---------- */
+  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .section-head .kicker{justify-content:center}
+  .kicker-line{display:block;width:24px;height:2px;background:var(--accent);flex:none}
+  .kicker-label{font-size:.75rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  .work .kicker-line,.band-light .kicker-line{background:#5c6810}
+  .work .kicker-label,.band-light .kicker-label{color:#5c6810}
+
   /* ---------- NAV ---------- */
   header{position:fixed;inset:0 0 auto 0;z-index:100;transition:background .3s,box-shadow .3s}
   header.scrolled{background:rgba(22,22,26,.75);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
@@ -371,6 +379,7 @@
 <section id="servicios" class="services">
   <div class="services-inner">
     <div class="section-head reveal">
+      <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Servicios</span></div>
       <h2>Servicios</h2>
       <p>Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
@@ -434,6 +443,7 @@
 <section id="trabajo" class="work">
   <div class="wrap">
     <div class="section-head reveal">
+      <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Trabajos</span></div>
       <h2>Trabajos</h2>
       <p>Selección de proyectos que llevamos adelante.</p>
     </div>
@@ -512,7 +522,8 @@
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
   <div class="wrap">
-    <h2 class="athletes-title reveal">Deportistas</h2>
+    <div class="kicker reveal"><span class="kicker-line"></span><span class="kicker-label">Deportistas</span></div>
+    <h2 class="athletes-title reveal">Los que confían su imagen a HRK</h2>
     <div class="athletes-strip" id="athletesStrip"></div>
   </div>
 </section>
@@ -523,6 +534,7 @@
 <section id="marcas" class="brands band-light">
   <div class="wrap">
     <div class="section-head reveal">
+      <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Marcas</span></div>
       <h2>Marcas que confían en HRK</h2>
       <p>Marcas y clubes con los que trabajamos.</p>
     </div>
@@ -545,6 +557,7 @@
   <div class="wrap reveal">
     <div class="process-layout">
       <div class="process-col-left">
+        <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Proceso</span></div>
         <h2>Cómo trabajamos</h2>
         <div class="process-steps" role="tablist" aria-label="Etapas del proceso" aria-orientation="vertical">
           <button type="button" class="process-step active" role="tab" aria-selected="true" aria-controls="process-panel-0" id="process-tab-0" data-step="0">
@@ -621,6 +634,7 @@
     </div>
   </div>
   <div class="press-content reveal">
+    <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Prensa</span></div>
     <div class="press-eyebrow">
       <span class="press-kicker">Perfil</span>
       <span class="press-divider" aria-hidden="true"></span>
@@ -639,6 +653,7 @@
   <div class="wrap">
     <div class="contact-grid">
       <div class="contact-info reveal">
+        <div class="kicker"><span class="kicker-line"></span><span class="kicker-label">Contacto</span></div>
         <h2>¿Listo para dar el siguiente paso?</h2>
         <p>Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
         <div class="contact-cards">
