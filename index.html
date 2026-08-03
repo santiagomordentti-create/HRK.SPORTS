@@ -236,6 +236,13 @@
   .wave-seam svg{display:block;width:100%;height:100%}
   @media(max-width:640px){.wave-seam{height:54px}}
 
+  /* Ondas montadas directamente sobre una franja con foto/video (sin banda plana intermedia) */
+  .media-wave{position:absolute;left:0;width:100%;height:90px;z-index:1;pointer-events:none;display:block}
+  .media-wave svg{display:block;width:100%;height:100%}
+  .media-wave.top{top:-1px}
+  .media-wave.bottom{bottom:-1px}
+  @media(max-width:640px){.media-wave{height:54px}}
+
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
   .reveal.on{opacity:1;transform:none}
@@ -295,13 +302,17 @@
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
+    <div class="media-wave bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
   </div>
   <div class="wrap hero-content">
     <h1>Construimos la imagen de quienes <em>viven para competir</em>.</h1>
   </div>
 </section>
-
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ SERVICIOS ============ -->
 <section id="servicios">
@@ -569,12 +580,22 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,120 L0,120 Z" fill="var(--press-bg)"/><path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
-
 <!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
 <section id="prensa" class="press">
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
+    <div class="media-wave top" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg)"/>
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+    <div class="media-wave bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
+        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
   </div>
   <div class="press-content reveal">
     <div class="press-eyebrow">
@@ -590,8 +611,6 @@
     </div>
   </div>
 </section>
-
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--press-bg)"/><path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto" class="band-light">
