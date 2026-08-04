@@ -786,13 +786,10 @@
     const panels = Array.from(section.querySelectorAll('.process-panel'));
     const bars = steps.map(s => s.querySelector('.process-step-bar span'));
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const DURATION = 2000;
+    const DURATION = 3000;
     let current = 0;
     let autoAdvance = true;
-    let paused = false;
     let timer = null;
-    let startTime = 0;
-    let remaining = DURATION;
 
     function render(index) {
       steps.forEach((step, i) => {
@@ -836,8 +833,6 @@
       resetBar(current);
       clearTimer();
       if (autoAdvance) {
-        remaining = DURATION;
-        startTime = Date.now();
         playBar(current, DURATION);
         timer = setTimeout(next, DURATION);
       }
@@ -849,36 +844,10 @@
 
     function stopAuto(index) {
       autoAdvance = false;
-      paused = false;
       clearTimer();
       bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
       current = index;
       render(current);
-    }
-
-    function pause() {
-      if (!autoAdvance || paused) return;
-      paused = true;
-      clearTimer();
-      remaining -= (Date.now() - startTime);
-      const bar = bars[current];
-      const computed = getComputedStyle(bar).width;
-      bar.style.transition = 'none';
-      bar.style.width = computed;
-    }
-
-    function resume() {
-      if (!autoAdvance || !paused) return;
-      paused = false;
-      startTime = Date.now();
-      const bar = bars[current];
-      if (!reduceMotion) {
-        requestAnimationFrame(() => {
-          bar.style.transition = `width ${remaining}ms linear`;
-          bar.style.width = '100%';
-        });
-      }
-      timer = setTimeout(next, remaining);
     }
 
     steps.forEach((step, i) => {
@@ -893,9 +862,6 @@
         if (target) { e.preventDefault(); target.focus(); stopAuto(steps.indexOf(target)); }
       });
     });
-
-    section.addEventListener('mouseenter', pause);
-    section.addEventListener('mouseleave', resume);
 
     goTo(0);
   })();
