@@ -222,7 +222,7 @@
   .process-step-time{font-size:.85rem;color:#8a8a94;flex:none}
   .process-step-bar{margin-top:15px;width:100%;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
   .process-step-bar span{display:block;height:100%;width:0%;background:var(--accent)}
-  .process-panel{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:56px 52px;min-height:340px;display:none;opacity:0;transition:opacity .3s ease}
+  .process-panel{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:56px 52px;min-height:340px;display:none;opacity:0;transition:opacity .12s ease}
   .process-panel.active{display:flex;flex-direction:column;justify-content:center}
   .process-panel.active.fade-in{opacity:1}
   .process-panel-title{font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1.2;color:#fff;max-width:600px;margin-bottom:28px}
@@ -786,7 +786,7 @@
     const panels = Array.from(section.querySelectorAll('.process-panel'));
     const bars = steps.map(s => s.querySelector('.process-step-bar span'));
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const DURATION = 6000;
+    const DURATION = 1000;
     let current = 0;
     let autoAdvance = true;
     let paused = false;
