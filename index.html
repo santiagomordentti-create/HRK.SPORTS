@@ -854,6 +854,11 @@
       render(current);
     }
 
+    function pauseForExit() {
+      clearTimer();
+      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
+    }
+
     steps.forEach((step, i) => {
       step.addEventListener('click', () => stopAuto(i));
       step.addEventListener('keydown', e => {
@@ -867,7 +872,19 @@
       });
     });
 
-    goTo(0);
+    // El ciclo no arranca hasta que la sección esté por entrar en pantalla.
+    // Si sale de vista se pausa, y al volver retoma siempre desde la etapa 01.
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!autoAdvance) return;
+        if (entry.isIntersecting) {
+          goTo(0);
+        } else {
+          pauseForExit();
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -20% 0px' });
+    sectionObserver.observe(section);
   })();
 
   // Deportistas — acordeón (datos provisorios, fáciles de editar acá)
