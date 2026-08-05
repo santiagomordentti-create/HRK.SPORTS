@@ -71,8 +71,10 @@
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
   section{padding:96px 0;scroll-margin-top:90px}
   h2{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.005em}
-  .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
-  .section-head p{color:var(--ink-soft);margin-top:14px;font-size:1.25rem}
+  .section-head{max-width:620px;margin:0 auto 64px;text-align:center}
+  .section-head p{color:rgba(255,255,255,.92);margin-top:14px;font-size:1.375rem;font-weight:500;line-height:1.5}
+  .section-head p em{font-style:normal;color:var(--accent)}
+  @media(max-width:680px){.section-head p{font-size:1.0625rem}}
 
   /* ---------- NAV ---------- */
   header{position:fixed;inset:0 0 auto 0;z-index:200}
@@ -125,7 +127,8 @@
   .services{background:var(--bg-light);color:#111;padding:96px 80px}
   .services-inner{max-width:1280px;margin:0 auto}
   .services h2{font-size:3.25rem;color:#111}
-  .services .section-head p{color:#57534d;font-size:1.125rem}
+  .services .section-head p{color:#2a2a2e}
+  .services .section-head p em{color:#5c6810}
   .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:#fff;border:1px solid #e2ddd7;border-radius:10px;padding:6px}
   .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#6b665f;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
   .services-tab:not(.active):hover{background:#f2efe9;color:#111}
@@ -147,7 +150,6 @@
 
   /* ---------- TRABAJOS ---------- */
   .work{background:var(--bg);color:var(--ink)}
-  .work .section-head p{color:var(--ink-soft)}
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
   .work-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 24px rgba(0,0,0,.25);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
   .work-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;color:#fff;font-size:1.375rem;margin-bottom:16px}
@@ -403,7 +405,7 @@
   <div class="services-inner">
     <div class="section-head reveal">
       <h2 data-i18n="services_title">Servicios</h2>
-      <p data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
+      <p><span data-i18n="services_dek_pre">Decinos</span> <em data-i18n="services_dek_em">quién sos</em> <span data-i18n="services_dek_post">y te mostramos qué hacemos por vos.</span></p>
     </div>
 
     <div class="services-tabs" role="tablist" aria-label="Servicios por público">
@@ -466,7 +468,7 @@
   <div class="wrap">
     <div class="section-head reveal">
       <h2 data-i18n="work_title">Trabajos</h2>
-      <p data-i18n="work_dek">Selección de proyectos que llevamos adelante.</p>
+      <p><span data-i18n="work_dek_pre">Selección de</span> <em data-i18n="work_dek_em">proyectos</em> <span data-i18n="work_dek_post">que llevamos adelante.</span></p>
     </div>
     <div class="work-grid">
       <div class="work-card reveal">
@@ -898,7 +900,7 @@
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
 
       services_title: 'Servicios',
-      services_dek: 'Decinos quién sos y te mostramos qué hacemos por vos.',
+      services_dek_pre: 'Decinos', services_dek_em: 'quién sos', services_dek_post: 'y te mostramos qué hacemos por vos.',
       tab_deportista: 'Soy deportista', tab_representante: 'Represento jugadores',
       tab_marca: 'Tengo una marca', tab_evento: 'Organizo un evento',
 
@@ -936,7 +938,7 @@
       svc_e6_t: 'Material para sponsors', svc_e6_p: 'Contenido propio para cada marca que te acompaña.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Transmisión y comunicación durante todo el evento.',
 
-      work_title: 'Trabajos', work_dek: 'Selección de proyectos que llevamos adelante.',
+      work_title: 'Trabajos', work_dek_pre: 'Selección de', work_dek_em: 'proyectos', work_dek_post: 'que llevamos adelante.',
       work_neira_p: 'Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.',
       work_legion_p: 'Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.',
       work_street_p: 'Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.',
@@ -980,7 +982,7 @@
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
 
       services_title: 'Services',
-      services_dek: 'Tell us who you are and we\'ll show you what we do for you.',
+      services_dek_pre: 'Tell us', services_dek_em: 'who you are', services_dek_post: 'and we\'ll show you what we do for you.',
       tab_deportista: 'I\'m an athlete', tab_representante: 'I represent players',
       tab_marca: 'I have a brand', tab_evento: 'I\'m organizing an event',
 
@@ -1018,7 +1020,7 @@
       svc_e6_t: 'Sponsor content', svc_e6_p: 'Custom content for every brand backing you.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Broadcast and coverage throughout the whole event.',
 
-      work_title: 'Work', work_dek: 'A selection of projects we\'ve led.',
+      work_title: 'Work', work_dek_pre: 'A selection of', work_dek_em: 'projects', work_dek_post: 'we\'ve led.',
       work_neira_p: 'Full image management, content design, highlights, matchday communication, and digital positioning during his time in Venezuela.',
       work_legion_p: 'Rebranding, visual identity, social media content, and sports event coverage.',
       work_street_p: 'Visual identity development, tournament communication, and event coverage from the lead-up through competition.',
