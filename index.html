@@ -90,6 +90,24 @@
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
   .nav-links{display:none}
 
+  /* ---------- SELECTOR DE IDIOMA ---------- */
+  .lang-switch{position:relative}
+  .lang-switch-btn{display:flex;align-items:center;gap:6px;background:transparent;border:0;cursor:pointer;color:#9a9aa5;font-family:var(--font);font-size:.8125rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:color .2s ease}
+  .lang-switch-btn:hover{color:var(--accent)}
+  .lang-switch.open .lang-switch-btn{color:var(--accent)}
+  .lang-globe{width:16px;height:16px;flex:none}
+  .lang-caret{width:8px;height:8px;flex:none;transition:transform .2s ease}
+  .lang-switch.open .lang-caret{transform:rotate(180deg)}
+  .lang-menu{position:absolute;top:calc(100% + 14px);right:0;min-width:150px;margin:0;padding:6px;list-style:none;background:#0d0d0f;border:1px solid #26262c;border-radius:10px;box-shadow:0 14px 32px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:250}
+  .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0)}
+  .lang-option{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:6px;padding:10px 12px;font-family:var(--font);font-size:.85rem;font-weight:600;color:#9a9aa5;cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lang-option:hover{background:var(--surface-hover);color:#fff}
+  .lang-option.active{color:var(--accent)}
+  .lang-switch-mobile{margin-top:8px}
+  .lang-switch-mobile .lang-menu{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;margin-top:10px;display:none}
+  .lang-switch-mobile.open .lang-menu{display:block}
+  .lang-switch-mobile .lang-switch-btn{font-size:1rem;justify-content:center;width:100%}
+
   /* ---------- HERO ---------- */
   .hero{position:relative;height:760px;display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;padding:0}
   .hero-media{position:absolute;inset:0;background:linear-gradient(135deg,#101318 0%,#1c2027 45%,#2a2f38 100%)}
@@ -334,25 +352,55 @@
 <header id="header">
   <div class="wrap nav">
     <nav class="nav-group left" aria-label="Navegación principal">
-      <a href="#servicios" class="nav-link">Servicios</a>
-      <a href="#trabajo" class="nav-link">Trabajos</a>
-      <a href="#deportistas" class="nav-link">Deportistas</a>
+      <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
+      <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
+      <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
     </nav>
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
     <nav class="nav-group right" aria-label="Navegación secundaria">
-      <a href="#marcas" class="nav-link">Marcas</a>
-      <a href="#prensa" class="nav-link">Blog</a>
-      <a href="#contacto" class="nav-link">Contacto</a>
+      <a href="#marcas" class="nav-link" data-i18n="nav_marcas">Marcas</a>
+      <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
+      <a href="#contacto" class="nav-link" data-i18n="nav_contacto">Contacto</a>
+      <div class="lang-switch" id="langSwitch">
+        <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-haspopup="listbox" aria-expanded="false">
+          <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18"/>
+            <path d="M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/>
+          </svg>
+          <span id="langCurrent">ES</span>
+          <svg class="lang-caret" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="listbox">
+          <li><button type="button" class="lang-option" data-lang="es" role="option" aria-selected="true">Español</button></li>
+          <li><button type="button" class="lang-option" data-lang="en" role="option" aria-selected="false">English</button></li>
+        </ul>
+      </div>
     </nav>
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-links" id="navLinks">
-    <a href="#servicios" class="nav-link">Servicios</a>
-    <a href="#trabajo" class="nav-link">Trabajos</a>
-    <a href="#deportistas" class="nav-link">Deportistas</a>
-    <a href="#marcas" class="nav-link">Marcas</a>
-    <a href="#prensa" class="nav-link">Blog</a>
-    <a href="#contacto" class="btn">Contacto</a>
+    <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
+    <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
+    <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
+    <a href="#marcas" class="nav-link" data-i18n="nav_marcas">Marcas</a>
+    <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
+    <a href="#contacto" class="btn" data-i18n="nav_contacto">Contacto</a>
+    <div class="lang-switch lang-switch-mobile" id="langSwitchMobile">
+      <button type="button" class="lang-switch-btn" id="langSwitchBtnMobile" aria-haspopup="listbox" aria-expanded="false">
+        <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M3 12h18"/>
+          <path d="M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/>
+        </svg>
+        <span id="langCurrentMobile">ES</span>
+        <svg class="lang-caret" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul class="lang-menu" id="langMenuMobile" role="listbox">
+        <li><button type="button" class="lang-option" data-lang="es" role="option" aria-selected="true">Español</button></li>
+        <li><button type="button" class="lang-option" data-lang="en" role="option" aria-selected="false">English</button></li>
+      </ul>
+    </div>
   </nav>
 </header>
 
@@ -371,7 +419,7 @@
     </div>
   </div>
   <div class="wrap hero-content">
-    <h1>Construimos la imagen de quienes <em>viven para competir</em></h1>
+    <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
   </div>
 </section>
 
@@ -379,58 +427,58 @@
 <section id="servicios" class="services">
   <div class="services-inner">
     <div class="section-head reveal">
-      <h2>Servicios</h2>
-      <p>Decinos quién sos y te mostramos qué hacemos por vos.</p>
+      <h2 data-i18n="services_title">Servicios</h2>
+      <p data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
 
     <div class="services-tabs" role="tablist" aria-label="Servicios por público">
-      <button type="button" class="services-tab active" role="tab" aria-selected="true" aria-controls="panel-deportista" id="tab-deportista" data-tab="deportista">Soy deportista</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-representante" id="tab-representante" data-tab="representante">Represento jugadores</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-marca" id="tab-marca" data-tab="marca">Tengo una marca</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-evento" id="tab-evento" data-tab="evento">Organizo un evento</button>
+      <button type="button" class="services-tab active" role="tab" aria-selected="true" aria-controls="panel-deportista" id="tab-deportista" data-tab="deportista" data-i18n="tab_deportista">Soy deportista</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-representante" id="tab-representante" data-tab="representante" data-i18n="tab_representante">Represento jugadores</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-marca" id="tab-marca" data-tab="marca" data-i18n="tab_marca">Tengo una marca</button>
+      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-evento" id="tab-evento" data-tab="evento" data-i18n="tab_evento">Organizo un evento</button>
     </div>
 
     <div class="services-panels">
       <div class="services-grid active fade-in" id="panel-deportista" role="tabpanel" aria-labelledby="tab-deportista">
-        <div class="svc-card"><h3>Imagen personal</h3><p>Definimos cómo te mostrás y qué te diferencia.</p></div>
-        <div class="svc-card"><h3>Perfil ordenado</h3><p>Bio, destacados y feed listos para que te encuentren.</p></div>
-        <div class="svc-card"><h3>Plan de contenido</h3><p>Qué publicar y cuándo. Se termina el improvisar.</p></div>
-        <div class="svc-card"><h3>Día de partido</h3><p>Matchday, resultados y fechas especiales, a tiempo.</p></div>
-        <div class="svc-card"><h3>Highlights</h3><p>Tus mejores jugadas, editadas y listas para compartir.</p></div>
-        <div class="svc-card"><h3>Player Dossier</h3><p>Tu carrera en un PDF que abre puertas en clubes.</p></div>
-        <div class="svc-card"><h3>Cobertura en vivo</h3><p>Seguimos tu partido desde tus redes.</p></div>
-        <div class="svc-card"><h3>Fotos profesionales</h3><p>Coordinamos sesiones con fotógrafos del deporte.</p></div>
-        <div class="svc-card"><h3>Puente con marcas</h3><p>Te acercamos sponsors que van con lo que sos.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d1_t">Imagen personal</h3><p data-i18n="svc_d1_p">Definimos cómo te mostrás y qué te diferencia.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d2_t">Perfil ordenado</h3><p data-i18n="svc_d2_p">Bio, destacados y feed listos para que te encuentren.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d3_t">Plan de contenido</h3><p data-i18n="svc_d3_p">Qué publicar y cuándo. Se termina el improvisar.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d4_t">Día de partido</h3><p data-i18n="svc_d4_p">Matchday, resultados y fechas especiales, a tiempo.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d5_t">Highlights</h3><p data-i18n="svc_d5_p">Tus mejores jugadas, editadas y listas para compartir.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d6_t">Player Dossier</h3><p data-i18n="svc_d6_p">Tu carrera en un PDF que abre puertas en clubes.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d7_t">Cobertura en vivo</h3><p data-i18n="svc_d7_p">Seguimos tu partido desde tus redes.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d8_t">Fotos profesionales</h3><p data-i18n="svc_d8_p">Coordinamos sesiones con fotógrafos del deporte.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_d9_t">Puente con marcas</h3><p data-i18n="svc_d9_p">Te acercamos sponsors que van con lo que sos.</p></div>
       </div>
 
       <div class="services-grid" id="panel-representante" role="tabpanel" aria-labelledby="tab-representante" hidden>
-        <div class="svc-card"><h3>Imagen del plantel</h3><p>Todos tus representados con el mismo estándar.</p></div>
-        <div class="svc-card"><h3>Contenido por jugador</h3><p>Piezas propias para cada perfil, todos los meses.</p></div>
-        <div class="svc-card"><h3>Edición de video</h3><p>Highlights y resúmenes listos para publicar.</p></div>
-        <div class="svc-card"><h3>Diseño gráfico</h3><p>Fichajes, resultados y anuncios con tu identidad.</p></div>
-        <div class="svc-card"><h3>Cobertura de partidos</h3><p>Material del día del partido sin mover a tu gente.</p></div>
-        <div class="svc-card"><h3>Material de scouting</h3><p>Videos y fichas armados para mostrar jugadores.</p></div>
-        <div class="svc-card"><h3>Player Dossiers</h3><p>Un dossier profesional por representado.</p></div>
-        <div class="svc-card"><h3>La marca de la agencia</h3><p>También comunicamos a la agencia, no solo a sus jugadores.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r1_t">Imagen del plantel</h3><p data-i18n="svc_r1_p">Todos tus representados con el mismo estándar.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r2_t">Contenido por jugador</h3><p data-i18n="svc_r2_p">Piezas propias para cada perfil, todos los meses.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r3_t">Edición de video</h3><p data-i18n="svc_r3_p">Highlights y resúmenes listos para publicar.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r4_t">Diseño gráfico</h3><p data-i18n="svc_r4_p">Fichajes, resultados y anuncios con tu identidad.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r5_t">Cobertura de partidos</h3><p data-i18n="svc_r5_p">Material del día del partido sin mover a tu gente.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r6_t">Material de scouting</h3><p data-i18n="svc_r6_p">Videos y fichas armados para mostrar jugadores.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r7_t">Player Dossiers</h3><p data-i18n="svc_r7_p">Un dossier profesional por representado.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_r8_t">La marca de la agencia</h3><p data-i18n="svc_r8_p">También comunicamos a la agencia, no solo a sus jugadores.</p></div>
       </div>
 
       <div class="services-grid" id="panel-marca" role="tabpanel" aria-labelledby="tab-marca" hidden>
-        <div class="svc-card"><h3>Campañas con atletas</h3><p>De la idea a la publicación, con quien encaje.</p></div>
-        <div class="svc-card"><h3>Embajadores</h3><p>Vínculos de temporada, no una foto suelta.</p></div>
-        <div class="svc-card"><h3>Activaciones digitales</h3><p>Acciones pensadas para que la gente participe.</p></div>
-        <div class="svc-card"><h3>Producción</h3><p>Video y fotos con calidad de campaña.</p></div>
-        <div class="svc-card"><h3>Cobertura de eventos</h3><p>Tu presencia contada en tiempo real.</p></div>
-        <div class="svc-card"><h3>Alianzas</h3><p>Clubes, torneos y agencias para llegar más lejos.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m1_t">Campañas con atletas</h3><p data-i18n="svc_m1_p">De la idea a la publicación, con quien encaje.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m2_t">Embajadores</h3><p data-i18n="svc_m2_p">Vínculos de temporada, no una foto suelta.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m3_t">Activaciones digitales</h3><p data-i18n="svc_m3_p">Acciones pensadas para que la gente participe.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m4_t">Producción</h3><p data-i18n="svc_m4_p">Video y fotos con calidad de campaña.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m5_t">Cobertura de eventos</h3><p data-i18n="svc_m5_p">Tu presencia contada en tiempo real.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_m6_t">Alianzas</h3><p data-i18n="svc_m6_p">Clubes, torneos y agencias para llegar más lejos.</p></div>
       </div>
 
       <div class="services-grid" id="panel-evento" role="tabpanel" aria-labelledby="tab-evento" hidden>
-        <div class="svc-card"><h3>Fotografía</h3><p>Fotos editadas y entregadas el mismo día.</p></div>
-        <div class="svc-card"><h3>Audiovisual</h3><p>Todo lo que pasa, filmado con criterio.</p></div>
-        <div class="svc-card"><h3>Reels y aftermovie</h3><p>Las piezas que hacen que el año que viene vengan más.</p></div>
-        <div class="svc-card"><h3>Historias en vivo</h3><p>El evento contado mientras sucede.</p></div>
-        <div class="svc-card"><h3>Entrevistas</h3><p>Las voces de los protagonistas y del público.</p></div>
-        <div class="svc-card"><h3>Material para sponsors</h3><p>Contenido propio para cada marca que te acompaña.</p></div>
-        <div class="svc-card"><h3>Streaming</h3><p>Transmisión y comunicación durante todo el evento.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e1_t">Fotografía</h3><p data-i18n="svc_e1_p">Fotos editadas y entregadas el mismo día.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e2_t">Audiovisual</h3><p data-i18n="svc_e2_p">Todo lo que pasa, filmado con criterio.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e3_t">Reels y aftermovie</h3><p data-i18n="svc_e3_p">Las piezas que hacen que el año que viene vengan más.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e4_t">Historias en vivo</h3><p data-i18n="svc_e4_p">El evento contado mientras sucede.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e5_t">Entrevistas</h3><p data-i18n="svc_e5_p">Las voces de los protagonistas y del público.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e6_t">Material para sponsors</h3><p data-i18n="svc_e6_p">Contenido propio para cada marca que te acompaña.</p></div>
+        <div class="svc-card"><h3 data-i18n="svc_e7_t">Streaming</h3><p data-i18n="svc_e7_p">Transmisión y comunicación durante todo el evento.</p></div>
       </div>
     </div>
   </div>
@@ -442,8 +490,8 @@
 <section id="trabajo" class="work">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>Trabajos</h2>
-      <p>Selección de proyectos que llevamos adelante.</p>
+      <h2 data-i18n="work_title">Trabajos</h2>
+      <p data-i18n="work_dek">Selección de proyectos que llevamos adelante.</p>
     </div>
     <div class="work-grid">
       <div class="work-card reveal">
@@ -465,7 +513,7 @@
             </g>
           </svg>
         </div>
-        <p>Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.</p>
+        <p data-i18n="work_neira_p">Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.</p>
       </div>
       <div class="work-card reveal">
         <h3>La Legión Producciones</h3>
@@ -487,7 +535,7 @@
             </g>
           </svg>
         </div>
-        <p>Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
+        <p data-i18n="work_legion_p">Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
       </div>
       <div class="work-card wide reveal">
         <h3>Street Clash</h3>
@@ -509,7 +557,7 @@
             </g>
           </svg>
         </div>
-        <p>Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
+        <p data-i18n="work_street_p">Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
       </div>
     </div>
   </div>
@@ -520,7 +568,7 @@
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
   <div class="wrap">
-    <h2 class="athletes-title reveal">Deportistas que confían en HRK</h2>
+    <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
     <div class="athletes-strip" id="athletesStrip"></div>
   </div>
 </section>
@@ -531,17 +579,17 @@
 <section id="marcas" class="brands band-light">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>Marcas que confían en HRK</h2>
-      <p>Marcas y clubes con los que trabajamos.</p>
+      <h2 data-i18n="brands_title">Marcas que confían en HRK</h2>
+      <p data-i18n="brands_dek">Marcas y clubes con los que trabajamos.</p>
     </div>
     <div class="brands-grid">
       <!-- Reemplazá cada bloque con: <div class="brand"><img src="assets/logo-marca.png" alt="Logo de [Nombre de la marca]" loading="lazy" style="max-height:60%;max-width:70%;object-fit:contain"></div> -->
-      <div class="brand reveal">Logo marca</div>
-      <div class="brand reveal">Logo marca</div>
-      <div class="brand reveal">Logo marca</div>
-      <div class="brand reveal">Logo marca</div>
-      <div class="brand reveal">Logo marca</div>
-      <div class="brand reveal">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
+      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
     </div>
   </div>
 </section>
@@ -553,29 +601,29 @@
   <div class="wrap reveal">
     <div class="process-layout">
       <div class="process-col-left">
-        <h2>Cómo trabajamos</h2>
+        <h2 data-i18n="process_title">Cómo trabajamos</h2>
         <div class="process-steps" role="tablist" aria-label="Etapas del proceso" aria-orientation="vertical">
           <button type="button" class="process-step active" role="tab" aria-selected="true" aria-controls="process-panel-0" id="process-tab-0" data-step="0">
             <div class="process-step-top">
               <span class="process-step-num">01</span>
-              <span class="process-step-name">Diagnóstico</span>
-              <span class="process-step-time">Semana 1</span>
+              <span class="process-step-name" data-i18n="step1_name">Diagnóstico</span>
+              <span class="process-step-time" data-i18n="step1_time">Semana 1</span>
             </div>
             <div class="process-step-bar"><span></span></div>
           </button>
           <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-1" id="process-tab-1" data-step="1">
             <div class="process-step-top">
               <span class="process-step-num">02</span>
-              <span class="process-step-name">Estrategia</span>
-              <span class="process-step-time">Semanas 2–3</span>
+              <span class="process-step-name" data-i18n="step2_name">Estrategia</span>
+              <span class="process-step-time" data-i18n="step2_time">Semanas 2–3</span>
             </div>
             <div class="process-step-bar"><span></span></div>
           </button>
           <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-2" id="process-tab-2" data-step="2">
             <div class="process-step-top">
               <span class="process-step-num">03</span>
-              <span class="process-step-name">Ejecución</span>
-              <span class="process-step-time">Mes a mes</span>
+              <span class="process-step-name" data-i18n="step3_name">Ejecución</span>
+              <span class="process-step-time" data-i18n="step3_time">Mes a mes</span>
             </div>
             <div class="process-step-bar"><span></span></div>
           </button>
@@ -583,27 +631,27 @@
       </div>
       <div class="process-col-right">
         <div class="process-panel active fade-in" id="process-panel-0" role="tabpanel" aria-labelledby="process-tab-0">
-          <h3 class="process-panel-title">Vemos dónde estás parado y qué te está frenando.</h3>
+          <h3 class="process-panel-title" data-i18n="step1_title">Vemos dónde estás parado y qué te está frenando.</h3>
           <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Auditoría de redes</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Informe de imagen</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Reunión de devolución</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip1">Auditoría de redes</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip2">Informe de imagen</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip3">Reunión de devolución</span></div>
           </div>
         </div>
         <div class="process-panel" id="process-panel-1" role="tabpanel" aria-labelledby="process-tab-1" hidden>
-          <h3 class="process-panel-title">Definimos quién sos públicamente y qué vas a publicar.</h3>
+          <h3 class="process-panel-title" data-i18n="step2_title">Definimos quién sos públicamente y qué vas a publicar.</h3>
           <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Guía de marca</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Plan de 3 meses</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Objetivos claros</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip1">Guía de marca</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip2">Plan de 3 meses</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip3">Objetivos claros</span></div>
           </div>
         </div>
         <div class="process-panel" id="process-panel-2" role="tabpanel" aria-labelledby="process-tab-2" hidden>
-          <h3 class="process-panel-title">Producimos, publicamos y medimos, mes a mes.</h3>
+          <h3 class="process-panel-title" data-i18n="step3_title">Producimos, publicamos y medimos, mes a mes.</h3>
           <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Contenido y cobertura</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Reporte mensual</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label">Contacto con marcas</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip1">Contenido y cobertura</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip2">Reporte mensual</span></div>
+            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip3">Contacto con marcas</span></div>
           </div>
         </div>
       </div>
@@ -632,12 +680,12 @@
     <div class="press-eyebrow">
       <span class="press-kicker">Perfil</span>
       <span class="press-divider" aria-hidden="true"></span>
-      <span class="press-date">14 de julio 2026</span>
+      <span class="press-date" data-i18n="press_date">14 de julio 2026</span>
     </div>
-    <h2 class="press-title">HRK entre los proyectos elegidos por UADE HUB</h2>
-    <p class="press-dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
+    <h2 class="press-title" data-i18n="press_title">HRK entre los proyectos elegidos por UADE HUB</h2>
+    <p class="press-dek" data-i18n="press_dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
     <div class="press-cta">
-      <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener">Leer la nota ↗</a>
+      <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener" data-i18n="press_cta">Leer la nota ↗</a>
     </div>
   </div>
 </section>
@@ -647,20 +695,20 @@
   <div class="wrap">
     <div class="contact-grid">
       <div class="contact-info reveal">
-        <h2>¿Listo para dar el siguiente paso?</h2>
-        <p>Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
+        <h2 data-i18n="contact_title">¿Listo para dar el siguiente paso?</h2>
+        <p data-i18n="contact_dek">Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
         <div class="contact-cards">
           <a class="contact-card" href="mailto:hrk.sports2025@gmail.com" aria-label="Escribir a HRK Sports por mail a hrk.sports2025@gmail.com">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
-            <span><b>hrk.sports2025@gmail.com</b><small>Escribinos por mail</small></span>
+            <span><b>hrk.sports2025@gmail.com</b><small data-i18n="contact_card_mail">Escribinos por mail</small></span>
           </a>
           <a class="contact-card" href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
-            <span><b>WhatsApp</b><small>Escribinos directo</small></span>
+            <span><b>WhatsApp</b><small data-i18n="contact_card_whatsapp">Escribinos directo</small></span>
           </a>
           <a class="contact-card" href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" aria-label="Seguir a HRK Sports en Instagram">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            <span><b>@hrk.sports</b><small>Seguinos en Instagram</small></span>
+            <span><b>@hrk.sports</b><small data-i18n="contact_card_ig">Seguinos en Instagram</small></span>
           </a>
         </div>
       </div>
@@ -669,35 +717,35 @@
           <input type="hidden" name="_subject" value="Nueva consulta desde la web HRK">
           <input type="hidden" name="_captcha" value="false">
           <div class="field">
-            <label for="cf-nombre">Nombre y apellido</label>
+            <label for="cf-nombre" data-i18n="form_name">Nombre y apellido</label>
             <input type="text" id="cf-nombre" name="Nombre y apellido" required>
           </div>
           <div class="field">
-            <label for="cf-email">Email</label>
+            <label for="cf-email" data-i18n="form_email">Email</label>
             <input type="email" id="cf-email" name="Email" required>
           </div>
           <div class="field">
-            <label for="cf-telefono">Teléfono (opcional)</label>
+            <label for="cf-telefono" data-i18n="form_phone">Teléfono (opcional)</label>
             <input type="tel" id="cf-telefono" name="Teléfono">
           </div>
           <div class="field">
-            <label for="cf-quien">¿Quién sos?</label>
+            <label for="cf-quien" data-i18n="form_who">¿Quién sos?</label>
             <select id="cf-quien" name="Quién sos">
-              <option>Deportista</option>
-              <option>Agencia</option>
-              <option>Marca</option>
-              <option>Club</option>
-              <option>Evento deportivo</option>
-              <option>Otro</option>
+              <option data-i18n="form_opt_athlete">Deportista</option>
+              <option data-i18n="form_opt_agency">Agencia</option>
+              <option data-i18n="form_opt_brand">Marca</option>
+              <option data-i18n="form_opt_club">Club</option>
+              <option data-i18n="form_opt_event">Evento deportivo</option>
+              <option data-i18n="form_opt_other">Otro</option>
             </select>
           </div>
           <div class="field">
-            <label for="cf-mensaje">Contanos sobre tu proyecto</label>
+            <label for="cf-mensaje" data-i18n="form_message">Contanos sobre tu proyecto</label>
             <textarea id="cf-mensaje" name="Mensaje" rows="4" required></textarea>
           </div>
           <div class="form-submit-group">
-            <button type="submit" class="btn contact-submit">Enviar consulta</button>
-            <p class="form-note">Respondemos en menos de 24 hs.</p>
+            <button type="submit" class="btn contact-submit" data-i18n="form_submit">Enviar consulta</button>
+            <p class="form-note" data-i18n="form_note">Respondemos en menos de 24 hs.</p>
           </div>
         </form>
       </div>
@@ -715,10 +763,10 @@
 <footer>
   <div class="wrap foot">
     <a href="#" class="logo">HRK<span>.</span>SPORTS</a>
-    <p>© 2026 HRK Sports — Asesoría de imagen y marketing deportivo</p>
+    <p data-i18n="footer_copyright">© 2026 HRK Sports — Asesoría de imagen y marketing deportivo</p>
     <div class="foot-social">
       <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:hrk.sports2025@gmail.com">Mail</a>
+      <a href="mailto:hrk.sports2025@gmail.com" data-i18n="footer_mail">Mail</a>
     </div>
   </div>
 </footer>
@@ -887,87 +935,265 @@
     sectionObserver.observe(section);
   })();
 
+  // Diccionario de idiomas
+  const I18N = {
+    es: {
+      nav_servicios: 'Servicios', nav_trabajos: 'Trabajos', nav_deportistas: 'Deportistas',
+      nav_marcas: 'Marcas', nav_blog: 'Blog', nav_contacto: 'Contacto',
+
+      hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
+
+      services_title: 'Servicios',
+      services_dek: 'Decinos quién sos y te mostramos qué hacemos por vos.',
+      tab_deportista: 'Soy deportista', tab_representante: 'Represento jugadores',
+      tab_marca: 'Tengo una marca', tab_evento: 'Organizo un evento',
+
+      svc_d1_t: 'Imagen personal', svc_d1_p: 'Definimos cómo te mostrás y qué te diferencia.',
+      svc_d2_t: 'Perfil ordenado', svc_d2_p: 'Bio, destacados y feed listos para que te encuentren.',
+      svc_d3_t: 'Plan de contenido', svc_d3_p: 'Qué publicar y cuándo. Se termina el improvisar.',
+      svc_d4_t: 'Día de partido', svc_d4_p: 'Matchday, resultados y fechas especiales, a tiempo.',
+      svc_d5_t: 'Highlights', svc_d5_p: 'Tus mejores jugadas, editadas y listas para compartir.',
+      svc_d6_t: 'Player Dossier', svc_d6_p: 'Tu carrera en un PDF que abre puertas en clubes.',
+      svc_d7_t: 'Cobertura en vivo', svc_d7_p: 'Seguimos tu partido desde tus redes.',
+      svc_d8_t: 'Fotos profesionales', svc_d8_p: 'Coordinamos sesiones con fotógrafos del deporte.',
+      svc_d9_t: 'Puente con marcas', svc_d9_p: 'Te acercamos sponsors que van con lo que sos.',
+
+      svc_r1_t: 'Imagen del plantel', svc_r1_p: 'Todos tus representados con el mismo estándar.',
+      svc_r2_t: 'Contenido por jugador', svc_r2_p: 'Piezas propias para cada perfil, todos los meses.',
+      svc_r3_t: 'Edición de video', svc_r3_p: 'Highlights y resúmenes listos para publicar.',
+      svc_r4_t: 'Diseño gráfico', svc_r4_p: 'Fichajes, resultados y anuncios con tu identidad.',
+      svc_r5_t: 'Cobertura de partidos', svc_r5_p: 'Material del día del partido sin mover a tu gente.',
+      svc_r6_t: 'Material de scouting', svc_r6_p: 'Videos y fichas armados para mostrar jugadores.',
+      svc_r7_t: 'Player Dossiers', svc_r7_p: 'Un dossier profesional por representado.',
+      svc_r8_t: 'La marca de la agencia', svc_r8_p: 'También comunicamos a la agencia, no solo a sus jugadores.',
+
+      svc_m1_t: 'Campañas con atletas', svc_m1_p: 'De la idea a la publicación, con quien encaje.',
+      svc_m2_t: 'Embajadores', svc_m2_p: 'Vínculos de temporada, no una foto suelta.',
+      svc_m3_t: 'Activaciones digitales', svc_m3_p: 'Acciones pensadas para que la gente participe.',
+      svc_m4_t: 'Producción', svc_m4_p: 'Video y fotos con calidad de campaña.',
+      svc_m5_t: 'Cobertura de eventos', svc_m5_p: 'Tu presencia contada en tiempo real.',
+      svc_m6_t: 'Alianzas', svc_m6_p: 'Clubes, torneos y agencias para llegar más lejos.',
+
+      svc_e1_t: 'Fotografía', svc_e1_p: 'Fotos editadas y entregadas el mismo día.',
+      svc_e2_t: 'Audiovisual', svc_e2_p: 'Todo lo que pasa, filmado con criterio.',
+      svc_e3_t: 'Reels y aftermovie', svc_e3_p: 'Las piezas que hacen que el año que viene vengan más.',
+      svc_e4_t: 'Historias en vivo', svc_e4_p: 'El evento contado mientras sucede.',
+      svc_e5_t: 'Entrevistas', svc_e5_p: 'Las voces de los protagonistas y del público.',
+      svc_e6_t: 'Material para sponsors', svc_e6_p: 'Contenido propio para cada marca que te acompaña.',
+      svc_e7_t: 'Streaming', svc_e7_p: 'Transmisión y comunicación durante todo el evento.',
+
+      work_title: 'Trabajos', work_dek: 'Selección de proyectos que llevamos adelante.',
+      work_neira_p: 'Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.',
+      work_legion_p: 'Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.',
+      work_street_p: 'Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.',
+
+      athletes_title: 'Deportistas que confían en HRK',
+      stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
+
+      brands_title: 'Marcas que confían en HRK', brands_dek: 'Marcas y clubes con los que trabajamos.',
+      brands_placeholder: 'Logo marca',
+
+      process_title: 'Cómo trabajamos',
+      step1_name: 'Diagnóstico', step1_time: 'Semana 1',
+      step2_name: 'Estrategia', step2_time: 'Semanas 2–3',
+      step3_name: 'Ejecución', step3_time: 'Mes a mes',
+      step1_title: 'Vemos dónde estás parado y qué te está frenando.',
+      step2_title: 'Definimos quién sos públicamente y qué vas a publicar.',
+      step3_title: 'Producimos, publicamos y medimos, mes a mes.',
+      step1_chip1: 'Auditoría de redes', step1_chip2: 'Informe de imagen', step1_chip3: 'Reunión de devolución',
+      step2_chip1: 'Guía de marca', step2_chip2: 'Plan de 3 meses', step2_chip3: 'Objetivos claros',
+      step3_chip1: 'Contenido y cobertura', step3_chip2: 'Reporte mensual', step3_chip3: 'Contacto con marcas',
+
+      press_date: '14 de julio 2026',
+      press_title: 'HRK entre los proyectos elegidos por UADE HUB',
+      press_dek: 'Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».',
+      press_cta: 'Leer la nota ↗',
+
+      contact_title: '¿Listo para dar el siguiente paso?',
+      contact_dek: 'Contanos tu proyecto por el formulario o escribinos por WhatsApp.',
+      contact_card_mail: 'Escribinos por mail', contact_card_whatsapp: 'Escribinos directo', contact_card_ig: 'Seguinos en Instagram',
+      form_name: 'Nombre y apellido', form_email: 'Email', form_phone: 'Teléfono (opcional)',
+      form_who: '¿Quién sos?',
+      form_opt_athlete: 'Deportista', form_opt_agency: 'Agencia', form_opt_brand: 'Marca',
+      form_opt_club: 'Club', form_opt_event: 'Evento deportivo', form_opt_other: 'Otro',
+      form_message: 'Contanos sobre tu proyecto', form_submit: 'Enviar consulta',
+      form_note: 'Respondemos en menos de 24 hs.',
+
+      footer_copyright: '© 2026 HRK Sports — Asesoría de imagen y marketing deportivo',
+      footer_mail: 'Mail'
+    },
+    en: {
+      nav_servicios: 'Services', nav_trabajos: 'Work', nav_deportistas: 'Athletes',
+      nav_marcas: 'Brands', nav_blog: 'Blog', nav_contacto: 'Contact',
+
+      hero_pre: 'We build the image of those who', hero_em: 'live to compete',
+
+      services_title: 'Services',
+      services_dek: 'Tell us who you are and we\'ll show you what we do for you.',
+      tab_deportista: 'I\'m an athlete', tab_representante: 'I represent players',
+      tab_marca: 'I have a brand', tab_evento: 'I\'m organizing an event',
+
+      svc_d1_t: 'Personal image', svc_d1_p: 'We define how you present yourself and what sets you apart.',
+      svc_d2_t: 'A polished profile', svc_d2_p: 'Bio, highlights, and feed ready so people can find you.',
+      svc_d3_t: 'Content plan', svc_d3_p: 'What to post and when. No more winging it.',
+      svc_d4_t: 'Matchday', svc_d4_p: 'Matchday, results, and special dates, right on time.',
+      svc_d5_t: 'Highlights', svc_d5_p: 'Your best plays, edited and ready to share.',
+      svc_d6_t: 'Player Dossier', svc_d6_p: 'Your career in a PDF that opens doors at clubs.',
+      svc_d7_t: 'Live coverage', svc_d7_p: 'We cover your match live on your channels.',
+      svc_d8_t: 'Professional photos', svc_d8_p: 'We arrange sessions with sports photographers.',
+      svc_d9_t: 'A bridge to brands', svc_d9_p: 'We connect you with sponsors that match who you are.',
+
+      svc_r1_t: 'Squad image', svc_r1_p: 'All your players held to the same standard.',
+      svc_r2_t: 'Content per player', svc_r2_p: 'Custom pieces for every profile, every month.',
+      svc_r3_t: 'Video editing', svc_r3_p: 'Highlights and recaps ready to publish.',
+      svc_r4_t: 'Graphic design', svc_r4_p: 'Signings, results, and announcements in your identity.',
+      svc_r5_t: 'Match coverage', svc_r5_p: 'Matchday content without pulling your people away.',
+      svc_r6_t: 'Scouting material', svc_r6_p: 'Videos and profiles built to showcase players.',
+      svc_r7_t: 'Player Dossiers', svc_r7_p: 'A professional dossier for every player you represent.',
+      svc_r8_t: 'Your agency\'s brand', svc_r8_p: 'We also promote the agency itself, not just its players.',
+
+      svc_m1_t: 'Campaigns with athletes', svc_m1_p: 'From concept to launch, with the athlete who fits.',
+      svc_m2_t: 'Ambassadors', svc_m2_p: 'Season-long partnerships, not a one-off photo.',
+      svc_m3_t: 'Digital activations', svc_m3_p: 'Activations designed to get people involved.',
+      svc_m4_t: 'Production', svc_m4_p: 'Campaign-quality video and photography.',
+      svc_m5_t: 'Event coverage', svc_m5_p: 'Your presence, told in real time.',
+      svc_m6_t: 'Partnerships', svc_m6_p: 'Clubs, tournaments, and agencies to go further.',
+
+      svc_e1_t: 'Photography', svc_e1_p: 'Photos edited and delivered the same day.',
+      svc_e2_t: 'Audiovisual', svc_e2_p: 'Everything that happens, filmed with an eye for the moment.',
+      svc_e3_t: 'Reels and aftermovie', svc_e3_p: 'The pieces that bring more people back next year.',
+      svc_e4_t: 'Live stories', svc_e4_p: 'The event, told as it happens.',
+      svc_e5_t: 'Interviews', svc_e5_p: 'The voices of the protagonists and the crowd.',
+      svc_e6_t: 'Sponsor content', svc_e6_p: 'Custom content for every brand backing you.',
+      svc_e7_t: 'Streaming', svc_e7_p: 'Broadcast and coverage throughout the whole event.',
+
+      work_title: 'Work', work_dek: 'A selection of projects we\'ve led.',
+      work_neira_p: 'Full image management, content design, highlights, matchday communication, and digital positioning during his time in Venezuela.',
+      work_legion_p: 'Rebranding, visual identity, social media content, and sports event coverage.',
+      work_street_p: 'Visual identity development, tournament communication, and event coverage from the lead-up through competition.',
+
+      athletes_title: 'Athletes who trust HRK',
+      stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
+
+      brands_title: 'Brands that trust HRK', brands_dek: 'Brands and clubs we work with.',
+      brands_placeholder: 'Brand logo',
+
+      process_title: 'How we work',
+      step1_name: 'Discovery', step1_time: 'Week 1',
+      step2_name: 'Strategy', step2_time: 'Weeks 2–3',
+      step3_name: 'Execution', step3_time: 'Month to month',
+      step1_title: 'We find out where you stand and what\'s holding you back.',
+      step2_title: 'We define your public identity and what you\'ll post.',
+      step3_title: 'We produce, publish, and measure, month after month.',
+      step1_chip1: 'Social media audit', step1_chip2: 'Image report', step1_chip3: 'Feedback session',
+      step2_chip1: 'Brand guide', step2_chip2: '3-month plan', step2_chip3: 'Clear goals',
+      step3_chip1: 'Content and coverage', step3_chip2: 'Monthly report', step3_chip3: 'Brand outreach',
+
+      press_date: 'July 14, 2026',
+      press_title: 'HRK among the projects selected by UADE HUB',
+      press_dek: 'Perfil covered Fuego Sagrado 2026 and described us as an agency "dedicated to professionalizing the public image of up-and-coming athletes."',
+      press_cta: 'Read the article ↗',
+
+      contact_title: 'Ready to take the next step?',
+      contact_dek: 'Tell us about your project through the form or message us on WhatsApp.',
+      contact_card_mail: 'Email us', contact_card_whatsapp: 'Message us directly', contact_card_ig: 'Follow us on Instagram',
+      form_name: 'Full name', form_email: 'Email', form_phone: 'Phone (optional)',
+      form_who: 'Who are you?',
+      form_opt_athlete: 'Athlete', form_opt_agency: 'Agency', form_opt_brand: 'Brand',
+      form_opt_club: 'Club', form_opt_event: 'Sports event', form_opt_other: 'Other',
+      form_message: 'Tell us about your project', form_submit: 'Send inquiry',
+      form_note: 'We respond within 24 hours.',
+
+      footer_copyright: '© 2026 HRK Sports — Image consulting and sports marketing',
+      footer_mail: 'Email'
+    }
+  };
+
   // Deportistas — acordeón (datos provisorios, fáciles de editar acá)
+  // role/quote/stat-values en {es,en}; los nombres propios (surname, fullName, club) no se traducen.
   const ATHLETES = [
     {
       photo: 'assets/razzeto.jpg',
       surname: 'Razzeto',
       fullName: 'Lucas Razzeto',
-      role: 'Mediocampista central',
+      role: { es: 'Mediocampista central', en: 'Central midfielder' },
       stats: [
-        { label: 'Posición', value: 'Volante' },
-        { label: 'Edad', value: '23' },
-        { label: 'Altura', value: '1,78' },
-        { label: 'Club', value: 'Sportivo SF' }
+        { labelKey: 'stat_position', es: 'Volante', en: 'Midfielder' },
+        { labelKey: 'stat_age', es: '23', en: '23' },
+        { labelKey: 'stat_height', es: '1,78', en: '1.78 m' },
+        { labelKey: 'stat_club', es: 'Sportivo SF', en: 'Sportivo SF' }
       ],
-      quote: '“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”'
+      quote: { es: '“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”', en: '“He started out as a striker and got moved to midfield at 16. He never went back to the box.”' }
     },
     {
       photo: 'assets/spertino.jpg',
       surname: 'Spertino',
       fullName: 'Tomás Spertino',
-      role: 'Delantero',
+      role: { es: 'Delantero', en: 'Forward' },
       stats: [
-        { label: 'Posición', value: 'Delantero' },
-        { label: 'Edad', value: '19' },
-        { label: 'Altura', value: '1,81' },
-        { label: 'Club', value: 'Central Cba.' }
+        { labelKey: 'stat_position', es: 'Delantero', en: 'Forward' },
+        { labelKey: 'stat_age', es: '19', en: '19' },
+        { labelKey: 'stat_height', es: '1,81', en: '1.81 m' },
+        { labelKey: 'stat_club', es: 'Central Cba.', en: 'Central Cba.' }
       ],
-      quote: '“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”'
+      quote: { es: '“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”', en: '“He scored 14 goals in his first reserve-team season. He still lives at the club\'s boarding house.”' }
     },
     {
       photo: 'assets/neira.jpg',
       surname: 'Neira',
       fullName: 'Matías Neira',
-      role: 'Lateral derecho',
+      role: { es: 'Lateral derecho', en: 'Right-back' },
       stats: [
-        { label: 'Posición', value: 'Lateral' },
-        { label: 'Edad', value: '25' },
-        { label: 'Altura', value: '1,75' },
-        { label: 'Club', value: 'Dep. Lara' }
+        { labelKey: 'stat_position', es: 'Lateral', en: 'Fullback' },
+        { labelKey: 'stat_age', es: '25', en: '25' },
+        { labelKey: 'stat_height', es: '1,75', en: '1.75 m' },
+        { labelKey: 'stat_club', es: 'Dep. Lara', en: 'Dep. Lara' }
       ],
-      quote: '“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”'
+      quote: { es: '“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”', en: '“He\'s been playing in Venezuela since 2022. His family watches every match from back home in Rosario.”' }
     },
     {
       photo: 'assets/garayalde.jpg',
       surname: 'Garayalde',
       fullName: 'Ivo Garayalde',
-      role: 'Tenis de playa',
+      role: { es: 'Tenis de playa', en: 'Beach tennis' },
       stats: [
-        { label: 'Edad', value: '21' },
-        { label: 'Ranking', value: 'Top 10' },
-        { label: 'Altura', value: '1,83' },
-        { label: 'Desde', value: '2018' }
+        { labelKey: 'stat_age', es: '21', en: '21' },
+        { labelKey: 'stat_ranking', es: 'Top 10', en: 'Top 10' },
+        { labelKey: 'stat_height', es: '1,83', en: '1.83 m' },
+        { labelKey: 'stat_since', es: '2018', en: '2018' }
       ],
-      quote: '“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”'
+      quote: { es: '“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”', en: '“He trains on the beach all year round, even in winter. He started out playing padel.”' }
     },
     {
       photo: 'assets/vanega.jpg',
       surname: 'Vanega',
       fullName: 'Julián Vanega',
-      role: 'Arquero',
+      role: { es: 'Arquero', en: 'Goalkeeper' },
       stats: [
-        { label: 'Posición', value: 'Arquero' },
-        { label: 'Edad', value: '27' },
-        { label: 'Altura', value: '1,89' },
-        { label: 'Club', value: 'Dep. Morón' }
+        { labelKey: 'stat_position', es: 'Arquero', en: 'Goalkeeper' },
+        { labelKey: 'stat_age', es: '27', en: '27' },
+        { labelKey: 'stat_height', es: '1,89', en: '1.89 m' },
+        { labelKey: 'stat_club', es: 'Dep. Morón', en: 'Dep. Morón' }
       ],
-      quote: '“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”'
+      quote: { es: '“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”', en: '“He\'s a fan of the club he plays for. He made his debut on the very pitch he used to watch from the stands as a kid.”' }
     }
   ];
 
-  (function () {
+  let athletesActiveIndex = 0;
+  function renderAthletes(lang) {
     const strip = document.getElementById('athletesStrip');
     if (!strip) return;
+    const dict = I18N[lang] || {};
+    const verVerb = lang === 'en' ? 'View' : 'Ver a';
 
     strip.innerHTML = ATHLETES.map((a, i) => `
-      <div class="athlete-panel${i === 0 ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="Ver a ${a.fullName}" style="background-image:url(${a.photo})">
+      <div class="athlete-panel${i === athletesActiveIndex ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="${verVerb} ${a.fullName}" style="background-image:url(${a.photo})">
         <div class="athlete-body">
           <div class="athlete-name">${a.surname}</div>
-          <div class="athlete-role">${a.role}</div>
+          <div class="athlete-role">${a.role[lang] || a.role.es}</div>
           <div class="athlete-stats">
-            ${a.stats.map(s => `<div class="athlete-stat"><span class="athlete-stat-label">${s.label}</span><span class="athlete-stat-value">${s.value}</span></div>`).join('')}
-            <div class="athlete-quote">${a.quote}</div>
+            ${a.stats.map(s => `<div class="athlete-stat"><span class="athlete-stat-label">${dict[s.labelKey] || s.labelKey}</span><span class="athlete-stat-value">${s[lang] || s.es}</span></div>`).join('')}
+            <div class="athlete-quote">${a.quote[lang] || a.quote.es}</div>
           </div>
         </div>
       </div>
@@ -976,6 +1202,7 @@
     const panels = Array.from(strip.querySelectorAll('.athlete-panel'));
 
     function setActive(index) {
+      athletesActiveIndex = index;
       panels.forEach((p, i) => p.classList.toggle('active', i === index));
     }
 
@@ -984,9 +1211,7 @@
       panel.addEventListener('focus', () => setActive(i));
       panel.addEventListener('click', () => setActive(i));
     });
-
-    setActive(0);
-  })();
+  }
 
   // Scrollspy nav
   const spySections = ['servicios', 'trabajo', 'deportistas', 'marcas', 'prensa', 'contacto'];
@@ -1005,6 +1230,66 @@
     const section = document.getElementById(id);
     if (section) spy.observe(section);
   });
+
+  // ---------- Selector de idioma ----------
+  const LANG_KEY = 'hrk_lang';
+  let currentLang = 'es';
+
+  function applyI18n(lang) {
+    const dict = I18N[lang] ? lang : 'es';
+    currentLang = dict;
+    const strings = I18N[dict];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (strings[key] != null) el.textContent = strings[key];
+    });
+    document.documentElement.lang = dict === 'en' ? 'en' : 'es-AR';
+    renderAthletes(dict);
+    document.querySelectorAll('#langCurrent, #langCurrentMobile').forEach(el => { el.textContent = dict.toUpperCase(); });
+    document.querySelectorAll('.lang-option').forEach(btn => {
+      const isActive = btn.dataset.lang === dict;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+    });
+    try { localStorage.setItem(LANG_KEY, dict); } catch (e) {}
+  }
+
+  // Dropdowns del selector (desktop + mobile)
+  [
+    { switchId: 'langSwitch', btnId: 'langSwitchBtn' },
+    { switchId: 'langSwitchMobile', btnId: 'langSwitchBtnMobile' }
+  ].forEach(({ switchId, btnId }) => {
+    const wrap = document.getElementById(switchId);
+    const btn = document.getElementById(btnId);
+    if (!wrap || !btn) return;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !wrap.classList.contains('open');
+      document.querySelectorAll('.lang-switch.open').forEach(w => { w.classList.remove('open'); w.querySelector('.lang-switch-btn').setAttribute('aria-expanded', 'false'); });
+      wrap.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+    wrap.querySelectorAll('.lang-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        applyI18n(opt.dataset.lang);
+        wrap.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.lang-switch.open').forEach(w => { w.classList.remove('open'); w.querySelector('.lang-switch-btn').setAttribute('aria-expanded', 'false'); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.lang-switch.open').forEach(w => { w.classList.remove('open'); w.querySelector('.lang-switch-btn').setAttribute('aria-expanded', 'false'); });
+    }
+  });
+
+  // Idioma inicial: localStorage o español por defecto
+  let savedLang = 'es';
+  try { savedLang = localStorage.getItem(LANG_KEY) || 'es'; } catch (e) {}
+  applyI18n(savedLang);
 </script>
 </body>
 </html>
