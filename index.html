@@ -166,14 +166,11 @@
   .work-compare-tag.before{left:20px;background:rgba(10,10,12,.55);border:1px solid rgba(255,255,255,.18);color:#fff}
   .work-compare-tag.after{right:20px;background:var(--accent);color:var(--accent-ink)}
   .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
-  .work-compare-role{display:inline-block;padding:5px 10px;border-radius:6px;background:var(--accent);color:var(--accent-ink);font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
   .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:3.375rem;color:#fff;margin:0}
   .work-compare-desc{font-size:.875rem;line-height:1.5;color:rgba(255,255,255,.8);max-width:420px;margin:0}
-  .work-compare-hint{font-size:.6875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a8a94}
   .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
   .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
   .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
-  .work-mini-tag{display:inline-block;padding:5px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.25);font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:10px}
   .work-mini-info h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:1.875rem;color:#fff;margin-bottom:8px}
   .work-mini-info p{font-size:.8125rem;line-height:1.5;color:rgba(255,255,255,.75);margin:0}
   @media(max-width:900px){
@@ -508,22 +505,18 @@
         <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
         <span class="work-compare-tag after" data-i18n="compare_after">Con HRK</span>
         <div class="work-compare-info">
-          <span class="work-compare-role" data-i18n="compare_role">Deportista</span>
           <h3 class="work-compare-name">Eze Neira</h3>
           <p class="work-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
-          <span class="work-compare-hint" data-i18n="compare_hint">Arrastrá para ver el antes y después</span>
         </div>
       </div>
       <div class="work-mini reveal" style="--photo:url(assets/legion.jpg)">
         <div class="work-mini-info">
-          <span class="work-mini-tag" data-i18n="tag_producer">Productora</span>
           <h3>La Legión Producciones</h3>
           <p data-i18n="work_legion_p">Rebranding, identidad visual y cobertura de eventos deportivos.</p>
         </div>
       </div>
       <div class="work-mini reveal" style="--photo:url(assets/street-clash.jpg)">
         <div class="work-mini-info">
-          <span class="work-mini-tag" data-i18n="tag_tournament">Torneo</span>
           <h3>Street Clash</h3>
           <p data-i18n="work_street_p">Identidad visual, comunicación y cobertura del torneo.</p>
         </div>
@@ -1000,11 +993,8 @@
       work_street_p: 'Identidad visual, comunicación y cobertura del torneo.',
 
       compare_before: 'Antes', compare_after: 'Con HRK',
-      compare_role: 'Deportista',
       compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
-      compare_hint: 'Arrastrá para ver el antes y después',
       compare_aria: 'Comparador antes y después de Eze Neira',
-      tag_producer: 'Productora', tag_tournament: 'Torneo',
 
       athletes_title: 'Deportistas que confían en HRK',
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
@@ -1088,11 +1078,8 @@
       work_street_p: 'Visual identity, communication, and tournament coverage.',
 
       compare_before: 'Before', compare_after: 'With HRK',
-      compare_role: 'Athlete',
       compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
-      compare_hint: 'Drag to see the before and after',
       compare_aria: 'Before and after comparison of Eze Neira',
-      tag_producer: 'Production company', tag_tournament: 'Tournament',
 
       athletes_title: 'Athletes who trust HRK',
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
