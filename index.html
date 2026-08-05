@@ -147,49 +147,43 @@
   }
 
   /* ---------- TRABAJOS ---------- */
-  .work{background:var(--bg);color:var(--ink)}
-  .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  .work-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 24px rgba(0,0,0,.25);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .work-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;color:#fff;font-size:1.375rem;margin-bottom:16px}
-  .work-photo{position:relative;width:100%;flex:1;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background-image:var(--photo,none),linear-gradient(165deg,#2a2a2a 0%,#111 100%);background-size:cover;background-position:center}
-  .work-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:36%;pointer-events:none}
-  .work-card p{color:var(--ink-soft);font-size:1.05rem;line-height:1.6;margin-top:16px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
-  .work-card.wide{grid-column:1/-1}
-  .work-card.wide .work-photo{aspect-ratio:21/9}
-
-  /* ---------- TRABAJOS: COMPARADOR ANTES/DESPUÉS ---------- */
-  .work-compare{position:relative;width:100%;height:620px;margin-bottom:22px;border-radius:var(--radius);overflow:hidden;background:#15151a;cursor:ew-resize;user-select:none;touch-action:none}
+  .work{background:#0a0a0c;color:#fff;padding:96px 60px 100px}
+  .work-title{font-size:3.625rem;line-height:.98;max-width:700px;color:#fff;margin-bottom:40px}
+  .work-mosaic{display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:290px 290px;gap:14px}
+  .work-compare,.work-mini{position:relative;border-radius:18px;overflow:hidden;background:#15151a}
+  .work-compare{grid-row:span 2;cursor:ew-resize;user-select:none;touch-action:none}
   .work-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .work-compare-media{position:absolute;inset:0}
   .work-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
   .work-compare-after{clip-path:inset(0 0 0 50%)}
-  .work-compare-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.55) 0%,rgba(10,10,12,0) 38%,rgba(10,10,12,.94) 100%);pointer-events:none}
+  .work-compare-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.3) 0%,rgba(10,10,12,0) 42%,rgba(10,10,12,.94) 100%);pointer-events:none}
   .work-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none}
-  .work-compare-handle{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .work-compare-handle{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
   .work-compare-arrow{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent}
   .work-compare-arrow.left{border-right:6px solid var(--accent-ink);margin-right:2px}
   .work-compare-arrow.right{border-left:6px solid var(--accent-ink);margin-left:2px}
   .work-compare-tag{position:absolute;top:20px;padding:6px 12px;border-radius:6px;font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;z-index:2;pointer-events:none}
   .work-compare-tag.before{left:20px;background:rgba(10,10,12,.55);border:1px solid rgba(255,255,255,.18);color:#fff}
   .work-compare-tag.after{right:20px;background:var(--accent);color:var(--accent-ink)}
-  .work-compare-info{position:absolute;left:24px;right:24px;bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;z-index:2;pointer-events:none}
-  .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:4.75rem;color:#fff;margin:0}
-  .work-compare-meta{font-size:.8rem;color:#9a9aa5;white-space:nowrap}
-  @media(max-width:680px){
-    .work-compare{height:420px}
+  .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
+  .work-compare-role{display:inline-block;padding:5px 10px;border-radius:6px;background:var(--accent);color:var(--accent-ink);font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:3.375rem;color:#fff;margin:0}
+  .work-compare-desc{font-size:.875rem;line-height:1.5;color:rgba(255,255,255,.8);max-width:420px;margin:0}
+  .work-compare-hint{font-size:.6875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a8a94}
+  .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
+  .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
+  .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
+  .work-mini-tag{display:inline-block;padding:5px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.25);font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:10px}
+  .work-mini-info h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:1.875rem;color:#fff;margin-bottom:8px}
+  .work-mini-info p{font-size:.8125rem;line-height:1.5;color:rgba(255,255,255,.75);margin:0}
+  @media(max-width:900px){
+    .work{padding:64px 20px 72px}
+    .work-title{font-size:2.25rem;margin-bottom:28px}
+    .work-mosaic{grid-template-columns:1fr;grid-template-rows:none;gap:14px}
+    .work-compare{grid-row:auto;height:420px}
     .work-compare-name{font-size:2.25rem}
-    .work-compare-info{flex-direction:column;align-items:flex-start;gap:6px}
     .work-compare-handle{width:38px;height:38px}
-  }
-
-  .work-deliverables{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #16161b;margin-bottom:22px}
-  .work-deliverable{display:flex;align-items:flex-start;gap:10px;padding:20px 24px;border-left:1px solid #16161b}
-  .work-deliverable:first-child{border-left:0}
-  .work-deliverable-check{color:var(--accent);font-weight:700;flex:none;line-height:1.5}
-  .work-deliverable span:last-child{font-size:.8125rem;line-height:1.5;color:#9a9aa5}
-  @media(max-width:680px){
-    .work-deliverables{grid-template-columns:repeat(2,1fr)}
-    .work-deliverable:nth-child(3){border-left:0}
+    .work-mini{height:280px}
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
@@ -348,8 +342,6 @@
   @media(max-width:680px){
     section{padding:72px 0}
     .hero h1{font-size:2.5rem}
-    .work-grid{grid-template-columns:1fr}
-    .work-card.wide .work-photo{aspect-ratio:4/5}
     footer{padding-bottom:96px}
     .process h2{font-size:2.125rem}
     .press{min-height:560px;height:auto;padding:120px 0 64px}
@@ -494,90 +486,53 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="#0a0a0c"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ TRABAJOS ============ -->
 <section id="trabajo" class="work">
   <div class="wrap">
-    <div class="section-head reveal">
-      <h2 data-i18n="work_title">Trabajos</h2>
-      <p class="section-dek" data-i18n="work_dek">Selección de proyectos que llevamos adelante.</p>
-    </div>
-    <div class="work-compare reveal" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
-      <div class="work-compare-media">
-        <img class="work-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
-        <img class="work-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
-      </div>
-      <div class="work-compare-scrim" aria-hidden="true"></div>
-      <div class="work-compare-divider" aria-hidden="true">
-        <span class="work-compare-handle">
-          <span class="work-compare-arrow left"></span>
-          <span class="work-compare-arrow right"></span>
-        </span>
-      </div>
-      <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
-      <span class="work-compare-tag after" data-i18n="compare_after">Con HRK</span>
-      <div class="work-compare-info">
-        <h3 class="work-compare-name">Eze Neira</h3>
-        <span class="work-compare-meta" data-i18n="compare_meta">6 meses · 4 entregables</span>
-      </div>
-    </div>
-    <div class="work-deliverables reveal">
-      <div class="work-deliverable"><span class="work-deliverable-check">✓</span><span data-i18n="deliverable_1">Dossier profesional con datos, video y contexto.</span></div>
-      <div class="work-deliverable"><span class="work-deliverable-check">✓</span><span data-i18n="deliverable_2">Contenido con calidad de primera división.</span></div>
-      <div class="work-deliverable"><span class="work-deliverable-check">✓</span><span data-i18n="deliverable_3">Registro ordenado de cada partido.</span></div>
-      <div class="work-deliverable"><span class="work-deliverable-check">✓</span><span data-i18n="deliverable_4">Perfil listo para que lo mire un scout.</span></div>
-    </div>
-    <div class="work-grid">
-      <div class="work-card reveal">
-        <h3>La Legión Producciones</h3>
-        <div class="work-photo" style="--photo:url(assets/legion.jpg)">
-          <svg class="work-wave" viewBox="0 0 400 150" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="waveGradLegion" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#1c1c22"/>
-                <stop offset="100%" stop-color="#3a3a42"/>
-              </linearGradient>
-              <filter id="waveBlurLegion" x="-20%" y="-60%" width="140%" height="220%">
-                <feGaussianBlur stdDeviation="9"/>
-              </filter>
-            </defs>
-            <g filter="url(#waveBlurLegion)">
-              <path d="M-20,60 C60,110 140,30 220,80 C300,125 360,45 420,85 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.48"/>
-              <path d="M-20,100 C80,55 170,120 260,70 C340,35 380,110 420,65 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.4"/>
-              <path d="M-20,125 C100,145 200,105 300,135 C350,150 390,120 420,140 L420,150 L-20,150 Z" fill="url(#waveGradLegion)" opacity="0.32"/>
-            </g>
-          </svg>
+    <h2 class="work-title reveal" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
+    <div class="work-mosaic">
+      <div class="work-compare reveal" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
+        <div class="work-compare-media">
+          <img class="work-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
+          <img class="work-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
         </div>
-        <p data-i18n="work_legion_p">Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.</p>
-      </div>
-      <div class="work-card wide reveal">
-        <h3>Street Clash</h3>
-        <div class="work-photo" style="--photo:url(assets/street-clash.jpg)">
-          <svg class="work-wave" viewBox="0 0 900 150" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="waveGradStreet" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#1c1c22"/>
-                <stop offset="100%" stop-color="#3a3a42"/>
-              </linearGradient>
-              <filter id="waveBlurStreet" x="-20%" y="-60%" width="140%" height="220%">
-                <feGaussianBlur stdDeviation="12"/>
-              </filter>
-            </defs>
-            <g filter="url(#waveBlurStreet)">
-              <path d="M-40,70 C150,10 300,130 450,55 C600,-10 750,110 940,50 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.48"/>
-              <path d="M-40,110 C180,150 330,45 500,100 C650,145 800,70 940,105 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.38"/>
-              <path d="M-40,130 C200,150 400,110 600,140 C700,155 850,125 940,135 L940,150 L-40,150 Z" fill="url(#waveGradStreet)" opacity="0.3"/>
-            </g>
-          </svg>
+        <div class="work-compare-scrim" aria-hidden="true"></div>
+        <div class="work-compare-divider" aria-hidden="true">
+          <span class="work-compare-handle">
+            <span class="work-compare-arrow left"></span>
+            <span class="work-compare-arrow right"></span>
+          </span>
         </div>
-        <p data-i18n="work_street_p">Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.</p>
+        <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
+        <span class="work-compare-tag after" data-i18n="compare_after">Con HRK</span>
+        <div class="work-compare-info">
+          <span class="work-compare-role" data-i18n="compare_role">Deportista</span>
+          <h3 class="work-compare-name">Eze Neira</h3>
+          <p class="work-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
+          <span class="work-compare-hint" data-i18n="compare_hint">Arrastrá para ver el antes y después</span>
+        </div>
+      </div>
+      <div class="work-mini reveal" style="--photo:url(assets/legion.jpg)">
+        <div class="work-mini-info">
+          <span class="work-mini-tag" data-i18n="tag_producer">Productora</span>
+          <h3>La Legión Producciones</h3>
+          <p data-i18n="work_legion_p">Rebranding, identidad visual y cobertura de eventos deportivos.</p>
+        </div>
+      </div>
+      <div class="work-mini reveal" style="--photo:url(assets/street-clash.jpg)">
+        <div class="work-mini-info">
+          <span class="work-mini-tag" data-i18n="tag_tournament">Torneo</span>
+          <h3>Street Clash</h3>
+          <p data-i18n="work_street_p">Identidad visual, comunicación y cobertura del torneo.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="#0a0a0c"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -1040,16 +995,16 @@
       svc_e6_t: 'Material para sponsors', svc_e6_p: 'Contenido propio para cada marca que te acompaña.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Transmisión y comunicación durante todo el evento.',
 
-      work_title: 'Trabajos', work_dek: 'Selección de proyectos que llevamos adelante.',
-      work_legion_p: 'Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.',
-      work_street_p: 'Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.',
+      work_headline: 'Selección de proyectos que llevamos adelante',
+      work_legion_p: 'Rebranding, identidad visual y cobertura de eventos deportivos.',
+      work_street_p: 'Identidad visual, comunicación y cobertura del torneo.',
 
-      compare_before: 'Antes', compare_after: 'Con HRK', compare_meta: '6 meses · 4 entregables',
+      compare_before: 'Antes', compare_after: 'Con HRK',
+      compare_role: 'Deportista',
+      compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
+      compare_hint: 'Arrastrá para ver el antes y después',
       compare_aria: 'Comparador antes y después de Eze Neira',
-      deliverable_1: 'Dossier profesional con datos, video y contexto.',
-      deliverable_2: 'Contenido con calidad de primera división.',
-      deliverable_3: 'Registro ordenado de cada partido.',
-      deliverable_4: 'Perfil listo para que lo mire un scout.',
+      tag_producer: 'Productora', tag_tournament: 'Torneo',
 
       athletes_title: 'Deportistas que confían en HRK',
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
@@ -1128,16 +1083,16 @@
       svc_e6_t: 'Sponsor content', svc_e6_p: 'Custom content for every brand backing you.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Broadcast and coverage throughout the whole event.',
 
-      work_title: 'Work', work_dek: 'A selection of projects we\'ve led.',
-      work_legion_p: 'Rebranding, visual identity, social media content, and sports event coverage.',
-      work_street_p: 'Visual identity development, tournament communication, and event coverage from the lead-up through competition.',
+      work_headline: 'A selection of projects we\'ve led',
+      work_legion_p: 'Rebranding, visual identity, and sports event coverage.',
+      work_street_p: 'Visual identity, communication, and tournament coverage.',
 
-      compare_before: 'Before', compare_after: 'With HRK', compare_meta: '6 months · 4 deliverables',
+      compare_before: 'Before', compare_after: 'With HRK',
+      compare_role: 'Athlete',
+      compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
+      compare_hint: 'Drag to see the before and after',
       compare_aria: 'Before and after comparison of Eze Neira',
-      deliverable_1: 'Professional dossier with stats, video, and context.',
-      deliverable_2: 'Content with first-division quality.',
-      deliverable_3: 'An organized record of every match.',
-      deliverable_4: 'A profile ready for a scout to see.',
+      tag_producer: 'Production company', tag_tournament: 'Tournament',
 
       athletes_title: 'Athletes who trust HRK',
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
