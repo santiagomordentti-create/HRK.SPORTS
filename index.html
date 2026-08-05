@@ -122,22 +122,22 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- SERVICIOS ---------- */
-  .services{background:var(--bg);padding:96px 80px}
+  .services{background:var(--bg-light);color:#111;padding:96px 80px}
   .services-inner{max-width:1280px;margin:0 auto}
-  .services h2{font-size:3.25rem;color:#fff}
-  .services .section-head p{color:#9a9aa5;font-size:1.125rem}
-  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px}
-  .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#9a9aa5;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
-  .services-tab:not(.active):hover{background:var(--surface-hover);color:#fff}
-  .services-tab.active{background:#fff;color:#000}
+  .services h2{font-size:3.25rem;color:#111}
+  .services .section-head p{color:#57534d;font-size:1.125rem}
+  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:#fff;border:1px solid #e2ddd7;border-radius:10px;padding:6px}
+  .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#6b665f;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
+  .services-tab:not(.active):hover{background:#f2efe9;color:#111}
+  .services-tab.active{background:#111;color:#fff}
   .services-panels{position:relative}
   .services-grid{display:none;grid-template-columns:repeat(3,1fr);gap:14px;opacity:0;transition:opacity .25s ease}
   .services-grid.active{display:grid}
   .services-grid.active.fade-in{opacity:1}
-  .svc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;transition:background .2s ease,border-color .2s ease}
-  .svc-card:hover{background:var(--card-hover);border-color:var(--line-strong)}
-  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:1.125rem;color:#fff;margin-bottom:8px}
-  .svc-card p{font-size:.906rem;line-height:1.5;color:#8a8a94}
+  .svc-card{background:#fff;border:1px solid #e8e4e0;border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(17,17,17,.05);transition:border-color .2s ease,box-shadow .2s ease}
+  .svc-card:hover{border-color:#d8d2ca;box-shadow:0 4px 20px rgba(17,17,17,.09)}
+  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:1.125rem;color:#111;margin-bottom:8px}
+  .svc-card p{font-size:.906rem;line-height:1.5;color:#57534d}
   @media(max-width:1100px){.services-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:720px){
     .services{padding:64px 20px}
@@ -146,25 +146,25 @@
   }
 
   /* ---------- TRABAJOS ---------- */
-  .work{background:#faf8f6;color:#111}
-  .work .section-head p{color:#57534d}
+  .work{background:var(--bg);color:var(--ink)}
+  .work .section-head p{color:var(--ink-soft)}
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  .work-card{background:#fff;border:1px solid #e8e4e0;border-radius:var(--radius);box-shadow:0 4px 24px rgba(17,17,17,.06);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .work-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;color:#111;font-size:1.375rem;margin-bottom:16px}
+  .work-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 24px rgba(0,0,0,.25);padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .work-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;color:#fff;font-size:1.375rem;margin-bottom:16px}
   .work-photo{position:relative;width:100%;flex:1;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background-image:var(--photo,none),linear-gradient(165deg,#2a2a2a 0%,#111 100%);background-size:cover;background-position:center}
   .work-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:36%;pointer-events:none}
-  .work-card p{color:#222;font-size:1.05rem;line-height:1.6;margin-top:16px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+  .work-card p{color:var(--ink-soft);font-size:1.05rem;line-height:1.6;margin-top:16px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
   .work-card.wide{grid-column:1/-1}
   .work-card.wide .work-photo{aspect-ratio:21/9}
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  #deportistas{padding:56px 0}
+  #deportistas{padding:56px 0;background:var(--bg-light);color:#111}
   #deportistas .wrap{max-width:1440px;padding:0 16px}
-  .athletes-title{font-size:3.25rem;color:#fff;margin-bottom:18px}
+  .athletes-title{font-size:3.25rem;color:#111;margin-bottom:18px}
   .athletes-strip{display:flex;gap:12px;height:560px}
-  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
-  .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-  .athlete-panel.active{flex:3.2;border-color:#4a4a55}
+  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #e2ddd7;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
+  .athlete-panel:focus-visible{outline:2px solid rgba(17,17,17,.6);outline-offset:2px}
+  .athlete-panel.active{flex:3.2;border-color:#d8d2ca}
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
   .athlete-name{font-family:var(--title);font-weight:400;color:#fff;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1)}
@@ -183,7 +183,7 @@
     #deportistas .wrap{padding:0 14px}
     .athletes-title{font-size:2.25rem;margin-bottom:14px}
     .athletes-strip{flex-direction:column;height:auto;gap:14px}
-    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
+    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#e2ddd7}
     .athlete-body{position:relative;padding:180px 18px 18px}
     .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
@@ -192,29 +192,6 @@
     .athlete-stat-label,.athlete-stat-value{overflow:visible;text-overflow:clip}
     .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:unset;display:block}
   }
-
-  /* ---------- MARCAS ---------- */
-  .brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
-  .brand{min-width:0;aspect-ratio:3/2;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.35);font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:0 10px;transition:border-color .2s,color .2s,box-shadow .2s}
-  .brand:hover{border-color:#fff;color:#fff;box-shadow:var(--glow-hover)}
-
-  /* ---------- BANDAS CLARAS (Marcas, Contacto) ---------- */
-  .band-light{background:#faf8f6;color:#111}
-  .band-light .section-head p{color:#444}
-  .band-light .brand{background:#fff;border:1px solid #e2ddd7;color:#8a847d}
-  .band-light .brand:hover{border-color:#111;color:#111;box-shadow:0 0 8px rgba(17,17,17,.12)}
-  .band-light .contact-info p{color:#444}
-  .band-light .contact-card{background:#fff;border:1px solid #e2ddd7}
-  .band-light .contact-card:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.1)}
-  .band-light .contact-card svg{color:#111;filter:none}
-  .band-light .contact-card small{color:#666}
-  .band-light .contact-form-card{background:#fff;border:1px solid #e2ddd7;box-shadow:0 4px 24px rgba(17,17,17,.06)}
-  .band-light .field label{color:#444}
-  .band-light .field input,.band-light .field select,.band-light .field textarea{background:#fff;color:#111;border:1px solid #ddd6ce}
-  .band-light .field input:focus,.band-light .field select:focus,.band-light .field textarea:focus{border-color:#111;box-shadow:0 0 0 3px rgba(17,17,17,.08)}
-  .band-light .form-note{color:#666}
-  .band-light .btn{background:#111;color:#fff !important;box-shadow:none}
-  .band-light .btn:hover{box-shadow:0 0 8px rgba(17,17,17,.25)}
 
   /* ---------- PROCESO (STEPPER AUTO-GUIADO) ---------- */
   #proceso{padding:56px 0}
@@ -254,18 +231,20 @@
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
-  .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--bg);color:#fff}
+  .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--bg-light);color:#111}
   .press-media{position:absolute;inset:0}
   .press-media img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
-  .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(22,22,26,.97) 0%,rgba(22,22,26,.92) 38%,rgba(22,22,26,.35) 72%,rgba(22,22,26,.55) 100%)}
+  .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(250,248,246,.97) 0%,rgba(250,248,246,.92) 38%,rgba(250,248,246,.35) 72%,rgba(250,248,246,.55) 100%)}
   .press-content{position:relative;z-index:2;max-width:760px;padding:0 80px}
   .press-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .press-kicker{font-family:Georgia,'Times New Roman',serif;font-size:1.875rem;color:#fff}
-  .press-divider{width:1px;height:18px;background:rgba(255,255,255,.35)}
-  .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.55)}
-  .press-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.5rem;line-height:1;letter-spacing:-.005em;color:#fff}
-  .press-dek{margin-top:22px;max-width:600px;font-size:1.19rem;line-height:1.6;color:rgba(255,255,255,.78)}
+  .press-kicker{font-family:Georgia,'Times New Roman',serif;font-size:1.875rem;color:#111}
+  .press-divider{width:1px;height:18px;background:rgba(17,17,17,.35)}
+  .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(17,17,17,.55)}
+  .press-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.5rem;line-height:1;letter-spacing:-.005em;color:#111}
+  .press-dek{margin-top:22px;max-width:600px;font-size:1.19rem;line-height:1.6;color:rgba(17,17,17,.78)}
   .press-cta{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
+  .press .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
+  .press .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
 
   /* ---------- CONTACTO ---------- */
   .contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
@@ -289,13 +268,13 @@
   .form-note{color:var(--ink-faint);font-size:.82rem}
 
   /* ---------- FOOTER ---------- */
-  footer{border-top:1px solid var(--line);padding:36px 0}
+  footer{background:var(--bg-light);color:#111;border-top:1px solid #e2ddd7;padding:36px 0}
   .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .foot .logo{color:var(--ink);font-size:1.1rem}
-  .foot p{color:var(--ink-faint);font-size:.85rem}
+  .foot .logo{color:#111;font-size:1.1rem}
+  .foot p{color:#57534d;font-size:.85rem}
   .foot-social{display:flex;gap:18px}
-  .foot-social a{color:var(--ink-faint);font-size:.88rem;font-weight:600;transition:color .2s,text-shadow .2s}
-  .foot-social a:hover{color:var(--accent);text-shadow:0 0 5px rgba(215,245,81,.3)}
+  .foot-social a{color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
+  .foot-social a:hover{color:#5c6810}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -320,7 +299,6 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
-    .brands-grid{grid-template-columns:repeat(3,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:40px}
     .nav-group{display:none}
     .nav-links{display:flex;position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:150}
@@ -337,11 +315,10 @@
     .hero h1{font-size:2.5rem}
     .work-grid{grid-template-columns:1fr}
     .work-card.wide .work-photo{aspect-ratio:4/5}
-    .brands-grid{grid-template-columns:repeat(2,1fr)}
     footer{padding-bottom:96px}
     .process h2{font-size:2.125rem}
     .press{min-height:560px;height:auto;padding:120px 0 64px}
-    .press-media::after{background:linear-gradient(to bottom,rgba(22,22,26,.55) 0%,rgba(22,22,26,.97) 100%)}
+    .press-media::after{background:linear-gradient(to bottom,rgba(250,248,246,.55) 0%,rgba(250,248,246,.97) 100%)}
     .press-content{padding:0 24px}
     .press-title{font-size:2.125rem}
   }
@@ -358,7 +335,6 @@
     </nav>
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
     <nav class="nav-group right" aria-label="Navegación secundaria">
-      <a href="#marcas" class="nav-link" data-i18n="nav_marcas">Marcas</a>
       <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
       <a href="#contacto" class="nav-link" data-i18n="nav_contacto">Contacto</a>
       <div class="lang-switch" id="langSwitch">
@@ -383,7 +359,6 @@
     <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
     <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
     <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
-    <a href="#marcas" class="nav-link" data-i18n="nav_marcas">Marcas</a>
     <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
     <a href="#contacto" class="btn" data-i18n="nav_contacto">Contacto</a>
     <div class="lang-switch lang-switch-mobile" id="langSwitchMobile">
@@ -413,7 +388,7 @@
     </video>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
         <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -484,7 +459,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ TRABAJOS ============ -->
 <section id="trabajo" class="work">
@@ -563,7 +538,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -573,28 +548,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
-
-<!-- ============ MARCAS ============ -->
-<section id="marcas" class="brands band-light">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2 data-i18n="brands_title">Marcas que confían en HRK</h2>
-      <p data-i18n="brands_dek">Marcas y clubes con los que trabajamos.</p>
-    </div>
-    <div class="brands-grid">
-      <!-- Reemplazá cada bloque con: <div class="brand"><img src="assets/logo-marca.png" alt="Logo de [Nombre de la marca]" loading="lazy" style="max-height:60%;max-width:70%;object-fit:contain"></div> -->
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-      <div class="brand reveal" data-i18n="brands_placeholder">Logo marca</div>
-    </div>
-  </div>
-</section>
-
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,36 C180,36 180,90 360,90 C540,90 540,36 720,36 C900,36 900,90 1080,90 C1260,90 1260,36 1440,36 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,36 C180,36 180,90 360,90 C540,90 540,36 720,36 C900,36 900,90 1080,90 C1260,90 1260,36 1440,36" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
@@ -671,7 +625,7 @@
     </div>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
+        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg)"/>
         <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -691,7 +645,7 @@
 </section>
 
 <!-- ============ CONTACTO ============ -->
-<section id="contacto" class="band-light">
+<section id="contacto">
   <div class="wrap">
     <div class="contact-grid">
       <div class="contact-info reveal">
@@ -754,7 +708,7 @@
 </section>
 </main>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <a class="whatsapp-float" href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
@@ -939,7 +893,7 @@
   const I18N = {
     es: {
       nav_servicios: 'Servicios', nav_trabajos: 'Trabajos', nav_deportistas: 'Deportistas',
-      nav_marcas: 'Marcas', nav_blog: 'Blog', nav_contacto: 'Contacto',
+      nav_blog: 'Blog', nav_contacto: 'Contacto',
 
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
 
@@ -990,9 +944,6 @@
       athletes_title: 'Deportistas que confían en HRK',
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
 
-      brands_title: 'Marcas que confían en HRK', brands_dek: 'Marcas y clubes con los que trabajamos.',
-      brands_placeholder: 'Logo marca',
-
       process_title: 'Cómo trabajamos',
       step1_name: 'Diagnóstico', step1_time: 'Semana 1',
       step2_name: 'Estrategia', step2_time: 'Semanas 2–3',
@@ -1024,7 +975,7 @@
     },
     en: {
       nav_servicios: 'Services', nav_trabajos: 'Work', nav_deportistas: 'Athletes',
-      nav_marcas: 'Brands', nav_blog: 'Blog', nav_contacto: 'Contact',
+      nav_blog: 'Blog', nav_contacto: 'Contact',
 
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
 
@@ -1074,9 +1025,6 @@
 
       athletes_title: 'Athletes who trust HRK',
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
-
-      brands_title: 'Brands that trust HRK', brands_dek: 'Brands and clubs we work with.',
-      brands_placeholder: 'Brand logo',
 
       process_title: 'How we work',
       step1_name: 'Discovery', step1_time: 'Week 1',
@@ -1214,7 +1162,7 @@
   }
 
   // Scrollspy nav
-  const spySections = ['servicios', 'trabajo', 'deportistas', 'marcas', 'prensa', 'contacto'];
+  const spySections = ['servicios', 'trabajo', 'deportistas', 'prensa', 'contacto'];
   const navLinkMap = {};
   spySections.forEach(id => { navLinkMap[id] = Array.from(document.querySelectorAll(`.nav-link[href="#${id}"]`)); });
   const sectionState = {};
