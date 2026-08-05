@@ -27,7 +27,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,10 +71,9 @@
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
   section{padding:96px 0;scroll-margin-top:90px}
   h2{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.005em}
-  .section-head{max-width:620px;margin:0 auto 64px;text-align:center}
-  .section-head p{color:rgba(255,255,255,.92);margin-top:14px;font-size:1.375rem;font-weight:500;line-height:1.5}
-  .section-head p em{font-style:normal;color:var(--accent)}
-  @media(max-width:680px){.section-head p{font-size:1.0625rem}}
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
+  .section-dek{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;line-height:1.45;color:rgba(255,255,255,.9);max-width:640px;margin:14px auto 0;text-align:center}
+  @media(max-width:680px){.section-dek{font-size:1.125rem}}
 
   /* ---------- NAV ---------- */
   header{position:fixed;inset:0 0 auto 0;z-index:200}
@@ -127,8 +126,7 @@
   .services{background:var(--bg-light);color:#111;padding:96px 80px}
   .services-inner{max-width:1280px;margin:0 auto}
   .services h2{font-size:3.25rem;color:#111}
-  .services .section-head p{color:#2a2a2e}
-  .services .section-head p em{color:#5c6810}
+  .services .section-dek{color:#2a2a2e}
   .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:#fff;border:1px solid #e2ddd7;border-radius:10px;padding:6px}
   .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#6b665f;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
   .services-tab:not(.active):hover{background:#f2efe9;color:#111}
@@ -243,7 +241,7 @@
   .press-divider{width:1px;height:18px;background:rgba(17,17,17,.35)}
   .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(17,17,17,.55)}
   .press-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.5rem;line-height:1;letter-spacing:-.005em;color:#111}
-  .press-dek{margin-top:22px;max-width:600px;font-size:1.19rem;line-height:1.6;color:rgba(17,17,17,.78)}
+  .press-content .section-dek{color:#2a2a2e;text-align:left;margin:14px 0 0}
   .press-cta{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
   .press .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
   .press .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
@@ -251,7 +249,7 @@
   /* ---------- CONTACTO ---------- */
   .contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
   .contact-info h2{margin-bottom:14px}
-  .contact-info p{color:var(--ink-soft);font-size:1.25rem;max-width:440px;margin-bottom:32px}
+  .contact-info .section-dek{text-align:left;margin:14px 0 32px}
   .contact-cards{display:flex;flex-direction:column;gap:14px}
   .contact-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;transition:border-color .2s,background .2s,box-shadow .2s}
   .contact-card:hover{border-color:#fff;box-shadow:var(--glow-hover)}
@@ -405,7 +403,7 @@
   <div class="services-inner">
     <div class="section-head reveal">
       <h2 data-i18n="services_title">Servicios</h2>
-      <p><span data-i18n="services_dek_pre">Decinos</span> <em data-i18n="services_dek_em">quién sos</em> <span data-i18n="services_dek_post">y te mostramos qué hacemos por vos.</span></p>
+      <p class="section-dek" data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
 
     <div class="services-tabs" role="tablist" aria-label="Servicios por público">
@@ -468,7 +466,7 @@
   <div class="wrap">
     <div class="section-head reveal">
       <h2 data-i18n="work_title">Trabajos</h2>
-      <p><span data-i18n="work_dek_pre">Selección de</span> <em data-i18n="work_dek_em">proyectos</em> <span data-i18n="work_dek_post">que llevamos adelante.</span></p>
+      <p class="section-dek" data-i18n="work_dek">Selección de proyectos que llevamos adelante.</p>
     </div>
     <div class="work-grid">
       <div class="work-card reveal">
@@ -639,7 +637,7 @@
       <span class="press-date" data-i18n="press_date">14 de julio 2026</span>
     </div>
     <h2 class="press-title" data-i18n="press_title">HRK entre los proyectos elegidos por UADE HUB</h2>
-    <p class="press-dek" data-i18n="press_dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
+    <p class="section-dek" data-i18n="press_dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
     <div class="press-cta">
       <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener" data-i18n="press_cta">Leer la nota ↗</a>
     </div>
@@ -652,7 +650,7 @@
     <div class="contact-grid">
       <div class="contact-info reveal">
         <h2 data-i18n="contact_title">¿Listo para dar el siguiente paso?</h2>
-        <p data-i18n="contact_dek">Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
+        <p class="section-dek" data-i18n="contact_dek">Contanos tu proyecto por el formulario o escribinos por WhatsApp.</p>
         <div class="contact-cards">
           <a class="contact-card" href="mailto:hrk.sports2025@gmail.com" aria-label="Escribir a HRK Sports por mail a hrk.sports2025@gmail.com">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg>
@@ -900,7 +898,7 @@
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
 
       services_title: 'Servicios',
-      services_dek_pre: 'Decinos', services_dek_em: 'quién sos', services_dek_post: 'y te mostramos qué hacemos por vos.',
+      services_dek: 'Decinos quién sos y te mostramos qué hacemos por vos.',
       tab_deportista: 'Soy deportista', tab_representante: 'Represento jugadores',
       tab_marca: 'Tengo una marca', tab_evento: 'Organizo un evento',
 
@@ -938,7 +936,7 @@
       svc_e6_t: 'Material para sponsors', svc_e6_p: 'Contenido propio para cada marca que te acompaña.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Transmisión y comunicación durante todo el evento.',
 
-      work_title: 'Trabajos', work_dek_pre: 'Selección de', work_dek_em: 'proyectos', work_dek_post: 'que llevamos adelante.',
+      work_title: 'Trabajos', work_dek: 'Selección de proyectos que llevamos adelante.',
       work_neira_p: 'Gestión integral de imagen, diseño de contenido, highlights, comunicación de partidos y posicionamiento digital durante su etapa en Venezuela.',
       work_legion_p: 'Rebranding, identidad visual, contenido para redes sociales y cobertura de eventos deportivos.',
       work_street_p: 'Desarrollo de la identidad visual, comunicación del torneo y cobertura del evento desde la previa hasta la competencia.',
@@ -982,7 +980,7 @@
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
 
       services_title: 'Services',
-      services_dek_pre: 'Tell us', services_dek_em: 'who you are', services_dek_post: 'and we\'ll show you what we do for you.',
+      services_dek: 'Tell us who you are and we\'ll show you what we do for you.',
       tab_deportista: 'I\'m an athlete', tab_representante: 'I represent players',
       tab_marca: 'I have a brand', tab_evento: 'I\'m organizing an event',
 
@@ -1020,7 +1018,7 @@
       svc_e6_t: 'Sponsor content', svc_e6_p: 'Custom content for every brand backing you.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Broadcast and coverage throughout the whole event.',
 
-      work_title: 'Work', work_dek_pre: 'A selection of', work_dek_em: 'projects', work_dek_post: 'we\'ve led.',
+      work_title: 'Work', work_dek: 'A selection of projects we\'ve led.',
       work_neira_p: 'Full image management, content design, highlights, matchday communication, and digital positioning during his time in Venezuela.',
       work_legion_p: 'Rebranding, visual identity, social media content, and sports event coverage.',
       work_street_p: 'Visual identity development, tournament communication, and event coverage from the lead-up through competition.',
