@@ -157,11 +157,9 @@
   .work-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
   .work-compare-after{clip-path:inset(0 0 0 50%)}
   .work-compare-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.3) 0%,rgba(10,10,12,0) 42%,rgba(10,10,12,.94) 100%);pointer-events:none}
-  .work-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none}
-  .work-compare-handle{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
-  .work-compare-arrow{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent}
-  .work-compare-arrow.left{border-right:6px solid var(--accent-ink);margin-right:2px}
-  .work-compare-arrow.right{border-left:6px solid var(--accent-ink);margin-left:2px}
+  .work-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent);box-shadow:0 0 10px rgba(215,245,81,.5);transform:translateX(-50%);pointer-events:none}
+  .work-compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:56px;border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .work-compare-grip{width:10px;height:2px;border-radius:1px;background:var(--accent-ink)}
   .work-compare-tag{position:absolute;top:20px;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2;pointer-events:none}
   .work-compare-tag.before{left:20px;color:#fff}
   .work-compare-tag.after{right:20px;color:var(--accent)}
@@ -179,7 +177,7 @@
     .work-mosaic{grid-template-columns:1fr;grid-template-rows:none;gap:14px}
     .work-compare{grid-row:auto;height:420px}
     .work-compare-name{font-size:2.25rem}
-    .work-compare-handle{width:38px;height:38px}
+    .work-compare-handle{width:24px;height:48px}
     .work-mini{height:280px}
   }
 
@@ -502,8 +500,9 @@
         <div class="work-compare-scrim" aria-hidden="true"></div>
         <div class="work-compare-divider" aria-hidden="true">
           <span class="work-compare-handle">
-            <span class="work-compare-arrow left"></span>
-            <span class="work-compare-arrow right"></span>
+            <span class="work-compare-grip"></span>
+            <span class="work-compare-grip"></span>
+            <span class="work-compare-grip"></span>
           </span>
         </div>
         <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
