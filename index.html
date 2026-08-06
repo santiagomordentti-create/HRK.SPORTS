@@ -283,8 +283,9 @@
   .contact-form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
   .contact-form{display:flex;flex-direction:column;gap:6px}
   .field{display:flex;flex-direction:column;gap:1px}
-  .field label{font-size:.85rem;font-weight:700;letter-spacing:.01em;color:var(--ink-faint)}
-  .field input,.field select,.field textarea{font-family:var(--font);font-size:.95rem;padding:5px 14px;border-radius:8px;border:1px solid var(--line);background:var(--input-bg);color:var(--ink);transition:border-color .2s,box-shadow .2s}
+  .field label{font-size:.85rem;font-weight:700;letter-spacing:.01em;color:#fff}
+  .field input,.field select,.field textarea{font-family:var(--font);font-size:.95rem;padding:5px 14px;border-radius:8px;border:1px solid var(--line);background:var(--input-bg);color:#fff;transition:border-color .2s,box-shadow .2s}
+  .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.5)}
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
   .field textarea{resize:vertical;min-height:40px}
   .form-submit-group{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:0}
