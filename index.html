@@ -151,28 +151,23 @@
   .work-title{font-size:3.625rem;line-height:.98;max-width:700px;color:#fff;margin-bottom:40px}
   .work-mosaic{display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:290px 290px;gap:14px}
   .work-compare,.work-mini{position:relative;border-radius:18px;overflow:hidden;background:#15151a}
-  .work-compare{grid-row:span 2}
+  .work-compare{grid-row:span 2;cursor:ew-resize;user-select:none;touch-action:none}
   .work-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .work-compare-media{position:absolute;inset:0}
-  .work-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none;opacity:0;transition:opacity .45s ease}
-  .work-compare-media img.work-compare-before{opacity:1}
-  .work-compare:hover .work-compare-before,.work-compare:focus .work-compare-before,.work-compare.active .work-compare-before{opacity:0}
-  .work-compare:hover .work-compare-after,.work-compare:focus .work-compare-after,.work-compare.active .work-compare-after{opacity:1}
+  .work-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
+  .work-compare-after{clip-path:inset(0 0 0 50%)}
   .work-compare-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.3) 0%,rgba(10,10,12,0) 42%,rgba(10,10,12,.94) 100%);pointer-events:none}
-  .work-compare-tag{position:absolute;top:20px;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2;pointer-events:none;transition:opacity .3s ease}
-  .work-compare-tag.before{left:20px;color:#fff;opacity:1}
-  .work-compare-tag.after{right:20px;color:var(--accent);opacity:.4}
-  .work-compare:hover .work-compare-tag.before,.work-compare:focus .work-compare-tag.before,.work-compare.active .work-compare-tag.before{opacity:.4}
-  .work-compare:hover .work-compare-tag.after,.work-compare:focus .work-compare-tag.after,.work-compare.active .work-compare-tag.after{opacity:1}
+  .work-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none}
+  .work-compare-handle{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .work-compare-arrow{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent}
+  .work-compare-arrow.left{border-right:6px solid var(--accent-ink);margin-right:2px}
+  .work-compare-arrow.right{border-left:6px solid var(--accent-ink);margin-left:2px}
+  .work-compare-tag{position:absolute;top:20px;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2;pointer-events:none}
+  .work-compare-tag.before{left:20px;color:#fff}
+  .work-compare-tag.after{right:20px;color:var(--accent)}
   .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
   .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:3.375rem;color:#fff;margin:0}
   .work-compare-desc{font-family:var(--title);font-weight:400;font-size:.875rem;line-height:1.35;color:var(--accent);max-width:420px;margin:0}
-  .work-compare-hint{font-size:.6875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a8a94}
-  .work-compare-hint.mobile-only{display:none}
-  @media (hover:none),(pointer:coarse){
-    .work-compare-hint.desktop-only{display:none}
-    .work-compare-hint.mobile-only{display:block}
-  }
   .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
   .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
   .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
@@ -184,6 +179,7 @@
     .work-mosaic{grid-template-columns:1fr;grid-template-rows:none;gap:14px}
     .work-compare{grid-row:auto;height:420px}
     .work-compare-name{font-size:2.25rem}
+    .work-compare-handle{width:38px;height:38px}
     .work-mini{height:280px}
   }
 
@@ -498,19 +494,23 @@
   <div class="wrap">
     <h2 class="work-title reveal" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
     <div class="work-mosaic">
-      <div class="work-compare reveal" id="workCompare" tabindex="0" data-i18n-aria="compare_aria">
+      <div class="work-compare reveal" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
         <div class="work-compare-media">
           <img class="work-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
           <img class="work-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
         </div>
         <div class="work-compare-scrim" aria-hidden="true"></div>
+        <div class="work-compare-divider" aria-hidden="true">
+          <span class="work-compare-handle">
+            <span class="work-compare-arrow left"></span>
+            <span class="work-compare-arrow right"></span>
+          </span>
+        </div>
         <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
         <span class="work-compare-tag after" data-i18n="compare_after">Con HRK</span>
         <div class="work-compare-info">
           <h3 class="work-compare-name">Eze Neira</h3>
           <p class="work-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
-          <span class="work-compare-hint desktop-only" data-i18n="compare_hint_desktop">Pasá el mouse para ver el cambio</span>
-          <span class="work-compare-hint mobile-only" data-i18n="compare_hint_mobile">Tocá para ver el cambio</span>
         </div>
       </div>
       <div class="work-mini reveal" style="--photo:url(assets/legion.jpg)">
@@ -886,17 +886,63 @@
     if (!compare) return;
     const beforeImg = compare.querySelector('.work-compare-before');
     const afterImg = compare.querySelector('.work-compare-after');
-    const noHover = window.matchMedia('(hover: none)');
+    const divider = compare.querySelector('.work-compare-divider');
+    let dragging = false;
 
-    // En touch no hay estado :hover persistente, así que el toque alterna la clase.
-    compare.addEventListener('click', () => {
-      if (noHover.matches) compare.classList.toggle('active');
+    function setPosition(pct) {
+      pct = Math.min(100, Math.max(0, pct));
+      afterImg.style.clipPath = `inset(0 0 0 ${pct}%)`;
+      divider.style.left = pct + '%';
+      compare.setAttribute('aria-valuenow', String(Math.round(pct)));
+    }
+
+    function pctFromClientX(clientX) {
+      const rect = compare.getBoundingClientRect();
+      return ((clientX - rect.left) / rect.width) * 100;
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(pctFromClientX(clientX));
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function stopDrag() {
+      dragging = false;
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', stopDrag);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', stopDrag);
+    }
+
+    function startDrag(e) {
+      dragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(pctFromClientX(clientX));
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('touchend', stopDrag);
+    }
+
+    compare.addEventListener('mousedown', startDrag);
+    compare.addEventListener('touchstart', startDrag, { passive: true });
+
+    compare.addEventListener('keydown', e => {
+      const current = parseFloat(compare.getAttribute('aria-valuenow')) || 50;
+      if (e.key === 'ArrowLeft') { setPosition(current - 5); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { setPosition(current + 5); e.preventDefault(); }
+      else if (e.key === 'Home') { setPosition(0); e.preventDefault(); }
+      else if (e.key === 'End') { setPosition(100); e.preventDefault(); }
     });
 
     // Si alguna imagen no existe, la ocultamos y queda el fondo oscuro del bloque.
     [beforeImg, afterImg].forEach(img => {
       img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
     });
+
+    setPosition(50);
   })();
 
   // Diccionario de idiomas
@@ -952,8 +998,6 @@
 
       compare_before: 'Antes', compare_after: 'Con HRK',
       compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
-      compare_hint_desktop: 'Pasá el mouse para ver el cambio',
-      compare_hint_mobile: 'Tocá para ver el cambio',
       compare_aria: 'Comparador antes y después de Eze Neira',
 
       athletes_title: 'Deportistas que confían en HRK',
@@ -1039,8 +1083,6 @@
 
       compare_before: 'Before', compare_after: 'With HRK',
       compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
-      compare_hint_desktop: 'Hover to see the change',
-      compare_hint_mobile: 'Tap to see the change',
       compare_aria: 'Before and after comparison of Eze Neira',
 
       athletes_title: 'Athletes who trust HRK',
