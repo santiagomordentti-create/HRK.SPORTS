@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- El selector ES/EN de esta página traduce el DOM por JS (ver applyI18n) y Google indexa el HTML tal como se sirve, en español — por eso lang="es-AR" es correcto para lo que los buscadores realmente ven. Para SEO multiidioma real (que el contenido en inglés también se indexe y aparezca en resultados en inglés) haría falta servir /en/ como una URL separada, con su propio HTML y las etiquetas hreflang correspondientes entre ambas versiones. -->
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
@@ -7,23 +8,25 @@
 <meta name="description" content="HRK Sports: asesoría de imagen y marketing deportivo para deportistas profesionales. Gestión de redes, producción audiovisual y vinculación con marcas.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#16161a">
-<!-- ⚠ Reemplazá por el dominio real del sitio antes de publicar -->
-<link rel="canonical" href="https://www.hrksports.com/">
+<!-- ⚠ hrk-sports.vercel.app es la URL real actual. Cuando se conecte el dominio propio (hrksports.com o el que sea), actualizar canonical, og:url y sitemap.xml/robots.txt a esa URL. -->
+<link rel="canonical" href="https://hrk-sports.vercel.app/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HRK Sports">
 <meta property="og:title" content="HRK Sports — Marketing deportivo y asesoría de imagen para deportistas">
 <meta property="og:description" content="Asesoría de imagen, gestión de redes, producción audiovisual y vinculación con marcas para deportistas profesionales.">
-<meta property="og:url" content="https://www.hrksports.com/">
-<meta property="og:image" content="/og-image.jpg">
+<meta property="og:url" content="https://hrk-sports.vercel.app/">
+<meta property="og:image" content="https://hrk-sports.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_AR">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HRK Sports — Marketing deportivo y asesoría de imagen para deportistas">
 <meta name="twitter:description" content="Asesoría de imagen, gestión de redes, producción audiovisual y vinculación con marcas para deportistas profesionales.">
-<meta name="twitter:image" content="/og-image.jpg">
+<meta name="twitter:image" content="https://hrk-sports.vercel.app/og-image.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,8 +36,9 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "HRK Sports",
-  "url": "https://www.hrksports.com/",
+  "url": "https://hrk-sports.vercel.app/",
   "email": "hrk.sports2025@gmail.com",
+  "description": "HRK Sports: asesoría de imagen y marketing deportivo para deportistas profesionales. Gestión de redes, producción audiovisual y vinculación con marcas.",
   "sameAs": ["https://www.instagram.com/hrk.sports/"]
 }
 </script>
@@ -535,7 +539,74 @@
 <section id="deportistas">
   <div class="wrap">
     <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
-    <div class="athletes-strip" id="athletesStrip"></div>
+    <!-- Pre-renderizado en español para que los nombres existan como texto real en el HTML (SEO); el JS lo reemplaza al cargar para manejar idioma e interacción. -->
+    <div class="athletes-strip" id="athletesStrip">
+      <div class="athlete-panel active" data-index="0" tabindex="0" role="button" aria-label="Ver a Lucas Razzeto" style="background-image:url(assets/razzeto.jpg)">
+        <div class="athlete-body">
+          <div class="athlete-name">Razzeto</div>
+          <div class="athlete-role">Mediocampista central</div>
+          <div class="athlete-stats">
+            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Volante</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">23</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,78</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Sportivo SF</span></div>
+            <div class="athlete-quote">“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”</div>
+          </div>
+        </div>
+      </div>
+      <div class="athlete-panel" data-index="1" tabindex="0" role="button" aria-label="Ver a Tomás Spertino" style="background-image:url(assets/spertino.jpg)">
+        <div class="athlete-body">
+          <div class="athlete-name">Spertino</div>
+          <div class="athlete-role">Delantero</div>
+          <div class="athlete-stats">
+            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Delantero</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">19</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,81</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Central Cba.</span></div>
+            <div class="athlete-quote">“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”</div>
+          </div>
+        </div>
+      </div>
+      <div class="athlete-panel" data-index="2" tabindex="0" role="button" aria-label="Ver a Matías Neira" style="background-image:url(assets/neira.jpg)">
+        <div class="athlete-body">
+          <div class="athlete-name">Neira</div>
+          <div class="athlete-role">Lateral derecho</div>
+          <div class="athlete-stats">
+            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Lateral</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">25</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,75</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Dep. Lara</span></div>
+            <div class="athlete-quote">“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”</div>
+          </div>
+        </div>
+      </div>
+      <div class="athlete-panel" data-index="3" tabindex="0" role="button" aria-label="Ver a Ivo Garayalde" style="background-image:url(assets/garayalde.jpg)">
+        <div class="athlete-body">
+          <div class="athlete-name">Garayalde</div>
+          <div class="athlete-role">Tenis de playa</div>
+          <div class="athlete-stats">
+            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">21</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Ranking</span><span class="athlete-stat-value">Top 10</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,83</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Desde</span><span class="athlete-stat-value">2018</span></div>
+            <div class="athlete-quote">“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”</div>
+          </div>
+        </div>
+      </div>
+      <div class="athlete-panel" data-index="4" tabindex="0" role="button" aria-label="Ver a Julián Vanega" style="background-image:url(assets/vanega.jpg)">
+        <div class="athlete-body">
+          <div class="athlete-name">Vanega</div>
+          <div class="athlete-role">Arquero</div>
+          <div class="athlete-stats">
+            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Arquero</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">27</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,89</span></div>
+            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Dep. Morón</span></div>
+            <div class="athlete-quote">“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
