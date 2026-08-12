@@ -134,50 +134,60 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
+  #nosotros{padding:56px 0;overflow-x:hidden}
   .about{background:var(--bg-light);color:#111}
   .about .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
   .about .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
-  .about-eyebrow{display:inline-block;padding-bottom:14px;margin-bottom:28px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
-  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.25rem;line-height:1.08;letter-spacing:-.005em;color:#111;margin:0 0 48px}
+  .about-eyebrow{display:inline-block;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
+  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:2.75rem;line-height:1.08;letter-spacing:-.005em;color:#111;margin:0 0 32px}
   .about-title.reveal{opacity:1;transform:none}
   .about-title-line{display:block;overflow:hidden}
-  .about-title-inner{display:block;transform:translateY(110%);transition:transform .6s cubic-bezier(.22,1,.36,1)}
+  .about-title-inner{display:block;transform:translateY(105%);transition:transform .6s cubic-bezier(.22,1,.36,1)}
   .about-title.on .about-title-inner{transform:translateY(0)}
   .about-title-line:nth-child(2) .about-title-inner{transition-delay:.1s}
   .about-title-line:nth-child(3) .about-title-inner{transition-delay:.2s}
   .about-highlight{position:relative;display:inline-block}
   .about-highlight-text{position:relative;z-index:1}
-  .about-highlight::before{content:"";position:absolute;top:0;bottom:0;left:0;width:0;background:var(--accent);transition:width .5s cubic-bezier(.22,1,.36,1) .7s}
-  .about-title.on .about-highlight::before{width:100%}
-  .about-manifest{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding-top:40px;border-top:1px solid #e2ddd7}
+  .about-highlight::before{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.22,1,.36,1) .7s}
+  .about-title.on .about-highlight::before{transform:scaleX(1)}
+  .about-manifest{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding-top:28px;border-top:1px solid #e2ddd7}
   .about-lead{font-size:1.625rem;font-weight:700;line-height:1.3;color:#111;max-width:380px}
-  .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px}
   .about-manifest-right{display:flex;flex-direction:column;gap:20px}
   .about-manifest-right p{font-size:1.05rem;line-height:1.6;color:#57534d}
-  .about-pillars{margin-top:64px}
+  .about-pillars{margin-top:40px}
   .about-pillars-label{display:block;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#57534d;margin-bottom:8px}
-  .pillar-row{position:relative;padding:28px 0;border-top:1px solid #e2ddd7;cursor:pointer}
+  .pillar-row{position:relative;padding:18px 0;border-top:1px solid #e2ddd7;cursor:pointer}
   .pillar-row:last-child{border-bottom:1px solid #e2ddd7}
   .pillar-row:focus-visible{outline:2px solid rgba(17,17,17,.5);outline-offset:-2px}
+  .pillar-row.pillar-enter{opacity:0;transform:translateX(140%) skewX(-8deg);transition:transform .78s cubic-bezier(.16,1.06,.28,1),opacity .45s ease}
+  .pillar-row:nth-of-type(2).pillar-enter{transform:translateX(-140%) skewX(8deg)}
+  .pillar-row:nth-of-type(1).pillar-enter{transition-delay:0ms}
+  .pillar-row:nth-of-type(2).pillar-enter{transition-delay:130ms}
+  .pillar-row:nth-of-type(3).pillar-enter{transition-delay:260ms}
+  .pillar-row.pillar-enter.pillar-enter-on{opacity:1;transform:translateX(0) skewX(0deg)}
   .pillar-bar{position:absolute;top:-1px;left:0;width:100%;height:4px;overflow:hidden;pointer-events:none}
   .pillar-bar span{display:block;height:100%;width:0;background:var(--accent)}
   .pillar-grid{display:grid;grid-template-columns:90px minmax(200px,260px) 1fr;gap:24px;align-items:baseline}
-  .pillar-num{font-family:var(--title);font-weight:400;font-size:2rem;color:#d8d2ca;transition:color .3s ease}
+  .pillar-num{font-family:var(--title);font-weight:400;font-size:1.5rem;color:#d8d2ca;transition:color .3s ease}
   .pillar-row.active .pillar-num{color:#111}
   .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.375rem;color:#111}
   .pillar-desc{font-size:.95rem;line-height:1.5;color:#57534d}
   @media(max-width:900px){
-    .about-title{font-size:2.25rem;margin-bottom:32px}
-    .about-manifest{grid-template-columns:1fr;gap:28px}
+    #nosotros{padding:40px 0}
+    .about-title{font-size:2rem;margin-bottom:24px}
+    .about-manifest{grid-template-columns:1fr;gap:24px}
     .about-lead{max-width:none}
-    .about-pillars{margin-top:40px}
+    .about-pillars{margin-top:28px}
+    .pillar-row{padding:14px 0}
     .pillar-grid{grid-template-columns:1fr;gap:6px}
-    .pillar-num{font-size:1.5rem}
+    .pillar-num{font-size:1.25rem}
   }
   @media(prefers-reduced-motion:reduce){
     .about-title-inner{transition:none !important;transform:translateY(0) !important}
-    .about-highlight::before{transition:none !important;width:100% !important}
+    .about-highlight::before{transition:none !important;transform:scaleX(1) !important}
     .pillar-bar span{transition:none !important}
+    .pillar-row.pillar-enter{transition:none !important;transform:none !important;opacity:1 !important}
   }
 
   /* ---------- SERVICIOS ---------- */
@@ -529,7 +539,7 @@
     </div>
     <div class="about-pillars" id="aboutPillars">
       <span class="about-pillars-label reveal" data-i18n="pillars_label">Tres pilares</span>
-      <div class="pillar-row active reveal" data-index="0" tabindex="0">
+      <div class="pillar-row active pillar-enter" data-index="0" tabindex="0">
         <div class="pillar-bar" aria-hidden="true"><span></span></div>
         <div class="pillar-grid">
           <span class="pillar-num">01</span>
@@ -537,7 +547,7 @@
           <p class="pillar-desc" data-i18n="pillar1_desc">Creamos contenido que refleja el presente y la identidad de cada deportista.</p>
         </div>
       </div>
-      <div class="pillar-row reveal" style="transition-delay:.1s" data-index="1" tabindex="0">
+      <div class="pillar-row pillar-enter" data-index="1" tabindex="0">
         <div class="pillar-bar" aria-hidden="true"><span></span></div>
         <div class="pillar-grid">
           <span class="pillar-num">02</span>
@@ -545,7 +555,7 @@
           <p class="pillar-desc" data-i18n="pillar2_desc">Construimos una imagen profesional que acompañe el crecimiento de la carrera.</p>
         </div>
       </div>
-      <div class="pillar-row reveal" style="transition-delay:.2s" data-index="2" tabindex="0">
+      <div class="pillar-row pillar-enter" data-index="2" tabindex="0">
         <div class="pillar-bar" aria-hidden="true"><span></span></div>
         <div class="pillar-grid">
           <span class="pillar-num">03</span>
@@ -1151,6 +1161,27 @@
       });
     }, { threshold: 0.25, rootMargin: '0px 0px -20% 0px' });
     pillarsObserver.observe(section);
+  })();
+
+  // Entrada agresiva de los tres pilares (direcciones alternadas)
+  (function () {
+    const container = document.getElementById('aboutPillars');
+    if (!container) return;
+    const rows = container.querySelectorAll('.pillar-row.pillar-enter');
+    if (!rows.length) return;
+    // Se observa el contenedor (no cada fila) porque las filas arrancan
+    // desplazadas ±140% por transform, y IntersectionObserver mide la caja
+    // ya transformada: una fila corrida fuera de pantalla nunca se reporta
+    // como "intersecting" aunque el scroll la haya alcanzado.
+    const enterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          rows.forEach(row => row.classList.add('pillar-enter-on'));
+          enterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    enterObserver.observe(container);
   })();
 
   // Comparador antes/después de Trabajos
