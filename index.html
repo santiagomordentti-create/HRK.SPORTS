@@ -127,22 +127,21 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- SERVICIOS ---------- */
-  .services{background:var(--bg-light);color:#111;padding:96px 80px}
+  .services{background:var(--bg);color:var(--ink);padding:96px 80px}
   .services-inner{max-width:1280px;margin:0 auto}
-  .services h2{font-size:3.25rem;color:#111}
-  .services .section-dek{color:#2a2a2e}
-  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:#fff;border:1px solid #e2ddd7;border-radius:10px;padding:6px}
-  .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#6b665f;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
-  .services-tab:not(.active):hover{background:#f2efe9;color:#111}
-  .services-tab.active{background:#111;color:#fff}
+  .services h2{font-size:3.25rem;color:#fff}
+  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px}
+  .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#9a9aa5;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
+  .services-tab:not(.active):hover{background:var(--surface-hover);color:#fff}
+  .services-tab.active{background:#fff;color:#000}
   .services-panels{position:relative}
   .services-grid{display:none;grid-template-columns:repeat(3,1fr);gap:14px;opacity:0;transition:opacity .25s ease}
   .services-grid.active{display:grid}
   .services-grid.active.fade-in{opacity:1}
-  .svc-card{background:#fff;border:1px solid #e8e4e0;border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(17,17,17,.05);transition:border-color .2s ease,box-shadow .2s ease}
-  .svc-card:hover{border-color:#d8d2ca;box-shadow:0 4px 20px rgba(17,17,17,.09)}
-  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1.15;letter-spacing:.05em;font-size:1.25rem;color:#111;margin-bottom:8px}
-  .svc-card p{font-size:.906rem;line-height:1.5;color:#57534d}
+  .svc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:border-color .2s ease,box-shadow .2s ease}
+  .svc-card:hover{border-color:var(--line-strong);box-shadow:0 4px 20px rgba(0,0,0,.35)}
+  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1.15;letter-spacing:.05em;font-size:1.25rem;color:#fff;margin-bottom:8px}
+  .svc-card p{font-size:.906rem;line-height:1.5;color:#8a8a94}
   @media(max-width:1100px){.services-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:720px){
     .services{padding:64px 20px}
@@ -151,8 +150,8 @@
   }
 
   /* ---------- TRABAJOS ---------- */
-  .work{background:#0a0a0c;color:#fff;padding:96px 60px 100px}
-  .work-title{font-size:3.625rem;line-height:.98;max-width:700px;color:#fff;margin-bottom:40px}
+  .work{background:var(--bg-light);color:#111;padding:96px 60px 100px}
+  .work-title{font-size:3.625rem;line-height:.98;max-width:700px;color:#111;margin-bottom:40px}
   .work-mosaic{display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:290px 290px;gap:14px}
   .work-compare,.work-mini{position:relative;border-radius:18px;overflow:hidden;background:#15151a}
   .work-compare{grid-row:span 2;cursor:ew-resize;user-select:none;touch-action:none}
@@ -186,13 +185,13 @@
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  #deportistas{padding:56px 0;background:var(--bg-light);color:#111}
+  #deportistas{padding:56px 0}
   #deportistas .wrap{max-width:1440px;padding:0 16px}
-  .athletes-title{font-size:3.25rem;color:#111;margin-bottom:18px}
+  .athletes-title{font-size:3.25rem;color:#fff;margin-bottom:18px}
   .athletes-strip{display:flex;gap:12px;height:560px}
-  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #e2ddd7;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
-  .athlete-panel:focus-visible{outline:2px solid rgba(17,17,17,.6);outline-offset:2px}
-  .athlete-panel.active{flex:3.2;border-color:#d8d2ca}
+  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
+  .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+  .athlete-panel.active{flex:3.2;border-color:#4a4a55}
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
   .athlete-name{font-family:var(--title);font-weight:400;color:#fff;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1),letter-spacing .45s cubic-bezier(.22,1,.36,1)}
@@ -211,7 +210,7 @@
     #deportistas .wrap{padding:0 14px}
     .athletes-title{font-size:2.25rem;margin-bottom:14px}
     .athletes-strip{flex-direction:column;height:auto;gap:14px}
-    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#e2ddd7}
+    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
     .athlete-body{position:relative;padding:180px 18px 18px}
     .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem;letter-spacing:.03em}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
@@ -222,32 +221,32 @@
   }
 
   /* ---------- PROCESO (STEPPER AUTO-GUIADO) ---------- */
-  #proceso{padding:56px 0}
+  #proceso{padding:56px 0;background:var(--bg-light);color:#111}
   #proceso .wrap{max-width:1400px;padding:0 20px}
   .process-layout{display:flex;gap:56px;align-items:stretch}
   .process-col-left{flex:0 0 460px;max-width:460px}
   .process-col-right{flex:1;min-width:0;display:flex;flex-direction:column}
-  .process h2{font-size:2.75rem;color:#fff;margin-bottom:0}
+  .process h2{font-size:2.75rem;color:#111;margin-bottom:0}
   .process-steps{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-  .process-step{position:relative;display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 24px;cursor:pointer;overflow:hidden;font-family:var(--font);transition:background .2s ease,border-color .2s ease}
-  .process-step:hover{background:var(--surface-hover);border-color:var(--line-strong)}
-  .process-step.active{background:var(--card-hover);border-color:var(--line-strong)}
+  .process-step{position:relative;display:block;width:100%;text-align:left;background:#fff;border:1px solid #e8e4e0;border-radius:10px;padding:20px 24px;cursor:pointer;overflow:hidden;font-family:var(--font);transition:background .2s ease,border-color .2s ease}
+  .process-step:hover{background:#f2efe9;border-color:#d8d2ca}
+  .process-step.active{background:#f2efe9;border-color:#111}
   .process-step-top{display:flex;align-items:baseline;gap:12px}
-  .process-step-num{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#8a8a94;flex:none;min-width:1.4em}
-  .process-step.active .process-step-num{color:var(--accent)}
-  .process-step-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#9a9aa5;flex:1}
-  .process-step.active .process-step-name{color:#fff}
-  .process-step-time{font-size:.85rem;color:#8a8a94;flex:none}
-  .process-step-bar{margin-top:15px;width:100%;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+  .process-step-num{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#6b665f;flex:none;min-width:1.4em}
+  .process-step.active .process-step-num{color:#5c6810}
+  .process-step-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#6b665f;flex:1}
+  .process-step.active .process-step-name{color:#111}
+  .process-step-time{font-size:.85rem;color:#6b665f;flex:none}
+  .process-step-bar{margin-top:15px;width:100%;height:2px;background:rgba(17,17,17,.08);border-radius:2px;overflow:hidden}
   .process-step-bar span{display:block;height:100%;width:0%;background:var(--accent)}
-  .process-panel{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:56px 52px;min-height:340px;display:none;opacity:0;transition:opacity .12s ease}
+  .process-panel{flex:1;background:#fff;border:1px solid #e8e4e0;border-radius:14px;padding:56px 52px;min-height:340px;display:none;opacity:0;transition:opacity .12s ease}
   .process-panel.active{display:flex;flex-direction:column;justify-content:center}
   .process-panel.active.fade-in{opacity:1}
-  .process-panel-title{font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1.2;color:#fff;max-width:600px;margin-bottom:28px}
+  .process-panel-title{font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1.2;color:#111;max-width:600px;margin-bottom:28px}
   .process-chips{display:flex;flex-direction:column;gap:10px}
-  .process-chip{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:15px 18px}
-  .process-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--bg);font-size:.68rem;font-weight:700;flex:none}
-  .process-chip-label{font-size:1rem;color:#e4e4e8}
+  .process-chip{display:flex;align-items:center;gap:12px;background:#f2efe9;border:1px solid #e8e4e0;border-radius:10px;padding:15px 18px}
+  .process-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.68rem;font-weight:700;flex:none}
+  .process-chip-label{font-size:1rem;color:#57534d}
   @media(max-width:900px){
     #proceso{padding:40px 0}
     #proceso .wrap{padding:0 14px}
@@ -360,13 +359,13 @@
 <header id="header">
   <div class="wrap nav">
     <nav class="nav-group left" aria-label="Navegación principal">
+      <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
       <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
       <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
-      <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
     </nav>
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
     <nav class="nav-group right" aria-label="Navegación secundaria">
-      <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
+      <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
       <a href="#contacto" class="nav-link" data-i18n="nav_contacto">Contacto</a>
       <div class="lang-switch" id="langSwitch">
         <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-haspopup="listbox" aria-expanded="false">
@@ -387,10 +386,10 @@
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-links" id="navLinks">
+    <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
     <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
     <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
     <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
-    <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
     <a href="#contacto" class="btn" data-i18n="nav_contacto">Contacto</a>
     <div class="lang-switch lang-switch-mobile" id="langSwitchMobile">
       <button type="button" class="lang-switch-btn" id="langSwitchBtnMobile" aria-haspopup="listbox" aria-expanded="false">
@@ -417,15 +416,46 @@
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
-    <div class="media-wave bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
   </div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
+  </div>
+</section>
+
+<!-- ====================================================================
+     ESPACIO RESERVADO: sección "Quiénes somos"
+     Todavía no existe — va acá, entre el Hero y Prensa, como segundo
+     paso del embudo de confianza (Hero → Quiénes somos → Prensa → ...).
+     ==================================================================== -->
+
+<!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
+<section id="prensa" class="press">
+  <div class="press-media" aria-hidden="true">
+    <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
+    <div class="media-wave top" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg)"/>
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+    <div class="media-wave bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg)"/>
+        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="press-content reveal">
+    <div class="press-eyebrow">
+      <span class="press-kicker">Perfil</span>
+      <span class="press-divider" aria-hidden="true"></span>
+      <span class="press-date" data-i18n="press_date">14 de julio 2026</span>
+    </div>
+    <h2 class="press-title" data-i18n="press_title">HRK entre los proyectos elegidos por UADE HUB</h2>
+    <p class="section-dek" data-i18n="press_dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
+    <div class="press-cta">
+      <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener" data-i18n="press_cta">Leer la nota ↗</a>
+    </div>
   </div>
 </section>
 
@@ -490,7 +520,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="#0a0a0c"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ TRABAJOS ============ -->
 <section id="trabajo" class="work">
@@ -533,7 +563,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="#0a0a0c"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -610,7 +640,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
@@ -675,36 +705,7 @@
   </div>
 </section>
 
-<!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
-<section id="prensa" class="press">
-  <div class="press-media" aria-hidden="true">
-    <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
-    <div class="media-wave top" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg)"/>
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
-    <div class="media-wave bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg)"/>
-        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
-  </div>
-  <div class="press-content reveal">
-    <div class="press-eyebrow">
-      <span class="press-kicker">Perfil</span>
-      <span class="press-divider" aria-hidden="true"></span>
-      <span class="press-date" data-i18n="press_date">14 de julio 2026</span>
-    </div>
-    <h2 class="press-title" data-i18n="press_title">HRK entre los proyectos elegidos por UADE HUB</h2>
-    <p class="section-dek" data-i18n="press_dek">Perfil cubrió Fuego Sagrado 2026 y nos describió como una agencia «dedicada a profesionalizar la imagen pública de deportistas en crecimiento».</p>
-    <div class="press-cta">
-      <a class="btn-secondary" href="https://www.perfil.com/noticias/empresas-y-protagonistas/fuego-sagrado-2026-asi-es-el-programa-de-incubacion-que-transforma-ideas-universitarias-en-negocios-reales.phtml" target="_blank" rel="noopener" data-i18n="press_cta">Leer la nota ↗</a>
-    </div>
-  </div>
-</section>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
@@ -1295,7 +1296,7 @@
   }
 
   // Scrollspy nav
-  const spySections = ['servicios', 'trabajo', 'deportistas', 'prensa', 'contacto'];
+  const spySections = ['prensa', 'servicios', 'trabajo', 'deportistas', 'contacto'];
   const navLinkMap = {};
   spySections.forEach(id => { navLinkMap[id] = Array.from(document.querySelectorAll(`.nav-link[href="#${id}"]`)); });
   const sectionState = {};
