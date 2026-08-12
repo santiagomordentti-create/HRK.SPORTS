@@ -83,10 +83,11 @@
   header{position:fixed;inset:0 0 auto 0;z-index:200}
   header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,10,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #1b1b21}
   .nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px}
-  .nav-group{display:flex;align-items:center;gap:34px}
+  .nav-group{display:flex;align-items:center;gap:10px}
   .nav-group.left{justify-content:flex-start}
   .nav-group.right{justify-content:flex-end}
-  .nav-link{font-size:.8125rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9a9aa5;transition:color .2s ease}
+  .nav-link{font-size:.8125rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9a9aa5;transition:color .2s ease;white-space:nowrap}
+  .nav-group .nav-link{font-size:.75rem;letter-spacing:.04em}
   .nav-link:hover{color:var(--accent)}
   .nav-link.active{color:var(--accent)}
   .logo{grid-column:2;display:inline-flex;align-items:center;justify-self:center;gap:9px;font-family:var(--title);font-weight:400;font-size:1.625rem;letter-spacing:.03em;text-transform:uppercase;color:#fff}
@@ -409,11 +410,12 @@
       <a href="#nosotros" class="nav-link" data-i18n="nav_nosotros">Nosotros</a>
       <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
       <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
+      <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Proyectos</a>
     </nav>
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
     <nav class="nav-group right" aria-label="Navegación secundaria">
-      <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
       <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
+      <a href="#proceso" class="nav-link" data-i18n="nav_proceso">Cómo trabajamos</a>
       <a href="#contacto" class="nav-link" data-i18n="nav_contacto">Contacto</a>
       <div class="lang-switch" id="langSwitch">
         <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-haspopup="listbox" aria-expanded="false">
@@ -437,8 +439,9 @@
     <a href="#nosotros" class="nav-link" data-i18n="nav_nosotros">Nosotros</a>
     <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
     <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
-    <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
+    <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Proyectos</a>
     <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
+    <a href="#proceso" class="nav-link" data-i18n="nav_proceso">Cómo trabajamos</a>
     <a href="#contacto" class="btn" data-i18n="nav_contacto">Contacto</a>
     <div class="lang-switch lang-switch-mobile" id="langSwitchMobile">
       <button type="button" class="lang-switch-btn" id="langSwitchBtnMobile" aria-haspopup="listbox" aria-expanded="false">
@@ -1185,8 +1188,8 @@
   // Diccionario de idiomas
   const I18N = {
     es: {
-      nav_servicios: 'Servicios', nav_trabajos: 'Trabajos', nav_deportistas: 'Deportistas',
-      nav_blog: 'Blog', nav_contacto: 'Contacto', nav_nosotros: 'Nosotros',
+      nav_servicios: 'Servicios', nav_trabajos: 'Proyectos', nav_deportistas: 'Deportistas',
+      nav_blog: 'Blog', nav_contacto: 'Contacto', nav_nosotros: 'Nosotros', nav_proceso: 'Cómo trabajamos',
 
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
 
@@ -1281,8 +1284,8 @@
       footer_mail: 'Mail'
     },
     en: {
-      nav_servicios: 'Services', nav_trabajos: 'Work', nav_deportistas: 'Athletes',
-      nav_blog: 'Blog', nav_contacto: 'Contact', nav_nosotros: 'About',
+      nav_servicios: 'Services', nav_trabajos: 'Projects', nav_deportistas: 'Athletes',
+      nav_blog: 'Blog', nav_contacto: 'Contact', nav_nosotros: 'About', nav_proceso: 'How we work',
 
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
 
@@ -1483,7 +1486,7 @@
   }
 
   // Scrollspy nav
-  const spySections = ['nosotros', 'prensa', 'servicios', 'trabajo', 'deportistas', 'contacto'];
+  const spySections = ['nosotros', 'prensa', 'servicios', 'trabajo', 'deportistas', 'proceso', 'contacto'];
   const navLinkMap = {};
   spySections.forEach(id => { navLinkMap[id] = Array.from(document.querySelectorAll(`.nav-link[href="#${id}"]`)); });
   const sectionState = {};
