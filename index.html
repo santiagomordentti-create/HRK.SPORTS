@@ -126,6 +126,53 @@
   .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;box-shadow:none;transition:border-color .2s ease,box-shadow .25s ease}
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
+  /* ---------- QUIÉNES SOMOS ---------- */
+  .about{background:var(--bg-light);color:#111}
+  .about .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
+  .about .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
+  .about-eyebrow{display:inline-block;padding-bottom:14px;margin-bottom:28px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
+  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.25rem;line-height:1.08;letter-spacing:-.005em;color:#111;margin:0 0 48px}
+  .about-title.reveal{opacity:1;transform:none}
+  .about-title-line{display:block;overflow:hidden}
+  .about-title-inner{display:block;transform:translateY(110%);transition:transform .6s cubic-bezier(.22,1,.36,1)}
+  .about-title.on .about-title-inner{transform:translateY(0)}
+  .about-title-line:nth-child(2) .about-title-inner{transition-delay:.1s}
+  .about-title-line:nth-child(3) .about-title-inner{transition-delay:.2s}
+  .about-highlight{position:relative;display:inline-block}
+  .about-highlight-text{position:relative;z-index:1}
+  .about-highlight::before{content:"";position:absolute;top:0;bottom:0;left:0;width:0;background:var(--accent);transition:width .5s cubic-bezier(.22,1,.36,1) .7s}
+  .about-title.on .about-highlight::before{width:100%}
+  .about-manifest{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding-top:40px;border-top:1px solid #e2ddd7}
+  .about-lead{font-size:1.625rem;font-weight:700;line-height:1.3;color:#111;max-width:380px}
+  .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .about-manifest-right{display:flex;flex-direction:column;gap:20px}
+  .about-manifest-right p{font-size:1.05rem;line-height:1.6;color:#57534d}
+  .about-pillars{margin-top:64px}
+  .about-pillars-label{display:block;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#57534d;margin-bottom:8px}
+  .pillar-row{position:relative;padding:28px 0;border-top:1px solid #e2ddd7;cursor:pointer}
+  .pillar-row:last-child{border-bottom:1px solid #e2ddd7}
+  .pillar-row:focus-visible{outline:2px solid rgba(17,17,17,.5);outline-offset:-2px}
+  .pillar-bar{position:absolute;top:-1px;left:0;width:100%;height:4px;overflow:hidden;pointer-events:none}
+  .pillar-bar span{display:block;height:100%;width:0;background:var(--accent)}
+  .pillar-grid{display:grid;grid-template-columns:90px minmax(200px,260px) 1fr;gap:24px;align-items:baseline}
+  .pillar-num{font-family:var(--title);font-weight:400;font-size:2rem;color:#d8d2ca;transition:color .3s ease}
+  .pillar-row.active .pillar-num{color:#111}
+  .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.375rem;color:#111}
+  .pillar-desc{font-size:.95rem;line-height:1.5;color:#57534d}
+  @media(max-width:900px){
+    .about-title{font-size:2.25rem;margin-bottom:32px}
+    .about-manifest{grid-template-columns:1fr;gap:28px}
+    .about-lead{max-width:none}
+    .about-pillars{margin-top:40px}
+    .pillar-grid{grid-template-columns:1fr;gap:6px}
+    .pillar-num{font-size:1.5rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .about-title-inner{transition:none !important;transform:translateY(0) !important}
+    .about-highlight::before{transition:none !important;width:100% !important}
+    .pillar-bar span{transition:none !important}
+  }
+
   /* ---------- SERVICIOS ---------- */
   .services{background:var(--bg);color:var(--ink);padding:96px 80px}
   .services-inner{max-width:1280px;margin:0 auto}
@@ -359,12 +406,13 @@
 <header id="header">
   <div class="wrap nav">
     <nav class="nav-group left" aria-label="Navegación principal">
+      <a href="#nosotros" class="nav-link" data-i18n="nav_nosotros">Nosotros</a>
       <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
       <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
-      <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
     </nav>
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
     <nav class="nav-group right" aria-label="Navegación secundaria">
+      <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
       <a href="#deportistas" class="nav-link" data-i18n="nav_deportistas">Deportistas</a>
       <a href="#contacto" class="nav-link" data-i18n="nav_contacto">Contacto</a>
       <div class="lang-switch" id="langSwitch">
@@ -386,6 +434,7 @@
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-links" id="navLinks">
+    <a href="#nosotros" class="nav-link" data-i18n="nav_nosotros">Nosotros</a>
     <a href="#prensa" class="nav-link" data-i18n="nav_blog">Blog</a>
     <a href="#servicios" class="nav-link" data-i18n="nav_servicios">Servicios</a>
     <a href="#trabajo" class="nav-link" data-i18n="nav_trabajos">Trabajos</a>
@@ -416,17 +465,69 @@
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
+    <div class="media-wave bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
   </div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
   </div>
 </section>
 
-<!-- ====================================================================
-     ESPACIO RESERVADO: sección "Quiénes somos"
-     Todavía no existe — va acá, entre el Hero y Prensa, como segundo
-     paso del embudo de confianza (Hero → Quiénes somos → Prensa → ...).
-     ==================================================================== -->
+<!-- ============ QUIÉNES SOMOS ============ -->
+<section id="nosotros" class="about">
+  <div class="wrap">
+    <span class="about-eyebrow reveal" data-i18n="about_eyebrow">¿Quiénes somos?</span>
+    <h2 class="about-title reveal">
+      <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_1">Más que una agencia.</span></span>
+      <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_2">Un aliado para tu</span></span>
+      <span class="about-title-line"><span class="about-title-inner about-highlight"><span class="about-highlight-text" data-i18n="about_title_3">carrera deportiva.</span></span></span>
+    </h2>
+    <div class="about-manifest">
+      <div class="about-manifest-left reveal" style="transition-delay:.1s">
+        <p class="about-lead" data-i18n="about_lead">En HRK Sports creemos que el talento necesita una imagen que lo represente.</p>
+        <div class="about-cta">
+          <a href="#contacto" class="btn" data-i18n="about_cta_primary">Trabajemos juntos →</a>
+          <a href="#trabajo" class="btn-secondary" data-i18n="about_cta_secondary">Ver trabajos</a>
+        </div>
+      </div>
+      <div class="about-manifest-right reveal" style="transition-delay:.2s">
+        <p data-i18n="about_p1">Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos deportivos a través de contenido estratégico, identidad visual y una comunicación profesional.</p>
+        <p data-i18n="about_p2">Nuestro objetivo es acompañar el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha mediante una imagen sólida, auténtica y alineada con su carrera.</p>
+      </div>
+    </div>
+    <div class="about-pillars" id="aboutPillars">
+      <span class="about-pillars-label reveal" data-i18n="pillars_label">Tres pilares</span>
+      <div class="pillar-row active reveal" data-index="0" tabindex="0">
+        <div class="pillar-bar" aria-hidden="true"><span></span></div>
+        <div class="pillar-grid">
+          <span class="pillar-num">01</span>
+          <h3 class="pillar-title" data-i18n="pillar1_title">Comunicación</h3>
+          <p class="pillar-desc" data-i18n="pillar1_desc">Creamos contenido que refleja el presente y la identidad de cada deportista.</p>
+        </div>
+      </div>
+      <div class="pillar-row reveal" style="transition-delay:.1s" data-index="1" tabindex="0">
+        <div class="pillar-bar" aria-hidden="true"><span></span></div>
+        <div class="pillar-grid">
+          <span class="pillar-num">02</span>
+          <h3 class="pillar-title" data-i18n="pillar2_title">Posicionamiento</h3>
+          <p class="pillar-desc" data-i18n="pillar2_desc">Construimos una imagen profesional que acompañe el crecimiento de la carrera.</p>
+        </div>
+      </div>
+      <div class="pillar-row reveal" style="transition-delay:.2s" data-index="2" tabindex="0">
+        <div class="pillar-bar" aria-hidden="true"><span></span></div>
+        <div class="pillar-grid">
+          <span class="pillar-num">03</span>
+          <h3 class="pillar-title" data-i18n="pillar3_title">Oportunidades</h3>
+          <p class="pillar-desc" data-i18n="pillar3_desc">Conectamos deportistas con marcas, fotógrafos y proyectos que aporten valor a su desarrollo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
 <section id="prensa" class="press">
@@ -434,7 +535,7 @@
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
     <div class="media-wave top" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg)"/>
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg-light)"/>
         <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -952,6 +1053,70 @@
     sectionObserver.observe(section);
   })();
 
+  // Tres pilares de "Quiénes somos" — auto-rotación con pausa en hover/foco
+  (function () {
+    const section = document.getElementById('aboutPillars');
+    if (!section) return;
+    const rows = Array.from(section.querySelectorAll('.pillar-row'));
+    if (!rows.length) return;
+    const bars = rows.map(r => r.querySelector('.pillar-bar span'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DURATION = 3400;
+    let current = 0;
+    let hovering = false;
+    let timer = null;
+
+    function render(index) {
+      rows.forEach((row, i) => {
+        const isActive = i === index;
+        row.classList.toggle('active', isActive);
+        const bar = bars[i];
+        bar.style.transition = 'none';
+        bar.style.width = '0%';
+        if (isActive) {
+          void bar.offsetWidth;
+          if (!reduceMotion) {
+            bar.style.transition = `width ${DURATION}ms linear`;
+            requestAnimationFrame(() => { bar.style.width = '100%'; });
+          } else {
+            bar.style.width = '100%';
+          }
+        }
+      });
+    }
+
+    function clearTimer() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    function goTo(index) {
+      current = index;
+      render(current);
+      clearTimer();
+      if (!hovering) timer = setTimeout(next, DURATION);
+    }
+
+    function next() {
+      goTo((current + 1) % rows.length);
+    }
+
+    rows.forEach((row, i) => {
+      row.addEventListener('mouseenter', () => { hovering = true; goTo(i); });
+      row.addEventListener('mouseleave', () => { hovering = false; goTo(current); });
+      row.addEventListener('focus', () => { hovering = true; goTo(i); });
+      row.addEventListener('blur', () => { hovering = false; goTo(current); });
+    });
+
+    const pillarsObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (hovering) return;
+        if (entry.isIntersecting) goTo(0);
+        else clearTimer();
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -20% 0px' });
+    pillarsObserver.observe(section);
+  })();
+
   // Comparador antes/después de Trabajos
   (function () {
     const compare = document.getElementById('workCompare');
@@ -1021,9 +1186,20 @@
   const I18N = {
     es: {
       nav_servicios: 'Servicios', nav_trabajos: 'Trabajos', nav_deportistas: 'Deportistas',
-      nav_blog: 'Blog', nav_contacto: 'Contacto',
+      nav_blog: 'Blog', nav_contacto: 'Contacto', nav_nosotros: 'Nosotros',
 
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
+
+      about_eyebrow: '¿Quiénes somos?',
+      about_title_1: 'Más que una agencia.', about_title_2: 'Un aliado para tu', about_title_3: 'carrera deportiva.',
+      about_lead: 'En HRK Sports creemos que el talento necesita una imagen que lo represente.',
+      about_cta_primary: 'Trabajemos juntos →', about_cta_secondary: 'Ver trabajos',
+      about_p1: 'Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos deportivos a través de contenido estratégico, identidad visual y una comunicación profesional.',
+      about_p2: 'Nuestro objetivo es acompañar el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha mediante una imagen sólida, auténtica y alineada con su carrera.',
+      pillars_label: 'Tres pilares',
+      pillar1_title: 'Comunicación', pillar1_desc: 'Creamos contenido que refleja el presente y la identidad de cada deportista.',
+      pillar2_title: 'Posicionamiento', pillar2_desc: 'Construimos una imagen profesional que acompañe el crecimiento de la carrera.',
+      pillar3_title: 'Oportunidades', pillar3_desc: 'Conectamos deportistas con marcas, fotógrafos y proyectos que aporten valor a su desarrollo.',
 
       services_title: 'Servicios',
       services_dek: 'Decinos quién sos y te mostramos qué hacemos por vos.',
@@ -1106,9 +1282,20 @@
     },
     en: {
       nav_servicios: 'Services', nav_trabajos: 'Work', nav_deportistas: 'Athletes',
-      nav_blog: 'Blog', nav_contacto: 'Contact',
+      nav_blog: 'Blog', nav_contacto: 'Contact', nav_nosotros: 'About',
 
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
+
+      about_eyebrow: 'Who are we?',
+      about_title_1: 'More than an agency.', about_title_2: 'A partner for your', about_title_3: 'sports career.',
+      about_lead: 'At HRK Sports we believe talent needs an image that represents it.',
+      about_cta_primary: 'Let\'s work together →', about_cta_secondary: 'See our work',
+      about_p1: 'We\'re a sports communication agency dedicated to boosting the presence of athletes, agencies, and sports projects through strategic content, visual identity, and professional communication.',
+      about_p2: 'Our goal is to support each athlete\'s growth, creating opportunities on and off the field through a solid, authentic image aligned with their career.',
+      pillars_label: 'Three pillars',
+      pillar1_title: 'Communication', pillar1_desc: 'We create content that reflects each athlete\'s present and identity.',
+      pillar2_title: 'Positioning', pillar2_desc: 'We build a professional image that supports career growth.',
+      pillar3_title: 'Opportunities', pillar3_desc: 'We connect athletes with brands, photographers, and projects that add value to their development.',
 
       services_title: 'Services',
       services_dek: 'Tell us who you are and we\'ll show you what we do for you.',
@@ -1296,7 +1483,7 @@
   }
 
   // Scrollspy nav
-  const spySections = ['prensa', 'servicios', 'trabajo', 'deportistas', 'contacto'];
+  const spySections = ['nosotros', 'prensa', 'servicios', 'trabajo', 'deportistas', 'contacto'];
   const navLinkMap = {};
   spySections.forEach(id => { navLinkMap[id] = Array.from(document.querySelectorAll(`.nav-link[href="#${id}"]`)); });
   const sectionState = {};
