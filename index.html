@@ -119,7 +119,9 @@
   .hero-media{position:absolute;inset:0;background:linear-gradient(135deg,#101318 0%,#1c2027 45%,#2a2f38 100%)}
   .hero-media video{width:100%;height:100%;object-fit:cover}
   .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.55) 0%,rgba(10,10,12,.96) 100%)}
-  .hero-content{position:relative;z-index:2;width:100%;display:flex;justify-content:center}
+  .hero-content{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;align-items:center;gap:36px}
+  .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+  .hero-cta svg{width:18px;height:18px;flex:none}
   .hero h1{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:5.75rem;line-height:.96;letter-spacing:-.005em;max-width:1120px;text-wrap:balance;text-align:center;margin:0 auto}
   .hero h1 em{font-style:normal;color:var(--accent)}
   .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:var(--accent);color:var(--accent-ink) !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:0 0 6px rgba(215,245,81,.25);transition:background .2s ease,box-shadow .2s ease}
@@ -186,6 +188,7 @@
   .services-grid{display:none;grid-template-columns:repeat(3,1fr);gap:14px;opacity:0;transition:opacity .25s ease}
   .services-grid.active{display:grid}
   .services-grid.active.fade-in{opacity:1}
+  .svc-panel-cta{grid-column:1/-1;display:flex;justify-content:center;margin-top:8px}
   .svc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:border-color .2s ease,box-shadow .2s ease}
   .svc-card:hover{border-color:var(--line-strong);box-shadow:0 4px 20px rgba(0,0,0,.35)}
   .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1.15;letter-spacing:.05em;font-size:1.25rem;color:#fff;margin-bottom:8px}
@@ -217,6 +220,7 @@
   .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
   .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:3.375rem;color:#fff;margin:0}
   .work-compare-desc{font-family:var(--title);font-weight:400;font-size:.875rem;line-height:1.35;color:var(--accent);max-width:420px;margin:0}
+  .work-compare-info .btn{pointer-events:auto;min-height:38px;padding:8px 18px;font-size:.9rem;margin-top:4px}
   .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
   .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
   .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
@@ -295,6 +299,7 @@
   .process-chip{display:flex;align-items:center;gap:12px;background:#f2efe9;border:1px solid #e8e4e0;border-radius:10px;padding:15px 18px}
   .process-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.68rem;font-weight:700;flex:none}
   .process-chip-label{font-size:1rem;color:#57534d}
+  .process-cta{display:flex;justify-content:center;margin-top:40px}
   @media(max-width:900px){
     #proceso{padding:40px 0}
     #proceso .wrap{padding:0 14px}
@@ -404,6 +409,15 @@
 </head>
 <body>
 
+<!-- ============================================================
+     ⚠⚠⚠ REEMPLAZAR NÚMERO DE WHATSAPP ⚠⚠⚠
+     Todos los enlaces wa.me de esta página usan el número
+     placeholder 5491100000000. Buscar y reemplazar ese número
+     por el número real de HRK Sports en TODO el archivo antes
+     de publicar (aparece en el hero, en las 4 pestañas de
+     Servicios, en la tarjeta de Contacto y en el botón flotante).
+     ============================================================ -->
+
 <header id="header">
   <div class="wrap nav">
     <nav class="nav-group left" aria-label="Navegación principal">
@@ -477,6 +491,13 @@
   </div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
+    <div class="hero-cta">
+      <a href="#contacto" class="btn" data-i18n="hero_cta_primary">Potenciar mi carrera</a>
+      <a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20quiero%20potenciar%20mi%20carrera%20deportiva%20con%20ustedes." target="_blank" rel="noopener" class="btn-secondary">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
+        <span data-i18n="hero_cta_whatsapp">Hablar por WhatsApp</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -589,6 +610,7 @@
         <div class="svc-card"><h3 data-i18n="svc_d7_t">Cobertura en vivo</h3><p data-i18n="svc_d7_p">Seguimos tu partido desde tus redes.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_d8_t">Fotos profesionales</h3><p data-i18n="svc_d8_p">Coordinamos sesiones con fotógrafos del deporte.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_d9_t">Puente con marcas</h3><p data-i18n="svc_d9_p">Te acercamos sponsors que van con lo que sos.</p></div>
+        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20soy%20deportista%20y%20quiero%20conocer%20los%20planes%20disponibles." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_athlete">Conocer planes</a></div>
       </div>
 
       <div class="services-grid" id="panel-representante" role="tabpanel" aria-labelledby="tab-representante" hidden>
@@ -600,6 +622,7 @@
         <div class="svc-card"><h3 data-i18n="svc_r6_t">Material de scouting</h3><p data-i18n="svc_r6_p">Videos y fichas armados para mostrar jugadores.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_r7_t">Player Dossiers</h3><p data-i18n="svc_r7_p">Un dossier profesional por representado.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_r8_t">La marca de la agencia</h3><p data-i18n="svc_r8_p">También comunicamos a la agencia, no solo a sus jugadores.</p></div>
+        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20represento%20jugadores%20y%20me%20gustar%C3%ADa%20trabajar%20juntos." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_agency">Trabajemos juntos</a></div>
       </div>
 
       <div class="services-grid" id="panel-marca" role="tabpanel" aria-labelledby="tab-marca" hidden>
@@ -609,6 +632,7 @@
         <div class="svc-card"><h3 data-i18n="svc_m4_t">Producción</h3><p data-i18n="svc_m4_p">Video y fotos con calidad de campaña.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_m5_t">Cobertura de eventos</h3><p data-i18n="svc_m5_p">Tu presencia contada en tiempo real.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_m6_t">Alianzas</h3><p data-i18n="svc_m6_p">Clubes, torneos y agencias para llegar más lejos.</p></div>
+        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20tengo%20una%20marca%20y%20quiero%20ser%20Partner." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_brand">Quiero ser Partner</a></div>
       </div>
 
       <div class="services-grid" id="panel-evento" role="tabpanel" aria-labelledby="tab-evento" hidden>
@@ -619,6 +643,7 @@
         <div class="svc-card"><h3 data-i18n="svc_e5_t">Entrevistas</h3><p data-i18n="svc_e5_p">Las voces de los protagonistas y del público.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_e6_t">Material para sponsors</h3><p data-i18n="svc_e6_p">Contenido propio para cada marca que te acompaña.</p></div>
         <div class="svc-card"><h3 data-i18n="svc_e7_t">Streaming</h3><p data-i18n="svc_e7_p">Transmisión y comunicación durante todo el evento.</p></div>
+        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20organizo%20un%20evento%20y%20quiero%20cotizar%20la%20cobertura." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_event">Cotizar cobertura</a></div>
       </div>
     </div>
   </div>
@@ -649,6 +674,7 @@
         <div class="work-compare-info">
           <h3 class="work-compare-name">Eze Neira</h3>
           <p class="work-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
+          <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" class="btn" data-i18n="compare_cta">Ver proyecto</a>
         </div>
       </div>
       <div class="work-mini reveal" style="--photo:url(assets/legion.jpg)">
@@ -805,6 +831,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="process-cta">
+      <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
     </div>
   </div>
 </section>
@@ -1157,6 +1186,7 @@
     }
 
     function startDrag(e) {
+      if (e.target.closest('.btn')) return;
       dragging = true;
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       setPosition(pctFromClientX(clientX));
@@ -1192,6 +1222,7 @@
       nav_blog: 'Blog', nav_contacto: 'Contacto', nav_nosotros: 'Nosotros', nav_proceso: 'Cómo trabajamos',
 
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
+      hero_cta_primary: 'Potenciar mi carrera', hero_cta_whatsapp: 'Hablar por WhatsApp',
 
       about_eyebrow: '¿Quiénes somos?',
       about_title_1: 'Más que una agencia.', about_title_2: 'Un aliado para tu', about_title_3: 'carrera deportiva.',
@@ -1243,12 +1274,16 @@
       svc_e6_t: 'Material para sponsors', svc_e6_p: 'Contenido propio para cada marca que te acompaña.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Transmisión y comunicación durante todo el evento.',
 
+      svc_cta_athlete: 'Conocer planes', svc_cta_agency: 'Trabajemos juntos',
+      svc_cta_brand: 'Quiero ser Partner', svc_cta_event: 'Cotizar cobertura',
+
       work_headline: 'Selección de proyectos que llevamos adelante',
       work_legion_p: 'Rebranding, identidad visual y cobertura de eventos deportivos.',
       work_street_p: 'Identidad visual, comunicación y cobertura del torneo.',
 
       compare_before: 'Antes', compare_after: 'Con HRK',
       compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
+      compare_cta: 'Ver proyecto',
       compare_aria: 'Comparador antes y después de Eze Neira',
 
       athletes_title: 'Deportistas que confían en HRK',
@@ -1264,6 +1299,7 @@
       step1_chip1: 'Auditoría de redes', step1_chip2: 'Informe de imagen', step1_chip3: 'Reunión de devolución',
       step2_chip1: 'Guía de marca', step2_chip2: 'Plan de 3 meses', step2_chip3: 'Objetivos claros',
       step3_chip1: 'Contenido y cobertura', step3_chip2: 'Reporte mensual', step3_chip3: 'Contacto con marcas',
+      process_cta: 'Empezar el diagnóstico',
 
       press_date: '14 de julio 2026',
       press_title: 'HRK entre los proyectos elegidos por UADE HUB',
@@ -1288,6 +1324,7 @@
       nav_blog: 'Blog', nav_contacto: 'Contact', nav_nosotros: 'About', nav_proceso: 'How we work',
 
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
+      hero_cta_primary: 'Boost my career', hero_cta_whatsapp: 'Chat on WhatsApp',
 
       about_eyebrow: 'Who are we?',
       about_title_1: 'More than an agency.', about_title_2: 'A partner for your', about_title_3: 'sports career.',
@@ -1339,12 +1376,16 @@
       svc_e6_t: 'Sponsor content', svc_e6_p: 'Custom content for every brand backing you.',
       svc_e7_t: 'Streaming', svc_e7_p: 'Broadcast and coverage throughout the whole event.',
 
+      svc_cta_athlete: 'See plans', svc_cta_agency: 'Let\'s work together',
+      svc_cta_brand: 'I want to be a Partner', svc_cta_event: 'Get a coverage quote',
+
       work_headline: 'A selection of projects we\'ve led',
       work_legion_p: 'Rebranding, visual identity, and sports event coverage.',
       work_street_p: 'Visual identity, communication, and tournament coverage.',
 
       compare_before: 'Before', compare_after: 'With HRK',
       compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
+      compare_cta: 'View project',
       compare_aria: 'Before and after comparison of Eze Neira',
 
       athletes_title: 'Athletes who trust HRK',
@@ -1360,6 +1401,7 @@
       step1_chip1: 'Social media audit', step1_chip2: 'Image report', step1_chip3: 'Feedback session',
       step2_chip1: 'Brand guide', step2_chip2: '3-month plan', step2_chip3: 'Clear goals',
       step3_chip1: 'Content and coverage', step3_chip2: 'Monthly report', step3_chip3: 'Brand outreach',
+      process_cta: 'Start the discovery process',
 
       press_date: 'July 14, 2026',
       press_title: 'HRK among the projects selected by UADE HUB',
