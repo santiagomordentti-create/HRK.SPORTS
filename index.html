@@ -130,12 +130,13 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
-  #nosotros{padding:56px 0;overflow-x:hidden}
+  #nosotros{padding:40px 0;overflow-x:hidden}
   .about{background:var(--bg-light);color:#111}
   .about .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
   .about .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
-  .about-eyebrow{display:inline-block;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
-  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:2.75rem;line-height:1.08;letter-spacing:-.005em;color:#111;margin:0 0 32px}
+  .about-eyebrow{display:inline-block;padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;row-gap:32px;align-items:start}
+  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.375rem;line-height:1.05;letter-spacing:-.005em;color:#111;margin:0}
   .about-title.reveal{opacity:1;transform:none}
   .about-title-line{display:block;overflow:hidden}
   .about-title-inner{display:block;transform:translateY(105%);transition:transform .6s cubic-bezier(.22,1,.36,1)}
@@ -146,14 +147,13 @@
   .about-highlight-text{position:relative;z-index:1}
   .about-highlight::before{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.22,1,.36,1) .7s}
   .about-title.on .about-highlight::before{transform:scaleX(1)}
-  .about-manifest{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding-top:28px;border-top:1px solid #e2ddd7}
-  .about-lead{font-size:1.625rem;font-weight:700;line-height:1.3;color:#111;max-width:380px}
-  .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px}
-  .about-manifest-right{display:flex;flex-direction:column;gap:20px}
-  .about-manifest-right p{font-size:1.05rem;line-height:1.6;color:#57534d}
-  .about-pillars{margin-top:40px}
+  .about-paragraphs{display:flex;flex-direction:column;gap:18px}
+  .about-paragraphs p{font-size:1.15rem;line-height:1.6;color:#57534d}
+  .about-lead-block{display:flex;flex-direction:column}
+  .about-lead{font-size:1.875rem;font-weight:700;line-height:1.3;color:#111}
+  .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
   .about-pillars-label{display:block;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#57534d;margin-bottom:8px}
-  .pillar-row{position:relative;padding:18px 0;border-top:1px solid #e2ddd7;cursor:pointer}
+  .pillar-row{position:relative;padding:14px 0;border-top:1px solid #e2ddd7;cursor:pointer}
   .pillar-row:last-child{border-bottom:1px solid #e2ddd7}
   .pillar-row:focus-visible{outline:2px solid rgba(17,17,17,.5);outline-offset:-2px}
   .pillar-row.pillar-enter{opacity:0;transform:translateX(140%) skewX(-8deg);transition:transform .78s cubic-bezier(.16,1.06,.28,1),opacity .45s ease}
@@ -164,20 +164,15 @@
   .pillar-row.pillar-enter.pillar-enter-on{opacity:1;transform:translateX(0) skewX(0deg)}
   .pillar-bar{position:absolute;top:-1px;left:0;width:100%;height:4px;overflow:hidden;pointer-events:none}
   .pillar-bar span{display:block;height:100%;width:0;background:var(--accent)}
-  .pillar-grid{display:grid;grid-template-columns:90px minmax(200px,260px) 1fr;gap:24px;align-items:baseline}
-  .pillar-num{font-family:var(--title);font-weight:400;font-size:1.5rem;color:#d8d2ca;transition:color .3s ease}
+  .pillar-grid{display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:6px}
+  .pillar-num{grid-column:1;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;font-size:1.625rem;color:#d8d2ca;transition:color .3s ease}
   .pillar-row.active .pillar-num{color:#111}
-  .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.375rem;color:#111}
-  .pillar-desc{font-size:.95rem;line-height:1.5;color:#57534d}
+  .pillar-title{grid-column:2;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;color:#111}
+  .pillar-desc{grid-column:1/-1;grid-row:2;font-size:1.05rem;line-height:1.5;color:#57534d}
   @media(max-width:900px){
-    #nosotros{padding:40px 0}
-    .about-title{font-size:2rem;margin-bottom:24px}
-    .about-manifest{grid-template-columns:1fr;gap:24px}
-    .about-lead{max-width:none}
-    .about-pillars{margin-top:28px}
-    .pillar-row{padding:14px 0}
-    .pillar-grid{grid-template-columns:1fr;gap:6px}
-    .pillar-num{font-size:1.25rem}
+    #nosotros{padding:32px 0}
+    .about-grid{grid-template-columns:1fr;row-gap:24px}
+    .about-title{font-size:2.25rem}
   }
   @media(prefers-reduced-motion:reduce){
     .about-title-inner{transition:none !important;transform:translateY(0) !important}
@@ -515,48 +510,48 @@
 <section id="nosotros" class="about">
   <div class="wrap">
     <span class="about-eyebrow reveal" data-i18n="about_eyebrow">¿Quiénes somos?</span>
-    <h2 class="about-title reveal">
-      <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_1">Más que una agencia.</span></span>
-      <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_2">Un aliado para tu</span></span>
-      <span class="about-title-line"><span class="about-title-inner about-highlight"><span class="about-highlight-text" data-i18n="about_title_3">carrera deportiva.</span></span></span>
-    </h2>
-    <div class="about-manifest">
-      <div class="about-manifest-left reveal" style="transition-delay:.1s">
+    <div class="about-grid">
+      <h2 class="about-title reveal">
+        <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_1">Más que una agencia.</span></span>
+        <span class="about-title-line"><span class="about-title-inner" data-i18n="about_title_2">Un aliado para tu</span></span>
+        <span class="about-title-line"><span class="about-title-inner about-highlight"><span class="about-highlight-text" data-i18n="about_title_3">carrera deportiva.</span></span></span>
+      </h2>
+      <div class="about-paragraphs reveal" style="transition-delay:.15s">
+        <p data-i18n="about_p1">Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos deportivos a través de contenido estratégico, identidad visual y una comunicación profesional.</p>
+        <p data-i18n="about_p2">Nuestro objetivo es acompañar el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha mediante una imagen sólida, auténtica y alineada con su carrera.</p>
+      </div>
+      <div class="about-lead-block reveal" style="transition-delay:.25s">
         <p class="about-lead" data-i18n="about_lead">En HRK Sports creemos que el talento necesita una imagen que lo represente.</p>
         <div class="about-cta">
           <a href="#contacto" class="btn" data-i18n="about_cta_primary">Trabajemos juntos →</a>
           <a href="#trabajo" class="btn-secondary" data-i18n="about_cta_secondary">Ver trabajos</a>
         </div>
       </div>
-      <div class="about-manifest-right reveal" style="transition-delay:.2s">
-        <p data-i18n="about_p1">Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos deportivos a través de contenido estratégico, identidad visual y una comunicación profesional.</p>
-        <p data-i18n="about_p2">Nuestro objetivo es acompañar el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha mediante una imagen sólida, auténtica y alineada con su carrera.</p>
-      </div>
-    </div>
-    <div class="about-pillars" id="aboutPillars">
-      <span class="about-pillars-label reveal" data-i18n="pillars_label">Tres pilares</span>
-      <div class="pillar-row active pillar-enter" data-index="0" tabindex="0">
-        <div class="pillar-bar" aria-hidden="true"><span></span></div>
-        <div class="pillar-grid">
-          <span class="pillar-num">01</span>
-          <h3 class="pillar-title" data-i18n="pillar1_title">Comunicación</h3>
-          <p class="pillar-desc" data-i18n="pillar1_desc">Creamos contenido que refleja el presente y la identidad de cada deportista.</p>
+      <div class="about-pillars" id="aboutPillars">
+        <span class="about-pillars-label reveal" data-i18n="pillars_label">Tres pilares</span>
+        <div class="pillar-row active pillar-enter" data-index="0" tabindex="0">
+          <div class="pillar-bar" aria-hidden="true"><span></span></div>
+          <div class="pillar-grid">
+            <span class="pillar-num">01</span>
+            <h3 class="pillar-title" data-i18n="pillar1_title">Comunicación</h3>
+            <p class="pillar-desc" data-i18n="pillar1_desc">Creamos contenido que refleja el presente y la identidad de cada deportista.</p>
+          </div>
         </div>
-      </div>
-      <div class="pillar-row pillar-enter" data-index="1" tabindex="0">
-        <div class="pillar-bar" aria-hidden="true"><span></span></div>
-        <div class="pillar-grid">
-          <span class="pillar-num">02</span>
-          <h3 class="pillar-title" data-i18n="pillar2_title">Posicionamiento</h3>
-          <p class="pillar-desc" data-i18n="pillar2_desc">Construimos una imagen profesional que acompañe el crecimiento de la carrera.</p>
+        <div class="pillar-row pillar-enter" data-index="1" tabindex="0">
+          <div class="pillar-bar" aria-hidden="true"><span></span></div>
+          <div class="pillar-grid">
+            <span class="pillar-num">02</span>
+            <h3 class="pillar-title" data-i18n="pillar2_title">Posicionamiento</h3>
+            <p class="pillar-desc" data-i18n="pillar2_desc">Construimos una imagen profesional que acompañe el crecimiento de la carrera.</p>
+          </div>
         </div>
-      </div>
-      <div class="pillar-row pillar-enter" data-index="2" tabindex="0">
-        <div class="pillar-bar" aria-hidden="true"><span></span></div>
-        <div class="pillar-grid">
-          <span class="pillar-num">03</span>
-          <h3 class="pillar-title" data-i18n="pillar3_title">Oportunidades</h3>
-          <p class="pillar-desc" data-i18n="pillar3_desc">Conectamos deportistas con marcas, fotógrafos y proyectos que aporten valor a su desarrollo.</p>
+        <div class="pillar-row pillar-enter" data-index="2" tabindex="0">
+          <div class="pillar-bar" aria-hidden="true"><span></span></div>
+          <div class="pillar-grid">
+            <span class="pillar-num">03</span>
+            <h3 class="pillar-title" data-i18n="pillar3_title">Oportunidades</h3>
+            <p class="pillar-desc" data-i18n="pillar3_desc">Conectamos deportistas con marcas, fotógrafos y proyectos que aporten valor a su desarrollo.</p>
+          </div>
         </div>
       </div>
     </div>
