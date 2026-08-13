@@ -59,7 +59,10 @@
     --accent-hover:#e3ff6e;
     --accent-ink:#0A0A0C;
     --bg-light:#faf8f6;
-    --about-base:#4d4d4c;
+    --mesh-lima:#D7F551;
+    --mesh-teal:#1e6b5a;
+    --mesh-shadow:#0a0a0c;
+    --mesh-grain:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='100'%20height='100'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
     --accent-glow:0 0 8px rgba(215,245,81,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
@@ -134,14 +137,14 @@
   #nosotros{padding:40px 0;overflow-x:hidden;position:relative}
   .about{
     color:#f5f4f0;
-    background-color:var(--about-base);
+    background-color:var(--bg);
     background-image:
-      radial-gradient(ellipse 55% 50% at 18% 28%, rgba(188,234,85,.09) 0%, rgba(188,234,85,0) 62%),
-      radial-gradient(ellipse 50% 55% at 88% 20%, rgba(99,99,95,.65) 0%, rgba(99,99,95,0) 65%),
-      radial-gradient(ellipse 65% 60% at 78% 88%, rgba(215,245,81,.07) 0%, rgba(215,245,81,0) 60%),
-      radial-gradient(ellipse 75% 65% at 12% 92%, rgba(99,99,95,.55) 0%, rgba(99,99,95,0) 65%);
+      radial-gradient(ellipse 46% 50% at 16% 22%, rgba(215,245,81,.42) 0%, rgba(215,245,81,0) 62%),
+      radial-gradient(ellipse 50% 55% at 88% 78%, rgba(30,107,90,.55) 0%, rgba(30,107,90,0) 65%),
+      radial-gradient(ellipse 60% 55% at 90% 10%, rgba(10,10,12,.7) 0%, rgba(10,10,12,0) 60%),
+      radial-gradient(ellipse 55% 50% at 10% 95%, rgba(10,10,12,.6) 0%, rgba(10,10,12,0) 55%);
   }
-  .about::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='100'%20height='100'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");background-size:120px 120px}
+  .about::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.12;background-image:var(--mesh-grain);background-size:120px 120px}
   .about .wrap{position:relative;z-index:2}
   .about-eyebrow{display:inline-block;padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.22);font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#f5f4f0}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;row-gap:32px;align-items:start}
@@ -191,8 +194,17 @@
   }
 
   /* ---------- SERVICIOS ---------- */
-  .services{background:var(--bg);color:var(--ink);padding:96px 80px}
-  .services-inner{max-width:1280px;margin:0 auto}
+  .services{
+    position:relative;overflow:hidden;color:var(--ink);padding:96px 80px;
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse 32% 38% at 88% 14%, rgba(215,245,81,.45) 0%, rgba(215,245,81,0) 60%),
+      radial-gradient(ellipse 28% 32% at 8% 88%, rgba(215,245,81,.28) 0%, rgba(215,245,81,0) 58%),
+      radial-gradient(ellipse 38% 42% at 6% 10%, rgba(30,107,90,.55) 0%, rgba(30,107,90,0) 62%),
+      radial-gradient(ellipse 75% 70% at 50% 52%, rgba(10,10,12,.55) 0%, rgba(10,10,12,0) 60%);
+  }
+  .services::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.12;background-image:var(--mesh-grain);background-size:120px 120px}
+  .services-inner{position:relative;z-index:2;max-width:1280px;margin:0 auto}
   .services h2{font-size:3.25rem;color:#fff}
   .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px}
   .services-tab{padding:10px 18px;border-radius:6px;border:0;background:transparent;color:#9a9aa5;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
@@ -251,8 +263,16 @@
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  #deportistas{padding:56px 0}
-  #deportistas .wrap{max-width:1440px;padding:0 16px}
+  #deportistas{
+    position:relative;overflow:hidden;padding:56px 0;
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse 50% 55% at 14% 20%, rgba(215,245,81,.4) 0%, rgba(215,245,81,0) 62%),
+      radial-gradient(ellipse 50% 55% at 82% 85%, rgba(30,107,90,.5) 0%, rgba(30,107,90,0) 65%),
+      radial-gradient(ellipse 55% 50% at 88% 12%, rgba(10,10,12,.65) 0%, rgba(10,10,12,0) 58%);
+  }
+  #deportistas::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.12;background-image:var(--mesh-grain);background-size:120px 120px}
+  #deportistas .wrap{position:relative;z-index:2;max-width:1440px;padding:0 16px}
   .athletes-title{font-size:3.25rem;color:#fff;margin-bottom:18px}
   .athletes-strip{display:flex;gap:12px;height:560px}
   .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
@@ -341,6 +361,16 @@
   .press .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
 
   /* ---------- CONTACTO ---------- */
+  #contacto{
+    position:relative;overflow:hidden;
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse 50% 55% at 18% 82%, rgba(215,245,81,.4) 0%, rgba(215,245,81,0) 62%),
+      radial-gradient(ellipse 55% 50% at 85% 15%, rgba(30,107,90,.55) 0%, rgba(30,107,90,0) 65%),
+      radial-gradient(ellipse 55% 55% at 90% 90%, rgba(10,10,12,.65) 0%, rgba(10,10,12,0) 58%);
+  }
+  #contacto::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.12;background-image:var(--mesh-grain);background-size:120px 120px}
+  #contacto > .wrap{position:relative;z-index:2}
   .contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
   .contact-info h2{margin-bottom:14px}
   .contact-info .section-dek{text-align:left;margin:14px 0 32px}
@@ -498,7 +528,7 @@
     </video>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--about-base)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg)"/>
         <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -573,7 +603,7 @@
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
     <div class="media-wave top" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--about-base)"/>
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg)"/>
         <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
