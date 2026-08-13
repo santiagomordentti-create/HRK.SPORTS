@@ -59,6 +59,7 @@
     --accent-hover:#e3ff6e;
     --accent-ink:#0A0A0C;
     --bg-light:#faf8f6;
+    --about-base:#4d4d4c;
     --accent-glow:0 0 8px rgba(215,245,81,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
@@ -130,13 +131,21 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
-  #nosotros{padding:40px 0;overflow-x:hidden}
-  .about{background:var(--bg-light);color:#111}
-  .about .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
-  .about .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
-  .about-eyebrow{display:inline-block;padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid #e2ddd7;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#111}
+  #nosotros{padding:40px 0;overflow-x:hidden;position:relative}
+  .about{
+    color:#f5f4f0;
+    background-color:var(--about-base);
+    background-image:
+      radial-gradient(ellipse 55% 50% at 18% 28%, rgba(188,234,85,.09) 0%, rgba(188,234,85,0) 62%),
+      radial-gradient(ellipse 50% 55% at 88% 20%, rgba(99,99,95,.65) 0%, rgba(99,99,95,0) 65%),
+      radial-gradient(ellipse 65% 60% at 78% 88%, rgba(215,245,81,.07) 0%, rgba(215,245,81,0) 60%),
+      radial-gradient(ellipse 75% 65% at 12% 92%, rgba(99,99,95,.55) 0%, rgba(99,99,95,0) 65%);
+  }
+  .about::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='100'%20height='100'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");background-size:120px 120px}
+  .about .wrap{position:relative;z-index:2}
+  .about-eyebrow{display:inline-block;padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.22);font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#f5f4f0}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;row-gap:32px;align-items:start}
-  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.375rem;line-height:1.05;letter-spacing:-.005em;color:#111;margin:0}
+  .about-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.375rem;line-height:1.05;letter-spacing:-.005em;color:#fff;margin:0}
   .about-title.reveal{opacity:1;transform:none}
   .about-title-line{display:block;overflow:hidden}
   .about-title-inner{display:block;transform:translateY(105%);transition:transform .6s cubic-bezier(.22,1,.36,1)}
@@ -144,18 +153,18 @@
   .about-title-line:nth-child(2) .about-title-inner{transition-delay:.1s}
   .about-title-line:nth-child(3) .about-title-inner{transition-delay:.2s}
   .about-highlight{position:relative;display:inline-block}
-  .about-highlight-text{position:relative;z-index:1}
+  .about-highlight-text{position:relative;z-index:1;color:var(--accent-ink)}
   .about-highlight::before{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.22,1,.36,1) .7s}
   .about-title.on .about-highlight::before{transform:scaleX(1)}
   .about-paragraphs{display:flex;flex-direction:column;gap:18px}
-  .about-paragraphs p{font-size:1.15rem;line-height:1.6;color:#57534d}
+  .about-paragraphs p{font-size:1.15rem;line-height:1.6;color:rgba(255,255,255,.8)}
   .about-lead-block{display:flex;flex-direction:column}
-  .about-lead{font-size:1.875rem;font-weight:700;line-height:1.3;color:#111}
+  .about-lead{font-size:1.875rem;font-weight:700;line-height:1.3;color:#fff}
   .about-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
-  .about-pillars-label{display:block;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:#57534d;margin-bottom:8px}
-  .pillar-row{position:relative;padding:14px 0;border-top:1px solid #e2ddd7;cursor:pointer}
-  .pillar-row:last-child{border-bottom:1px solid #e2ddd7}
-  .pillar-row:focus-visible{outline:2px solid rgba(17,17,17,.5);outline-offset:-2px}
+  .about-pillars-label{display:block;font-size:.71875rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px}
+  .pillar-row{position:relative;padding:14px 0;border-top:1px solid rgba(255,255,255,.2);cursor:pointer}
+  .pillar-row:last-child{border-bottom:1px solid rgba(255,255,255,.2)}
+  .pillar-row:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:-2px}
   .pillar-row.pillar-enter{opacity:0;transform:translateX(140%) skewX(-8deg);transition:transform .78s cubic-bezier(.16,1.06,.28,1),opacity .45s ease}
   .pillar-row:nth-of-type(2).pillar-enter{transform:translateX(-140%) skewX(8deg)}
   .pillar-row:nth-of-type(1).pillar-enter{transition-delay:0ms}
@@ -165,10 +174,10 @@
   .pillar-bar{position:absolute;top:-1px;left:0;width:100%;height:4px;overflow:hidden;pointer-events:none}
   .pillar-bar span{display:block;height:100%;width:0;background:var(--accent)}
   .pillar-grid{display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:6px}
-  .pillar-num{grid-column:1;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;font-size:1.625rem;color:#d8d2ca;transition:color .3s ease}
-  .pillar-row.active .pillar-num{color:#111}
-  .pillar-title{grid-column:2;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;color:#111}
-  .pillar-desc{grid-column:1/-1;grid-row:2;font-size:1.05rem;line-height:1.5;color:#57534d}
+  .pillar-num{grid-column:1;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;font-size:1.625rem;color:rgba(255,255,255,.35);transition:color .3s ease}
+  .pillar-row.active .pillar-num{color:#fff}
+  .pillar-title{grid-column:2;grid-row:1;align-self:center;font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;color:#fff}
+  .pillar-desc{grid-column:1/-1;grid-row:2;font-size:1.05rem;line-height:1.5;color:rgba(255,255,255,.78)}
   @media(max-width:900px){
     #nosotros{padding:32px 0}
     .about-grid{grid-template-columns:1fr;row-gap:24px}
@@ -489,7 +498,7 @@
     </video>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
+        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="var(--about-base)"/>
         <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -564,7 +573,7 @@
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
     <div class="media-wave top" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--bg-light)"/>
+        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="var(--about-base)"/>
         <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
