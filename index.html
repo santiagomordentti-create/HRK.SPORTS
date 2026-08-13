@@ -1117,10 +1117,13 @@
     });
   })();
 
-  // "Quiénes somos" — scroll-scrubbing: el progreso (0 a 1) se recalcula en cada
-  // frame según cuánto pasó la sección por la pantalla (0 = borde superior
-  // entrando por abajo, 1 = ya pasó del todo) y cada propiedad se aplica
-  // directo por JS, sin animaciones/delays CSS — así al subir el scroll todo
+  // "Quiénes somos" — scroll-scrubbing: se manejan dos progresos (0 a 1) en
+  // paralelo. El del fondo decorativo cubre todo el paso de la sección por
+  // la pantalla; el del contenido va más rápido (llega a 1 cuando el borde
+  // superior toca el tope del viewport, no cuando la sección termina de
+  // pasar) para que todo se termine de leer bastante antes de irse de
+  // pantalla. Cada propiedad se aplica directo por JS, sin animaciones/delays
+  // CSS — así al subir el scroll todo
   // retrocede solo, sin saltos, porque es pura función de la posición actual.
   (function () {
     const section = document.getElementById('nosotros');
@@ -1156,9 +1159,9 @@
       return;
     }
 
-    // Ventana de progreso global [inicio, fin] de cada pilar, escalonadas para
-    // que se dibujen uno detrás del otro dentro del tramo 0.4–0.9.
-    const pillarWindows = [[0.40, 0.70], [0.50, 0.80], [0.60, 0.90]];
+    // Ventana de progreso global [inicio, fin] de cada pilar, solapadas a
+    // propósito para que se sientan encadenados y no espaciados.
+    const pillarWindows = [[0.20, 0.30], [0.26, 0.36], [0.32, 0.45]];
     // Dentro del tramo local de cada pilar (0 a 1): sus 4 bordes, luego número,
     // título y descripción, escalonados entre sí.
     const stages = {
@@ -1175,12 +1178,12 @@
     }
 
     function renderContent(overall) {
-      const pTitle = localProgress(overall, 0, 0.3);
+      const pTitle = localProgress(overall, 0, 0.15);
       if (title) {
         title.style.opacity = pTitle;
         title.style.transform = `translateY(${((1 - pTitle) * 32).toFixed(1)}px)`;
       }
-      const pText = localProgress(overall, 0.2, 0.45);
+      const pText = localProgress(overall, 0.10, 0.25);
       if (lead) {
         lead.style.opacity = pText;
         lead.style.transform = `translateY(${((1 - pText) * 32).toFixed(1)}px)`;
@@ -1222,11 +1225,17 @@
     function render() {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      const overall = clamp01((vh - rect.top) / (vh + rect.height));
-      renderGhost(overall);
+      // El fondo es decorativo: se estira a lo largo de todo el paso de la
+      // sección por la pantalla (0 al asomar, 1 cuando termina de pasar).
+      const fullProgress = clamp01((vh - rect.top) / (vh + rect.height));
+      // El contenido tiene que leerse rápido: 0 al asomar por abajo, 1 cuando
+      // el borde superior de la sección llega al tope del viewport (no cuando
+      // termina de pasar), así todo queda listo mucho antes de irse de pantalla.
+      const enterProgress = clamp01((vh - rect.top) / vh);
+      renderGhost(fullProgress);
       // En mobile el rendimiento manda: solo el fondo queda ligado al scroll,
       // el resto se deja fijo en su estado final (ver handleModeChange).
-      if (!mobileQuery.matches) renderContent(overall);
+      if (!mobileQuery.matches) renderContent(enterProgress);
     }
 
     let ticking = false;
