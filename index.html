@@ -145,6 +145,7 @@
     -webkit-mask-image:radial-gradient(70% 60% at 50% 0%,#000 0%,transparent 75%);
     mask-image:radial-gradient(70% 60% at 50% 0%,#000 0%,transparent 75%);
   }
+  #nosotros .media-wave{z-index:0}
 
   /* Bloque 1 — presentación */
   .about-topbar{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #ffffff1f;padding:26px 56px;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;clip-path:inset(0 100% 0 0)}
@@ -522,12 +523,6 @@
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
-    <div class="media-wave bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,120 L0,120 Z" fill="#22261a"/>
-        <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
   </div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
@@ -543,6 +538,12 @@
 
 <!-- ============ QUIÉNES SOMOS ============ -->
 <section id="nosotros" class="about">
+  <div class="media-wave top" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,0 L0,0 Z" fill="#0d100d"/>
+      <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
   <div class="about-topbar">
     <span class="about-topbar-title" data-i18n="about_eyebrow">¿Quiénes somos?</span>
     <span class="about-topbar-tagline" data-i18n="about_tagline">Agencia de comunicación deportiva</span>
