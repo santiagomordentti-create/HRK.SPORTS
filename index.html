@@ -120,6 +120,9 @@
   .hero-media video{width:100%;height:100%;object-fit:cover}
   .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.55) 0%,rgba(10,10,12,.96) 100%)}
   .hero-content{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;align-items:center;gap:36px}
+  .hero-pixels{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+  .hero-pixel{position:absolute;top:0;left:0;background:var(--bg);will-change:transform,opacity;transition:transform .45s ease-out,opacity .45s ease-out}
+  .hero-pixel.hero-pixel-out{transform:scale(.35);opacity:0}
   .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
   .hero-cta svg{width:18px;height:18px;flex:none}
   .hero h1{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:5.75rem;line-height:.96;letter-spacing:-.005em;max-width:1120px;text-wrap:balance;text-align:center;margin:0 auto}
@@ -927,6 +930,86 @@
 </footer>
 
 <script>
+  // Pixel swap del Hero: cubre el hero con una grilla de píxeles y los hace
+  // desaparecer en orden aleatorio para revelar el video, una sola vez al cargar.
+  (function () {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const PIXEL_DURATION = 450;
+    const SWEEP_WINDOW = 1400 - PIXEL_DURATION;
+
+    const layer = document.createElement('div');
+    layer.className = 'hero-pixels';
+    layer.setAttribute('aria-hidden', 'true');
+    hero.appendChild(layer);
+
+    let done = false;
+    let started = false;
+    let resizeTimer = null;
+
+    function buildGrid() {
+      if (done) return;
+      layer.innerHTML = '';
+      const w = hero.clientWidth;
+      const h = hero.clientHeight;
+      const size = w < 640 ? 48 : 64;
+      const cols = Math.ceil(w / size);
+      const rows = Math.ceil(h / size);
+      const frag = document.createDocumentFragment();
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const px = document.createElement('div');
+          px.className = 'hero-pixel';
+          px.style.width = size + 'px';
+          px.style.height = size + 'px';
+          px.style.left = (c * size) + 'px';
+          px.style.top = (r * size) + 'px';
+          frag.appendChild(px);
+        }
+      }
+      layer.appendChild(frag);
+      // Si la grilla se reconstruye después de haber empezado a desaparecer
+      // (resize a mitad de la animación), los píxeles nuevos nacen ya "afuera"
+      // en vez de repetir el barrido, para no reiniciar la animación a la mitad.
+      if (started) {
+        layer.querySelectorAll('.hero-pixel').forEach(px => px.classList.add('hero-pixel-out'));
+      }
+    }
+
+    function finish() {
+      done = true;
+      window.removeEventListener('resize', onResize);
+      if (layer.parentNode) layer.parentNode.removeChild(layer);
+    }
+
+    function onResize() {
+      if (done) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildGrid, 120);
+    }
+    window.addEventListener('resize', onResize);
+
+    buildGrid();
+
+    if (reduceMotion) {
+      layer.style.transition = 'opacity .3s ease';
+      requestAnimationFrame(() => { layer.style.opacity = '0'; });
+      setTimeout(finish, 320);
+      return;
+    }
+
+    setTimeout(() => {
+      started = true;
+      const pixels = Array.from(layer.children);
+      pixels.forEach(px => { px.style.transitionDelay = Math.round(Math.random() * SWEEP_WINDOW) + 'ms'; });
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        pixels.forEach(px => px.classList.add('hero-pixel-out'));
+      }));
+      setTimeout(finish, SWEEP_WINDOW + PIXEL_DURATION + 50);
+    }, 150);
+  })();
+
   // Mobile menu
   const burger = document.getElementById('burger');
   const links = document.getElementById('navLinks');
