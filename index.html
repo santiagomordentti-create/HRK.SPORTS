@@ -130,13 +130,6 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
-  @keyframes drawX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  @keyframes drawY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-  @keyframes maskUp{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0% 0 0 0)}}
-  @keyframes fillDown{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
-  @keyframes wipeRight{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
-  @keyframes circleIn{from{clip-path:circle(1% at 50% 60%)}to{clip-path:circle(120% at 50% 60%)}}
-
   #nosotros{position:relative;overflow:hidden}
   .about{background:radial-gradient(120% 120% at 50% -20%,#22261a 0%,#16161a 55%,#0b0b0e 100%)}
   #nosotros::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
@@ -150,12 +143,12 @@
 
   /* Bloque 1 — presentación */
   .about-hero{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:64px 40px 0;text-align:center}
-  .about-ghost-pattern{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none;display:flex;flex-direction:column;clip-path:circle(1% at 50% 60%)}
+  .about-ghost-pattern{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none;display:flex;flex-direction:column;will-change:transform}
   .about-ghost-line{display:block;font-family:var(--title);font-weight:400;font-size:clamp(140px,27vw,530px);line-height:1.15;letter-spacing:-.045em;color:#d7f5511f;text-shadow:0 0 200px #d7f55140;white-space:nowrap;user-select:none}
-  .about-title{position:relative;z-index:1;font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:84px;line-height:.9;letter-spacing:-.025em;text-wrap:balance;color:#f3f2ee;margin:0;clip-path:inset(100% 0 0 0)}
+  .about-title{position:relative;z-index:1;font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:84px;line-height:.9;letter-spacing:-.025em;text-wrap:balance;color:#f3f2ee;margin:0;opacity:0;will-change:transform,opacity}
   .about-title-highlight{color:var(--accent)}
-  .about-lead-text{position:relative;z-index:1;max-width:760px;margin:28px auto 0;font-size:19px;line-height:1.65;color:#b7b5ae;clip-path:inset(100% 0 0 0)}
-  .about-cta{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px;clip-path:inset(100% 0 0 0)}
+  .about-lead-text{position:relative;z-index:1;max-width:760px;margin:28px auto 0;font-size:19px;line-height:1.65;color:#b7b5ae;opacity:0;will-change:transform,opacity}
+  .about-cta{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px;opacity:0;will-change:transform,opacity}
   .about .btn,.about .btn-secondary{padding:16px 30px;border-radius:6px;font-size:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
   .about .btn{background:var(--accent);color:#0a0a0c}
   .about .btn-secondary{border-color:#ffffff2e;color:#f3f2ee}
@@ -164,7 +157,7 @@
   /* Bloque 2 — tres pilares */
   .about-pillars{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1280px;margin:0 auto;padding:78px 56px 82px}
   .pillar-card{position:relative;padding:38px 34px 34px}
-  .pillar-line{position:absolute;background:var(--accent);pointer-events:none}
+  .pillar-line{position:absolute;background:var(--accent);pointer-events:none;will-change:transform}
   .pillar-line.top{top:0;left:0;width:100%;height:1px;transform:scaleX(0);transform-origin:left}
   .pillar-line.bottom{bottom:0;left:0;width:100%;height:1px;transform:scaleX(0);transform-origin:right}
   .pillar-line.right{top:0;right:0;width:1px;height:100%;transform:scaleY(0);transform-origin:top}
@@ -172,33 +165,6 @@
   .pillar-num{display:block;font-family:var(--title);font-weight:400;font-size:56px;line-height:1;color:var(--accent);clip-path:inset(0 0 100% 0)}
   .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.02em;font-size:26px;color:#fff;margin-top:12px;clip-path:inset(100% 0 0 0)}
   .pillar-desc{font-size:16px;line-height:1.5;color:#a5a39c;margin-top:12px;clip-path:inset(100% 0 0 0)}
-
-  /* Disparo de animaciones — activado por JS con la clase .in-view en #nosotros */
-  #nosotros.in-view .about-ghost-pattern{animation:circleIn 1.1s cubic-bezier(.22,1,.36,1) both .1s}
-  #nosotros.in-view .about-title{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .25s}
-  #nosotros.in-view .about-lead-text{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .4s}
-  #nosotros.in-view .about-cta{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .55s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-line.top{animation:drawX .45s cubic-bezier(.65,0,.35,1) both 0s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-line.right{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .14s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-line.bottom{animation:drawX .45s cubic-bezier(.65,0,.35,1) both .28s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-line.left{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .42s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-num{animation:fillDown .6s cubic-bezier(.22,1,.36,1) both .5s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-title{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .6s}
-  #nosotros.in-view .pillar-card:nth-child(1) .pillar-desc{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .68s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-line.top{animation:drawX .45s cubic-bezier(.65,0,.35,1) both .14s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-line.right{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .28s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-line.bottom{animation:drawX .45s cubic-bezier(.65,0,.35,1) both .42s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-line.left{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .56s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-num{animation:fillDown .6s cubic-bezier(.22,1,.36,1) both .64s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-title{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .74s}
-  #nosotros.in-view .pillar-card:nth-child(2) .pillar-desc{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .82s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-line.top{animation:drawX .45s cubic-bezier(.65,0,.35,1) both .28s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-line.right{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .42s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-line.bottom{animation:drawX .45s cubic-bezier(.65,0,.35,1) both .56s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-line.left{animation:drawY .45s cubic-bezier(.65,0,.35,1) both .7s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-num{animation:fillDown .6s cubic-bezier(.22,1,.36,1) both .78s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-title{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .88s}
-  #nosotros.in-view .pillar-card:nth-child(3) .pillar-desc{animation:maskUp .6s cubic-bezier(.22,1,.36,1) both .96s}
 
   @media(max-width:900px){
     .about-hero{padding:40px 24px 0}
@@ -208,10 +174,10 @@
     .about-pillars{grid-template-columns:1fr;gap:16px;padding:48px 24px 56px}
   }
   @media(prefers-reduced-motion:reduce){
-    .about-ghost-pattern,.about-title,.about-lead-text,.about-cta,.pillar-title,.pillar-desc,.pillar-num{
-      animation:none !important;clip-path:none !important;
-    }
-    .pillar-line{animation:none !important;transform:none !important}
+    .about-title,.about-lead-text,.about-cta{opacity:1 !important;transform:none !important}
+    .pillar-title,.pillar-desc,.pillar-num{clip-path:none !important}
+    .pillar-line{transform:none !important}
+    .about-ghost-pattern{transform:none !important}
   }
 
   /* ---------- SERVICIOS ---------- */
@@ -1114,9 +1080,10 @@
   })();
 
   // "Quiénes somos" — genera tantas líneas de "HRK.SPORTS" como hagan falta para
-  // cubrir el alto real de la sección (patrón tipo ladrillo, offset por CSS
-  // nth-child). Se recalcula en resize porque el alto de la sección y el
-  // font-size (clamp en vw) cambian con el ancho de la ventana.
+  // cubrir el alto real de la sección, alineadas a la izquierda y desbordando
+  // el ancho (se cortan contra overflow:hidden del contenedor). Se recalcula
+  // en resize porque el alto de la sección y el font-size (clamp en vw)
+  // cambian con el ancho de la ventana.
   (function () {
     const container = document.getElementById('aboutGhostPattern');
     const section = document.getElementById('nosotros');
@@ -1150,26 +1117,135 @@
     });
   })();
 
-  // "Quiénes somos" — entrada por clip-path/transform disparada por IntersectionObserver.
-  // Se reinicia cada vez que la sección vuelve a entrar en pantalla: se saca la clase,
-  // se fuerza un reflow (void offsetWidth) y se la vuelve a poner para que las
-  // animaciones CSS (definidas contra #nosotros.in-view) arranquen de cero.
+  // "Quiénes somos" — scroll-scrubbing: el progreso (0 a 1) se recalcula en cada
+  // frame según cuánto pasó la sección por la pantalla (0 = borde superior
+  // entrando por abajo, 1 = ya pasó del todo) y cada propiedad se aplica
+  // directo por JS, sin animaciones/delays CSS — así al subir el scroll todo
+  // retrocede solo, sin saltos, porque es pura función de la posición actual.
   (function () {
     const section = document.getElementById('nosotros');
     if (!section) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const aboutObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          section.classList.remove('in-view');
-          void section.offsetWidth;
-          section.classList.add('in-view');
-        } else {
-          section.classList.remove('in-view');
-        }
+
+    const ghost = document.getElementById('aboutGhostPattern');
+    const title = section.querySelector('.about-title');
+    const lead = section.querySelector('.about-lead-text');
+    const cta = section.querySelector('.about-cta');
+    const pillarCards = Array.from(section.querySelectorAll('.pillar-card'));
+
+    function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function localProgress(p, start, end) { return clamp01((p - start) / (end - start)); }
+
+    function setStatic() {
+      if (title) { title.style.opacity = 1; title.style.transform = 'none'; }
+      if (lead) { lead.style.opacity = 1; lead.style.transform = 'none'; }
+      if (cta) { cta.style.opacity = 1; cta.style.transform = 'none'; }
+      pillarCards.forEach(card => {
+        card.querySelectorAll('.pillar-line').forEach(line => { line.style.transform = 'none'; });
+        const num = card.querySelector('.pillar-num');
+        const cardTitle = card.querySelector('.pillar-title');
+        const desc = card.querySelector('.pillar-desc');
+        if (num) num.style.clipPath = 'none';
+        if (cardTitle) cardTitle.style.clipPath = 'none';
+        if (desc) desc.style.clipPath = 'none';
       });
-    }, { threshold: 0.3 });
-    aboutObserver.observe(section);
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setStatic();
+      if (ghost) ghost.style.transform = 'none';
+      return;
+    }
+
+    // Ventana de progreso global [inicio, fin] de cada pilar, escalonadas para
+    // que se dibujen uno detrás del otro dentro del tramo 0.4–0.9.
+    const pillarWindows = [[0.40, 0.70], [0.50, 0.80], [0.60, 0.90]];
+    // Dentro del tramo local de cada pilar (0 a 1): sus 4 bordes, luego número,
+    // título y descripción, escalonados entre sí.
+    const stages = {
+      top: [0, .18], right: [.10, .28], bottom: [.20, .38], left: [.30, .48],
+      num: [.40, .65], title: [.55, .80], desc: [.68, .93]
+    };
+
+    const mobileQuery = window.matchMedia('(max-width:900px)');
+
+    function renderGhost(overall) {
+      if (!ghost) return;
+      const shift = (overall - 0.5) * 150;
+      ghost.style.transform = `translateX(${shift.toFixed(1)}px)`;
+    }
+
+    function renderContent(overall) {
+      const pTitle = localProgress(overall, 0, 0.3);
+      if (title) {
+        title.style.opacity = pTitle;
+        title.style.transform = `translateY(${((1 - pTitle) * 32).toFixed(1)}px)`;
+      }
+      const pText = localProgress(overall, 0.2, 0.45);
+      if (lead) {
+        lead.style.opacity = pText;
+        lead.style.transform = `translateY(${((1 - pText) * 32).toFixed(1)}px)`;
+      }
+      if (cta) {
+        cta.style.opacity = pText;
+        cta.style.transform = `translateY(${((1 - pText) * 32).toFixed(1)}px)`;
+      }
+
+      pillarCards.forEach((card, i) => {
+        const [ws, we] = pillarWindows[i] || pillarWindows[pillarWindows.length - 1];
+        const lp = localProgress(overall, ws, we);
+        const fTop = localProgress(lp, stages.top[0], stages.top[1]);
+        const fRight = localProgress(lp, stages.right[0], stages.right[1]);
+        const fBottom = localProgress(lp, stages.bottom[0], stages.bottom[1]);
+        const fLeft = localProgress(lp, stages.left[0], stages.left[1]);
+        const fNum = localProgress(lp, stages.num[0], stages.num[1]);
+        const fTitle = localProgress(lp, stages.title[0], stages.title[1]);
+        const fDesc = localProgress(lp, stages.desc[0], stages.desc[1]);
+
+        const lineTop = card.querySelector('.pillar-line.top');
+        const lineRight = card.querySelector('.pillar-line.right');
+        const lineBottom = card.querySelector('.pillar-line.bottom');
+        const lineLeft = card.querySelector('.pillar-line.left');
+        const num = card.querySelector('.pillar-num');
+        const cardTitle = card.querySelector('.pillar-title');
+        const desc = card.querySelector('.pillar-desc');
+
+        if (lineTop) lineTop.style.transform = `scaleX(${fTop.toFixed(3)})`;
+        if (lineBottom) lineBottom.style.transform = `scaleX(${fBottom.toFixed(3)})`;
+        if (lineRight) lineRight.style.transform = `scaleY(${fRight.toFixed(3)})`;
+        if (lineLeft) lineLeft.style.transform = `scaleY(${fLeft.toFixed(3)})`;
+        if (num) num.style.clipPath = `inset(0 0 ${((1 - fNum) * 100).toFixed(1)}% 0)`;
+        if (cardTitle) cardTitle.style.clipPath = `inset(${((1 - fTitle) * 100).toFixed(1)}% 0 0 0)`;
+        if (desc) desc.style.clipPath = `inset(${((1 - fDesc) * 100).toFixed(1)}% 0 0 0)`;
+      });
+    }
+
+    function render() {
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const overall = clamp01((vh - rect.top) / (vh + rect.height));
+      renderGhost(overall);
+      // En mobile el rendimiento manda: solo el fondo queda ligado al scroll,
+      // el resto se deja fijo en su estado final (ver handleModeChange).
+      if (!mobileQuery.matches) renderContent(overall);
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { render(); ticking = false; });
+    }
+
+    function handleModeChange() {
+      if (mobileQuery.matches) setStatic();
+      render();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', handleModeChange);
+    else if (mobileQuery.addListener) mobileQuery.addListener(handleModeChange);
+    handleModeChange();
   })();
 
   // Comparador antes/después de Trabajos
