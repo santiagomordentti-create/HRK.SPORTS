@@ -1126,6 +1126,20 @@
   // CSS — así al subir el scroll todo
   // retrocede solo, sin saltos, porque es pura función de la posición actual.
   (function () {
+    // Tramos ajustables — tocar solo estos valores para afinar el ritmo.
+    // Ventana de progreso global [inicio, fin] de cada pilar sobre enterProgress,
+    // solapadas a propósito para que se sientan encadenados y no espaciados.
+    // Si se siente lento, ACORTAR cada tramo (achicar la diferencia entre
+    // inicio y fin), no correrlos de lugar.
+    const PILLAR_WINDOWS = [[0.12, 0.20], [0.16, 0.24], [0.20, 0.28]];
+    // Dentro del tramo local de cada pilar (0 a 1): los 4 bordes se dibujan en
+    // la primera mitad, número/título/descripción en la segunda, solapados a
+    // propósito para no esperar a que terminen los bordes.
+    const PILLAR_STAGES = {
+      top: [0, .28], right: [.08, .36], bottom: [.16, .44], left: [.24, .52],
+      num: [.34, .62], title: [.48, .78], desc: [.62, .95]
+    };
+
     const section = document.getElementById('nosotros');
     if (!section) return;
 
@@ -1159,16 +1173,6 @@
       return;
     }
 
-    // Ventana de progreso global [inicio, fin] de cada pilar, solapadas a
-    // propósito para que se sientan encadenados y no espaciados.
-    const pillarWindows = [[0.20, 0.30], [0.26, 0.36], [0.32, 0.45]];
-    // Dentro del tramo local de cada pilar (0 a 1): sus 4 bordes, luego número,
-    // título y descripción, escalonados entre sí.
-    const stages = {
-      top: [0, .18], right: [.10, .28], bottom: [.20, .38], left: [.30, .48],
-      num: [.40, .65], title: [.55, .80], desc: [.68, .93]
-    };
-
     const mobileQuery = window.matchMedia('(max-width:900px)');
 
     function renderGhost(overall) {
@@ -1194,15 +1198,15 @@
       }
 
       pillarCards.forEach((card, i) => {
-        const [ws, we] = pillarWindows[i] || pillarWindows[pillarWindows.length - 1];
+        const [ws, we] = PILLAR_WINDOWS[i] || PILLAR_WINDOWS[PILLAR_WINDOWS.length - 1];
         const lp = localProgress(overall, ws, we);
-        const fTop = localProgress(lp, stages.top[0], stages.top[1]);
-        const fRight = localProgress(lp, stages.right[0], stages.right[1]);
-        const fBottom = localProgress(lp, stages.bottom[0], stages.bottom[1]);
-        const fLeft = localProgress(lp, stages.left[0], stages.left[1]);
-        const fNum = localProgress(lp, stages.num[0], stages.num[1]);
-        const fTitle = localProgress(lp, stages.title[0], stages.title[1]);
-        const fDesc = localProgress(lp, stages.desc[0], stages.desc[1]);
+        const fTop = localProgress(lp, PILLAR_STAGES.top[0], PILLAR_STAGES.top[1]);
+        const fRight = localProgress(lp, PILLAR_STAGES.right[0], PILLAR_STAGES.right[1]);
+        const fBottom = localProgress(lp, PILLAR_STAGES.bottom[0], PILLAR_STAGES.bottom[1]);
+        const fLeft = localProgress(lp, PILLAR_STAGES.left[0], PILLAR_STAGES.left[1]);
+        const fNum = localProgress(lp, PILLAR_STAGES.num[0], PILLAR_STAGES.num[1]);
+        const fTitle = localProgress(lp, PILLAR_STAGES.title[0], PILLAR_STAGES.title[1]);
+        const fDesc = localProgress(lp, PILLAR_STAGES.desc[0], PILLAR_STAGES.desc[1]);
 
         const lineTop = card.querySelector('.pillar-line.top');
         const lineRight = card.querySelector('.pillar-line.right');
