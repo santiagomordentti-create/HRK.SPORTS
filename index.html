@@ -1117,27 +1117,25 @@
     });
   })();
 
-  // "Quiénes somos" — scroll-scrubbing: se manejan dos progresos (0 a 1) en
-  // paralelo. El del fondo decorativo cubre todo el paso de la sección por
-  // la pantalla; el del contenido va más rápido (llega a 1 cuando el borde
-  // superior toca el tope del viewport, no cuando la sección termina de
-  // pasar) para que todo se termine de leer bastante antes de irse de
-  // pantalla. Cada propiedad se aplica directo por JS, sin animaciones/delays
-  // CSS — así al subir el scroll todo
-  // retrocede solo, sin saltos, porque es pura función de la posición actual.
+  // "Quiénes somos" — scroll-scrubbing por elemento: título, párrafo, botones
+  // y cada pilar calculan su PROPIO progreso según SU posición en el viewport
+  // (no según la sección ni la página). Con el progreso atado a la sección,
+  // el recorrido se completaba con la sección todavía fuera de pantalla —
+  // cada elemento tiene que medirse contra sí mismo para que se dibuje justo
+  // mientras entra y se desdibuje si el usuario sube. El fondo decorativo es
+  // la única excepción: sigue atado al paso completo de la sección (ver
+  // renderGhost), porque ahí no hay nada que "leer" antes de tiempo.
   (function () {
-    // Tramos ajustables — tocar solo estos valores para afinar el ritmo.
-    // Ventana de progreso global [inicio, fin] de cada pilar sobre enterProgress,
-    // solapadas a propósito para que se sientan encadenados y no espaciados.
-    // Si se siente lento, ACORTAR cada tramo (achicar la diferencia entre
-    // inicio y fin), no correrlos de lugar.
-    const PILLAR_WINDOWS = [[0.12, 0.20], [0.16, 0.24], [0.20, 0.28]];
-    // Dentro del tramo local de cada pilar (0 a 1): los 4 bordes se dibujan en
-    // la primera mitad, número/título/descripción en la segunda, solapados a
-    // propósito para no esperar a que terminen los bordes.
+    // Constantes ajustables — tocar solo estos valores para afinar el ritmo.
+    const START_VH_RATIO = 0.92; // el elemento arranca cuando su borde superior está a este % del alto de pantalla
+    const END_VH_RATIO = 0.55;   // termina cuando llega a este otro %
+    const PILLAR_START_STEP = 0.04; // cada pilar arranca este % antes que el anterior, para que entren encadenados
+    // Dentro del progreso propio de cada pilar (0 a 1): los 4 bordes se
+    // dibujan entre 0 y 0.6 (uno detrás de otro), número/título/descripción
+    // aparecen entre 0.5 y 1 — se solapan a propósito con la cola de los bordes.
     const PILLAR_STAGES = {
-      top: [0, .28], right: [.08, .36], bottom: [.16, .44], left: [.24, .52],
-      num: [.34, .62], title: [.48, .78], desc: [.62, .95]
+      top: [0, .30], right: [.10, .40], bottom: [.20, .50], left: [.30, .60],
+      num: [.50, .70], title: [.65, .85], desc: [.80, 1]
     };
 
     const section = document.getElementById('nosotros');
@@ -1151,6 +1149,15 @@
 
     function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
     function localProgress(p, start, end) { return clamp01((p - start) / (end - start)); }
+    // Progreso propio de un elemento: 0 cuando su borde superior está al
+    // startRatio de la pantalla, 1 cuando llega al endRatio.
+    function elementProgress(el, startRatio, endRatio) {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * startRatio;
+      const end = vh * endRatio;
+      return clamp01((start - r.top) / (start - end));
+    }
 
     function setStatic() {
       if (title) { title.style.opacity = 1; title.style.transform = 'none'; }
@@ -1205,32 +1212,32 @@
       ghost.style.transform = `translateX(${shift.toFixed(1)}px)`;
     }
 
-    function renderContent(overall) {
-      const pTitle = localProgress(overall, 0, 0.15);
+    function renderContent() {
       if (title) {
-        title.style.opacity = pTitle;
-        title.style.transform = `translateY(${((1 - pTitle) * 32).toFixed(1)}px)`;
+        const p = elementProgress(title, START_VH_RATIO, END_VH_RATIO);
+        title.style.opacity = p;
+        title.style.transform = `translateY(${((1 - p) * 32).toFixed(1)}px)`;
       }
-      const pText = localProgress(overall, 0.10, 0.25);
       if (lead) {
-        lead.style.opacity = pText;
-        lead.style.transform = `translateY(${((1 - pText) * 32).toFixed(1)}px)`;
+        const p = elementProgress(lead, START_VH_RATIO, END_VH_RATIO);
+        lead.style.opacity = p;
+        lead.style.transform = `translateY(${((1 - p) * 32).toFixed(1)}px)`;
       }
       if (cta) {
-        cta.style.opacity = pText;
-        cta.style.transform = `translateY(${((1 - pText) * 32).toFixed(1)}px)`;
+        const p = elementProgress(cta, START_VH_RATIO, END_VH_RATIO);
+        cta.style.opacity = p;
+        cta.style.transform = `translateY(${((1 - p) * 32).toFixed(1)}px)`;
       }
 
       pillarCards.forEach((card, i) => {
-        const [ws, we] = PILLAR_WINDOWS[i] || PILLAR_WINDOWS[PILLAR_WINDOWS.length - 1];
-        const lp = localProgress(overall, ws, we);
-        const fTop = localProgress(lp, PILLAR_STAGES.top[0], PILLAR_STAGES.top[1]);
-        const fRight = localProgress(lp, PILLAR_STAGES.right[0], PILLAR_STAGES.right[1]);
-        const fBottom = localProgress(lp, PILLAR_STAGES.bottom[0], PILLAR_STAGES.bottom[1]);
-        const fLeft = localProgress(lp, PILLAR_STAGES.left[0], PILLAR_STAGES.left[1]);
-        const fNum = localProgress(lp, PILLAR_STAGES.num[0], PILLAR_STAGES.num[1]);
-        const fTitle = localProgress(lp, PILLAR_STAGES.title[0], PILLAR_STAGES.title[1]);
-        const fDesc = localProgress(lp, PILLAR_STAGES.desc[0], PILLAR_STAGES.desc[1]);
+        const p = elementProgress(card, START_VH_RATIO - i * PILLAR_START_STEP, END_VH_RATIO);
+        const fTop = localProgress(p, PILLAR_STAGES.top[0], PILLAR_STAGES.top[1]);
+        const fRight = localProgress(p, PILLAR_STAGES.right[0], PILLAR_STAGES.right[1]);
+        const fBottom = localProgress(p, PILLAR_STAGES.bottom[0], PILLAR_STAGES.bottom[1]);
+        const fLeft = localProgress(p, PILLAR_STAGES.left[0], PILLAR_STAGES.left[1]);
+        const fNum = localProgress(p, PILLAR_STAGES.num[0], PILLAR_STAGES.num[1]);
+        const fTitle = localProgress(p, PILLAR_STAGES.title[0], PILLAR_STAGES.title[1]);
+        const fDesc = localProgress(p, PILLAR_STAGES.desc[0], PILLAR_STAGES.desc[1]);
 
         const lineTop = card.querySelector('.pillar-line.top');
         const lineRight = card.querySelector('.pillar-line.right');
@@ -1251,25 +1258,17 @@
     }
 
     function render() {
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight;
       // El fondo es decorativo: se estira a lo largo de todo el paso de la
       // sección por la pantalla (0 al asomar, 1 cuando termina de pasar).
+      // No usa elementProgress porque no hay nada que "leer" ahí — no
+      // necesita medirse contra el viewport de la misma forma que el resto.
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
       const fullProgress = clamp01((vh - rect.top) / (vh + rect.height));
-      // El contenido tiene que leerse rápido: 0 al cargar la página (scrollY=0),
-      // 1 cuando el borde superior de la sección llega al tope del viewport.
-      // OJO: usar (vh - rect.top) / vh acá era un bug — si la sección queda a
-      // menos de un vh del top de la página (como acá, justo debajo del hero),
-      // el progreso YA arranca en >0 apenas carga, sin haber scrolleado nada,
-      // y se come de entrada parte de la ventana del primer pilar. La distancia
-      // real recorrible es sectionTop (de scrollY=0 a scrollY=sectionTop), así
-      // que el progreso tiene que ser scrollY / sectionTop, no algo basado en vh.
-      const sectionTop = rect.top + window.scrollY;
-      const enterProgress = sectionTop > 0 ? clamp01(window.scrollY / sectionTop) : 1;
       renderGhost(fullProgress);
       // En mobile el rendimiento manda: solo el fondo queda ligado al scroll,
       // el resto se deja fijo en su estado final (ver handleModeChange).
-      if (!mobileQuery.matches) renderContent(enterProgress);
+      if (!mobileQuery.matches) renderContent();
     }
 
     let ticking = false;
