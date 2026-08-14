@@ -1256,10 +1256,16 @@
       // El fondo es decorativo: se estira a lo largo de todo el paso de la
       // sección por la pantalla (0 al asomar, 1 cuando termina de pasar).
       const fullProgress = clamp01((vh - rect.top) / (vh + rect.height));
-      // El contenido tiene que leerse rápido: 0 al asomar por abajo, 1 cuando
-      // el borde superior de la sección llega al tope del viewport (no cuando
-      // termina de pasar), así todo queda listo mucho antes de irse de pantalla.
-      const enterProgress = clamp01((vh - rect.top) / vh);
+      // El contenido tiene que leerse rápido: 0 al cargar la página (scrollY=0),
+      // 1 cuando el borde superior de la sección llega al tope del viewport.
+      // OJO: usar (vh - rect.top) / vh acá era un bug — si la sección queda a
+      // menos de un vh del top de la página (como acá, justo debajo del hero),
+      // el progreso YA arranca en >0 apenas carga, sin haber scrolleado nada,
+      // y se come de entrada parte de la ventana del primer pilar. La distancia
+      // real recorrible es sectionTop (de scrollY=0 a scrollY=sectionTop), así
+      // que el progreso tiene que ser scrollY / sectionTop, no algo basado en vh.
+      const sectionTop = rect.top + window.scrollY;
+      const enterProgress = sectionTop > 0 ? clamp01(window.scrollY / sectionTop) : 1;
       renderGhost(fullProgress);
       // En mobile el rendimiento manda: solo el fondo queda ligado al scroll,
       // el resto se deja fijo en su estado final (ver handleModeChange).
