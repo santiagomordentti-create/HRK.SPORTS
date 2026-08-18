@@ -66,6 +66,7 @@
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
     --title:'Anton',var(--display),sans-serif;
+    --title-tracking:0.02em;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -74,7 +75,7 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
   section{padding:96px 0;scroll-margin-top:90px}
-  h2{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.005em}
+  h2{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:var(--title-tracking)}
   .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
   .section-dek{font-size:1.375rem;font-weight:500;line-height:1.5;color:rgba(255,255,255,.92);max-width:620px;margin:14px auto 0;text-align:center}
   @media(max-width:680px){.section-dek{font-size:1.0625rem}}
@@ -90,7 +91,7 @@
   .nav-group .nav-link{font-size:.875rem;letter-spacing:.04em}
   .nav-link:hover{color:var(--accent)}
   .nav-link.active{color:var(--accent)}
-  .logo{grid-column:2;display:inline-flex;align-items:center;justify-self:center;gap:9px;font-family:var(--title);font-weight:400;font-size:1.625rem;letter-spacing:.03em;text-transform:uppercase;color:#fff}
+  .logo{grid-column:2;display:inline-flex;align-items:center;justify-self:center;gap:9px;font-family:var(--title);font-weight:400;font-size:1.625rem;letter-spacing:var(--title-tracking);text-transform:uppercase;color:#fff}
   .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
   .burger{grid-column:3;justify-self:end;display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;position:relative;z-index:160}
   .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
@@ -122,7 +123,7 @@
   .hero-content{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;align-items:center;gap:36px}
   .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
   .hero-cta svg{width:18px;height:18px;flex:none}
-  .hero h1{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:5.75rem;line-height:.96;letter-spacing:-.005em;max-width:1120px;text-wrap:balance;text-align:center;margin:0 auto}
+  .hero h1{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:5.75rem;line-height:.96;letter-spacing:var(--title-tracking);max-width:1120px;text-wrap:balance;text-align:center;margin:0 auto}
   .hero h1 em{font-style:normal;color:var(--accent)}
   .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:var(--accent);color:var(--accent-ink) !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:0 0 6px rgba(215,245,81,.25);transition:background .2s ease,box-shadow .2s ease}
   .btn:hover{background:var(--accent-hover);box-shadow:0 0 10px rgba(227,255,110,.4)}
@@ -174,7 +175,7 @@
   .about-hero{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:64px 40px 0;text-align:center}
   .about-ghost-pattern{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none;display:flex;flex-direction:column;will-change:transform}
   .about-ghost-line{display:block;font-family:var(--title);font-weight:400;font-size:clamp(140px,27vw,530px);line-height:1.15;letter-spacing:-.045em;color:#d7f5511f;text-shadow:0 0 200px #d7f55140;white-space:nowrap;user-select:none}
-  .about-title{position:relative;z-index:1;font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:84px;line-height:.9;letter-spacing:-.025em;text-wrap:balance;color:#f3f2ee;margin:0;opacity:0;will-change:transform,opacity}
+  .about-title{position:relative;z-index:1;font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:84px;line-height:.9;letter-spacing:var(--title-tracking);text-wrap:balance;color:#f3f2ee;margin:0;opacity:0;will-change:transform,opacity}
   .about-title-highlight{color:var(--accent)}
   .about-lead-text{position:relative;z-index:1;max-width:760px;margin:28px auto 0;font-size:19px;line-height:1.65;color:rgba(255,255,255,.85);opacity:0;will-change:transform,opacity}
   .about-cta{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px;opacity:0;will-change:transform,opacity}
@@ -191,8 +192,8 @@
   .pillar-line.bottom{bottom:0;left:0;width:100%;height:1px;transform-origin:right}
   .pillar-line.right{top:0;right:0;width:1px;height:100%;transform-origin:top}
   .pillar-line.left{top:0;left:0;width:1px;height:100%;transform-origin:bottom}
-  .pillar-num{display:block;font-family:var(--title);font-weight:400;font-size:56px;line-height:1;color:var(--accent)}
-  .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:.02em;font-size:26px;color:#fff;margin-top:12px}
+  .pillar-num{display:block;font-family:var(--title);font-weight:400;font-size:56px;line-height:1;letter-spacing:var(--title-tracking);color:var(--accent)}
+  .pillar-title{font-family:var(--title);font-weight:400;text-transform:uppercase;letter-spacing:var(--title-tracking);font-size:26px;color:#fff;margin-top:12px}
   .pillar-desc{font-size:16px;line-height:1.5;color:rgba(255,255,255,.85);margin-top:12px}
 
   @media(max-width:1024px){
@@ -231,7 +232,7 @@
   .svc-panel-cta{grid-column:1/-1;display:flex;justify-content:center;margin-top:8px}
   .svc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:border-color .2s ease,box-shadow .2s ease}
   .svc-card:hover{border-color:var(--line-strong);box-shadow:0 4px 20px rgba(0,0,0,.35)}
-  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1.15;letter-spacing:.05em;font-size:1.25rem;color:#fff;margin-bottom:8px}
+  .svc-card h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1.15;letter-spacing:var(--title-tracking);font-size:1.25rem;color:#fff;margin-bottom:8px}
   .svc-card p{font-size:.906rem;line-height:1.5;color:rgba(255,255,255,.85)}
   @media(max-width:1100px){.services-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:1024px){
@@ -271,13 +272,13 @@
   .work-compare-tag.before{left:20px;color:#fff}
   .work-compare-tag.after{right:20px;color:var(--accent)}
   .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
-  .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:-.005em;font-size:3.375rem;color:#fff;margin:0}
+  .work-compare-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:var(--title-tracking);font-size:3.375rem;color:#fff;margin:0}
   .work-compare-desc{font-family:var(--title);font-weight:400;font-size:.875rem;line-height:1.35;color:var(--accent);max-width:420px;margin:0}
   .work-compare-info .btn{pointer-events:auto;min-height:44px;padding:8px 18px;font-size:.9rem;margin-top:4px}
   .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
   .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
   .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
-  .work-mini-info h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.03em;font-size:1.875rem;color:#fff;margin-bottom:8px}
+  .work-mini-info h3{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:var(--title-tracking);font-size:1.875rem;color:#fff;margin-bottom:8px}
   .work-mini-info p{font-family:var(--title);font-weight:400;font-size:.8125rem;line-height:1.35;color:var(--accent);margin:0}
   @media(max-width:1024px){
     .work{padding:80px 40px 88px}
@@ -302,8 +303,8 @@
   .athlete-panel.active{flex:3.2;border-color:#4a4a55}
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
-  .athlete-name{font-family:var(--title);font-weight:400;color:#fff;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1),letter-spacing .45s cubic-bezier(.22,1,.36,1)}
-  .athlete-panel.active .athlete-name{font-size:2.5rem;letter-spacing:.02em}
+  .athlete-name{font-family:var(--title);font-weight:400;color:#fff;text-transform:uppercase;line-height:1;letter-spacing:var(--title-tracking);font-size:1.375rem;white-space:nowrap;transition:font-size .45s cubic-bezier(.22,1,.36,1)}
+  .athlete-panel.active .athlete-name{font-size:2.5rem}
   .athlete-role{max-height:0;opacity:0;overflow:hidden;margin-top:2px;color:rgba(255,255,255,.85);font-size:.95rem;font-weight:600;transition:max-height .35s ease,opacity .3s ease}
   .athlete-panel.active .athlete-role{max-height:30px;opacity:1}
   .athlete-stats{display:flex;align-items:flex-start;gap:10px;height:0;opacity:0;overflow:hidden;margin-top:14px;transition:height .45s cubic-bezier(.22,1,.36,1),opacity .35s ease}
@@ -326,7 +327,7 @@
     .athletes-strip{flex-direction:column;height:auto;gap:14px}
     .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
     .athlete-body{position:relative;padding:180px 18px 18px}
-    .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem;letter-spacing:.03em}
+    .athlete-name,.athlete-panel.active .athlete-name{font-size:1.75rem}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
     .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:12px}
     .athlete-stat{max-width:none}
@@ -346,9 +347,9 @@
   .process-step:hover{background:#f2efe9;border-color:#d8d2ca}
   .process-step.active{background:#f2efe9;border-color:#111}
   .process-step-top{display:flex;align-items:baseline;gap:12px}
-  .process-step-num{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#6b665f;flex:none;min-width:1.4em}
+  .process-step-num{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:var(--title-tracking);font-size:1.15rem;color:#6b665f;flex:none;min-width:1.4em}
   .process-step.active .process-step-num{color:#5c6810}
-  .process-step-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:.05em;font-size:1.15rem;color:#6b665f;flex:1}
+  .process-step-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:1;letter-spacing:var(--title-tracking);font-size:1.15rem;color:#6b665f;flex:1}
   .process-step.active .process-step-name{color:#111}
   .process-step-time{font-size:.85rem;color:#6b665f;flex:none}
   .process-step-bar{margin-top:15px;width:100%;height:2px;background:rgba(17,17,17,.08);border-radius:2px;overflow:hidden}
@@ -382,7 +383,7 @@
   .press-kicker{font-family:Georgia,'Times New Roman',serif;font-size:1.875rem;color:#111}
   .press-divider{width:1px;height:18px;background:rgba(17,17,17,.35)}
   .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(17,17,17,.55)}
-  .press-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.5rem;line-height:1;letter-spacing:-.005em;color:#111}
+  .press-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:3.5rem;line-height:1;letter-spacing:var(--title-tracking);color:#111}
   .press-content .section-dek{color:#2a2a2e;text-align:left;margin:14px 0 0}
   .press-cta{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
   .press .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
@@ -567,7 +568,7 @@
   </div>
   <div class="about-ghost-pattern" id="aboutGhostPattern" aria-hidden="true"></div>
   <div class="about-hero">
-    <h2 class="about-title"><span data-i18n="about_title_a">El talento necesita una imagen que lo </span><span class="about-title-highlight" data-i18n="about_title_highlight">represente</span></h2>
+    <h2 class="about-title"><span data-i18n="about_title_a">El talento necesita una imagen que lo</span> <span class="about-title-highlight" data-i18n="about_title_highlight">represente</span></h2>
     <p class="about-lead-text" data-i18n="about_intro">Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos a través de contenido estratégico, identidad visual y comunicación profesional. Acompañamos el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha.</p>
     <div class="about-cta">
       <a href="#contacto" class="btn" data-i18n="about_cta_primary">Trabajemos juntos</a>
@@ -1428,7 +1429,7 @@
       hero_pre: 'Construimos la imagen de quienes', hero_em: 'viven para competir',
       hero_cta_primary: 'Potenciar mi carrera', hero_cta_whatsapp: 'Hablar por WhatsApp',
 
-      about_title_a: 'El talento necesita una imagen que lo ', about_title_highlight: 'represente',
+      about_title_a: 'El talento necesita una imagen que lo', about_title_highlight: 'represente',
       about_intro: 'Somos una agencia de comunicación deportiva dedicada a potenciar la presencia de deportistas, agencias y proyectos a través de contenido estratégico, identidad visual y comunicación profesional. Acompañamos el crecimiento de cada atleta, creando oportunidades dentro y fuera de la cancha.',
       about_cta_primary: 'Trabajemos juntos', about_cta_secondary: 'Ver trabajos',
       pillar1_title: 'Comunicación', pillar1_desc: 'Contenido que refleja el presente y la identidad de cada deportista.',
@@ -1526,7 +1527,7 @@
       hero_pre: 'We build the image of those who', hero_em: 'live to compete',
       hero_cta_primary: 'Boost my career', hero_cta_whatsapp: 'Chat on WhatsApp',
 
-      about_title_a: 'Talent needs an image that ', about_title_highlight: 'represents it',
+      about_title_a: 'Talent needs an image that', about_title_highlight: 'represents it',
       about_intro: 'We\'re a sports communication agency dedicated to boosting the presence of athletes, agencies, and projects through strategic content, visual identity, and professional communication. We support every athlete\'s growth, creating opportunities on and off the field.',
       about_cta_primary: 'Let\'s work together', about_cta_secondary: 'See our work',
       pillar1_title: 'Communication', pillar1_desc: 'Content that reflects each athlete\'s present and identity.',
