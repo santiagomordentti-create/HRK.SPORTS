@@ -130,7 +130,36 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
-  #nosotros{position:relative;overflow:hidden}
+  /* El borde inferior en forma de onda se logra RECORTANDO la sección con
+     un mask-image (no rellenando un path sólido aparte): así lo que se ve
+     por encima de la curva es el degradado real de la sección, con todas
+     sus capas (radial-gradient + scrim + patrón), nunca un color aproximado
+     que pueda desentonar. La máscara tiene dos capas: un rectángulo sólido
+     que cubre todo menos los últimos 90px (54px en mobile) — para que el
+     resto de la sección quede intacto — y la curva de la onda en esa franja
+     final. Prensa se sube por debajo con margin-top negativo para que su
+     foto quede justo detrás del recorte, y #nosotros necesita z-index para
+     pintarse arriba en esa zona de superposición. La línea lima que calca
+     el mismo path se agrega como capa aparte al final de la sección.  */
+  #nosotros{
+    --wave-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,86%20C144,86%20144,32%20288,32%20C432,32%20432,86%20576,86%20C720,86%20720,32%20864,32%20C1008,32%201008,86%201152,86%20C1296,86%201296,32%201440,32%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
+    position:relative;z-index:1;overflow:hidden;
+    -webkit-mask-image:linear-gradient(#000,#000),var(--wave-mask);
+    -webkit-mask-size:100% calc(100% - 90px),100% 90px;
+    -webkit-mask-position:top left,bottom left;
+    -webkit-mask-repeat:no-repeat,no-repeat;
+    mask-image:linear-gradient(#000,#000),var(--wave-mask);
+    mask-size:100% calc(100% - 90px),100% 90px;
+    mask-position:top left,bottom left;
+    mask-repeat:no-repeat,no-repeat;
+  }
+  @media(max-width:640px){
+    #nosotros{
+      -webkit-mask-size:100% calc(100% - 54px),100% 54px;
+      mask-size:100% calc(100% - 54px),100% 54px;
+    }
+    .press{margin-top:-54px}
+  }
   .about{background:radial-gradient(120% 120% at 50% -20%,#22261a 0%,#16161a 55%,#0b0b0e 100%)}
   #nosotros::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
     background-image:linear-gradient(to right,#ffffff08 1px,transparent 1px),linear-gradient(to bottom,#ffffff08 1px,transparent 1px);
@@ -316,7 +345,7 @@
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
-  .press{position:relative;min-height:660px;padding:0;display:flex;align-items:center;overflow:hidden;background:var(--bg-light);color:#111}
+  .press{position:relative;z-index:0;min-height:660px;padding:0;margin-top:-90px;display:flex;align-items:center;overflow:hidden;background:var(--bg-light);color:#111}
   .press-media{position:absolute;inset:0}
   .press-media img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
   .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(250,248,246,.97) 0%,rgba(250,248,246,.92) 38%,rgba(250,248,246,.35) 72%,rgba(250,248,246,.55) 100%)}
@@ -546,18 +575,17 @@
       <p class="pillar-desc" data-i18n="pillar3_desc">Marcas, fotógrafos y proyectos que aportan valor a su desarrollo.</p>
     </div>
   </div>
+  <div class="media-wave bottom" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
 </section>
 
 <!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
 <section id="prensa" class="press">
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
-    <div class="media-wave top" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32 L1440,0 L0,0 Z" fill="#242816"/>
-        <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
     <div class="media-wave bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
         <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg)"/>
