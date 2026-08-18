@@ -30,7 +30,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -335,42 +335,106 @@
     .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:unset;display:block}
   }
 
-  /* ---------- PROCESO (STEPPER AUTO-GUIADO) ---------- */
-  #proceso{padding:56px 0;background:var(--bg-light);color:#111}
-  #proceso .wrap{max-width:1400px;padding:0 20px}
-  .process-layout{display:flex;gap:56px;align-items:stretch}
-  .process-col-left{flex:0 0 460px;max-width:460px}
-  .process-col-right{flex:1;min-width:0;display:flex;flex-direction:column}
-  .process h2{font-size:2.75rem;color:#111;margin-bottom:0}
-  .process-steps{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-  .process-step{position:relative;display:block;width:100%;text-align:left;background:#fff;border:1px solid #e8e4e0;border-radius:10px;padding:20px 24px;cursor:pointer;overflow:hidden;font-family:var(--font);transition:background .2s ease,border-color .2s ease}
-  .process-step:hover{background:#f2efe9;border-color:#d8d2ca}
-  .process-step.active{background:#f2efe9;border-color:#111}
-  .process-step-top{display:flex;align-items:baseline;gap:12px}
-  .process-step-num{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:var(--title-leading);letter-spacing:var(--title-tracking);font-size:1.15rem;color:#6b665f;flex:none;min-width:1.4em}
-  .process-step.active .process-step-num{color:#5c6810}
-  .process-step-name{font-family:var(--title);font-weight:400;text-transform:uppercase;line-height:var(--title-leading);letter-spacing:var(--title-tracking);font-size:1.15rem;color:#6b665f;flex:1}
-  .process-step.active .process-step-name{color:#111}
-  .process-step-time{font-size:.85rem;color:#6b665f;flex:none}
-  .process-step-bar{margin-top:15px;width:100%;height:2px;background:rgba(17,17,17,.08);border-radius:2px;overflow:hidden}
-  .process-step-bar span{display:block;height:100%;width:0%;background:var(--accent)}
-  .process-panel{flex:1;background:#fff;border:1px solid #e8e4e0;border-radius:14px;padding:56px 52px;min-height:340px;display:none;opacity:0;transition:opacity .12s ease}
-  .process-panel.active{display:flex;flex-direction:column;justify-content:center}
-  .process-panel.active.fade-in{opacity:1}
-  .process-panel-title{font-family:var(--display);font-weight:800;font-size:2.5rem;line-height:1.2;color:#111;max-width:600px;margin-bottom:28px}
-  .process-chips{display:flex;flex-direction:column;gap:10px}
-  .process-chip{display:flex;align-items:center;gap:12px;background:#f2efe9;border:1px solid #e8e4e0;border-radius:10px;padding:15px 18px}
-  .process-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.68rem;font-weight:700;flex:none}
-  .process-chip-label{font-size:1rem;color:#57534d}
-  .process-cta{display:flex;justify-content:center;margin-top:40px}
+  /* ---------- PROCESO (RECORRIDO EN ZIGZAG) ---------- */
+  /* La sección conserva el fondo claro (--bg-light) que ya le correspondía
+     en la alternancia de bandas de la página (comprobable en las ondas de
+     los .wave-seam justo antes y después). Con fondo claro, las tarjetas
+     van en blanco con borde sutil, y los elementos "contrastantes" (chip de
+     inicio, barra "Tu parte", tarjeta final) van en el oscuro del sitio
+     (--bg) para puntuar el recorrido. Las flechas NO son SVGs sueltos en
+     posiciones fijas: #processArrows es un único SVG absoluto que el
+     script del final del archivo redibuja midiendo la posición real de
+     cada tarjeta. */
+  #proceso{
+    --proc-ink:#111;
+    --proc-ink-soft:rgba(17,17,17,.68);
+    --proc-ink-faint:rgba(17,17,17,.5);
+    --proc-card-bg:#fff;
+    --proc-border:1.5px solid rgba(17,17,17,.12);
+    --proc-radius:26px;
+    --proc-pad:clamp(26px,3vw,44px);
+    --proc-contrast-bg:#16161a;
+    --proc-contrast-ink:#fff;
+    --proc-row-gap:clamp(56px,7vw,96px);
+    position:relative;
+    background:var(--bg-light);
+    color:var(--proc-ink);
+  }
+  #proceso::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;
+    background-image:radial-gradient(circle,var(--proc-ink) 1px,transparent 1px);
+    background-size:26px 26px;
+  }
+  #proceso .wrap{position:relative;z-index:1}
+
+  /* Encabezado */
+  .process-head{margin:0 auto 64px;text-align:center}
+  .process-eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--proc-ink-soft);margin-bottom:18px}
+  .process-eyebrow-rule{width:38px;height:3px;border-radius:2px;background:var(--accent);flex:none}
+  .process-title{font-size:clamp(1.5rem,7vw,5.75rem);max-width:1040px;margin:0 auto}
+  .process-title-highlight{display:inline-block;line-height:1.05;background:var(--accent);color:var(--accent-ink);padding:0 .12em}
+  .process-dek{font-size:19px;line-height:1.6;max-width:560px;margin:18px auto 0;color:var(--proc-ink-soft)}
+
+  /* Recorrido */
+  .process-journey{position:relative;display:flex;flex-direction:column;gap:var(--proc-row-gap)}
+  .process-arrows{position:absolute;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;display:block;overflow:visible}
+  .process-arrow-path{fill:none;stroke:var(--proc-ink);stroke-width:2.6px;stroke-linecap:round;stroke-linejoin:round;transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1)}
+  .process-arrow-head{fill:var(--proc-ink);transition:opacity .3s ease .75s}
+  .process-note{position:absolute;top:0;left:0;z-index:2;font-family:'Caveat',cursive;font-size:22px;font-weight:600;color:var(--proc-ink-soft);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .5s ease}
+  .process-connector{display:none;position:relative;width:2px;height:28px;margin:0 auto;background:repeating-linear-gradient(to bottom,var(--proc-ink) 0 5px,transparent 5px 10px);opacity:.4}
+  .process-connector::after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--proc-ink);opacity:.4}
+
+  /* Nodo de inicio */
+  .process-node{position:relative;z-index:1;text-align:center}
+  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border-radius:999px}
+  .process-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;animation:procPulse 1.8s ease-in-out infinite}
+  .process-node-lead{font-family:var(--title);text-transform:uppercase;letter-spacing:var(--title-tracking);line-height:var(--title-leading);font-size:clamp(24px,3vw,38px);margin-top:16px;text-wrap:balance}
+  @keyframes procPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(215,245,81,.55)}
+    50%{box-shadow:0 0 0 6px rgba(215,245,81,0)}
+  }
+
+  /* Tarjeta final */
+  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--proc-radius);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+  .process-end-tag{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+  .process-end-title{font-family:var(--title);text-transform:uppercase;letter-spacing:var(--title-tracking);line-height:var(--title-leading);font-size:clamp(28px,3.6vw,44px);text-wrap:balance}
+  .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px}
+  .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55)}
+
+  /* Filas de pasos — zigzag: 02 se invierte con row-reverse, misma estructura de clases que 01 y 03 */
+  .process-step-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:clamp(28px,4vw,64px)}
+  .process-step-row[data-step="1"]{flex-direction:row-reverse}
+  .process-step-num-col{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px}
+  .process-step-bignum{font-family:var(--title);font-weight:400;font-size:86px;line-height:var(--title-leading);letter-spacing:var(--title-tracking);color:transparent;-webkit-text-stroke:2px var(--proc-ink)}
+  .process-step-time{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--proc-ink-faint);white-space:nowrap}
+
+  .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);padding:var(--proc-pad);box-shadow:0 10px 34px rgba(17,17,17,.06)}
+  .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
+  .process-step-title{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.2vw,40px);line-height:1.08;margin-top:18px}
+  .process-step-desc{font-size:17px;line-height:1.6;max-width:520px;margin-top:14px;color:var(--proc-ink-soft)}
+  .process-step-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:22px}
+  .process-step-chip{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--proc-ink)}
+  .process-step-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);flex:none}
+  .process-step-chip-check svg{width:11px;height:11px}
+  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:14px 18px;margin-top:24px}
+  .process-yours-label{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;flex:none}
+  .process-yours-text{font-size:.92rem;color:rgba(255,255,255,.85)}
+
+  @media(prefers-reduced-motion:reduce){
+    .process-status-dot{animation:none}
+    .process-arrow-path,.process-arrow-head,.process-note{transition:none}
+  }
+  @media(max-width:1024px){
+    .process-step-card{padding:clamp(22px,3vw,36px)}
+  }
   @media(max-width:900px){
-    #proceso{padding:40px 0}
-    #proceso .wrap{padding:0 14px}
-    .process-layout{flex-direction:column;align-items:stretch;gap:24px}
-    .process-col-left{flex:none;max-width:none;width:100%}
-    .process-steps{margin-top:14px}
-    .process-panel{padding:32px 26px;min-height:0}
-    .process-panel-title{font-size:1.75rem;margin-bottom:20px}
+    .process-head{margin-bottom:48px}
+    .process-journey{gap:20px}
+    .process-arrows,.process-note{display:none}
+    .process-connector{display:block}
+    .process-step-row,.process-step-row[data-step="1"]{flex-direction:column;gap:14px}
+    .process-step-num-col{flex-direction:row;align-items:baseline;gap:10px;padding-top:0}
+    .process-step-bignum{font-size:44px}
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
@@ -461,7 +525,6 @@
   @media(max-width:680px){
     section{padding:72px 0}
     footer{padding-bottom:96px}
-    .process h2{font-size:2.125rem}
     .press{min-height:560px;height:auto;padding:120px 0 64px}
     .press-media::after{background:linear-gradient(to bottom,rgba(250,248,246,.55) 0%,rgba(250,248,246,.97) 100%)}
     .press-content{padding:0 24px}
@@ -824,66 +887,110 @@
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
-  <div class="wrap reveal">
-    <div class="process-layout">
-      <div class="process-col-left">
-        <h2 data-i18n="process_title">Cómo trabajamos</h2>
-        <div class="process-steps" role="tablist" aria-label="Etapas del proceso" aria-orientation="vertical">
-          <button type="button" class="process-step active" role="tab" aria-selected="true" aria-controls="process-panel-0" id="process-tab-0" data-step="0">
-            <div class="process-step-top">
-              <span class="process-step-num">01</span>
-              <span class="process-step-name" data-i18n="step1_name">Diagnóstico</span>
-              <span class="process-step-time" data-i18n="step1_time">Semana 1</span>
-            </div>
-            <div class="process-step-bar"><span></span></div>
-          </button>
-          <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-1" id="process-tab-1" data-step="1">
-            <div class="process-step-top">
-              <span class="process-step-num">02</span>
-              <span class="process-step-name" data-i18n="step2_name">Estrategia</span>
-              <span class="process-step-time" data-i18n="step2_time">Semanas 2–3</span>
-            </div>
-            <div class="process-step-bar"><span></span></div>
-          </button>
-          <button type="button" class="process-step" role="tab" aria-selected="false" tabindex="-1" aria-controls="process-panel-2" id="process-tab-2" data-step="2">
-            <div class="process-step-top">
-              <span class="process-step-num">03</span>
-              <span class="process-step-name" data-i18n="step3_name">Ejecución</span>
-              <span class="process-step-time" data-i18n="step3_time">Mes a mes</span>
-            </div>
-            <div class="process-step-bar"><span></span></div>
-          </button>
-        </div>
+  <div class="wrap">
+    <div class="process-head reveal">
+      <div class="process-eyebrow">
+        <span class="process-eyebrow-rule" aria-hidden="true"></span>
+        <span data-i18n="process_eyebrow">Cómo trabajamos</span>
       </div>
-      <div class="process-col-right">
-        <div class="process-panel active fade-in" id="process-panel-0" role="tabpanel" aria-labelledby="process-tab-0">
-          <h3 class="process-panel-title" data-i18n="step1_title">Vemos dónde estás parado y qué te está frenando.</h3>
-          <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip1">Auditoría de redes</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip2">Informe de imagen</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step1_chip3">Reunión de devolución</span></div>
-          </div>
-        </div>
-        <div class="process-panel" id="process-panel-1" role="tabpanel" aria-labelledby="process-tab-1" hidden>
-          <h3 class="process-panel-title" data-i18n="step2_title">Definimos quién sos públicamente y qué vas a publicar.</h3>
-          <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip1">Guía de marca</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip2">Plan de 3 meses</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step2_chip3">Objetivos claros</span></div>
-          </div>
-        </div>
-        <div class="process-panel" id="process-panel-2" role="tabpanel" aria-labelledby="process-tab-2" hidden>
-          <h3 class="process-panel-title" data-i18n="step3_title">Producimos, publicamos y medimos, mes a mes.</h3>
-          <div class="process-chips">
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip1">Contenido y cobertura</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip2">Reporte mensual</span></div>
-            <div class="process-chip"><span class="process-chip-check">✓</span><span class="process-chip-label" data-i18n="step3_chip3">Contacto con marcas</span></div>
-          </div>
-        </div>
-      </div>
+      <h2 class="process-title"><span data-i18n="process_title_a">El camino de tu</span> <span class="process-title-highlight" data-i18n="process_title_highlight">imagen,</span> <span data-i18n="process_title_b">paso a paso</span></h2>
+      <p class="process-dek" data-i18n="process_dek">Seguí las flechas. Abajo está exactamente qué pasa desde el día que nos escribís hasta que tu carrera se cuenta sola.</p>
     </div>
-    <div class="process-cta">
-      <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
+
+    <div class="process-journey" id="processJourney">
+      <svg class="process-arrows" id="processArrows" aria-hidden="true"></svg>
+      <span class="process-note" data-i18n="proc_note1" aria-hidden="true">arrancamos por acá</span>
+      <span class="process-note" data-i18n="proc_note2" aria-hidden="true">ya sabemos qué falta</span>
+      <span class="process-note" data-i18n="proc_note3" aria-hidden="true">ahora sí, a jugar</span>
+
+      <div class="process-node process-node-start reveal">
+        <span class="process-status-chip">
+          <span class="process-status-dot" aria-hidden="true"></span>
+          <span data-i18n="process_status_start">Estás acá</span>
+        </span>
+        <p class="process-node-lead" data-i18n="process_start_text">Tenés talento. Tu imagen todavía no lo cuenta.</p>
+      </div>
+
+      <div class="process-connector" aria-hidden="true"></div>
+
+      <div class="process-step-row reveal" data-step="0">
+        <div class="process-step-num-col">
+          <span class="process-step-bignum" aria-hidden="true">01</span>
+          <span class="process-step-time" data-i18n="proc_s1_time">Semana 1</span>
+        </div>
+        <div class="process-step-card">
+          <span class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</span>
+          <h3 class="process-step-title" data-i18n="proc_s1_title">Vemos dónde estás parado y qué te está frenando.</h3>
+          <p class="process-step-desc" data-i18n="proc_s1_desc">Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.</p>
+          <div class="process-step-chips">
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip1">Auditoría de redes</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip2">Informe de imagen</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip3">Reunión de devolución</span></span>
+          </div>
+          <div class="process-step-yours">
+            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <span class="process-yours-text" data-i18n="proc_s1_yours">Una llamada de 30 minutos y acceso a tus redes. Nada más.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-connector" aria-hidden="true"></div>
+
+      <div class="process-step-row reveal" data-step="1">
+        <div class="process-step-num-col">
+          <span class="process-step-bignum" aria-hidden="true">02</span>
+          <span class="process-step-time" data-i18n="proc_s2_time">Semanas 2–3</span>
+        </div>
+        <div class="process-step-card">
+          <span class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</span>
+          <h3 class="process-step-title" data-i18n="proc_s2_title">Armamos el plan que ordena tus próximos tres meses.</h3>
+          <p class="process-step-desc" data-i18n="proc_s2_desc">Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.</p>
+          <div class="process-step-chips">
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip1">Plan de 3 meses</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip2">Objetivos claros</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip3">Identidad visual definida</span></span>
+          </div>
+          <div class="process-step-yours">
+            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <span class="process-yours-text" data-i18n="proc_s2_yours">Aprobás el plan en una reunión. Nosotros lo dejamos listo.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-connector" aria-hidden="true"></div>
+
+      <div class="process-step-row reveal" data-step="2">
+        <div class="process-step-num-col">
+          <span class="process-step-bignum" aria-hidden="true">03</span>
+          <span class="process-step-time" data-i18n="proc_s3_time">Mes a mes</span>
+        </div>
+        <div class="process-step-card">
+          <span class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</span>
+          <h3 class="process-step-title" data-i18n="proc_s3_title">Publicamos, medimos y te abrimos puertas.</h3>
+          <p class="process-step-desc" data-i18n="proc_s3_desc">Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.</p>
+          <div class="process-step-chips">
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip1">Reporte mensual</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip2">Contacto con marcas</span></span>
+            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip3">Highlights y matchday</span></span>
+          </div>
+          <div class="process-step-yours">
+            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <span class="process-yours-text" data-i18n="proc_s3_yours">Jugar. Nos mandás el material del partido y seguimos nosotros.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-connector" aria-hidden="true"></div>
+
+      <div class="process-node process-node-end reveal">
+        <div class="process-end-card">
+          <span class="process-end-tag" data-i18n="process_status_end">Llegaste acá</span>
+          <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
+          <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
+          <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
+          <p class="process-end-note" data-i18n="form_note">Respondemos en menos de 24 hs.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1030,109 +1137,147 @@
     });
   });
 
-  // Stepper auto-guiado de "Cómo trabajamos"
+  // Recorrido en zigzag de "Cómo trabajamos": nada de SVGs sueltos en
+  // posiciones fijas. #processArrows es un único SVG absoluto que este
+  // script mide y redibuja contra la posición REAL de cada tarjeta
+  // (getBoundingClientRect relativo al contenedor). Cada flecha es una
+  // curva bezier cúbica entre el borde inferior de una tarjeta y el borde
+  // superior de la siguiente, con los puntos de control calculados a
+  // partir de la distancia entre ambas (nunca valores fijos), y una punta
+  // de flecha orientada según la tangente final de esa misma curva. Las
+  // notas manuscritas se anclan al punto medio de su flecha, también
+  // calculado por JS. Se recalcula todo en resize, al terminar de cargar
+  // las fuentes y al cambiar de idioma (esto último se dispara desde
+  // applyI18n, más abajo, reasignando rebuildProcessArrows).
+  let rebuildProcessArrows = function () {};
   (function () {
-    const section = document.getElementById('proceso');
-    if (!section) return;
-    const steps = Array.from(section.querySelectorAll('.process-step'));
-    const panels = Array.from(section.querySelectorAll('.process-panel'));
-    const bars = steps.map(s => s.querySelector('.process-step-bar span'));
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const DURATION = 3000;
-    let current = 0;
-    let autoAdvance = true;
-    let timer = null;
+    const journey = document.getElementById('processJourney');
+    const svg = document.getElementById('processArrows');
+    if (!journey || !svg) return;
 
-    function render(index) {
-      steps.forEach((step, i) => {
-        const isActive = i === index;
-        step.classList.toggle('active', isActive);
-        step.classList.toggle('done', i < index);
-        step.setAttribute('aria-selected', String(isActive));
-        step.tabIndex = isActive ? 0 : -1;
-        step.querySelector('.process-step-num').textContent = i < index ? '✓' : String(i + 1).padStart(2, '0');
-      });
-      panels.forEach((panel, i) => {
-        const isActive = i === index;
-        panel.hidden = !isActive;
-        panel.classList.toggle('active', isActive);
-        if (isActive) {
-          panel.classList.remove('fade-in');
-          requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('fade-in')));
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mobileQuery = window.matchMedia('(max-width: 900px)');
+    const notes = Array.from(document.querySelectorAll('.process-note'));
+    let revealed = false;
+
+    function anchorFor(node) {
+      return node.querySelector('.process-step-card, .process-end-card') || node;
+    }
+
+    function cubicPoint(t, p0, p1, p2, p3) {
+      const mt = 1 - t;
+      return mt * mt * mt * p0 + 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t * p3;
+    }
+    function cubicTangent(t, p0, p1, p2, p3) {
+      const mt = 1 - t;
+      return 3 * mt * mt * (p1 - p0) + 6 * mt * t * (p2 - p1) + 3 * t * t * (p3 - p2);
+    }
+
+    function buildArrows() {
+      svg.innerHTML = '';
+      if (mobileQuery.matches) return;
+
+      const nodes = Array.from(journey.querySelectorAll('.process-node, .process-step-row'));
+      const contRect = journey.getBoundingClientRect();
+      const reduceMotion = reduceMotionQuery.matches;
+      svg.setAttribute('viewBox', `0 0 ${contRect.width} ${journey.scrollHeight}`);
+
+      for (let i = 0; i < nodes.length - 1; i++) {
+        const fromRect = anchorFor(nodes[i]).getBoundingClientRect();
+        const toRect = anchorFor(nodes[i + 1]).getBoundingClientRect();
+
+        const x1 = fromRect.left + fromRect.width / 2 - contRect.left;
+        const y1 = fromRect.bottom - contRect.top;
+        const x2 = toRect.left + toRect.width / 2 - contRect.left;
+        const y2 = toRect.top - contRect.top;
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+
+        // Puntos de control a un cuarto y tres cuartos del recorrido
+        // horizontal, a mitad del recorrido vertical: da una "S" que se
+        // adapta sola a cualquier distancia entre tarjetas.
+        const c1x = x1 + dx * 0.18, c1y = y1 + dy * 0.5;
+        const c2x = x1 + dx * 0.82, c2y = y1 + dy * 0.5;
+
+        const path = document.createElementNS(SVG_NS, 'path');
+        path.setAttribute('d', `M ${x1},${y1} C ${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`);
+        path.setAttribute('class', 'process-arrow-path');
+        svg.appendChild(path);
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = (reduceMotion || revealed) ? '0' : String(len);
+
+        // Punta de flecha orientada según la tangente final de la curva
+        // (P3 - P2), no un ángulo fijo.
+        const tx = x2 - c2x, ty = y2 - c2y;
+        const angle = Math.atan2(ty, tx);
+        const headLen = 10, headWidth = 6.5;
+        const baseX = x2 - headLen * Math.cos(angle);
+        const baseY = y2 - headLen * Math.sin(angle);
+        const head = document.createElementNS(SVG_NS, 'polygon');
+        head.setAttribute('points', [
+          `${x2},${y2}`,
+          `${baseX + headWidth * Math.cos(angle + Math.PI / 2)},${baseY + headWidth * Math.sin(angle + Math.PI / 2)}`,
+          `${baseX + headWidth * Math.cos(angle - Math.PI / 2)},${baseY + headWidth * Math.sin(angle - Math.PI / 2)}`
+        ].join(' '));
+        head.setAttribute('class', 'process-arrow-head');
+        head.style.opacity = (reduceMotion || revealed) ? '1' : '0';
+        svg.appendChild(head);
+
+        const note = notes[i];
+        if (note) {
+          const midX = cubicPoint(0.5, x1, c1x, c2x, x2);
+          const midY = cubicPoint(0.5, y1, c1y, c2y, y2);
+          const tanX = cubicTangent(0.5, x1, c1x, c2x, x2);
+          const tanY = cubicTangent(0.5, y1, c1y, c2y, y2);
+          const tanLen = Math.hypot(tanX, tanY) || 1;
+          const nx = -tanY / tanLen, ny = tanX / tanLen;
+          const side = i % 2 === 0 ? 1 : -1;
+          const offset = 24;
+          const rotation = [-4, 3, -3][i % 3];
+          note.style.left = `${midX + nx * offset * side}px`;
+          note.style.top = `${midY + ny * offset * side}px`;
+          note.style.transform = `translate(-50%,-50%) rotate(${rotation}deg)`;
+          note.style.opacity = (reduceMotion || revealed) ? '1' : '0';
         }
-      });
-    }
-
-    function resetBar(index) {
-      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
-      void bars[index].offsetWidth;
-    }
-
-    function playBar(index, duration) {
-      if (reduceMotion) return;
-      const bar = bars[index];
-      bar.style.transition = `width ${duration}ms linear`;
-      requestAnimationFrame(() => { bar.style.width = '100%'; });
-    }
-
-    function clearTimer() {
-      if (timer) { clearTimeout(timer); timer = null; }
-    }
-
-    function goTo(index) {
-      current = index;
-      render(current);
-      resetBar(current);
-      clearTimer();
-      if (autoAdvance) {
-        playBar(current, DURATION);
-        timer = setTimeout(next, DURATION);
       }
     }
 
-    function next() {
-      goTo((current + 1) % steps.length);
-    }
-
-    function stopAuto(index) {
-      autoAdvance = false;
-      clearTimer();
-      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
-      current = index;
-      render(current);
-    }
-
-    function pauseForExit() {
-      clearTimer();
-      bars.forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
-    }
-
-    steps.forEach((step, i) => {
-      step.addEventListener('click', () => stopAuto(i));
-      step.addEventListener('keydown', e => {
-        const j = steps.indexOf(step);
-        let target = null;
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') target = steps[(j + 1) % steps.length];
-        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') target = steps[(j - 1 + steps.length) % steps.length];
-        else if (e.key === 'Home') target = steps[0];
-        else if (e.key === 'End') target = steps[steps.length - 1];
-        if (target) { e.preventDefault(); target.focus(); stopAuto(steps.indexOf(target)); }
+    function drawIn() {
+      if (revealed || mobileQuery.matches) return;
+      revealed = true;
+      const reduceMotion = reduceMotionQuery.matches;
+      const paths = Array.from(svg.querySelectorAll('.process-arrow-path'));
+      const heads = Array.from(svg.querySelectorAll('.process-arrow-head'));
+      paths.forEach((path, i) => {
+        const delay = reduceMotion ? 0 : i * 260;
+        setTimeout(() => {
+          path.style.strokeDashoffset = '0';
+          if (heads[i]) heads[i].style.opacity = '1';
+          if (notes[i]) notes[i].style.opacity = '1';
+        }, delay);
       });
+    }
+
+    const revealIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) { drawIn(); revealIO.disconnect(); } });
+    }, { threshold: 0.2 });
+    revealIO.observe(journey);
+
+    let resizeTimer = null;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildArrows, 120);
     });
+    ro.observe(journey);
 
-    // El ciclo no arranca hasta que la sección esté por entrar en pantalla.
-    // Si sale de vista se pausa, y al volver retoma siempre desde la etapa 01.
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!autoAdvance) return;
-        if (entry.isIntersecting) {
-          goTo(0);
-        } else {
-          pauseForExit();
-        }
-      });
-    }, { threshold: 0.25, rootMargin: '0px 0px -20% 0px' });
-    sectionObserver.observe(section);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(buildArrows);
+    }
+
+    rebuildProcessArrows = buildArrows;
+    buildArrows();
   })();
 
   // "Quiénes somos" — genera tantas líneas de "HRK.SPORTS" como hagan falta para
@@ -1488,16 +1633,31 @@
       athletes_title: 'Deportistas que confían en HRK',
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
 
-      process_title: 'Cómo trabajamos',
-      step1_name: 'Diagnóstico', step1_time: 'Semana 1',
-      step2_name: 'Estrategia', step2_time: 'Semanas 2–3',
-      step3_name: 'Ejecución', step3_time: 'Mes a mes',
-      step1_title: 'Vemos dónde estás parado y qué te está frenando.',
-      step2_title: 'Definimos quién sos públicamente y qué vas a publicar.',
-      step3_title: 'Producimos, publicamos y medimos, mes a mes.',
-      step1_chip1: 'Auditoría de redes', step1_chip2: 'Informe de imagen', step1_chip3: 'Reunión de devolución',
-      step2_chip1: 'Guía de marca', step2_chip2: 'Plan de 3 meses', step2_chip3: 'Objetivos claros',
-      step3_chip1: 'Contenido y cobertura', step3_chip2: 'Reporte mensual', step3_chip3: 'Contacto con marcas',
+      process_eyebrow: 'Cómo trabajamos',
+      process_title_a: 'El camino de tu', process_title_highlight: 'imagen,', process_title_b: 'paso a paso',
+      process_dek: 'Seguí las flechas. Abajo está exactamente qué pasa desde el día que nos escribís hasta que tu carrera se cuenta sola.',
+      process_status_start: 'Estás acá',
+      process_start_text: 'Tenés talento. Tu imagen todavía no lo cuenta.',
+      process_yours_label: 'Tu parte',
+      proc_s1_time: 'Semana 1', proc_s1_badge: 'Diagnóstico',
+      proc_s1_title: 'Vemos dónde estás parado y qué te está frenando.',
+      proc_s1_desc: 'Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.',
+      proc_s1_chip1: 'Auditoría de redes', proc_s1_chip2: 'Informe de imagen', proc_s1_chip3: 'Reunión de devolución',
+      proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
+      proc_s2_time: 'Semanas 2–3', proc_s2_badge: 'Estrategia',
+      proc_s2_title: 'Armamos el plan que ordena tus próximos tres meses.',
+      proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
+      proc_s2_chip1: 'Plan de 3 meses', proc_s2_chip2: 'Objetivos claros', proc_s2_chip3: 'Identidad visual definida',
+      proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
+      proc_s3_time: 'Mes a mes', proc_s3_badge: 'Ejecución',
+      proc_s3_title: 'Publicamos, medimos y te abrimos puertas.',
+      proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
+      proc_s3_chip1: 'Reporte mensual', proc_s3_chip2: 'Contacto con marcas', proc_s3_chip3: 'Highlights y matchday',
+      proc_s3_yours: 'Jugar. Nos mandás el material del partido y seguimos nosotros.',
+      process_status_end: 'Llegaste acá',
+      process_end_title: 'Una carrera que se cuenta sola',
+      process_end_text: 'Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.',
+      proc_note1: 'arrancamos por acá', proc_note2: 'ya sabemos qué falta', proc_note3: 'ahora sí, a jugar',
       process_cta: 'Empezar el diagnóstico',
 
       press_date: '14 de julio 2026',
@@ -1586,16 +1746,31 @@
       athletes_title: 'Athletes who trust HRK',
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
 
-      process_title: 'How we work',
-      step1_name: 'Discovery', step1_time: 'Week 1',
-      step2_name: 'Strategy', step2_time: 'Weeks 2–3',
-      step3_name: 'Execution', step3_time: 'Month to month',
-      step1_title: 'We find out where you stand and what\'s holding you back.',
-      step2_title: 'We define your public identity and what you\'ll post.',
-      step3_title: 'We produce, publish, and measure, month after month.',
-      step1_chip1: 'Social media audit', step1_chip2: 'Image report', step1_chip3: 'Feedback session',
-      step2_chip1: 'Brand guide', step2_chip2: '3-month plan', step2_chip3: 'Clear goals',
-      step3_chip1: 'Content and coverage', step3_chip2: 'Monthly report', step3_chip3: 'Brand outreach',
+      process_eyebrow: 'How we work',
+      process_title_a: 'The path to your', process_title_highlight: 'image,', process_title_b: 'one step at a time',
+      process_dek: 'Follow the arrows. Below is exactly what happens from the day you message us until your career speaks for itself.',
+      process_status_start: 'You are here',
+      process_start_text: 'You\'ve got the talent. Your image doesn\'t show it yet.',
+      process_yours_label: 'Your part',
+      proc_s1_time: 'Week 1', proc_s1_badge: 'Diagnosis',
+      proc_s1_title: 'We find out where you stand and what\'s holding you back.',
+      proc_s1_desc: 'We look at your social media the way a club or a brand would. No filters: what comes across today, and what gets lost along the way.',
+      proc_s1_chip1: 'Social media audit', proc_s1_chip2: 'Image report', proc_s1_chip3: 'Feedback session',
+      proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
+      proc_s2_time: 'Weeks 2–3', proc_s2_badge: 'Strategy',
+      proc_s2_title: 'We build the plan that organizes your next three months.',
+      proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
+      proc_s2_chip1: '3-month plan', proc_s2_chip2: 'Clear goals', proc_s2_chip3: 'Defined visual identity',
+      proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
+      proc_s3_time: 'Month to month', proc_s3_badge: 'Execution',
+      proc_s3_title: 'We publish, measure, and open doors for you.',
+      proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
+      proc_s3_chip1: 'Monthly report', proc_s3_chip2: 'Brand outreach', proc_s3_chip3: 'Highlights and matchday',
+      proc_s3_yours: 'Play. You send us the matchday material and we take it from there.',
+      process_status_end: 'You made it',
+      process_end_title: 'A career that speaks for itself',
+      process_end_text: 'A polished profile, steady content, and brands paying attention. The first step takes 30 minutes.',
+      proc_note1: 'we start right here', proc_note2: 'now we know what\'s missing', proc_note3: 'now let\'s play',
       process_cta: 'Start the discovery process',
 
       press_date: 'July 14, 2026',
@@ -1756,6 +1931,10 @@
       const key = el.getAttribute('data-i18n-aria');
       if (strings[key] != null) el.setAttribute('aria-label', strings[key]);
     });
+    // El texto traducido cambia el alto de las tarjetas de "Cómo trabajamos",
+    // así que las flechas dibujadas contra su posición real necesitan
+    // recalcularse después de reemplazar el texto.
+    rebuildProcessArrows();
     document.documentElement.lang = dict === 'en' ? 'en' : 'es-AR';
     renderAthletes(dict);
     document.querySelectorAll('#langCurrent, #langCurrentMobile').forEach(el => { el.textContent = dict.toUpperCase(); });
