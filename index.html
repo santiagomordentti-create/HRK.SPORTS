@@ -431,9 +431,8 @@
   /* Filas de pasos — zigzag: 02 se invierte con row-reverse, misma estructura de clases que 01 y 03 */
   .process-step-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:clamp(28px,4vw,64px)}
   .process-step-row[data-step="1"]{flex-direction:row-reverse}
-  .process-step-num-col{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px}
-  .process-step-bignum{font-family:var(--title);font-weight:400;font-size:86px;line-height:var(--title-leading);letter-spacing:var(--title-tracking);color:transparent;-webkit-text-stroke:2px var(--proc-ink)}
-  .process-step-time{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--proc-ink-faint);white-space:nowrap}
+  .process-step-num-col{flex:none;display:flex;align-items:center;padding-top:6px}
+  .process-step-num{white-space:nowrap}
 
   .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);padding:var(--proc-pad);box-shadow:0 10px 34px rgba(17,17,17,.06)}
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
@@ -471,8 +470,7 @@
     .process-arrows{display:none}
     .process-connector{display:block}
     .process-step-row,.process-step-row[data-step="1"]{flex-direction:column;gap:14px}
-    .process-step-num-col{flex-direction:row;align-items:baseline;gap:10px;padding-top:0}
-    .process-step-bignum{font-size:44px}
+    .process-step-num-col{padding-top:0}
     .process-faq{margin-top:20px}
     .process-node-end{margin-top:20px}
   }
@@ -947,8 +945,7 @@
 
       <div class="process-step-row reveal" data-step="0">
         <div class="process-step-num-col">
-          <span class="process-step-bignum" aria-hidden="true">01</span>
-          <span class="process-step-time" data-i18n="proc_s1_time">Semana 1</span>
+          <h3 class="process-step-num" data-i18n="proc_step1_label">Paso 1</h3>
         </div>
         <div class="process-step-card">
           <span class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</span>
@@ -977,8 +974,7 @@
 
       <div class="process-step-row reveal" data-step="1">
         <div class="process-step-num-col">
-          <span class="process-step-bignum" aria-hidden="true">02</span>
-          <span class="process-step-time" data-i18n="proc_s2_time">Semanas 2–3</span>
+          <h3 class="process-step-num" data-i18n="proc_step2_label">Paso 2</h3>
         </div>
         <div class="process-step-card">
           <span class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</span>
@@ -1007,8 +1003,7 @@
 
       <div class="process-step-row reveal" data-step="2">
         <div class="process-step-num-col">
-          <span class="process-step-bignum" aria-hidden="true">03</span>
-          <span class="process-step-time" data-i18n="proc_s3_time">Mes a mes</span>
+          <h3 class="process-step-num" data-i18n="proc_step3_label">Paso 3</h3>
         </div>
         <div class="process-step-card">
           <span class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</span>
@@ -1738,19 +1733,19 @@
       process_status_start: 'Estás acá',
       process_start_text: 'Tenés talento. Tu imagen todavía no lo cuenta.',
       process_yours_label: 'Tu parte',
-      proc_s1_time: 'Semana 1', proc_s1_badge: 'Diagnóstico',
+      proc_step1_label: 'Paso 1', proc_s1_badge: 'Diagnóstico',
       proc_s1_title: 'Vemos dónde estás parado y qué te está frenando.',
       proc_s1_desc: 'Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.',
       proc_s1_chip1: 'Auditoría de redes', proc_s1_chip2: 'Informe de imagen', proc_s1_chip3: 'Reunión de devolución',
       proc_s1_result: 'Al terminar: un informe con lo que hoy te está costando oportunidades.',
       proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
-      proc_s2_time: 'Semanas 2–3', proc_s2_badge: 'Estrategia',
+      proc_step2_label: 'Paso 2', proc_s2_badge: 'Estrategia',
       proc_s2_title: 'Armamos el plan que ordena tus próximos tres meses.',
       proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
       proc_s2_chip1: 'Plan de 3 meses', proc_s2_chip2: 'Objetivos claros', proc_s2_chip3: 'Identidad visual definida',
       proc_s2_result: 'Al terminar: tu calendario de contenido de los próximos 3 meses, aprobado.',
       proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
-      proc_s3_time: 'Mes a mes', proc_s3_badge: 'Ejecución',
+      proc_step3_label: 'Paso 3', proc_s3_badge: 'Ejecución',
       proc_s3_title: 'Publicamos, medimos y te abrimos puertas.',
       proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
       proc_s3_chip1: 'Reporte mensual', proc_s3_chip2: 'Contacto con marcas', proc_s3_chip3: 'Highlights y matchday',
@@ -1859,19 +1854,19 @@
       process_status_start: 'You are here',
       process_start_text: 'You\'ve got the talent. Your image doesn\'t show it yet.',
       process_yours_label: 'Your part',
-      proc_s1_time: 'Week 1', proc_s1_badge: 'Diagnosis',
+      proc_step1_label: 'Step 1', proc_s1_badge: 'Diagnosis',
       proc_s1_title: 'We find out where you stand and what\'s holding you back.',
       proc_s1_desc: 'We look at your social media the way a club or a brand would. No filters: what comes across today, and what gets lost along the way.',
       proc_s1_chip1: 'Social media audit', proc_s1_chip2: 'Image report', proc_s1_chip3: 'Feedback session',
       proc_s1_result: 'When it\'s done: a report on what\'s costing you opportunities today.',
       proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
-      proc_s2_time: 'Weeks 2–3', proc_s2_badge: 'Strategy',
+      proc_step2_label: 'Step 2', proc_s2_badge: 'Strategy',
       proc_s2_title: 'We build the plan that organizes your next three months.',
       proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
       proc_s2_chip1: '3-month plan', proc_s2_chip2: 'Clear goals', proc_s2_chip3: 'Defined visual identity',
       proc_s2_result: 'When it\'s done: your content calendar for the next 3 months, approved.',
       proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
-      proc_s3_time: 'Month to month', proc_s3_badge: 'Execution',
+      proc_step3_label: 'Step 3', proc_s3_badge: 'Execution',
       proc_s3_title: 'We publish, measure, and open doors for you.',
       proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
       proc_s3_chip1: 'Monthly report', proc_s3_chip2: 'Brand outreach', proc_s3_chip3: 'Highlights and matchday',
