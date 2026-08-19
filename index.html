@@ -437,10 +437,9 @@
   .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);padding:var(--proc-pad);box-shadow:0 10px 34px rgba(17,17,17,.06)}
   /* Un solo bloque de 620px para todo el contenido de la tarjeta —badge,
      título, párrafo, chips, "Al terminar" y "Tu parte"— centrado dentro
-     de la tarjeta (el texto adentro sigue alineado a la izquierda: lo que
-     se centra es el bloque, no cada línea). El ritmo vertical entre
+     de la tarjeta, con el texto también centrado. El ritmo vertical entre
      elementos es un valor fijo por par, igual en las tres tarjetas. */
-  .process-step-body{max-width:620px;margin-inline:auto}
+  .process-step-body{max-width:620px;margin-inline:auto;text-align:center}
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
   .process-step-title{margin-top:16px}
   .process-step-desc{font-size:17px;line-height:1.6;margin-top:14px;color:var(--proc-ink-soft)}
@@ -449,7 +448,7 @@
      marcador "DATO REAL PENDIENTE" correspondiente en el HTML de cada paso. */
   .process-step-stat{margin-top:14px;font-size:.85rem;color:var(--proc-ink-faint)}
   .process-step-stat strong{color:var(--proc-ink);font-weight:800}
-  .process-step-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .process-step-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:24px}
   .process-step-chip{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--proc-ink)}
   .process-step-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);flex:none}
   .process-step-chip-check svg{width:11px;height:11px}
@@ -457,9 +456,9 @@
      inicial, texto en un lima oscuro (mismo tono que ya usa el sitio en
      .foot-social a:hover) para que sea legible sobre la tarjeta blanca —
      lima puro (#D7F551) sobre blanco no pasa contraste mínimo como texto. */
-  .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:1rem;font-weight:700;line-height:1.45;color:#5c6810}
+  .process-step-result{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;font-size:1rem;font-weight:700;line-height:1.45;color:#5c6810}
   .process-step-result-mark{flex:none;width:18px;height:18px;margin-top:.15em;color:var(--accent-ink);background:var(--accent);border-radius:50%;padding:3px}
-  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:18px 20px;margin-top:24px}
+  .process-step-yours{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:18px 20px;margin-top:24px}
   .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:6px}
   .process-yours-text{font-size:1.05rem;font-weight:600;line-height:1.4;color:#fff}
 
