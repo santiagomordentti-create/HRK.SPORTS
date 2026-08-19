@@ -390,7 +390,30 @@
     50%{box-shadow:0 0 0 6px rgba(215,245,81,0)}
   }
 
+  /* Mini-FAQ — vive fuera de #processJourney a propósito: si quedara adentro,
+     el script de flechas la contaría como espacio entre el paso 03 y la
+     tarjeta final y la curva terminaría cruzándola. Por eso no lleva las
+     clases .process-node/.process-step-row (el script las ignora) y su
+     espaciado hacia los vecinos es un margin-top propio, no el gap del
+     contenedor de flechas. */
+  .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--proc-row-gap) auto 0}
+  .process-faq-title{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--proc-ink-faint);text-align:center;margin-bottom:16px}
+  .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);overflow:hidden;box-shadow:0 10px 34px rgba(17,17,17,.06)}
+  .process-faq-item{border-top:1px solid rgba(17,17,17,.1)}
+  .process-faq-item:first-child{border-top:0}
+  .process-faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:44px;text-align:left;background:none;border:0;cursor:pointer;padding:20px 24px;font-family:var(--font);font-size:1rem;font-weight:700;color:var(--proc-ink);transition:background .15s ease}
+  .process-faq-q:hover{background:rgba(17,17,17,.03)}
+  .process-faq-icon{position:relative;width:16px;height:16px;flex:none}
+  .process-faq-icon::before,.process-faq-icon::after{content:"";position:absolute;top:50%;left:50%;background:var(--proc-ink);transform:translate(-50%,-50%)}
+  .process-faq-icon::before{width:14px;height:2px}
+  .process-faq-icon::after{width:2px;height:14px;transition:opacity .2s ease}
+  .process-faq-item.open .process-faq-icon::after{opacity:0}
+  .process-faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .process-faq-item.open .process-faq-a{max-height:220px}
+  .process-faq-a p{padding:0 24px 20px;font-size:.95rem;line-height:1.55;color:var(--proc-ink-soft)}
+
   /* Tarjeta final */
+  .process-node-end{margin-top:var(--proc-row-gap)}
   .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--proc-radius);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
   .process-end-tag{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
   .process-end-title{font-family:var(--title);text-transform:uppercase;letter-spacing:var(--title-tracking);line-height:var(--title-leading);font-size:clamp(28px,3.6vw,44px);text-wrap:balance}
@@ -408,17 +431,28 @@
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
   .process-step-title{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.2vw,40px);line-height:1.08;margin-top:18px}
   .process-step-desc{font-size:17px;line-height:1.6;max-width:520px;margin-top:14px;color:var(--proc-ink-soft)}
+  /* Dato duro opcional (cantidad de deportistas, tiempo real de la etapa,
+     piezas por mes...): la regla queda lista para cuando se descomente el
+     marcador "DATO REAL PENDIENTE" correspondiente en el HTML de cada paso. */
+  .process-step-stat{margin-top:14px;font-size:.85rem;color:var(--proc-ink-faint)}
+  .process-step-stat strong{color:var(--proc-ink);font-weight:800}
   .process-step-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:22px}
   .process-step-chip{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--proc-ink)}
   .process-step-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);flex:none}
   .process-step-chip-check svg{width:11px;height:11px}
-  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:14px 18px;margin-top:24px}
-  .process-yours-label{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;flex:none}
-  .process-yours-text{font-size:.92rem;color:rgba(255,255,255,.85)}
+  /* Resultado tangible del paso: acento lima vía el ícono + la etiqueta
+     inicial, texto en un lima oscuro (mismo tono que ya usa el sitio en
+     .foot-social a:hover) para que sea legible sobre la tarjeta blanca —
+     lima puro (#D7F551) sobre blanco no pasa contraste mínimo como texto. */
+  .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:20px;font-size:1rem;font-weight:700;line-height:1.45;color:#5c6810}
+  .process-step-result-mark{flex:none;width:18px;height:18px;margin-top:.15em;color:var(--accent-ink);background:var(--accent);border-radius:50%;padding:3px}
+  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:18px 20px;margin-top:24px}
+  .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:6px}
+  .process-yours-text{font-size:1.05rem;font-weight:600;line-height:1.4;color:#fff}
 
   @media(prefers-reduced-motion:reduce){
     .process-status-dot{animation:none}
-    .process-arrow-path,.process-arrow-head{transition:none}
+    .process-arrow-path,.process-arrow-head,.process-faq-a,.process-faq-icon::after{transition:none}
   }
   @media(max-width:1024px){
     .process-step-card{padding:clamp(22px,3vw,36px)}
@@ -431,6 +465,8 @@
     .process-step-row,.process-step-row[data-step="1"]{flex-direction:column;gap:14px}
     .process-step-num-col{flex-direction:row;align-items:baseline;gap:10px;padding-top:0}
     .process-step-bignum{font-size:44px}
+    .process-faq{margin-top:20px}
+    .process-node-end{margin-top:20px}
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
@@ -915,6 +951,13 @@
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip2">Informe de imagen</span></span>
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip3">Reunión de devolución</span></span>
           </div>
+          <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
+          <p class="process-step-result">
+            <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            <span data-i18n="proc_s1_result">Al terminar: un informe con lo que hoy te está costando oportunidades.</span>
+          </p>
+          <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
+          <!-- <p class="process-step-stat"><strong>+[N]</strong> deportistas ya pasaron por este diagnóstico</p> -->
           <div class="process-step-yours">
             <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
             <span class="process-yours-text" data-i18n="proc_s1_yours">Una llamada de 30 minutos y acceso a tus redes. Nada más.</span>
@@ -938,6 +981,13 @@
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip2">Objetivos claros</span></span>
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip3">Identidad visual definida</span></span>
           </div>
+          <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
+          <p class="process-step-result">
+            <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            <span data-i18n="proc_s2_result">Al terminar: tu calendario de contenido de los próximos 3 meses, aprobado.</span>
+          </p>
+          <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
+          <!-- <p class="process-step-stat">Esta etapa toma en promedio <strong>[N] días</strong></p> -->
           <div class="process-step-yours">
             <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
             <span class="process-yours-text" data-i18n="proc_s2_yours">Aprobás el plan en una reunión. Nosotros lo dejamos listo.</span>
@@ -961,23 +1011,62 @@
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip2">Contacto con marcas</span></span>
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip3">Highlights y matchday</span></span>
           </div>
+          <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
+          <p class="process-step-result">
+            <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            <span data-i18n="proc_s3_result">Al terminar cada mes: un reporte de qué creció y qué contactos aparecieron.</span>
+          </p>
+          <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
+          <!-- <p class="process-step-stat">Producimos en promedio <strong>[N] piezas</strong> de contenido por mes</p> -->
           <div class="process-step-yours">
             <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
             <span class="process-yours-text" data-i18n="proc_s3_yours">Jugar. Nos mandás el material del partido y seguimos nosotros.</span>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="process-connector" aria-hidden="true"></div>
-
-      <div class="process-node process-node-end reveal">
-        <div class="process-end-card">
-          <span class="process-end-tag" data-i18n="process_status_end">Llegaste acá</span>
-          <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
-          <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
-          <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
-          <p class="process-end-note" data-i18n="form_note">Respondemos en menos de 24 hs.</p>
+    <div class="process-faq reveal">
+      <p class="process-faq-title" data-i18n="process_faq_title">Preguntas frecuentes</p>
+      <div class="process-faq-list">
+        <div class="process-faq-item">
+          <button type="button" class="process-faq-q" aria-expanded="false" aria-controls="faq-panel-0" id="faq-btn-0">
+            <span data-i18n="process_faq_q1">¿Y si no tengo tiempo para esto?</span>
+            <span class="process-faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="process-faq-a" id="faq-panel-0" role="region" aria-labelledby="faq-btn-0" hidden>
+            <p data-i18n="process_faq_a1">Tu parte son 30 minutos al inicio y mandarnos el material de los partidos. El resto lo hacemos nosotros.</p>
+          </div>
         </div>
+        <div class="process-faq-item">
+          <button type="button" class="process-faq-q" aria-expanded="false" aria-controls="faq-panel-1" id="faq-btn-1">
+            <span data-i18n="process_faq_q2">¿Sirve si recién estoy empezando?</span>
+            <span class="process-faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="process-faq-a" id="faq-panel-1" role="region" aria-labelledby="faq-btn-1" hidden>
+            <p data-i18n="process_faq_a2">Sí. Cuanto antes ordenes tu imagen, más oportunidades te encuentran en el camino.</p>
+          </div>
+        </div>
+        <div class="process-faq-item">
+          <button type="button" class="process-faq-q" aria-expanded="false" aria-controls="faq-panel-2" id="faq-btn-2">
+            <span data-i18n="process_faq_q3">¿Puedo cortar cuando quiera?</span>
+            <span class="process-faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="process-faq-a" id="faq-panel-2" role="region" aria-labelledby="faq-btn-2" hidden>
+            <!-- DATO REAL PENDIENTE: confirmar condiciones con el socio -->
+            <p data-i18n="process_faq_a3">Sí, trabajamos mes a mes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-node process-node-end reveal">
+      <div class="process-end-card">
+        <span class="process-end-tag" data-i18n="process_status_end">Llegaste acá</span>
+        <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
+        <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
+        <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
+        <p class="process-end-note" data-i18n="process_end_marks">Sin compromiso · 30 minutos · Respondemos en 24 hs</p>
       </div>
     </div>
   </div>
@@ -1237,6 +1326,45 @@
 
     rebuildProcessArrows = buildArrows;
     buildArrows();
+  })();
+
+  // Mini-FAQ de "Cómo trabajamos": acordeón accesible en JS plano. El panel
+  // arranca con [hidden] (afuera del árbol de accesibilidad y sin layout);
+  // al abrir se saca el hidden y recién en el frame siguiente se agrega la
+  // clase que anima max-height, para que la transición se vea. Al cerrar es
+  // al revés: se anima primero y el hidden vuelve recién cuando termina la
+  // transición (o al toque, si prefers-reduced-motion la desactiva).
+  (function () {
+    const items = Array.from(document.querySelectorAll('.process-faq-item'));
+    if (!items.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    items.forEach(item => {
+      const btn = item.querySelector('.process-faq-q');
+      const panel = item.querySelector('.process-faq-a');
+      if (!btn || !panel) return;
+
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        if (isOpen) {
+          item.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          if (reduceMotion) {
+            panel.hidden = true;
+          } else {
+            panel.addEventListener('transitionend', function onEnd(e) {
+              if (e.propertyName !== 'max-height') return;
+              panel.hidden = true;
+              panel.removeEventListener('transitionend', onEnd);
+            });
+          }
+        } else {
+          panel.hidden = false;
+          btn.setAttribute('aria-expanded', 'true');
+          requestAnimationFrame(() => { item.classList.add('open'); });
+        }
+      });
+    });
   })();
 
   // "Quiénes somos" — genera tantas líneas de "HRK.SPORTS" como hagan falta para
@@ -1600,21 +1728,32 @@
       proc_s1_title: 'Vemos dónde estás parado y qué te está frenando.',
       proc_s1_desc: 'Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.',
       proc_s1_chip1: 'Auditoría de redes', proc_s1_chip2: 'Informe de imagen', proc_s1_chip3: 'Reunión de devolución',
+      proc_s1_result: 'Al terminar: un informe con lo que hoy te está costando oportunidades.',
       proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
       proc_s2_time: 'Semanas 2–3', proc_s2_badge: 'Estrategia',
       proc_s2_title: 'Armamos el plan que ordena tus próximos tres meses.',
       proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
       proc_s2_chip1: 'Plan de 3 meses', proc_s2_chip2: 'Objetivos claros', proc_s2_chip3: 'Identidad visual definida',
+      proc_s2_result: 'Al terminar: tu calendario de contenido de los próximos 3 meses, aprobado.',
       proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
       proc_s3_time: 'Mes a mes', proc_s3_badge: 'Ejecución',
       proc_s3_title: 'Publicamos, medimos y te abrimos puertas.',
       proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
       proc_s3_chip1: 'Reporte mensual', proc_s3_chip2: 'Contacto con marcas', proc_s3_chip3: 'Highlights y matchday',
+      proc_s3_result: 'Al terminar cada mes: un reporte de qué creció y qué contactos aparecieron.',
       proc_s3_yours: 'Jugar. Nos mandás el material del partido y seguimos nosotros.',
       process_status_end: 'Llegaste acá',
       process_end_title: 'Una carrera que se cuenta sola',
       process_end_text: 'Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.',
       process_cta: 'Empezar el diagnóstico',
+      process_end_marks: 'Sin compromiso · 30 minutos · Respondemos en 24 hs',
+      process_faq_title: 'Preguntas frecuentes',
+      process_faq_q1: '¿Y si no tengo tiempo para esto?',
+      process_faq_a1: 'Tu parte son 30 minutos al inicio y mandarnos el material de los partidos. El resto lo hacemos nosotros.',
+      process_faq_q2: '¿Sirve si recién estoy empezando?',
+      process_faq_a2: 'Sí. Cuanto antes ordenes tu imagen, más oportunidades te encuentran en el camino.',
+      process_faq_q3: '¿Puedo cortar cuando quiera?',
+      process_faq_a3: 'Sí, trabajamos mes a mes.',
 
       press_date: '14 de julio 2026',
       press_title: 'HRK entre los proyectos elegidos por UADE HUB',
@@ -1710,21 +1849,32 @@
       proc_s1_title: 'We find out where you stand and what\'s holding you back.',
       proc_s1_desc: 'We look at your social media the way a club or a brand would. No filters: what comes across today, and what gets lost along the way.',
       proc_s1_chip1: 'Social media audit', proc_s1_chip2: 'Image report', proc_s1_chip3: 'Feedback session',
+      proc_s1_result: 'When it\'s done: a report on what\'s costing you opportunities today.',
       proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
       proc_s2_time: 'Weeks 2–3', proc_s2_badge: 'Strategy',
       proc_s2_title: 'We build the plan that organizes your next three months.',
       proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
       proc_s2_chip1: '3-month plan', proc_s2_chip2: 'Clear goals', proc_s2_chip3: 'Defined visual identity',
+      proc_s2_result: 'When it\'s done: your content calendar for the next 3 months, approved.',
       proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
       proc_s3_time: 'Month to month', proc_s3_badge: 'Execution',
       proc_s3_title: 'We publish, measure, and open doors for you.',
       proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
       proc_s3_chip1: 'Monthly report', proc_s3_chip2: 'Brand outreach', proc_s3_chip3: 'Highlights and matchday',
+      proc_s3_result: 'At the end of each month: a report on what grew and which contacts came in.',
       proc_s3_yours: 'Play. You send us the matchday material and we take it from there.',
       process_status_end: 'You made it',
       process_end_title: 'A career that speaks for itself',
       process_end_text: 'A polished profile, steady content, and brands paying attention. The first step takes 30 minutes.',
       process_cta: 'Start the discovery process',
+      process_end_marks: 'No commitment · 30 minutes · We respond within 24 hours',
+      process_faq_title: 'Frequently asked questions',
+      process_faq_q1: 'What if I don\'t have time for this?',
+      process_faq_a1: 'Your part is 30 minutes upfront and sending us your matchday material. We handle the rest.',
+      process_faq_q2: 'Does this work if I\'m just starting out?',
+      process_faq_a2: 'Yes. The sooner you get your image in order, the more opportunities find you along the way.',
+      process_faq_q3: 'Can I stop whenever I want?',
+      process_faq_a3: 'Yes, we work month to month.',
 
       press_date: 'July 14, 2026',
       press_title: 'HRK among the projects selected by UADE HUB',
