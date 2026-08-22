@@ -225,17 +225,48 @@
   }
 
   /* ---------- SERVICIOS (mosaico) ---------- */
-  .mosaic-services{position:relative;overflow:hidden;background:#0c0f0d;color:#fff;padding:96px 80px}
+  /* Borde superior en forma de onda: se logra RECORTANDO la sección con
+     mask-image (mismo criterio que #nosotros más arriba), no rellenando un
+     path sólido. Así lo que se ve por encima de la curva es la foto real
+     de Prensa (que se sube por debajo con margin-top negativo para quedar
+     justo detrás del recorte) y no un color aproximado que desentone con
+     el fondo rayado. Al aplicarse sobre TODA la sección, las capas
+     decorativas (rayas/degradado/viñeta, que ya usan inset:0) quedan
+     recortadas junto con el resto y arrancan exactas en el borde real. La
+     línea lima que calca el mismo path se agrega aparte, encima de todo. */
+  .mosaic-services{
+    --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,84%20C120,84%20120,30%20240,30%20C360,30%20360,84%20480,84%20C600,84%20600,30%20720,30%20C840,30%20840,84%20960,84%20C1080,84%201080,30%201200,30%20C1320,30%201320,84%201440,84%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
+    position:relative;overflow:hidden;background:#0c0f0d;color:#fff;padding:96px 80px;
+    margin-top:-90px;
+    -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000);
+    -webkit-mask-size:100% 90px,100% calc(100% - 90px);
+    -webkit-mask-position:top left,bottom left;
+    -webkit-mask-repeat:no-repeat,no-repeat;
+    mask-image:var(--wave-mask-top),linear-gradient(#000,#000);
+    mask-size:100% 90px,100% calc(100% - 90px);
+    mask-position:top left,bottom left;
+    mask-repeat:no-repeat,no-repeat;
+  }
+  @media(max-width:640px){
+    .mosaic-services{
+      margin-top:-54px;
+      -webkit-mask-size:100% 54px,100% calc(100% - 54px);
+      mask-size:100% 54px,100% calc(100% - 54px);
+    }
+  }
   .mosaic-bg-stripes,.mosaic-bg-gradient,.mosaic-bg-vignette{position:absolute;inset:0;pointer-events:none}
   .mosaic-bg-stripes{z-index:1;background:repeating-linear-gradient(180deg,rgba(215,245,81,.16) 0px,rgba(215,245,81,.16) 7px,transparent 7px,transparent 15px)}
   .mosaic-bg-gradient{z-index:2;background:linear-gradient(180deg,rgba(215,245,81,.55) 0%,rgba(215,245,81,.24) 22%,transparent 46%,transparent 54%,rgba(215,245,81,.24) 80%,rgba(215,245,81,.5) 100%)}
   .mosaic-bg-vignette{z-index:3;background:radial-gradient(75% 44% at 50% 50%,rgba(8,10,9,.92) 0%,transparent 70%)}
-  /* Onda única de cierre (Servicios → Trabajos), dentro de la sección: por
-     encima del fondo decorativo (stripes/gradiente/viñeta, z-index 1-3) y
-     por debajo del contenido (z-index 5). El límite de arriba (Prensa →
-     Servicios) ya lo resuelve la onda propia de Prensa — no se duplica acá. */
-  .mosaic-wave{position:absolute;left:0;bottom:-1px;width:100%;height:90px;z-index:4;pointer-events:none;display:block}
+  /* Línea lima que calca el mismo path del recorte de arriba (mismas
+     coordenadas y preserveAspectRatio, para que calce perfecto) y la onda
+     de cierre de abajo (Servicios → Trabajos, que sí sigue rellena porque
+     Trabajos es un color plano y no hay fondo detrás que se filtre). */
+  .mosaic-wave{position:absolute;left:0;width:100%;height:90px;z-index:4;pointer-events:none;display:block}
   .mosaic-wave svg{display:block;width:100%;height:100%}
+  .mosaic-wave.top{top:-1px}
+  .mosaic-wave.bottom{bottom:-1px}
+  @media(max-width:640px){.mosaic-wave{height:54px}}
   .mosaic-services-inner{position:relative;z-index:5;max-width:1280px;margin:0 auto}
 
   .mosaic-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:40px}
@@ -300,9 +331,6 @@
   }
   @media(max-width:720px){
     .mosaic-services{padding:64px 20px}
-  }
-  @media(max-width:640px){
-    .mosaic-wave{height:54px}
   }
 
   /* ---------- TRABAJOS ---------- */
@@ -763,14 +791,11 @@
 
 <!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
 <section id="prensa" class="press">
+  <!-- Sin onda propia acá: el límite con Servicios lo recorta esa sección
+       (mask-image + margin-top negativo), igual que #nosotros recorta el
+       suyo para revelar esta misma foto por arriba. -->
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
-    <div class="media-wave bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35 L1440,120 L0,120 Z" fill="var(--bg)"/>
-        <path d="M0,35 C120,35 120,87 240,87 C360,87 360,35 480,35 C600,35 600,87 720,87 C840,87 840,35 960,35 C1080,35 1080,87 1200,87 C1320,87 1320,35 1440,35" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
-      </svg>
-    </div>
   </div>
   <div class="press-content reveal">
     <div class="press-eyebrow">
@@ -793,7 +818,15 @@
   <div class="mosaic-bg-stripes" aria-hidden="true"></div>
   <div class="mosaic-bg-gradient" aria-hidden="true"></div>
   <div class="mosaic-bg-vignette" aria-hidden="true"></div>
-  <div class="mosaic-wave" aria-hidden="true">
+  <!-- Sólo la línea: el recorte real de este borde lo hace el mask-image
+       de .mosaic-services (mismo path, mismo preserveAspectRatio, para
+       que calcen exacto). -->
+  <div class="mosaic-wave top" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="mosaic-wave bottom" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
