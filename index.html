@@ -224,40 +224,80 @@
     .about-ghost-pattern{transform:none !important}
   }
 
-  /* ---------- SERVICIOS ---------- */
-  .services{background:var(--bg);color:var(--ink);padding:96px 80px}
-  .services-inner{max-width:1280px;margin:0 auto}
-  .services h2{color:#fff}
-  .services-tabs{display:flex;flex-wrap:wrap;gap:6px;width:fit-content;max-width:100%;margin:0 auto 40px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px}
-  .services-tab{padding:10px 18px;min-height:44px;display:inline-flex;align-items:center;border-radius:6px;border:0;background:transparent;color:#9a9aa5;font-family:var(--font);font-weight:600;font-size:.92rem;cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
-  .services-tab:not(.active):hover{background:var(--surface-hover);color:#fff}
-  .services-tab.active{background:#fff;color:#000}
-  .services-panels{position:relative}
-  .services-grid{display:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;opacity:0;transition:opacity .25s ease}
-  .services-grid.active{display:grid}
-  .services-grid.active.fade-in{opacity:1}
-  .svc-panel-cta{grid-column:1/-1;display:flex;justify-content:center;margin-top:8px}
-  .svc-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:border-color .2s ease,box-shadow .2s ease}
-  .svc-card:hover{border-color:var(--line-strong);box-shadow:0 4px 20px rgba(0,0,0,.35)}
-  .svc-card h3{color:#fff;margin-bottom:8px}
-  .svc-card p{font-size:.906rem;line-height:1.5;color:rgba(255,255,255,.85)}
-  @media(max-width:1100px){.services-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  /* ---------- SERVICIOS (mosaico) ---------- */
+  .mosaic-services{position:relative;overflow:hidden;background:#0c0f0d;color:#fff;padding:96px 80px}
+  .mosaic-bg-stripes,.mosaic-bg-gradient,.mosaic-bg-vignette{position:absolute;inset:0;pointer-events:none}
+  .mosaic-bg-stripes{z-index:1;background:repeating-linear-gradient(180deg,rgba(215,245,81,.16) 0px,rgba(215,245,81,.16) 7px,transparent 7px,transparent 15px)}
+  .mosaic-bg-gradient{z-index:2;background:linear-gradient(180deg,rgba(215,245,81,.55) 0%,rgba(215,245,81,.24) 22%,transparent 46%,transparent 54%,rgba(215,245,81,.24) 80%,rgba(215,245,81,.5) 100%)}
+  .mosaic-bg-vignette{z-index:3;background:radial-gradient(75% 44% at 50% 50%,rgba(8,10,9,.92) 0%,transparent 70%)}
+  .mosaic-wave{position:absolute;left:0;width:100%;height:66px;z-index:4;pointer-events:none;display:block}
+  .mosaic-wave svg{display:block;width:100%;height:100%}
+  .mosaic-wave.top{top:-1px}
+  .mosaic-wave.bottom{bottom:-1px}
+  .mosaic-services-inner{position:relative;z-index:5;max-width:1280px;margin:0 auto}
+
+  .mosaic-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:40px}
+  .mosaic-kicker{display:block;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .mosaic-title{color:#fff}
+  .mosaic-title-dot{color:var(--accent)}
+  .mosaic-head-dek{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:340px;margin:0}
+
+  .mosaic-tabs{display:flex;flex-wrap:wrap;gap:10px;list-style:none}
+  .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:2px;border:1px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;white-space:nowrap}
+  .mosaic-tab:not(.active):hover{border-color:rgba(255,255,255,.4);color:#fff}
+  .mosaic-tab.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .mosaic-divider{height:1px;background:rgba(255,255,255,.14);margin:24px 0 32px}
+
+  .mosaic-panels{position:relative}
+  .mosaic-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .mosaic-grid[hidden]{display:none}
+  .mosaic-card{grid-column:span 3;background:#0e1210;padding:30px 28px;transition:background .2s ease}
+  .mosaic-card:hover{background:#16211a}
+  .mosaic-card.span-2{grid-column:span 2}
+  .mosaic-card.span-3{grid-column:span 3}
+  .mosaic-card.span-6{grid-column:span 6}
+  .mosaic-card-num{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;color:rgba(215,245,81,.75);margin-bottom:14px}
+  .mosaic-card h3{color:#fff;margin-bottom:10px}
+  .mosaic-card p{font-size:15px;line-height:1.55;color:rgba(255,255,255,.72)}
+
+  @keyframes mosaicFadeInA{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes mosaicFadeInB{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .mosaic-card.anim-a{animation:mosaicFadeInA .5s ease both}
+  .mosaic-card.anim-b{animation:mosaicFadeInB .5s ease both}
+  .mosaic-card:nth-child(1){animation-delay:0ms}
+  .mosaic-card:nth-child(2){animation-delay:40ms}
+  .mosaic-card:nth-child(3){animation-delay:80ms}
+  .mosaic-card:nth-child(4){animation-delay:120ms}
+  .mosaic-card:nth-child(5){animation-delay:160ms}
+  .mosaic-card:nth-child(6){animation-delay:200ms}
+  .mosaic-card:nth-child(7){animation-delay:240ms}
+  .mosaic-card:nth-child(8){animation-delay:280ms}
+  .mosaic-card:nth-child(9){animation-delay:320ms}
+
+  .mosaic-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;margin-top:32px}
+  .mosaic-foot-note{font-size:.95rem;color:var(--ink-faint)}
+
+  @media(prefers-reduced-motion:reduce){
+    .mosaic-card.anim-a,.mosaic-card.anim-b{animation:none}
+  }
   @media(max-width:1024px){
-    .services{padding:80px 40px}
+    .mosaic-services{padding:80px 40px}
   }
   @media(max-width:900px){
-    .services-tabs{
+    .mosaic-head{grid-template-columns:1fr}
+    .mosaic-head-dek{max-width:none}
+    .mosaic-tabs{
       flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
-      scroll-snap-type:x mandatory;justify-content:flex-start;
-      width:100%;margin:0 0 32px;
+      scroll-snap-type:x mandatory;
       scrollbar-width:none;
     }
-    .services-tabs::-webkit-scrollbar{display:none}
-    .services-tab{flex:none;scroll-snap-align:start;padding:11px 16px;font-size:.85rem}
+    .mosaic-tabs::-webkit-scrollbar{display:none}
+    .mosaic-tab{flex:none;scroll-snap-align:start}
+    .mosaic-grid{grid-template-columns:1fr}
+    .mosaic-card{grid-column:span 1}
   }
   @media(max-width:720px){
-    .services{padding:64px 20px}
-    .services-grid{grid-template-columns:1fr}
+    .mosaic-services{padding:64px 20px}
   }
 
   /* ---------- TRABAJOS ---------- */
@@ -741,72 +781,44 @@
   </div>
 </section>
 
-<!-- ============ SERVICIOS ============ -->
-<section id="servicios" class="services">
-  <div class="services-inner">
-    <div class="section-head reveal">
-      <h2 data-i18n="services_title">Servicios</h2>
-      <p class="section-dek" data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
+<!-- ============ SERVICIOS (mosaico) ============ -->
+<!-- El contenido (pestañas, tarjetas y CTA) se genera en JS desde SERVICES_DATA:
+     ver el array SERVICES_DATA en el bloque de script "Mosaico de Servicios". -->
+<section id="servicios" class="mosaic-services">
+  <div class="mosaic-bg-stripes" aria-hidden="true"></div>
+  <div class="mosaic-bg-gradient" aria-hidden="true"></div>
+  <div class="mosaic-bg-vignette" aria-hidden="true"></div>
+  <div class="mosaic-wave top" aria-hidden="true">
+    <svg viewBox="0 0 1440 66" preserveAspectRatio="none">
+      <path d="M0,20 C120,20 120,50 240,50 C360,50 360,20 480,20 C600,20 600,50 720,50 C840,50 840,20 960,20 C1080,20 1080,50 1200,50 C1320,50 1320,20 1440,20 L1440,66 L0,66 Z" fill="#0a0b0a"/>
+    </svg>
+  </div>
+  <div class="mosaic-wave bottom" aria-hidden="true">
+    <svg viewBox="0 0 1440 66" preserveAspectRatio="none">
+      <path d="M0,46 C120,46 120,16 240,16 C360,16 360,46 480,46 C600,46 600,16 720,16 C840,16 840,46 960,46 C1080,46 1080,16 1200,16 C1320,16 1320,46 1440,46 L1440,0 L0,0 Z" fill="#0a0b0a"/>
+    </svg>
+  </div>
+
+  <div class="mosaic-services-inner">
+    <div class="mosaic-head reveal">
+      <div>
+        <span class="mosaic-kicker" data-i18n="services_kicker">Área de servicio</span>
+        <h2 class="mosaic-title"><span data-i18n="services_title">Servicios</span><span class="mosaic-title-dot" aria-hidden="true">.</span></h2>
+      </div>
+      <p class="mosaic-head-dek" data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
 
-    <div class="services-tabs" role="tablist" aria-label="Servicios por público">
-      <button type="button" class="services-tab active" role="tab" aria-selected="true" aria-controls="panel-deportista" id="tab-deportista" data-tab="deportista" data-i18n="tab_deportista">Soy deportista</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-representante" id="tab-representante" data-tab="representante" data-i18n="tab_representante">Represento jugadores</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-marca" id="tab-marca" data-tab="marca" data-i18n="tab_marca">Tengo una marca</button>
-      <button type="button" class="services-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-evento" id="tab-evento" data-tab="evento" data-i18n="tab_evento">Organizo un evento</button>
-    </div>
+    <div class="mosaic-tabs" role="tablist" aria-label="Servicios por público" id="mosaicTabs"></div>
+    <div class="mosaic-divider" aria-hidden="true"></div>
 
-    <div class="services-panels">
-      <div class="services-grid active fade-in" id="panel-deportista" role="tabpanel" aria-labelledby="tab-deportista">
-        <div class="svc-card"><h3 data-i18n="svc_d1_t">Imagen personal</h3><p data-i18n="svc_d1_p">Definimos cómo te mostrás y qué te diferencia.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d2_t">Perfil ordenado</h3><p data-i18n="svc_d2_p">Bio, destacados y feed listos para que te encuentren.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d3_t">Plan de contenido</h3><p data-i18n="svc_d3_p">Qué publicar y cuándo. Se termina el improvisar.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d4_t">Día de partido</h3><p data-i18n="svc_d4_p">Matchday, resultados y fechas especiales, a tiempo.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d5_t">Highlights</h3><p data-i18n="svc_d5_p">Tus mejores jugadas, editadas y listas para compartir.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d6_t">Player Dossier</h3><p data-i18n="svc_d6_p">Tu carrera en un PDF que abre puertas en clubes.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d7_t">Cobertura en vivo</h3><p data-i18n="svc_d7_p">Seguimos tu partido desde tus redes.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d8_t">Fotos profesionales</h3><p data-i18n="svc_d8_p">Coordinamos sesiones con fotógrafos del deporte.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_d9_t">Puente con marcas</h3><p data-i18n="svc_d9_p">Te acercamos sponsors que van con lo que sos.</p></div>
-        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20soy%20deportista%20y%20quiero%20conocer%20los%20planes%20disponibles." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_athlete">Conocer planes</a></div>
-      </div>
+    <div class="mosaic-panels" id="mosaicPanels"></div>
 
-      <div class="services-grid" id="panel-representante" role="tabpanel" aria-labelledby="tab-representante" hidden>
-        <div class="svc-card"><h3 data-i18n="svc_r1_t">Imagen del plantel</h3><p data-i18n="svc_r1_p">Todos tus representados con el mismo estándar.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r2_t">Contenido por jugador</h3><p data-i18n="svc_r2_p">Piezas propias para cada perfil, todos los meses.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r3_t">Edición de video</h3><p data-i18n="svc_r3_p">Highlights y resúmenes listos para publicar.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r4_t">Diseño gráfico</h3><p data-i18n="svc_r4_p">Fichajes, resultados y anuncios con tu identidad.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r5_t">Cobertura de partidos</h3><p data-i18n="svc_r5_p">Material del día del partido sin mover a tu gente.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r6_t">Material de scouting</h3><p data-i18n="svc_r6_p">Videos y fichas armados para mostrar jugadores.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r7_t">Player Dossiers</h3><p data-i18n="svc_r7_p">Un dossier profesional por representado.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_r8_t">La marca de la agencia</h3><p data-i18n="svc_r8_p">También comunicamos a la agencia, no solo a sus jugadores.</p></div>
-        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20represento%20jugadores%20y%20me%20gustar%C3%ADa%20trabajar%20juntos." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_agency">Trabajemos juntos</a></div>
-      </div>
-
-      <div class="services-grid" id="panel-marca" role="tabpanel" aria-labelledby="tab-marca" hidden>
-        <div class="svc-card"><h3 data-i18n="svc_m1_t">Campañas con atletas</h3><p data-i18n="svc_m1_p">De la idea a la publicación, con quien encaje.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_m2_t">Embajadores</h3><p data-i18n="svc_m2_p">Vínculos de temporada, no una foto suelta.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_m3_t">Activaciones digitales</h3><p data-i18n="svc_m3_p">Acciones pensadas para que la gente participe.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_m4_t">Producción</h3><p data-i18n="svc_m4_p">Video y fotos con calidad de campaña.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_m5_t">Cobertura de eventos</h3><p data-i18n="svc_m5_p">Tu presencia contada en tiempo real.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_m6_t">Alianzas</h3><p data-i18n="svc_m6_p">Clubes, torneos y agencias para llegar más lejos.</p></div>
-        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20tengo%20una%20marca%20y%20quiero%20ser%20Partner." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_brand">Quiero ser Partner</a></div>
-      </div>
-
-      <div class="services-grid" id="panel-evento" role="tabpanel" aria-labelledby="tab-evento" hidden>
-        <div class="svc-card"><h3 data-i18n="svc_e1_t">Fotografía</h3><p data-i18n="svc_e1_p">Fotos editadas y entregadas el mismo día.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e2_t">Audiovisual</h3><p data-i18n="svc_e2_p">Todo lo que pasa, filmado con criterio.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e3_t">Reels y aftermovie</h3><p data-i18n="svc_e3_p">Las piezas que hacen que el año que viene vengan más.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e4_t">Historias en vivo</h3><p data-i18n="svc_e4_p">El evento contado mientras sucede.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e5_t">Entrevistas</h3><p data-i18n="svc_e5_p">Las voces de los protagonistas y del público.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e6_t">Material para sponsors</h3><p data-i18n="svc_e6_p">Contenido propio para cada marca que te acompaña.</p></div>
-        <div class="svc-card"><h3 data-i18n="svc_e7_t">Streaming</h3><p data-i18n="svc_e7_p">Transmisión y comunicación durante todo el evento.</p></div>
-        <div class="svc-panel-cta"><a href="https://wa.me/5491100000000?text=Hola%20HRK%20Sports%2C%20organizo%20un%20evento%20y%20quiero%20cotizar%20la%20cobertura." target="_blank" rel="noopener" class="btn" data-i18n="svc_cta_event">Cotizar cobertura</a></div>
-      </div>
+    <div class="mosaic-foot">
+      <p class="mosaic-foot-note" data-i18n="services_note">Sin compromiso · Respondemos en 24 hs</p>
+      <a class="btn" id="mosaicCta" target="_blank" rel="noopener"></a>
     </div>
   </div>
 </section>
-
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,32 360,32 C540,32 540,88 720,88 C900,88 900,32 1080,32 C1260,32 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ TRABAJOS ============ -->
 <section id="trabajo" class="work">
@@ -1200,40 +1212,156 @@
     document.querySelectorAll('.reveal:not(.on)').forEach(el => el.classList.add('on'));
   }, 2500);
 
-  // Tabs de Servicios (por público)
-  const svcTabs = Array.from(document.querySelectorAll('.services-tab'));
-  const svcPanels = Array.from(document.querySelectorAll('.services-grid'));
-  function activateSvcTab(tab) {
-    svcTabs.forEach(t => {
+  // Mosaico de Servicios (por público): todo el contenido de las 4 pestañas
+  // vive en este array — spans de columna, textos (vía claves i18n) y el
+  // mensaje de WhatsApp de cada CTA.
+  const WHATSAPP_NUMBER = '5491100000000'; // ⚠ PENDIENTE: reemplazar (ver comentario al inicio del body)
+  const SERVICES_DATA = [
+    {
+      id: 'deportista', tabKey: 'tab_deportista', ctaKey: 'svc_cta_athlete',
+      waText: 'Hola HRK Sports, soy deportista y quiero conocer los planes disponibles.',
+      items: [
+        { span: 3, titleKey: 'svc_d1_t', descKey: 'svc_d1_p' },
+        { span: 3, titleKey: 'svc_d2_t', descKey: 'svc_d2_p' },
+        { span: 2, titleKey: 'svc_d3_t', descKey: 'svc_d3_p' },
+        { span: 2, titleKey: 'svc_d4_t', descKey: 'svc_d4_p' },
+        { span: 2, titleKey: 'svc_d5_t', descKey: 'svc_d5_p' },
+        { span: 3, titleKey: 'svc_d6_t', descKey: 'svc_d6_p' },
+        { span: 3, titleKey: 'svc_d7_t', descKey: 'svc_d7_p' },
+        { span: 3, titleKey: 'svc_d8_t', descKey: 'svc_d8_p' },
+        { span: 3, titleKey: 'svc_d9_t', descKey: 'svc_d9_p' }
+      ]
+    },
+    {
+      id: 'representante', tabKey: 'tab_representante', ctaKey: 'svc_cta_agency',
+      waText: 'Hola HRK Sports, represento jugadores y me gustaría trabajar juntos.',
+      items: [
+        { span: 3, titleKey: 'svc_r2_t', descKey: 'svc_r2_p' },
+        { span: 3, titleKey: 'svc_r3_t', descKey: 'svc_r3_p' },
+        { span: 2, titleKey: 'svc_r4_t', descKey: 'svc_r4_p' },
+        { span: 2, titleKey: 'svc_r5_t', descKey: 'svc_r5_p' },
+        { span: 2, titleKey: 'svc_r6_t', descKey: 'svc_r6_p' },
+        { span: 3, titleKey: 'svc_r7_t', descKey: 'svc_r7_p' },
+        { span: 3, titleKey: 'svc_r8_t', descKey: 'svc_r8_p' }
+      ]
+    },
+    {
+      id: 'marca', tabKey: 'tab_marca', ctaKey: 'svc_cta_brand',
+      waText: 'Hola HRK Sports, tengo una marca y quiero ser Partner.',
+      items: [
+        { span: 3, titleKey: 'svc_m2_t', descKey: 'svc_m2_p' },
+        { span: 3, titleKey: 'svc_m3_t', descKey: 'svc_m3_p' },
+        { span: 2, titleKey: 'svc_m4_t', descKey: 'svc_m4_p' },
+        { span: 2, titleKey: 'svc_m5_t', descKey: 'svc_m5_p' },
+        { span: 2, titleKey: 'svc_m6_t', descKey: 'svc_m6_p' }
+      ]
+    },
+    {
+      id: 'evento', tabKey: 'tab_evento', ctaKey: 'svc_cta_event',
+      waText: 'Hola HRK Sports, organizo un evento y quiero cotizar la cobertura.',
+      items: [
+        { span: 2, titleKey: 'svc_e2_t', descKey: 'svc_e2_p' },
+        { span: 2, titleKey: 'svc_e3_t', descKey: 'svc_e3_p' },
+        { span: 2, titleKey: 'svc_e4_t', descKey: 'svc_e4_p' },
+        { span: 3, titleKey: 'svc_e5_t', descKey: 'svc_e5_p' },
+        { span: 3, titleKey: 'svc_e6_t', descKey: 'svc_e6_p' },
+        { span: 6, titleKey: 'svc_e7_t', descKey: 'svc_e7_p' }
+      ]
+    }
+  ];
+
+  const mosaicTabsEl = document.getElementById('mosaicTabs');
+  const mosaicPanelsEl = document.getElementById('mosaicPanels');
+  const mosaicCtaEl = document.getElementById('mosaicCta');
+  let mosaicAnimFlip = false;
+
+  function buildMosaicCard(item, index) {
+    const card = document.createElement('div');
+    card.className = `mosaic-card span-${item.span}`;
+    const num = document.createElement('span');
+    num.className = 'mosaic-card-num';
+    num.textContent = String(index + 1).padStart(2, '0');
+    const title = document.createElement('h3');
+    title.setAttribute('data-i18n', item.titleKey);
+    const desc = document.createElement('p');
+    desc.setAttribute('data-i18n', item.descKey);
+    card.append(num, title, desc);
+    return card;
+  }
+
+  SERVICES_DATA.forEach((group, i) => {
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'mosaic-tab' + (i === 0 ? ' active' : '');
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    tab.tabIndex = i === 0 ? 0 : -1;
+    tab.id = `mosaic-tab-${group.id}`;
+    tab.setAttribute('aria-controls', `mosaic-panel-${group.id}`);
+    tab.dataset.tab = group.id;
+    tab.setAttribute('data-i18n', group.tabKey);
+    mosaicTabsEl.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'mosaic-grid';
+    panel.id = `mosaic-panel-${group.id}`;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', tab.id);
+    if (i !== 0) panel.hidden = true;
+    group.items.forEach((item, idx) => panel.appendChild(buildMosaicCard(item, idx)));
+    mosaicPanelsEl.appendChild(panel);
+  });
+
+  const mosaicTabs = Array.from(mosaicTabsEl.children);
+
+  // En la carga inicial, I18N todavía no existe (se define más abajo en el
+  // script) — applyI18n() completa el texto del CTA ahí a partir del
+  // data-i18n. En los cambios de pestaña, que sólo ocurren después de esa
+  // carga, sí está disponible y lo actualizamos acá directamente.
+  function updateMosaicCtaLink(group) {
+    mosaicCtaEl.setAttribute('data-i18n', group.ctaKey);
+    mosaicCtaEl.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(group.waText)}`;
+  }
+
+  function activateMosaicTab(tab) {
+    const group = SERVICES_DATA.find(g => g.id === tab.dataset.tab);
+    mosaicTabs.forEach(t => {
       const active = t === tab;
       t.classList.toggle('active', active);
       t.setAttribute('aria-selected', active ? 'true' : 'false');
       t.tabIndex = active ? 0 : -1;
     });
-    svcPanels.forEach(panel => {
-      if (panel.id === `panel-${tab.dataset.tab}`) {
+    mosaicAnimFlip = !mosaicAnimFlip;
+    Array.from(mosaicPanelsEl.children).forEach(panel => {
+      if (panel.id === `mosaic-panel-${group.id}`) {
         panel.hidden = false;
-        panel.classList.add('active');
-        panel.classList.remove('fade-in');
-        requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('fade-in')));
+        Array.from(panel.children).forEach(card => {
+          card.classList.remove('anim-a', 'anim-b');
+          void card.offsetWidth;
+          card.classList.add(mosaicAnimFlip ? 'anim-a' : 'anim-b');
+        });
       } else {
         panel.hidden = true;
-        panel.classList.remove('active', 'fade-in');
       }
     });
+    updateMosaicCtaLink(group);
+    mosaicCtaEl.textContent = I18N[currentLang][group.ctaKey];
   }
-  svcTabs.forEach(tab => {
-    tab.addEventListener('click', () => activateSvcTab(tab));
+
+  mosaicTabs.forEach(tab => {
+    tab.addEventListener('click', () => activateMosaicTab(tab));
     tab.addEventListener('keydown', e => {
-      const i = svcTabs.indexOf(tab);
+      const i = mosaicTabs.indexOf(tab);
       let next = null;
-      if (e.key === 'ArrowRight') next = svcTabs[(i + 1) % svcTabs.length];
-      else if (e.key === 'ArrowLeft') next = svcTabs[(i - 1 + svcTabs.length) % svcTabs.length];
-      else if (e.key === 'Home') next = svcTabs[0];
-      else if (e.key === 'End') next = svcTabs[svcTabs.length - 1];
-      if (next) { e.preventDefault(); next.focus(); activateSvcTab(next); }
+      if (e.key === 'ArrowRight') next = mosaicTabs[(i + 1) % mosaicTabs.length];
+      else if (e.key === 'ArrowLeft') next = mosaicTabs[(i - 1 + mosaicTabs.length) % mosaicTabs.length];
+      else if (e.key === 'Home') next = mosaicTabs[0];
+      else if (e.key === 'End') next = mosaicTabs[mosaicTabs.length - 1];
+      if (next) { e.preventDefault(); next.focus(); activateMosaicTab(next); }
     });
   });
+
+  updateMosaicCtaLink(SERVICES_DATA[0]);
 
   // Recorrido en zigzag de "Cómo trabajamos": nada de SVGs sueltos en
   // posiciones fijas. #processArrows es un único SVG absoluto que este
@@ -1688,7 +1816,9 @@
       pillar3_title: 'Oportunidades', pillar3_desc: 'Marcas, fotógrafos y proyectos que aportan valor a su desarrollo.',
 
       services_title: 'Servicios',
+      services_kicker: 'Área de servicio',
       services_dek: 'Decinos quién sos y te mostramos qué hacemos por vos.',
+      services_note: 'Sin compromiso · Respondemos en 24 hs',
       tab_deportista: 'Soy deportista', tab_representante: 'Represento jugadores',
       tab_marca: 'Tengo una marca', tab_evento: 'Organizo un evento',
 
@@ -1702,7 +1832,6 @@
       svc_d8_t: 'Fotos profesionales', svc_d8_p: 'Coordinamos sesiones con fotógrafos del deporte.',
       svc_d9_t: 'Puente con marcas', svc_d9_p: 'Te acercamos sponsors que van con lo que sos.',
 
-      svc_r1_t: 'Imagen del plantel', svc_r1_p: 'Todos tus representados con el mismo estándar.',
       svc_r2_t: 'Contenido por jugador', svc_r2_p: 'Piezas propias para cada perfil, todos los meses.',
       svc_r3_t: 'Edición de video', svc_r3_p: 'Highlights y resúmenes listos para publicar.',
       svc_r4_t: 'Diseño gráfico', svc_r4_p: 'Fichajes, resultados y anuncios con tu identidad.',
@@ -1711,14 +1840,12 @@
       svc_r7_t: 'Player Dossiers', svc_r7_p: 'Un dossier profesional por representado.',
       svc_r8_t: 'La marca de la agencia', svc_r8_p: 'También comunicamos a la agencia, no solo a sus jugadores.',
 
-      svc_m1_t: 'Campañas con atletas', svc_m1_p: 'De la idea a la publicación, con quien encaje.',
       svc_m2_t: 'Embajadores', svc_m2_p: 'Vínculos de temporada, no una foto suelta.',
       svc_m3_t: 'Activaciones digitales', svc_m3_p: 'Acciones pensadas para que la gente participe.',
       svc_m4_t: 'Producción', svc_m4_p: 'Video y fotos con calidad de campaña.',
       svc_m5_t: 'Cobertura de eventos', svc_m5_p: 'Tu presencia contada en tiempo real.',
       svc_m6_t: 'Alianzas', svc_m6_p: 'Clubes, torneos y agencias para llegar más lejos.',
 
-      svc_e1_t: 'Fotografía', svc_e1_p: 'Fotos editadas y entregadas el mismo día.',
       svc_e2_t: 'Audiovisual', svc_e2_p: 'Todo lo que pasa, filmado con criterio.',
       svc_e3_t: 'Reels y aftermovie', svc_e3_p: 'Las piezas que hacen que el año que viene vengan más.',
       svc_e4_t: 'Historias en vivo', svc_e4_p: 'El evento contado mientras sucede.',
@@ -1809,7 +1936,9 @@
       pillar3_title: 'Opportunities', pillar3_desc: 'Brands, photographers, and projects that add value to their development.',
 
       services_title: 'Services',
+      services_kicker: 'Service area',
       services_dek: 'Tell us who you are and we\'ll show you what we do for you.',
+      services_note: 'No commitment · We reply within 24 hs',
       tab_deportista: 'I\'m an athlete', tab_representante: 'I represent players',
       tab_marca: 'I have a brand', tab_evento: 'I\'m organizing an event',
 
@@ -1823,7 +1952,6 @@
       svc_d8_t: 'Professional photos', svc_d8_p: 'We arrange sessions with sports photographers.',
       svc_d9_t: 'A bridge to brands', svc_d9_p: 'We connect you with sponsors that match who you are.',
 
-      svc_r1_t: 'Squad image', svc_r1_p: 'All your players held to the same standard.',
       svc_r2_t: 'Content per player', svc_r2_p: 'Custom pieces for every profile, every month.',
       svc_r3_t: 'Video editing', svc_r3_p: 'Highlights and recaps ready to publish.',
       svc_r4_t: 'Graphic design', svc_r4_p: 'Signings, results, and announcements in your identity.',
@@ -1832,14 +1960,12 @@
       svc_r7_t: 'Player Dossiers', svc_r7_p: 'A professional dossier for every player you represent.',
       svc_r8_t: 'Your agency\'s brand', svc_r8_p: 'We also promote the agency itself, not just its players.',
 
-      svc_m1_t: 'Campaigns with athletes', svc_m1_p: 'From concept to launch, with the athlete who fits.',
       svc_m2_t: 'Ambassadors', svc_m2_p: 'Season-long partnerships, not a one-off photo.',
       svc_m3_t: 'Digital activations', svc_m3_p: 'Activations designed to get people involved.',
       svc_m4_t: 'Production', svc_m4_p: 'Campaign-quality video and photography.',
       svc_m5_t: 'Event coverage', svc_m5_p: 'Your presence, told in real time.',
       svc_m6_t: 'Partnerships', svc_m6_p: 'Clubs, tournaments, and agencies to go further.',
 
-      svc_e1_t: 'Photography', svc_e1_p: 'Photos edited and delivered the same day.',
       svc_e2_t: 'Audiovisual', svc_e2_p: 'Everything that happens, filmed with an eye for the moment.',
       svc_e3_t: 'Reels and aftermovie', svc_e3_p: 'The pieces that bring more people back next year.',
       svc_e4_t: 'Live stories', svc_e4_p: 'The event, told as it happens.',
