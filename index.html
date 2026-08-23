@@ -44,11 +44,12 @@
 </script>
 <style>
   :root{
+    /* Identidad unificada: un solo verde (--accent), un solo negro de fondo
+       (--bg), una sola superficie elevada (--surface) y un solo claro
+       (--bg-light) para toda la página, sin variantes por sección. */
     --bg:#16161a;
-    --surface:#1e1e24;
-    --surface-hover:#28282f;
-    --card:#26262c;
-    --card-hover:#2e2e36;
+    --surface:#1e1e23;
+    --card:var(--surface);
     --input-bg:#25252b;
     --ink:#ffffff;
     --ink-soft:rgba(255,255,255,.78);
@@ -57,13 +58,20 @@
     --line-strong:rgba(255,255,255,.28);
     --accent:#D7F551;
     --accent-hover:#e3ff6e;
-    --accent-ink:#0A0A0C;
+    --accent-ink:var(--bg);
+    /* Mismo verde, oscurecido: el único uso es como TEXTO sobre fondo claro
+       (el lima puro no pasa contraste mínimo ahí) — sigue siendo "un solo
+       verde" porque se deriva de --accent, no es un tono aparte. */
+    --accent-deep:#5c6810;
     --bg-light:#faf8f6;
-    --proj-bg:#ffffff;
     --accent-glow:0 0 8px rgba(215,245,81,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
-    --radius:18px;
+    /* Dos radios y nada más: chico para controles, grande para tarjetas y
+       contenedores. Los círculos genuinos (manijas, dots, botón flotante)
+       siguen en 50%, fuera de este par. */
+    --radius-sm:8px;
+    --radius-lg:24px;
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
     --title:'Anton',var(--display),sans-serif;
@@ -97,7 +105,7 @@
 
   /* ---------- NAV ---------- */
   header{position:fixed;inset:0 0 auto 0;z-index:200}
-  header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,10,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #1b1b21}
+  header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,10,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   .nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px;padding:0 16px}
   .nav-group{display:flex;align-items:center}
   .nav-group.left{justify-content:space-evenly}
@@ -120,10 +128,10 @@
   .lang-globe{width:16px;height:16px;flex:none}
   .lang-caret{width:8px;height:8px;flex:none;transition:transform .2s ease}
   .lang-switch.open .lang-caret{transform:rotate(180deg)}
-  .lang-menu{position:absolute;top:calc(100% + 14px);right:0;min-width:150px;margin:0;padding:6px;list-style:none;background:#0d0d0f;border:1px solid #26262c;border-radius:10px;box-shadow:0 14px 32px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:250}
+  .lang-menu{position:absolute;top:calc(100% + 14px);right:0;min-width:150px;margin:0;padding:6px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:0 14px 32px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:250}
   .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0)}
-  .lang-option{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:6px;padding:10px 12px;font-family:var(--font);font-size:.85rem;font-weight:600;color:#9a9aa5;cursor:pointer;transition:background .15s ease,color .15s ease}
-  .lang-option:hover{background:var(--surface-hover);color:#fff}
+  .lang-option{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font);font-size:.85rem;font-weight:600;color:#9a9aa5;cursor:pointer;transition:background .15s ease,color .15s ease}
+  .lang-option:hover{background:var(--surface);color:#fff}
   .lang-option.active{color:var(--accent)}
   .lang-switch-mobile{margin-top:8px}
   .lang-switch-mobile .lang-menu{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;margin-top:10px;display:none}
@@ -140,17 +148,17 @@
   .hero-cta svg{width:18px;height:18px;flex:none}
   .hero h1{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:var(--h1);line-height:var(--title-leading);letter-spacing:var(--title-tracking);max-width:1120px;text-wrap:balance;text-align:center;margin:0 auto}
   .hero h1 em{font-style:normal;color:var(--accent)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:var(--accent);color:var(--accent-ink) !important;padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:0 0 6px rgba(215,245,81,.25);transition:background .2s ease,box-shadow .2s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:var(--accent);color:var(--accent-ink) !important;padding:10px 22px;border-radius:var(--radius-sm);font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:0 0 6px rgba(215,245,81,.25);transition:background .2s ease,box-shadow .2s ease}
   .btn:hover{background:var(--accent-hover);box-shadow:0 0 10px rgba(227,255,110,.4)}
-  .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);padding:10px 22px;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;box-shadow:none;transition:border-color .2s ease,box-shadow .25s ease}
+  .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);padding:10px 22px;border-radius:var(--radius-sm);font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;box-shadow:none;transition:border-color .2s ease,box-shadow .25s ease}
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
   /* El borde inferior en forma de onda se logra RECORTANDO la sección con
      un mask-image (no rellenando un path sólido aparte): así lo que se ve
-     por encima de la curva es el degradado real de la sección, con todas
-     sus capas (radial-gradient + scrim + patrón), nunca un color aproximado
-     que pueda desentonar. La máscara tiene dos capas: un rectángulo sólido
+     por encima de la curva es el fondo real de la sección (--bg, plano),
+     nunca un color aproximado que pueda desentonar. La máscara tiene dos
+     capas: un rectángulo sólido
      que cubre todo menos los últimos 90px (54px en mobile) — para que el
      resto de la sección quede intacto — y la curva de la onda en esa franja
      final. Prensa se sube por debajo con margin-top negativo para que su
@@ -176,26 +184,19 @@
     }
     .press{margin-top:-54px}
   }
-  .about{background:radial-gradient(120% 120% at 50% -20%,#22261a 0%,#16161a 55%,#0b0b0e 100%)}
-  #nosotros::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    background-image:linear-gradient(to right,#ffffff08 1px,transparent 1px),linear-gradient(to bottom,#ffffff08 1px,transparent 1px);
-    background-size:64px 64px;
-    -webkit-mask-image:radial-gradient(70% 60% at 50% 0%,#000 0%,transparent 75%);
-    mask-image:radial-gradient(70% 60% at 50% 0%,#000 0%,transparent 75%);
-  }
+  .about{background:var(--bg)}
   #nosotros .media-wave{z-index:1}
-  #nosotros::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(11,11,14,.5)}
 
   /* Bloque 1 — presentación */
   .about-hero{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:64px 40px 0;text-align:center}
   .about-ghost-pattern{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;user-select:none;display:flex;flex-direction:column;will-change:transform}
-  .about-ghost-line{display:block;font-family:var(--title);font-weight:400;font-size:clamp(140px,27vw,530px);line-height:1.15;letter-spacing:-.045em;color:#d7f5511f;text-shadow:0 0 200px #d7f55140;white-space:nowrap;user-select:none}
+  .about-ghost-line{display:block;font-family:var(--title);font-weight:400;font-size:clamp(140px,27vw,530px);line-height:1.15;letter-spacing:-.045em;color:rgba(215,245,81,.12);text-shadow:0 0 200px rgba(215,245,81,.25);white-space:nowrap;user-select:none}
   .about-title{position:relative;z-index:1;color:#f3f2ee;margin:0;opacity:0;will-change:transform,opacity}
   .about-title-highlight{color:var(--accent)}
   .about-lead-text{position:relative;z-index:1;max-width:760px;margin:28px auto 0;font-size:19px;line-height:1.65;color:rgba(255,255,255,.85);opacity:0;will-change:transform,opacity}
   .about-cta{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px;opacity:0;will-change:transform,opacity}
-  .about .btn,.about .btn-secondary{padding:16px 30px;border-radius:6px;font-size:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
-  .about .btn{background:var(--accent);color:#0a0a0c}
+  .about .btn,.about .btn-secondary{padding:16px 30px;border-radius:var(--radius-sm);font-size:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+  .about .btn{background:var(--accent);color:var(--accent-ink)}
   .about .btn-secondary{border-color:#ffffff2e;color:#f3f2ee}
   .about .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
@@ -232,18 +233,15 @@
   }
 
   /* ---------- SERVICIOS (mosaico) ---------- */
-  /* Borde superior en forma de onda: se logra RECORTANDO la sección con
-     mask-image (mismo criterio que #nosotros más arriba), no rellenando un
-     path sólido. Así lo que se ve por encima de la curva es la foto real
-     de Prensa (que se sube por debajo con margin-top negativo para quedar
-     justo detrás del recorte) y no un color aproximado que desentone con
-     el fondo rayado. Al aplicarse sobre TODA la sección, las capas
-     decorativas (rayas/degradado/viñeta, que ya usan inset:0) quedan
-     recortadas junto con el resto y arrancan exactas en el borde real. La
-     línea lima que calca el mismo path se agrega aparte, encima de todo. */
+  /* Fondo plano (--bg, sin rayas/degradado/viñeta). Borde superior en forma
+     de onda: se logra RECORTANDO la sección con mask-image (mismo criterio
+     que #nosotros más arriba), no rellenando un path sólido, así lo que se
+     ve por encima de la curva es la foto real de Prensa (que se sube por
+     debajo con margin-top negativo para quedar justo detrás del recorte).
+     La línea lima que calca el mismo path se agrega aparte, encima de todo. */
   .mosaic-services{
     --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,84%20C120,84%20120,30%20240,30%20C360,30%20360,84%20480,84%20C600,84%20600,30%20720,30%20C840,30%20840,84%20960,84%20C1080,84%201080,30%201200,30%20C1320,30%201320,84%201440,84%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
-    position:relative;overflow:hidden;background:#08090a;color:#fff;padding:96px 0;
+    position:relative;overflow:hidden;background:var(--bg);color:#fff;padding:96px 0;
     margin-top:-90px;
     -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000);
     -webkit-mask-size:100% 90px,100% calc(100% - 90px);
@@ -261,10 +259,6 @@
       mask-size:100% 54px,100% calc(100% - 54px);
     }
   }
-  .mosaic-bg-stripes,.mosaic-bg-gradient,.mosaic-bg-vignette{position:absolute;inset:0;pointer-events:none}
-  .mosaic-bg-stripes{z-index:1;background:repeating-linear-gradient(180deg,rgba(215,245,81,.06) 0px,rgba(215,245,81,.06) 7px,transparent 7px,transparent 15px)}
-  .mosaic-bg-gradient{z-index:2;background:linear-gradient(180deg,rgba(215,245,81,.26) 0%,rgba(215,245,81,.11) 22%,transparent 38%,transparent 62%,rgba(215,245,81,.11) 80%,rgba(215,245,81,.24) 100%)}
-  .mosaic-bg-vignette{z-index:3;background:radial-gradient(85% 60% at 50% 50%,rgba(8,10,9,.97) 0%,rgba(8,10,9,.6) 45%,transparent 80%)}
   /* Línea lima que calca el mismo path del recorte de arriba (mismas
      coordenadas y preserveAspectRatio, para que calce perfecto) y la onda
      de cierre de abajo (Servicios → Trabajos, que sí sigue rellena porque
@@ -284,13 +278,13 @@
   .mosaic-head-dek{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:620px;margin:14px auto 0}
 
   .mosaic-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;list-style:none}
-  .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:2px;border:1px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;white-space:nowrap}
+  .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;white-space:nowrap}
   .mosaic-tab:not(.active):hover{border-color:rgba(255,255,255,.4);color:#fff}
   .mosaic-tab.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .mosaic-divider{height:1px;background:rgba(255,255,255,.14);margin:24px 0 32px}
 
   .mosaic-panels{position:relative}
-  .mosaic-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .mosaic-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-lg);overflow:hidden}
   .mosaic-grid[hidden]{display:none}
   /* Rompecabezas: cada pieza entra desde una dirección al azar (--dx/--dy,
      asignadas en JS en cada disparo) con una leve escala, y encaja con una
@@ -298,9 +292,8 @@
      no llegó" — la propia .mosaic-card (con su fondo) es el estado final,
      así que mientras la pieza no llegó se ve el hueco: el fondo más claro
      de .mosaic-grid asomando en esa celda. */
-  .mosaic-card{grid-column:span 3;background:#0e1210;padding:30px 28px;transition:background .2s ease,transform .55s cubic-bezier(.16,1.02,.3,1),opacity .35s ease}
+  .mosaic-card{grid-column:span 3;background:var(--surface);padding:30px 28px;transition:transform .55s cubic-bezier(.16,1.02,.3,1),opacity .35s ease}
   .mosaic-card.piece-enter{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.94)}
-  .mosaic-card:hover{background:#16211a}
   .mosaic-card.span-2{grid-column:span 2}
   .mosaic-card.span-3{grid-column:span 3}
   .mosaic-card.span-6{grid-column:span 6}
@@ -311,7 +304,7 @@
   .mosaic-foot{display:flex;justify-content:center;margin-top:32px}
 
   @media(prefers-reduced-motion:reduce){
-    .mosaic-card{transition:background .2s ease}
+    .mosaic-card{transition:none}
     .mosaic-card.piece-enter{opacity:1;transform:none}
   }
   @media(max-width:1024px){
@@ -333,55 +326,42 @@
   }
 
   /* ---------- PROYECTOS ---------- */
-  .projects{position:relative;overflow:hidden;background:var(--proj-bg);padding:0}
-  .projects-glow{position:absolute;inset:0;pointer-events:none;z-index:1;
-    background:radial-gradient(110% 90% at 50% 48%,rgba(198,242,78,.98) 0%,rgba(198,242,78,.8) 32%,rgba(198,242,78,.45) 56%,rgba(198,242,78,.18) 76%,rgba(255,255,255,0) 92%);
-    animation:projectsGlowMove 16s ease-in-out infinite}
-  @keyframes projectsGlowMove{
-    0%,100%{transform:translate3d(0,0,0) scale(1)}
-    50%{transform:translate3d(0,-2.5%,0) scale(1.06)}
-  }
-  .projects-fade{position:absolute;inset:0;pointer-events:none;z-index:2;
-    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.5) 5%,transparent 14%,transparent 86%,rgba(255,255,255,.5) 95%,#fff 100%)}
-  @media(prefers-reduced-motion:reduce){
-    .projects-glow{animation:none}
-  }
-  .projects-inner{position:relative;z-index:3;max-width:1440px;margin-inline:auto;padding:64px 96px 72px}
+  .projects{position:relative;overflow:hidden;background:var(--bg-light);padding:0}
+  .projects-inner{position:relative;max-width:1440px;margin-inline:auto;padding:64px 96px 72px}
   @media(max-width:1024px){.projects-inner{padding:56px 48px 64px}}
   @media(max-width:640px){.projects-inner{padding:48px 24px 48px}}
-  .projects-title{text-align:center;color:#0b1207;max-width:900px;margin-inline:auto}
+  .projects-title{text-align:center;color:var(--bg);max-width:900px;margin-inline:auto}
 
   .projects-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:40px}
   @media(max-width:900px){.projects-grid{grid-template-columns:1fr}}
 
   /* Comparador Eze Neira: "después" abajo, sin recorte; "antes" encima,
      desaturada y recortada por JS según el arrastre (ver script). */
-  .projects-compare{position:relative;overflow:hidden;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:#0e1210;min-height:560px;cursor:ew-resize;user-select:none;touch-action:none}
+  .projects-compare{position:relative;overflow:hidden;border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:var(--surface);min-height:560px;cursor:ew-resize;user-select:none;touch-action:none}
   .projects-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .projects-compare-media{position:absolute;inset:0}
   .projects-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
   .projects-compare-before{filter:saturate(.5) brightness(.82)}
   .projects-compare-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 0%,transparent 42%,rgba(6,8,7,.9) 100%);pointer-events:none}
-  .projects-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#c6f24e;box-shadow:0 0 22px rgba(198,242,78,.75);pointer-events:none;z-index:3}
-  .projects-compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#c6f24e;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
-  .projects-compare-grip{width:2px;height:16px;border-radius:1px;background:#0a1005}
-  .projects-tag{position:absolute;top:20px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:6px;padding:6px 12px;z-index:2;pointer-events:none}
+  .projects-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent);box-shadow:0 0 22px rgba(215,245,81,.75);pointer-events:none;z-index:3}
+  .projects-compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .projects-compare-grip{width:2px;height:16px;border-radius:var(--radius-sm);background:var(--accent-ink)}
+  .projects-tag{position:absolute;top:20px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:var(--radius-sm);padding:6px 12px;z-index:2;pointer-events:none}
   .projects-tag-before{left:20px;background:rgba(6,8,7,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#f5f6f2}
-  .projects-tag-after{right:20px;background:#c6f24e;color:#0a1005}
+  .projects-tag-after{right:20px;background:var(--accent);color:var(--accent-ink)}
   .projects-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;pointer-events:none}
   .projects-compare-name{color:#f5f6f2}
-  .projects-compare-desc{font-size:16px;font-weight:500;line-height:1.4;color:#c6f24e;max-width:480px;margin-top:8px}
+  .projects-compare-desc{font-size:16px;font-weight:500;line-height:1.4;color:var(--accent);max-width:480px;margin-top:8px}
 
   /* Columna derecha: dos tarjetas apiladas, mismo lenguaje visual que el
-     mosaico de Servicios (fondo oscuro + rayas), sin fotos. Sólo título y
+     resto del sitio (fondo --surface plano), sin fotos. Sólo título y
      descripción — sin meta, tags ni foto, así que se centran en el alto
      reducido de la tarjeta en vez de anclarse contra un borde. */
   .projects-side{display:grid;grid-template-rows:1fr 1fr;gap:18px}
-  .projects-card{position:relative;overflow:hidden;background:#0e1210;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:160px;display:flex;flex-direction:column;justify-content:center}
-  .projects-card-stripes{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0px,rgba(255,255,255,.035) 2px,transparent 2px,transparent 11px)}
+  .projects-card{position:relative;overflow:hidden;background:var(--surface);border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:160px;display:flex;flex-direction:column;justify-content:center}
   .projects-card-body{position:relative;z-index:1}
   .projects-card-name{color:#f5f6f2;margin-bottom:8px}
-  .projects-card-desc{font-size:15px;line-height:1.5;color:#c6f24e}
+  .projects-card-desc{font-size:15px;line-height:1.5;color:var(--accent)}
 
   @keyframes projectsCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
   .projects-compare.reveal-up,.projects-card.reveal-up{opacity:0;transform:translateY(18px)}
@@ -405,9 +385,9 @@
   #deportistas .wrap{max-width:1440px;padding:0 16px}
   .athletes-title{color:#fff;margin-bottom:18px}
   .athletes-strip{display:flex;gap:12px;height:560px}
-  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:16px;overflow:hidden;border:1px solid #26262b;cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
+  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
   .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-  .athlete-panel.active{flex:2;border-color:#4a4a55}
+  .athlete-panel.active{flex:2;border-color:var(--line-strong)}
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
   .athlete-name{color:#fff;overflow-wrap:break-word}
@@ -431,7 +411,7 @@
     #deportistas .wrap{padding:0 14px}
     .athletes-title{margin-bottom:14px}
     .athletes-strip{flex-direction:column;height:auto;gap:14px}
-    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:#26262b}
+    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:var(--line)}
     .athlete-body{position:relative;padding:180px 18px 18px}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
     .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:12px}
@@ -451,24 +431,18 @@
      script del final del archivo redibuja midiendo la posición real de
      cada tarjeta. */
   #proceso{
-    --proc-ink:#111;
-    --proc-ink-soft:rgba(17,17,17,.68);
-    --proc-ink-faint:rgba(17,17,17,.5);
+    --proc-ink:var(--bg);
+    --proc-ink-soft:color-mix(in srgb, var(--bg) 68%, transparent);
+    --proc-ink-faint:color-mix(in srgb, var(--bg) 50%, transparent);
     --proc-card-bg:#fff;
-    --proc-border:1.5px solid rgba(17,17,17,.12);
-    --proc-radius:26px;
+    --proc-border:1.5px solid color-mix(in srgb, var(--bg) 12%, transparent);
     --proc-pad:clamp(26px,3vw,44px);
-    --proc-contrast-bg:#16161a;
+    --proc-contrast-bg:var(--bg);
     --proc-contrast-ink:#fff;
     --proc-row-gap:clamp(56px,7vw,96px);
     position:relative;
     background:var(--bg-light);
     color:var(--proc-ink);
-  }
-  #proceso::before{
-    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;
-    background-image:radial-gradient(circle,var(--proc-ink) 1px,transparent 1px);
-    background-size:26px 26px;
   }
   #proceso .wrap{position:relative;z-index:1}
 
@@ -487,7 +461,7 @@
 
   /* Nodo de inicio */
   .process-node{position:relative;z-index:1;text-align:center}
-  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);padding:9px 16px;border-radius:999px}
+  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);padding:9px 16px;border-radius:var(--radius-lg)}
   .process-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;animation:procPulse 1.8s ease-in-out infinite}
   .process-node-lead{margin-top:16px}
   @keyframes procPulse{
@@ -503,8 +477,8 @@
      contenedor de flechas. */
   .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--proc-row-gap) auto 0}
   .process-faq-title{color:var(--proc-ink-faint);text-align:center;margin-bottom:16px}
-  .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);overflow:hidden;box-shadow:0 10px 34px rgba(17,17,17,.06)}
-  .process-faq-item{border-top:1px solid rgba(17,17,17,.1)}
+  .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
+  .process-faq-item{border-top:1px solid color-mix(in srgb, var(--bg) 10%, transparent)}
   .process-faq-item:first-child{border-top:0}
   .process-faq-q-heading{margin:0}
   /* El texto visible vive en el botón, no en el encabezado que lo envuelve
@@ -513,7 +487,7 @@
      botones no heredan tipografía por defecto, así que sin esto se
      quedarían con la fuente de sistema. */
   .process-faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:44px;text-align:left;background:none;border:0;cursor:pointer;padding:22px 24px;font:inherit;color:var(--proc-ink);transition:background .15s ease}
-  .process-faq-q:hover{background:rgba(17,17,17,.03)}
+  .process-faq-q:hover{background:color-mix(in srgb, var(--bg) 3%, transparent)}
   .process-faq-icon{position:relative;width:24px;height:24px;flex:none}
   .process-faq-icon::before,.process-faq-icon::after{content:"";position:absolute;top:50%;left:50%;background:var(--proc-ink);transform:translate(-50%,-50%)}
   .process-faq-icon::before{width:20px;height:2px}
@@ -525,7 +499,7 @@
 
   /* Tarjeta final */
   .process-node-end{margin-top:var(--proc-row-gap)}
-  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--proc-radius);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-lg);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
   .process-end-tag{color:var(--accent)}
   .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px}
   .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55)}
@@ -542,20 +516,20 @@
      mismo row-reverse que arma el zigzag ([data-step="1"] arriba) lo deja
      del lado contrario a la tarjeta en cada paso sin necesitar CSS aparte. */
   .process-step-mockup{flex:none;width:200px;align-self:center}
-  .process-step-phone{position:relative;width:100%;aspect-ratio:9/19;background:#111;border:8px solid #111;border-radius:32px;box-shadow:0 20px 44px rgba(17,17,17,.16);overflow:hidden}
-  .process-step-phone::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:38%;height:18px;background:#111;border-radius:0 0 10px 10px;z-index:1}
+  .process-step-phone{position:relative;width:100%;aspect-ratio:9/19;background:var(--bg);border:8px solid var(--bg);border-radius:var(--radius-lg);box-shadow:0 20px 44px color-mix(in srgb, var(--bg) 16%, transparent);overflow:hidden}
+  .process-step-phone::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:38%;height:18px;background:var(--bg);border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:1}
   .process-step-phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   @media(max-width:1100px){.process-step-mockup{width:160px}}
   @media(max-width:900px){.process-step-mockup{display:none}}
 
-  .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);padding:var(--proc-pad);box-shadow:0 10px 34px rgba(17,17,17,.06)}
+  .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);padding:var(--proc-pad);box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
   /* Un solo bloque de 620px para todo el contenido de la tarjeta —badge,
      título, párrafo, chips, "Al terminar" y "Tu parte"— centrado dentro
      de la tarjeta (el texto adentro sigue alineado a la izquierda: lo que
      se centra es el bloque, no cada línea). El ritmo vertical entre
      elementos es un valor fijo por par, igual en las tres tarjetas. */
   .process-step-body{max-width:620px;margin-inline:auto}
-  .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:6px}
+  .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:var(--radius-sm)}
   .process-step-title{margin-top:16px}
   .process-step-desc{font-size:17px;line-height:1.6;margin-top:14px;color:var(--proc-ink-soft)}
   /* Dato duro opcional (cantidad de deportistas, tiempo real de la etapa,
@@ -571,10 +545,10 @@
      inicial, texto en un lima oscuro (mismo tono que ya usa el sitio en
      .foot-social a:hover) para que sea legible sobre la tarjeta blanca —
      lima puro (#D7F551) sobre blanco no pasa contraste mínimo como texto. */
-  .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:1rem;font-weight:700;line-height:1.45;color:#5c6810}
+  .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:1rem;font-weight:700;line-height:1.45;color:var(--accent-deep)}
   .process-step-result-mark{flex:none;width:18px;height:18px;margin-top:.15em;color:var(--accent-ink);background:var(--accent);border-radius:50%;padding:3px}
-  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:18px 20px;margin-top:24px}
-  .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);padding:5px 10px;border-radius:6px}
+  .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-sm);padding:18px 20px;margin-top:24px}
+  .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);padding:5px 10px;border-radius:var(--radius-sm)}
   .process-yours-text{font-size:1.05rem;font-weight:600;line-height:1.4;color:#fff}
 
   @media(prefers-reduced-motion:reduce){
@@ -596,7 +570,7 @@
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
-  .press{position:relative;z-index:0;min-height:660px;padding:0;margin-top:-90px;display:flex;align-items:center;overflow:hidden;background:var(--bg-light);color:#111}
+  .press{position:relative;z-index:0;min-height:660px;padding:0;margin-top:-90px;display:flex;align-items:center;overflow:hidden;background:var(--bg-light);color:var(--bg)}
   .press-media{position:absolute;inset:0}
   .press-media img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
   .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(250,248,246,.97) 0%,rgba(250,248,246,.92) 38%,rgba(250,248,246,.35) 72%,rgba(250,248,246,.55) 100%)}
@@ -606,30 +580,30 @@
      junto a la fecha, así que se lleva a la misma escala de caption que
      .press-date en vez de al tamaño de título que tenía (Georgia 1.875rem,
      "suelto" fuera de los cuatro valores de la jerarquía). */
-  .press-kicker{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.22em;color:#111}
-  .press-divider{width:1px;height:18px;background:rgba(17,17,17,.35)}
-  .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(17,17,17,.55)}
-  .press-title{color:#111}
-  .press-content .section-dek{color:#2a2a2e;text-align:left;margin:14px 0 0}
+  .press-kicker{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.22em;color:var(--bg)}
+  .press-divider{width:1px;height:18px;background:color-mix(in srgb, var(--bg) 35%, transparent)}
+  .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:color-mix(in srgb, var(--bg) 55%, transparent)}
+  .press-title{color:var(--bg)}
+  .press-content .section-dek{color:var(--bg);text-align:left;margin:14px 0 0}
   .press-cta{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
-  .press .btn-secondary{color:#111;border-color:rgba(17,17,17,.5)}
-  .press .btn-secondary:hover{border-color:#111;box-shadow:0 0 8px rgba(17,17,17,.15)}
+  .press .btn-secondary{color:var(--bg);border-color:color-mix(in srgb, var(--bg) 50%, transparent)}
+  .press .btn-secondary:hover{border-color:var(--bg);box-shadow:0 0 8px color-mix(in srgb, var(--bg) 15%, transparent)}
 
   /* ---------- CONTACTO ---------- */
   .contact-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:start}
   .contact-info h2{margin-bottom:14px}
   .contact-info .section-dek{text-align:left;margin:14px 0 32px}
   .contact-cards{display:flex;flex-direction:column;gap:14px}
-  .contact-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;transition:border-color .2s,background .2s,box-shadow .2s}
+  .contact-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 22px;transition:border-color .2s,background .2s,box-shadow .2s}
   .contact-card:hover{border-color:#fff;box-shadow:var(--glow-hover)}
   .contact-card svg{width:22px;height:22px;flex:none;color:#fff;filter:drop-shadow(0 0 3px rgba(255,255,255,.25))}
   .contact-card b{display:block;font-weight:700;font-size:.98rem}
   .contact-card small{display:block;font-weight:500;color:var(--ink-faint);font-size:.82rem;margin-top:2px}
-  .contact-form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .contact-form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px}
   .contact-form{display:flex;flex-direction:column;gap:6px}
   .field{display:flex;flex-direction:column;gap:1px}
   .field label{font-size:.85rem;font-weight:700;letter-spacing:.01em;color:#fff}
-  .field input,.field select,.field textarea{width:100%;box-sizing:border-box;font-family:var(--font);font-size:.95rem;padding:12px 14px;min-height:44px;border-radius:8px;border:1px solid var(--line);background:var(--input-bg);color:#fff;transition:border-color .2s,box-shadow .2s}
+  .field input,.field select,.field textarea{width:100%;box-sizing:border-box;font-family:var(--font);font-size:.95rem;padding:12px 14px;min-height:44px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--input-bg);color:#fff;transition:border-color .2s,box-shadow .2s}
   .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.5)}
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
   .field textarea{resize:vertical;min-height:64px}
@@ -642,16 +616,16 @@
   .form-note{color:var(--ink-faint);font-size:.82rem}
 
   /* ---------- FOOTER ---------- */
-  footer{background:var(--bg-light);color:#111;padding:36px 0}
+  footer{background:var(--bg-light);color:var(--bg);padding:36px 0}
   .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .foot .logo{color:#111;font-size:1.1rem}
+  .foot .logo{color:var(--bg);font-size:1.1rem}
   .foot p{color:#57534d;font-size:.85rem}
   .foot-social{display:flex;gap:18px}
   .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
-  .foot-social a:hover{color:#5c6810}
+  .foot-social a:hover{color:var(--accent-deep)}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
-  .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
+  .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
   .whatsapp-float:hover{box-shadow:var(--glow-hover)}
   .whatsapp-float svg{width:28px;height:28px}
 
@@ -785,7 +759,7 @@
 <section id="nosotros" class="about">
   <div class="media-wave top" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,0 L0,0 Z" fill="#0d100d"/>
+      <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,0 L0,0 Z" fill="var(--bg)"/>
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
@@ -860,9 +834,6 @@
 <!-- El contenido (pestañas, tarjetas y CTA) se genera en JS desde SERVICES_DATA:
      ver el array SERVICES_DATA en el bloque de script "Mosaico de Servicios". -->
 <section id="servicios" class="mosaic-services">
-  <div class="mosaic-bg-stripes" aria-hidden="true"></div>
-  <div class="mosaic-bg-gradient" aria-hidden="true"></div>
-  <div class="mosaic-bg-vignette" aria-hidden="true"></div>
   <!-- Sólo la línea: el recorte real de este borde lo hace el mask-image
        de .mosaic-services (mismo path, mismo preserveAspectRatio, para
        que calcen exacto). -->
@@ -873,7 +844,7 @@
   </div>
   <div class="mosaic-wave bottom" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--proj-bg)"/>
+      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
@@ -900,8 +871,6 @@
      (ver el bloque "Proyectos" en el script). El comparador de Eze Neira
      queda como markup fijo por su interacción propia (arrastre). -->
 <section id="trabajo" class="projects">
-  <div class="projects-glow" aria-hidden="true"></div>
-  <div class="projects-fade" aria-hidden="true"></div>
   <div class="projects-inner">
     <h2 class="projects-title reveal" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
     <div class="projects-grid">
@@ -929,7 +898,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--proj-bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -1977,10 +1946,6 @@
         const card = document.createElement('div');
         card.className = 'projects-card reveal-up';
 
-        const stripes = document.createElement('div');
-        stripes.className = 'projects-card-stripes';
-        stripes.setAttribute('aria-hidden', 'true');
-
         const body = document.createElement('div');
         body.className = 'projects-card-body';
         const name = document.createElement('h3');
@@ -1991,7 +1956,7 @@
         desc.setAttribute('data-i18n', project.descKey);
         body.append(name, desc);
 
-        card.append(stripes, body);
+        card.append(body);
         side.appendChild(card);
       });
     }
