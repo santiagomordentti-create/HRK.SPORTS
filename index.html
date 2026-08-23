@@ -416,16 +416,15 @@
     .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:unset;display:block}
   }
 
-  /* ---------- PROCESO (RECORRIDO EN ZIGZAG) ---------- */
+  /* ---------- PROCESO (RECORRIDO EN COLUMNA) ---------- */
   /* La sección conserva el fondo claro (--bg-light) que ya le correspondía
      en la alternancia de bandas de la página (comprobable en las ondas de
      los .wave-seam justo antes y después). Con fondo claro, las tarjetas
      van en blanco con borde sutil, y los elementos "contrastantes" (chip de
      inicio, barra "Tu parte", tarjeta final) van en el oscuro del sitio
-     (--bg) para puntuar el recorrido. Las flechas NO son SVGs sueltos en
-     posiciones fijas: #processArrows es un único SVG absoluto que el
-     script del final del archivo redibuja midiendo la posición real de
-     cada tarjeta. */
+     (--bg) para puntuar el recorrido. Los tres pasos van uno debajo del
+     otro (sin zigzag) y se conectan con una línea + puntos simples — nada
+     de SVG medido/redibujado por JS. */
   #proceso{
     --proc-ink:var(--bg);
     --proc-ink-soft:color-mix(in srgb, var(--bg) 68%, transparent);
@@ -435,7 +434,6 @@
     --proc-pad:clamp(26px,3vw,44px);
     --proc-contrast-bg:var(--bg);
     --proc-contrast-ink:#fff;
-    --proc-row-gap:clamp(56px,7vw,96px);
     position:relative;
     background:var(--bg-light);
     color:var(--proc-ink);
@@ -448,12 +446,18 @@
   .process-title-highlight{display:inline-block;line-height:1.05;background:var(--accent);color:var(--accent-ink);padding:0 .12em}
 
   /* Recorrido */
-  .process-journey{position:relative;display:flex;flex-direction:column;gap:var(--proc-row-gap)}
-  .process-arrows{position:absolute;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;display:block;overflow:visible}
-  .process-arrow-path{fill:none;stroke:var(--proc-ink);stroke-width:2.6px;stroke-linecap:round;stroke-linejoin:round;transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1)}
-  .process-arrow-head{fill:var(--proc-ink);transition:opacity .3s ease .75s}
-  .process-connector{display:none;position:relative;width:2px;height:28px;margin:0 auto;background:repeating-linear-gradient(to bottom,var(--proc-ink) 0 5px,transparent 5px 10px);opacity:.4}
-  .process-connector::after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--proc-ink);opacity:.4}
+  /* Sin gap uniforme a propósito: entre el nodo de inicio y el paso 1 el
+     espacio es --space-block (margin-top explícito en el primer paso),
+     pero entre pasos el conector de 40px YA ES todo el espacio — un gap
+     acá se sumaría a esos 40px y volveríamos a un salto grande. */
+  .process-journey{display:flex;flex-direction:column}
+  .process-step-row[data-step="0"]{margin-top:var(--space-block)}
+  /* Conector: línea fina + punto en cada paso, todo en la columna angosta
+     de la izquierda (mismo ancho fijo que .process-step-num-col, mismo
+     offset horizontal para el punto y la línea) — así se ve continua entre
+     los tres pasos sin medir nada por JS. */
+  .process-connector{width:140px;height:40px;position:relative}
+  .process-connector::before{content:"";position:absolute;left:4px;top:0;bottom:0;width:2px;background:var(--accent);opacity:.5}
 
   /* Nodo de inicio */
   .process-node{position:relative;z-index:1;text-align:center}
@@ -465,13 +469,9 @@
     50%{box-shadow:0 0 0 6px rgba(215,245,81,0)}
   }
 
-  /* Mini-FAQ — vive fuera de #processJourney a propósito: si quedara adentro,
-     el script de flechas la contaría como espacio entre el paso 03 y la
-     tarjeta final y la curva terminaría cruzándola. Por eso no lleva las
-     clases .process-node/.process-step-row (el script las ignora) y su
-     espaciado hacia los vecinos es un margin-top propio, no el gap del
-     contenedor de flechas. */
-  .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--proc-row-gap) auto 0}
+  /* Mini-FAQ — vive fuera de #processJourney (no forma parte del recorrido
+     de pasos numerados), con su propio margin-top hacia el paso 3. */
+  .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--space-block) auto 0}
   .process-faq-title{color:var(--proc-ink-faint);text-align:center;margin-bottom:var(--space-tight)}
   .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
   .process-faq-item{border-top:1px solid color-mix(in srgb, var(--bg) 10%, transparent)}
@@ -493,24 +493,27 @@
   .process-faq-item.open .process-faq-a{max-height:220px}
   .process-faq-a p{padding:0 24px 20px;font-size:.95rem;line-height:1.55;color:var(--proc-ink-soft)}
 
-  /* Tarjeta final */
-  .process-node-end{margin-top:var(--proc-row-gap)}
-  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-lg);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+  /* Tarjeta final — misma escala que las tarjetas de paso: tight entre la
+     etiqueta y el título, item entre el resto de los bloques. */
+  .process-node-end{margin-top:var(--space-block)}
+  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-lg);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.18)}
   .process-end-tag{color:var(--accent)}
-  .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px}
-  .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55)}
+  .process-end-title{margin-top:var(--space-tight)}
+  .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px;margin-top:var(--space-item)}
+  .process-end-card>.btn{margin-top:var(--space-item)}
+  .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55);margin-top:var(--space-item)}
 
-  /* Filas de pasos — zigzag: 02 se invierte con row-reverse, misma estructura de clases que 01 y 03 */
+  /* Filas de pasos — misma estructura en las tres, sin zigzag: columna
+     angosta fija con "Paso N" a la izquierda, tarjeta ocupando el resto. */
   .process-step-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:clamp(28px,4vw,64px)}
-  .process-step-row[data-step="1"]{flex-direction:row-reverse}
-  .process-step-num-col{flex:none;display:flex;align-items:center;padding-top:6px}
+  .process-step-num-col{flex:none;width:140px;display:flex;align-items:center;gap:10px;padding-top:6px}
+  .process-step-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent)}
   .process-step-num{white-space:nowrap}
 
   /* Mockup de celular con la captura del perfil en esa etapa — todavía sin
-     usar (ver el comentario "MOCKUP PENDIENTE" en cada paso del HTML). Se
-     agrega como tercer elemento de la fila, después de la tarjeta, así el
-     mismo row-reverse que arma el zigzag ([data-step="1"] arriba) lo deja
-     del lado contrario a la tarjeta en cada paso sin necesitar CSS aparte. */
+     usar (ver el comentario "MOCKUP PENDIENTE" en cada paso del HTML). Va
+     siempre a la derecha de la tarjeta (tercer elemento de la fila): sin
+     zigzag no hace falta ningún truco de orden para mantenerlo ahí. */
   .process-step-mockup{flex:none;width:200px;align-self:center}
   .process-step-phone{position:relative;width:100%;aspect-ratio:9/19;background:var(--bg);border:8px solid var(--bg);border-radius:var(--radius-lg);box-shadow:0 20px 44px color-mix(in srgb, var(--bg) 16%, transparent);overflow:hidden}
   .process-step-phone::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:38%;height:18px;background:var(--bg);border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:1}
@@ -520,27 +523,26 @@
 
   .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);padding:var(--proc-pad);box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
   /* Un solo bloque de 620px para todo el contenido de la tarjeta —badge,
-     título, párrafo, chips, "Al terminar" y "Tu parte"— centrado dentro
-     de la tarjeta (el texto adentro sigue alineado a la izquierda: lo que
-     se centra es el bloque, no cada línea). El ritmo vertical entre
-     elementos es un valor fijo por par, igual en las tres tarjetas. */
+     título, párrafo, resultado y "Tu parte"— centrado dentro de la tarjeta
+     (el texto adentro sigue alineado a la izquierda: lo que se centra es
+     el bloque, no cada línea). Cinco elementos siempre, mismo orden y
+     mismo ritmo vertical en las tres tarjetas: tight entre badge y título,
+     item entre el resto. */
   .process-step-body{max-width:620px;margin-inline:auto}
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:var(--radius-sm)}
   .process-step-title{margin-top:var(--space-tight)}
-  .process-step-desc{font-size:17px;line-height:1.6;margin-top:var(--space-tight);color:var(--proc-ink-soft)}
+  .process-step-desc{font-size:17px;line-height:1.6;margin-top:var(--space-item);color:var(--proc-ink-soft)}
   /* Dato duro opcional (cantidad de deportistas, tiempo real de la etapa,
      piezas por mes...): la regla queda lista para cuando se descomente el
      marcador "DATO REAL PENDIENTE" correspondiente en el HTML de cada paso. */
-  .process-step-stat{margin-top:var(--space-tight);font-size:.85rem;color:var(--proc-ink-faint)}
+  .process-step-stat{margin-top:var(--space-item);font-size:.85rem;color:var(--proc-ink-faint)}
   .process-step-stat strong{color:var(--proc-ink);font-weight:800}
-  .process-step-chips{display:flex;flex-wrap:wrap;gap:var(--space-tight);margin-top:var(--space-item)}
-  .process-step-chip{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--proc-ink)}
-  .process-step-chip-check{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);flex:none}
-  .process-step-chip-check svg{width:11px;height:11px}
   /* Resultado tangible del paso: acento lima vía el ícono + la etiqueta
      inicial, texto en un lima oscuro (mismo tono que ya usa el sitio en
      .foot-social a:hover) para que sea legible sobre la tarjeta blanca —
-     lima puro (#D7F551) sobre blanco no pasa contraste mínimo como texto. */
+     lima puro (#D7F551) sobre blanco no pasa contraste mínimo como texto.
+     Absorbe lo que antes eran los chips separados: una sola línea con el
+     resultado y, después del guion, los entregables del paso. */
   .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:var(--space-item);font-size:1rem;font-weight:700;line-height:1.45;color:var(--accent-deep)}
   .process-step-result-mark{flex:none;width:18px;height:18px;margin-top:.15em;color:var(--accent-ink);background:var(--accent);border-radius:50%;padding:3px}
   .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-sm);padding:18px 20px;margin-top:var(--space-item)}
@@ -549,19 +551,16 @@
 
   @media(prefers-reduced-motion:reduce){
     .process-status-dot{animation:none}
-    .process-arrow-path,.process-arrow-head,.process-faq-a,.process-faq-icon::after{transition:none}
+    .process-faq-a,.process-faq-icon::after{transition:none}
   }
   @media(max-width:1024px){
     .process-step-card{padding:clamp(22px,3vw,36px)}
   }
   @media(max-width:900px){
-    .process-journey{gap:20px}
-    .process-arrows{display:none}
-    .process-connector{display:block}
-    .process-step-row,.process-step-row[data-step="1"]{flex-direction:column;gap:14px}
-    .process-step-num-col{padding-top:0}
-    .process-faq{margin-top:20px}
-    .process-node-end{margin-top:20px}
+    .process-step-row{flex-direction:column;gap:var(--space-tight)}
+    .process-step-num-col{width:auto;justify-content:center;padding-top:0}
+    .process-connector{width:auto;height:24px}
+    .process-connector::before{left:50%;transform:translateX(-50%)}
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
@@ -988,8 +987,6 @@
     </div>
 
     <div class="process-journey" id="processJourney">
-      <svg class="process-arrows" id="processArrows" aria-hidden="true"></svg>
-
       <div class="process-node process-node-start reveal">
         <h4 class="process-status-chip">
           <span class="process-status-dot" aria-hidden="true"></span>
@@ -998,10 +995,9 @@
         <h3 class="process-node-lead" data-i18n="process_start_text">Tenés talento. Tu imagen todavía no lo cuenta.</h3>
       </div>
 
-      <div class="process-connector" aria-hidden="true"></div>
-
       <div class="process-step-row reveal" data-step="0">
         <div class="process-step-num-col">
+          <span class="process-step-dot" aria-hidden="true"></span>
           <h4 class="process-step-num" data-i18n="proc_step1_label">Paso 1</h4>
         </div>
         <div class="process-step-card">
@@ -1009,15 +1005,10 @@
           <h4 class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</h4>
           <h3 class="process-step-title" data-i18n="proc_s1_title">Antes de salir a la cancha, miramos el video.</h3>
           <p class="process-step-desc" data-i18n="proc_s1_desc">Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.</p>
-          <div class="process-step-chips">
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip1">Auditoría de redes</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip2">Informe de imagen</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip3">Reunión de devolución</span></span>
-          </div>
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s1_result">Al terminar: el informe de cómo te ve hoy un club o una marca.</span>
+            <span data-i18n="proc_s1_result">Al terminar: el informe de cómo te ve hoy un club o una marca — auditoría de redes, informe de imagen y reunión de devolución.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat"><strong>+[N]</strong> deportistas ya pasaron por esta pretemporada</p> -->
@@ -1041,6 +1032,7 @@
 
       <div class="process-step-row reveal" data-step="1">
         <div class="process-step-num-col">
+          <span class="process-step-dot" aria-hidden="true"></span>
           <h4 class="process-step-num" data-i18n="proc_step2_label">Paso 2</h4>
         </div>
         <div class="process-step-card">
@@ -1048,15 +1040,10 @@
           <h4 class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</h4>
           <h3 class="process-step-title" data-i18n="proc_s2_title">Definimos cómo vas a jugar los próximos tres meses.</h3>
           <p class="process-step-desc" data-i18n="proc_s2_desc">Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.</p>
-          <div class="process-step-chips">
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip1">Plan de 3 meses</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip2">Objetivos claros</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip3">Identidad visual definida</span></span>
-          </div>
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s2_result">Al terminar: tu calendario de los próximos 3 meses, aprobado.</span>
+            <span data-i18n="proc_s2_result">Al terminar: tu calendario de los próximos 3 meses, aprobado — plan de contenido, objetivos e identidad visual definida.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Esta etapa toma en promedio <strong>[N] días</strong></p> -->
@@ -1080,6 +1067,7 @@
 
       <div class="process-step-row reveal" data-step="2">
         <div class="process-step-num-col">
+          <span class="process-step-dot" aria-hidden="true"></span>
           <h4 class="process-step-num" data-i18n="proc_step3_label">Paso 3</h4>
         </div>
         <div class="process-step-card">
@@ -1087,15 +1075,10 @@
           <h4 class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</h4>
           <h3 class="process-step-title" data-i18n="proc_s3_title">Salimos a jugar, y medimos cada fecha.</h3>
           <p class="process-step-desc" data-i18n="proc_s3_desc">Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.</p>
-          <div class="process-step-chips">
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip1">Reporte mensual</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip2">Contacto con marcas</span></span>
-            <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip3">Highlights y matchday</span></span>
-          </div>
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s3_result">Al cerrar cada mes: qué creció y qué contactos aparecieron.</span>
+            <span data-i18n="proc_s3_result">Al cerrar cada mes: qué creció y qué contactos aparecieron — reporte mensual, contacto con marcas y highlights.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Producimos en promedio <strong>[N] piezas</strong> de contenido por mes</p> -->
@@ -1564,120 +1547,6 @@
 
   updateMosaicCtaLink(SERVICES_DATA[0]);
 
-  // Recorrido en zigzag de "Cómo trabajamos": nada de SVGs sueltos en
-  // posiciones fijas. #processArrows es un único SVG absoluto que este
-  // script mide y redibuja contra la posición REAL de cada tarjeta
-  // (getBoundingClientRect relativo al contenedor). Cada flecha es una
-  // curva bezier cúbica entre el borde inferior de una tarjeta y el borde
-  // superior de la siguiente, con los puntos de control calculados a
-  // partir de la distancia entre ambas (nunca valores fijos), y una punta
-  // de flecha orientada según la tangente final de esa misma curva. Se
-  // recalcula todo en resize, al terminar de cargar las fuentes y al
-  // cambiar de idioma (esto último se dispara desde applyI18n, más abajo,
-  // reasignando rebuildProcessArrows).
-  let rebuildProcessArrows = function () {};
-  (function () {
-    const journey = document.getElementById('processJourney');
-    const svg = document.getElementById('processArrows');
-    if (!journey || !svg) return;
-
-    const SVG_NS = 'http://www.w3.org/2000/svg';
-    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const mobileQuery = window.matchMedia('(max-width: 900px)');
-    let revealed = false;
-
-    function anchorFor(node) {
-      return node.querySelector('.process-step-card, .process-end-card') || node;
-    }
-
-    function buildArrows() {
-      svg.innerHTML = '';
-      if (mobileQuery.matches) return;
-
-      const nodes = Array.from(journey.querySelectorAll('.process-node, .process-step-row'));
-      const contRect = journey.getBoundingClientRect();
-      const reduceMotion = reduceMotionQuery.matches;
-      svg.setAttribute('viewBox', `0 0 ${contRect.width} ${journey.scrollHeight}`);
-
-      for (let i = 0; i < nodes.length - 1; i++) {
-        const fromRect = anchorFor(nodes[i]).getBoundingClientRect();
-        const toRect = anchorFor(nodes[i + 1]).getBoundingClientRect();
-
-        const x1 = fromRect.left + fromRect.width / 2 - contRect.left;
-        const y1 = fromRect.bottom - contRect.top;
-        const x2 = toRect.left + toRect.width / 2 - contRect.left;
-        const y2 = toRect.top - contRect.top;
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-
-        // Puntos de control a un cuarto y tres cuartos del recorrido
-        // horizontal, a mitad del recorrido vertical: da una "S" que se
-        // adapta sola a cualquier distancia entre tarjetas.
-        const c1x = x1 + dx * 0.18, c1y = y1 + dy * 0.5;
-        const c2x = x1 + dx * 0.82, c2y = y1 + dy * 0.5;
-
-        const path = document.createElementNS(SVG_NS, 'path');
-        path.setAttribute('d', `M ${x1},${y1} C ${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`);
-        path.setAttribute('class', 'process-arrow-path');
-        svg.appendChild(path);
-        const len = path.getTotalLength();
-        path.style.strokeDasharray = String(len);
-        path.style.strokeDashoffset = (reduceMotion || revealed) ? '0' : String(len);
-
-        // Punta de flecha orientada según la tangente final de la curva
-        // (P3 - P2), no un ángulo fijo.
-        const tx = x2 - c2x, ty = y2 - c2y;
-        const angle = Math.atan2(ty, tx);
-        const headLen = 10, headWidth = 6.5;
-        const baseX = x2 - headLen * Math.cos(angle);
-        const baseY = y2 - headLen * Math.sin(angle);
-        const head = document.createElementNS(SVG_NS, 'polygon');
-        head.setAttribute('points', [
-          `${x2},${y2}`,
-          `${baseX + headWidth * Math.cos(angle + Math.PI / 2)},${baseY + headWidth * Math.sin(angle + Math.PI / 2)}`,
-          `${baseX + headWidth * Math.cos(angle - Math.PI / 2)},${baseY + headWidth * Math.sin(angle - Math.PI / 2)}`
-        ].join(' '));
-        head.setAttribute('class', 'process-arrow-head');
-        head.style.opacity = (reduceMotion || revealed) ? '1' : '0';
-        svg.appendChild(head);
-      }
-    }
-
-    function drawIn() {
-      if (revealed || mobileQuery.matches) return;
-      revealed = true;
-      const reduceMotion = reduceMotionQuery.matches;
-      const paths = Array.from(svg.querySelectorAll('.process-arrow-path'));
-      const heads = Array.from(svg.querySelectorAll('.process-arrow-head'));
-      paths.forEach((path, i) => {
-        const delay = reduceMotion ? 0 : i * 260;
-        setTimeout(() => {
-          path.style.strokeDashoffset = '0';
-          if (heads[i]) heads[i].style.opacity = '1';
-        }, delay);
-      });
-    }
-
-    const revealIO = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) { drawIn(); revealIO.disconnect(); } });
-    }, { threshold: 0.2 });
-    revealIO.observe(journey);
-
-    let resizeTimer = null;
-    const ro = new ResizeObserver(() => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(buildArrows, 120);
-    });
-    ro.observe(journey);
-
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(buildArrows);
-    }
-
-    rebuildProcessArrows = buildArrows;
-    buildArrows();
-  })();
-
   // Mini-FAQ de "Cómo trabajamos": acordeón accesible en JS plano. El panel
   // arranca con [hidden] (afuera del árbol de accesibilidad y sin layout);
   // al abrir se saca el hidden y recién en el frame siguiente se agrega la
@@ -2115,20 +1984,17 @@
       proc_step1_label: 'Paso 1', proc_s1_badge: 'Diagnóstico',
       proc_s1_title: 'Antes de salir a la cancha, miramos el video.',
       proc_s1_desc: 'Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.',
-      proc_s1_chip1: 'Auditoría de redes', proc_s1_chip2: 'Informe de imagen', proc_s1_chip3: 'Reunión de devolución',
-      proc_s1_result: 'Al terminar: el informe de cómo te ve hoy un club o una marca.',
+      proc_s1_result: 'Al terminar: el informe de cómo te ve hoy un club o una marca — auditoría de redes, informe de imagen y reunión de devolución.',
       proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
       proc_step2_label: 'Paso 2', proc_s2_badge: 'Estrategia',
       proc_s2_title: 'Definimos cómo vas a jugar los próximos tres meses.',
       proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
-      proc_s2_chip1: 'Plan de 3 meses', proc_s2_chip2: 'Objetivos claros', proc_s2_chip3: 'Identidad visual definida',
-      proc_s2_result: 'Al terminar: tu calendario de los próximos 3 meses, aprobado.',
+      proc_s2_result: 'Al terminar: tu calendario de los próximos 3 meses, aprobado — plan de contenido, objetivos e identidad visual definida.',
       proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
       proc_step3_label: 'Paso 3', proc_s3_badge: 'Ejecución',
       proc_s3_title: 'Salimos a jugar, y medimos cada fecha.',
       proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
-      proc_s3_chip1: 'Reporte mensual', proc_s3_chip2: 'Contacto con marcas', proc_s3_chip3: 'Highlights y matchday',
-      proc_s3_result: 'Al cerrar cada mes: qué creció y qué contactos aparecieron.',
+      proc_s3_result: 'Al cerrar cada mes: qué creció y qué contactos aparecieron — reporte mensual, contacto con marcas y highlights.',
       proc_s3_yours: 'Jugar. Nos mandás el material del partido y seguimos nosotros.',
       process_status_end: 'Terminás acá',
       process_end_title: 'Una carrera que se cuenta sola',
@@ -2232,20 +2098,17 @@
       proc_step1_label: 'Step 1', proc_s1_badge: 'Diagnosis',
       proc_s1_title: 'Before you take the field, we watch the tape.',
       proc_s1_desc: 'We look at your social media the way a club or a brand would. No filters: what comes across today, and what gets lost along the way.',
-      proc_s1_chip1: 'Social media audit', proc_s1_chip2: 'Image report', proc_s1_chip3: 'Feedback session',
-      proc_s1_result: 'When it\'s done: the report on how a club or brand sees you today.',
+      proc_s1_result: 'When it\'s done: the report on how a club or brand sees you today — social media audit, image report and feedback session.',
       proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
       proc_step2_label: 'Step 2', proc_s2_badge: 'Strategy',
       proc_s2_title: 'We define how you\'ll play the next three months.',
       proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
-      proc_s2_chip1: '3-month plan', proc_s2_chip2: 'Clear goals', proc_s2_chip3: 'Defined visual identity',
-      proc_s2_result: 'When it\'s done: your calendar for the next 3 months, approved.',
+      proc_s2_result: 'When it\'s done: your calendar for the next 3 months, approved — 3-month plan, clear goals and defined visual identity.',
       proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
       proc_step3_label: 'Step 3', proc_s3_badge: 'Execution',
       proc_s3_title: 'We take the field, and track every matchday.',
       proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
-      proc_s3_chip1: 'Monthly report', proc_s3_chip2: 'Brand outreach', proc_s3_chip3: 'Highlights and matchday',
-      proc_s3_result: 'At the close of each month: what grew and which contacts came in.',
+      proc_s3_result: 'At the close of each month: what grew and which contacts came in — monthly report, brand outreach and highlights.',
       proc_s3_yours: 'Play. You send us the matchday material and we take it from there.',
       process_status_end: 'You finish here',
       process_end_title: 'A career that speaks for itself',
@@ -2418,10 +2281,6 @@
       const key = el.getAttribute('data-i18n-aria');
       if (strings[key] != null) el.setAttribute('aria-label', strings[key]);
     });
-    // El texto traducido cambia el alto de las tarjetas de "Cómo trabajamos",
-    // así que las flechas dibujadas contra su posición real necesitan
-    // recalcularse después de reemplazar el texto.
-    rebuildProcessArrows();
     document.documentElement.lang = dict === 'en' ? 'en' : 'es-AR';
     renderAthletes(dict);
     document.querySelectorAll('#langCurrent, #langCurrentMobile').forEach(el => { el.textContent = dict.toUpperCase(); });
