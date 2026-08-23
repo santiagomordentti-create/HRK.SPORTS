@@ -368,25 +368,20 @@
   .projects-tag{position:absolute;top:20px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:6px;padding:6px 12px;z-index:2;pointer-events:none}
   .projects-tag-before{left:20px;background:rgba(6,8,7,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#f5f6f2}
   .projects-tag-after{right:20px;background:#c6f24e;color:#0a1005}
-  .projects-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;pointer-events:none}
-  .projects-compare-meta{color:#c6f24e;margin-bottom:8px}
+  .projects-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;pointer-events:none}
   .projects-compare-name{color:#f5f6f2}
   .projects-compare-desc{font-size:16px;font-weight:500;line-height:1.4;color:#c6f24e;max-width:480px;margin-top:8px}
-  .projects-compare-info .btn{pointer-events:auto;flex:none;background:#c6f24e;color:#0a1005}
 
   /* Columna derecha: dos tarjetas apiladas, mismo lenguaje visual que el
-     mosaico de Servicios (fondo oscuro + rayas), sin fotos. */
+     mosaico de Servicios (fondo oscuro + rayas), sin fotos. Sólo título y
+     descripción — sin meta, tags ni foto, así que se centran en el alto
+     reducido de la tarjeta en vez de anclarse contra un borde. */
   .projects-side{display:grid;grid-template-rows:1fr 1fr;gap:18px}
-  .projects-card{position:relative;overflow:hidden;background:#0e1210;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:271px;display:flex;flex-direction:column;justify-content:space-between}
+  .projects-card{position:relative;overflow:hidden;background:#0e1210;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:160px;display:flex;flex-direction:column;justify-content:center}
   .projects-card-stripes{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0px,rgba(255,255,255,.035) 2px,transparent 2px,transparent 11px)}
-  .projects-card-top{position:relative;z-index:1}
-  .projects-card-meta{display:flex;justify-content:space-between;gap:14px;color:#c6f24e}
-  .projects-card-year{color:rgba(255,255,255,.4)}
-  .projects-card-bottom{position:relative;z-index:1}
+  .projects-card-body{position:relative;z-index:1}
   .projects-card-name{color:#f5f6f2;margin-bottom:8px}
   .projects-card-desc{font-size:15px;line-height:1.5;color:#c6f24e}
-  .projects-card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .projects-card-tag{font-size:12px;color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 10px}
 
   @keyframes projectsCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
   .projects-compare.reveal-up,.projects-card.reveal-up{opacity:0;transform:translateY(18px)}
@@ -402,9 +397,7 @@
   @media(max-width:900px){
     .projects-compare{min-height:360px}
     .projects-side{grid-template-rows:none}
-    .projects-card{min-height:220px}
-    .projects-compare-info{flex-direction:column;align-items:flex-start;gap:14px}
-    .projects-compare-desc{max-width:none}
+    .projects-card{min-height:120px}
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
@@ -915,12 +908,8 @@
         </div>
         <div class="projects-compare-scrim" aria-hidden="true"></div>
         <div class="projects-compare-info">
-          <div>
-            <h4 class="projects-compare-meta" data-i18n="compare_meta">01 · Deportista · 2024–2025</h4>
-            <h3 class="projects-compare-name">Eze Neira</h3>
-            <p class="projects-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
-          </div>
-          <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" class="btn" data-i18n="compare_cta">Ver proyecto</a>
+          <h3 class="projects-compare-name">Eze Neira</h3>
+          <p class="projects-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
         </div>
       </div>
       <div class="projects-side" id="projectsSide"></div>
@@ -1938,20 +1927,12 @@
   })();
 
   // Proyectos: tarjetas de la columna derecha, generadas desde este array
-  // (título, meta con número/categoría/año, descripción y tags — todo vía
-  // claves i18n) más el comparador de Eze Neira con su arrastre propio.
+  // (sólo título y descripción, vía claves i18n) más el comparador de
+  // Eze Neira con su arrastre propio.
   (function () {
     const PROJECTS_DATA = [
-      {
-        num: '02', categoryKey: 'work_legion_category', year: '2025',
-        name: 'La Legión Producciones', descKey: 'work_legion_p',
-        tagKeys: ['tag_rebranding', 'tag_visual_identity', 'tag_events']
-      },
-      {
-        num: '03', categoryKey: 'work_street_category', year: '2026',
-        name: 'Street Clash', descKey: 'work_street_p',
-        tagKeys: ['tag_identity', 'tag_communication', 'tag_coverage']
-      }
+      { name: 'La Legión Producciones', descKey: 'work_legion_p' },
+      { name: 'Street Clash', descKey: 'work_street_p' }
     ];
 
     const side = document.getElementById('projectsSide');
@@ -1964,40 +1945,17 @@
         stripes.className = 'projects-card-stripes';
         stripes.setAttribute('aria-hidden', 'true');
 
-        const top = document.createElement('div');
-        top.className = 'projects-card-top';
-        const meta = document.createElement('h4');
-        meta.className = 'projects-card-meta';
-        const category = document.createElement('span');
-        category.append(`${project.num} · `);
-        const categoryName = document.createElement('span');
-        categoryName.setAttribute('data-i18n', project.categoryKey);
-        category.appendChild(categoryName);
-        const year = document.createElement('span');
-        year.className = 'projects-card-year';
-        year.textContent = project.year;
-        meta.append(category, year);
-        top.appendChild(meta);
-
-        const bottom = document.createElement('div');
-        bottom.className = 'projects-card-bottom';
+        const body = document.createElement('div');
+        body.className = 'projects-card-body';
         const name = document.createElement('h3');
         name.className = 'projects-card-name';
         name.textContent = project.name;
         const desc = document.createElement('p');
         desc.className = 'projects-card-desc';
         desc.setAttribute('data-i18n', project.descKey);
-        const tags = document.createElement('div');
-        tags.className = 'projects-card-tags';
-        project.tagKeys.forEach(key => {
-          const tag = document.createElement('span');
-          tag.className = 'projects-card-tag';
-          tag.setAttribute('data-i18n', key);
-          tags.appendChild(tag);
-        });
-        bottom.append(name, desc, tags);
+        body.append(name, desc);
 
-        card.append(stripes, top, bottom);
+        card.append(stripes, body);
         side.appendChild(card);
       });
     }
@@ -2136,17 +2094,11 @@
       svc_cta_brand: 'Quiero ser Partner', svc_cta_event: 'Cotizar cobertura',
 
       work_headline: 'Selección de proyectos que llevamos adelante',
-      work_legion_category: 'Productora audiovisual',
       work_legion_p: 'Rebranding, identidad visual y cobertura de eventos deportivos.',
-      work_street_category: 'Torneo 3v3',
       work_street_p: 'Identidad visual, comunicación y cobertura del torneo.',
-      tag_rebranding: 'Rebranding', tag_visual_identity: 'Identidad visual', tag_events: 'Eventos',
-      tag_identity: 'Identidad', tag_communication: 'Comunicación', tag_coverage: 'Cobertura',
 
       compare_before: 'Antes', compare_after: 'Con HRK',
-      compare_meta: '01 · Deportista · 2024–2025',
       compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
-      compare_cta: 'Ver proyecto',
       compare_aria: 'Comparador antes y después de Eze Neira',
 
       athletes_title: 'Deportistas que confían en HRK',
@@ -2259,17 +2211,11 @@
       svc_cta_brand: 'I want to be a Partner', svc_cta_event: 'Get a coverage quote',
 
       work_headline: 'A selection of projects we\'ve led',
-      work_legion_category: 'Audiovisual production company',
       work_legion_p: 'Rebranding, visual identity, and sports event coverage.',
-      work_street_category: '3v3 tournament',
       work_street_p: 'Visual identity, communication, and tournament coverage.',
-      tag_rebranding: 'Rebranding', tag_visual_identity: 'Visual identity', tag_events: 'Events',
-      tag_identity: 'Identity', tag_communication: 'Communication', tag_coverage: 'Coverage',
 
       compare_before: 'Before', compare_after: 'With HRK',
-      compare_meta: '01 · Athlete · 2024–2025',
       compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
-      compare_cta: 'View project',
       compare_aria: 'Before and after comparison of Eze Neira',
 
       athletes_title: 'Athletes who trust HRK',
