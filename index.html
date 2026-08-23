@@ -68,12 +68,17 @@
     --title:'Anton',var(--display),sans-serif;
     --title-tracking:0.02em;
     --title-leading:0.95;
-    /* Jerarquía tipográfica única de toda la página: h1 el título del hero,
-       h2 los títulos de sección, h3 todo lo que encabeza un bloque dentro de
-       una sección. Ningún título usa un tamaño fuera de estas tres. */
+    /* Jerarquía tipográfica única de toda la página, en cuatro niveles:
+       h1 el título del hero (uno solo en toda la página), h2 los títulos
+       de cada sección, h3 los subtítulos y títulos de bloque dentro de una
+       sección, h4 las etiquetas y datos sueltos (la info menos importante:
+       badges de estado, números de tarjeta, roles). Los cuatro comparten
+       fuente, letter-spacing y line-height — sólo cambia el tamaño.
+       Ningún título usa un tamaño fuera de estos cuatro valores. */
     --h1:clamp(1.35rem,6.5vw + .1rem,5.75rem);
     --h2:clamp(1.4rem,4.6vw,3.375rem);
     --h3:clamp(1rem,2.6vw,1.85rem);
+    --h4:clamp(.7rem,.5vw + .6rem,.9rem);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -84,6 +89,7 @@
   section{padding:96px 0;scroll-margin-top:90px}
   h2{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:var(--h2);line-height:var(--title-leading);letter-spacing:var(--title-tracking);text-wrap:balance}
   h3{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:var(--h3);line-height:var(--title-leading);letter-spacing:var(--title-tracking);text-wrap:balance}
+  h4{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:var(--h4);line-height:var(--title-leading);letter-spacing:var(--title-tracking);text-wrap:balance}
   .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
   .section-dek{font-size:1.375rem;font-weight:500;line-height:1.5;color:rgba(255,255,255,.92);max-width:620px;margin:14px auto 0;text-align:center}
   @media(max-width:680px){.section-dek{font-size:1.0625rem}}
@@ -200,7 +206,7 @@
   .pillar-line.bottom{bottom:0;left:0;width:100%;height:1px;transform-origin:right}
   .pillar-line.right{top:0;right:0;width:1px;height:100%;transform-origin:top}
   .pillar-line.left{top:0;left:0;width:1px;height:100%;transform-origin:bottom}
-  .pillar-num{display:block;font-family:var(--title);font-weight:400;font-size:56px;line-height:var(--title-leading);letter-spacing:var(--title-tracking);color:var(--accent)}
+  .pillar-num{display:block;color:var(--accent)}
   .pillar-title{color:#fff;margin-top:12px}
   .pillar-desc{font-size:16px;line-height:1.5;color:rgba(255,255,255,.85);margin-top:12px}
 
@@ -297,7 +303,7 @@
   .mosaic-card.span-2{grid-column:span 2}
   .mosaic-card.span-3{grid-column:span 3}
   .mosaic-card.span-6{grid-column:span 6}
-  .mosaic-card-num{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;color:rgba(215,245,81,.75);margin-bottom:14px}
+  .mosaic-card-num{display:block;color:rgba(215,245,81,.75);margin-bottom:14px}
   .mosaic-card h3{color:#fff;margin-bottom:10px}
   .mosaic-card p{font-size:15px;line-height:1.55;color:rgba(255,255,255,.72)}
 
@@ -374,7 +380,7 @@
   .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
   .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
   .athlete-name{color:#fff;overflow-wrap:break-word}
-  .athlete-role{max-height:0;opacity:0;overflow:hidden;margin-top:2px;color:rgba(255,255,255,.85);font-size:.95rem;font-weight:600;transition:max-height .35s ease,opacity .3s ease}
+  .athlete-role{max-height:0;opacity:0;overflow:hidden;margin-top:2px;color:rgba(255,255,255,.85);transition:max-height .35s ease,opacity .3s ease}
   .athlete-panel.active .athlete-role{max-height:30px;opacity:1}
   .athlete-stats{display:flex;align-items:flex-start;gap:10px;height:0;opacity:0;overflow:hidden;margin-top:14px;transition:height .45s cubic-bezier(.22,1,.36,1),opacity .35s ease}
   .athlete-panel.active .athlete-stats{height:58px;opacity:1}
@@ -450,7 +456,7 @@
 
   /* Nodo de inicio */
   .process-node{position:relative;z-index:1;text-align:center}
-  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border-radius:999px}
+  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);padding:9px 16px;border-radius:999px}
   .process-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;animation:procPulse 1.8s ease-in-out infinite}
   .process-node-lead{margin-top:16px}
   @keyframes procPulse{
@@ -465,7 +471,7 @@
      espaciado hacia los vecinos es un margin-top propio, no el gap del
      contenedor de flechas. */
   .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--proc-row-gap) auto 0}
-  .process-faq-title{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--proc-ink-faint);text-align:center;margin-bottom:16px}
+  .process-faq-title{color:var(--proc-ink-faint);text-align:center;margin-bottom:16px}
   .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);overflow:hidden;box-shadow:0 10px 34px rgba(17,17,17,.06)}
   .process-faq-item{border-top:1px solid rgba(17,17,17,.1)}
   .process-faq-item:first-child{border-top:0}
@@ -489,7 +495,7 @@
   /* Tarjeta final */
   .process-node-end{margin-top:var(--proc-row-gap)}
   .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--proc-radius);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
-  .process-end-tag{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+  .process-end-tag{color:var(--accent)}
   .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px}
   .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55)}
 
@@ -506,7 +512,7 @@
      se centra es el bloque, no cada línea). El ritmo vertical entre
      elementos es un valor fijo por par, igual en las tres tarjetas. */
   .process-step-body{max-width:620px;margin-inline:auto}
-  .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
+  .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:6px}
   .process-step-title{margin-top:16px}
   .process-step-desc{font-size:17px;line-height:1.6;margin-top:14px;color:var(--proc-ink-soft)}
   /* Dato duro opcional (cantidad de deportistas, tiempo real de la etapa,
@@ -525,7 +531,7 @@
   .process-step-result{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:1rem;font-weight:700;line-height:1.45;color:#5c6810}
   .process-step-result-mark{flex:none;width:18px;height:18px;margin-top:.15em;color:var(--accent-ink);background:var(--accent);border-radius:50%;padding:3px}
   .process-step-yours{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:10px;padding:18px 20px;margin-top:24px}
-  .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:6px}
+  .process-yours-label{display:inline-flex;align-items:center;flex:none;background:var(--accent);color:var(--accent-ink);padding:5px 10px;border-radius:6px}
   .process-yours-text{font-size:1.05rem;font-weight:600;line-height:1.4;color:#fff}
 
   @media(prefers-reduced-motion:reduce){
@@ -553,7 +559,11 @@
   .press-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(250,248,246,.97) 0%,rgba(250,248,246,.92) 38%,rgba(250,248,246,.35) 72%,rgba(250,248,246,.55) 100%)}
   .press-content{position:relative;z-index:2;max-width:760px;padding:0 80px}
   .press-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .press-kicker{font-family:Georgia,'Times New Roman',serif;font-size:1.875rem;color:#111}
+  /* No es un nivel de título (ver jerarquía en :root): es una firma/byline
+     junto a la fecha, así que se lleva a la misma escala de caption que
+     .press-date en vez de al tamaño de título que tenía (Georgia 1.875rem,
+     "suelto" fuera de los cuatro valores de la jerarquía). */
+  .press-kicker{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.22em;color:#111}
   .press-divider{width:1px;height:18px;background:rgba(17,17,17,.35)}
   .press-date{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:rgba(17,17,17,.55)}
   .press-title{color:#111}
@@ -751,7 +761,7 @@
       <span class="pillar-line right" aria-hidden="true"></span>
       <span class="pillar-line bottom" aria-hidden="true"></span>
       <span class="pillar-line left" aria-hidden="true"></span>
-      <span class="pillar-num">01</span>
+      <h4 class="pillar-num">01</h4>
       <h3 class="pillar-title" data-i18n="pillar1_title">Comunicación</h3>
       <p class="pillar-desc" data-i18n="pillar1_desc">Contenido que refleja el presente y la identidad de cada deportista.</p>
     </div>
@@ -760,7 +770,7 @@
       <span class="pillar-line right" aria-hidden="true"></span>
       <span class="pillar-line bottom" aria-hidden="true"></span>
       <span class="pillar-line left" aria-hidden="true"></span>
-      <span class="pillar-num">02</span>
+      <h4 class="pillar-num">02</h4>
       <h3 class="pillar-title" data-i18n="pillar2_title">Posicionamiento</h3>
       <p class="pillar-desc" data-i18n="pillar2_desc">Una imagen profesional que acompaña el crecimiento de la carrera.</p>
     </div>
@@ -769,7 +779,7 @@
       <span class="pillar-line right" aria-hidden="true"></span>
       <span class="pillar-line bottom" aria-hidden="true"></span>
       <span class="pillar-line left" aria-hidden="true"></span>
-      <span class="pillar-num">03</span>
+      <h4 class="pillar-num">03</h4>
       <h3 class="pillar-title" data-i18n="pillar3_title">Oportunidades</h3>
       <p class="pillar-desc" data-i18n="pillar3_desc">Marcas, fotógrafos y proyectos que aportan valor a su desarrollo.</p>
     </div>
@@ -895,7 +905,7 @@
       <div class="athlete-panel active" data-index="0" tabindex="0" role="button" aria-label="Ver a Lucas Razzeto" style="background-image:url(assets/razzeto.jpg)">
         <div class="athlete-body">
           <h3 class="athlete-name">Razzeto</h3>
-          <div class="athlete-role">Mediocampista central</div>
+          <h4 class="athlete-role">Mediocampista central</h4>
           <div class="athlete-stats">
             <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Volante</span></div>
             <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">23</span></div>
@@ -908,7 +918,7 @@
       <div class="athlete-panel" data-index="1" tabindex="0" role="button" aria-label="Ver a Tomás Spertino" style="background-image:url(assets/spertino.jpg)">
         <div class="athlete-body">
           <h3 class="athlete-name">Spertino</h3>
-          <div class="athlete-role">Delantero</div>
+          <h4 class="athlete-role">Delantero</h4>
           <div class="athlete-stats">
             <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Delantero</span></div>
             <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">19</span></div>
@@ -921,7 +931,7 @@
       <div class="athlete-panel" data-index="2" tabindex="0" role="button" aria-label="Ver a Matías Neira" style="background-image:url(assets/neira.jpg)">
         <div class="athlete-body">
           <h3 class="athlete-name">Neira</h3>
-          <div class="athlete-role">Lateral derecho</div>
+          <h4 class="athlete-role">Lateral derecho</h4>
           <div class="athlete-stats">
             <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Lateral</span></div>
             <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">25</span></div>
@@ -934,7 +944,7 @@
       <div class="athlete-panel" data-index="3" tabindex="0" role="button" aria-label="Ver a Ivo Garayalde" style="background-image:url(assets/garayalde.jpg)">
         <div class="athlete-body">
           <h3 class="athlete-name">Garayalde</h3>
-          <div class="athlete-role">Tenis de playa</div>
+          <h4 class="athlete-role">Tenis de playa</h4>
           <div class="athlete-stats">
             <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">21</span></div>
             <div class="athlete-stat"><span class="athlete-stat-label">Ranking</span><span class="athlete-stat-value">Top 10</span></div>
@@ -947,7 +957,7 @@
       <div class="athlete-panel" data-index="4" tabindex="0" role="button" aria-label="Ver a Julián Vanega" style="background-image:url(assets/vanega.jpg)">
         <div class="athlete-body">
           <h3 class="athlete-name">Vanega</h3>
-          <div class="athlete-role">Arquero</div>
+          <h4 class="athlete-role">Arquero</h4>
           <div class="athlete-stats">
             <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Arquero</span></div>
             <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">27</span></div>
@@ -974,10 +984,10 @@
       <svg class="process-arrows" id="processArrows" aria-hidden="true"></svg>
 
       <div class="process-node process-node-start reveal">
-        <span class="process-status-chip">
+        <h4 class="process-status-chip">
           <span class="process-status-dot" aria-hidden="true"></span>
           <span data-i18n="process_status_start">Estás acá</span>
-        </span>
+        </h4>
         <h3 class="process-node-lead" data-i18n="process_start_text">Tenés talento. Tu imagen todavía no lo cuenta.</h3>
       </div>
 
@@ -985,11 +995,11 @@
 
       <div class="process-step-row reveal" data-step="0">
         <div class="process-step-num-col">
-          <h3 class="process-step-num" data-i18n="proc_step1_label">Paso 1</h3>
+          <h4 class="process-step-num" data-i18n="proc_step1_label">Paso 1</h4>
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <span class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</span>
+          <h4 class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</h4>
           <h3 class="process-step-title" data-i18n="proc_s1_title">Vemos dónde estás parado y qué te está frenando.</h3>
           <p class="process-step-desc" data-i18n="proc_s1_desc">Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.</p>
           <div class="process-step-chips">
@@ -1005,7 +1015,7 @@
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat"><strong>+[N]</strong> deportistas ya pasaron por este diagnóstico</p> -->
           <div class="process-step-yours">
-            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <h4 class="process-yours-label" data-i18n="process_yours_label">Tu parte</h4>
             <span class="process-yours-text" data-i18n="proc_s1_yours">Una llamada de 30 minutos y acceso a tus redes. Nada más.</span>
           </div>
           </div>
@@ -1016,11 +1026,11 @@
 
       <div class="process-step-row reveal" data-step="1">
         <div class="process-step-num-col">
-          <h3 class="process-step-num" data-i18n="proc_step2_label">Paso 2</h3>
+          <h4 class="process-step-num" data-i18n="proc_step2_label">Paso 2</h4>
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <span class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</span>
+          <h4 class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</h4>
           <h3 class="process-step-title" data-i18n="proc_s2_title">Armamos el plan que ordena tus próximos tres meses.</h3>
           <p class="process-step-desc" data-i18n="proc_s2_desc">Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.</p>
           <div class="process-step-chips">
@@ -1036,7 +1046,7 @@
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Esta etapa toma en promedio <strong>[N] días</strong></p> -->
           <div class="process-step-yours">
-            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <h4 class="process-yours-label" data-i18n="process_yours_label">Tu parte</h4>
             <span class="process-yours-text" data-i18n="proc_s2_yours">Aprobás el plan en una reunión. Nosotros lo dejamos listo.</span>
           </div>
           </div>
@@ -1047,11 +1057,11 @@
 
       <div class="process-step-row reveal" data-step="2">
         <div class="process-step-num-col">
-          <h3 class="process-step-num" data-i18n="proc_step3_label">Paso 3</h3>
+          <h4 class="process-step-num" data-i18n="proc_step3_label">Paso 3</h4>
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <span class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</span>
+          <h4 class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</h4>
           <h3 class="process-step-title" data-i18n="proc_s3_title">Publicamos, medimos y te abrimos puertas.</h3>
           <p class="process-step-desc" data-i18n="proc_s3_desc">Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.</p>
           <div class="process-step-chips">
@@ -1067,7 +1077,7 @@
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Producimos en promedio <strong>[N] piezas</strong> de contenido por mes</p> -->
           <div class="process-step-yours">
-            <span class="process-yours-label" data-i18n="process_yours_label">Tu parte</span>
+            <h4 class="process-yours-label" data-i18n="process_yours_label">Tu parte</h4>
             <span class="process-yours-text" data-i18n="proc_s3_yours">Jugar. Nos mandás el material del partido y seguimos nosotros.</span>
           </div>
           </div>
@@ -1076,7 +1086,7 @@
     </div>
 
     <div class="process-faq reveal">
-      <p class="process-faq-title" data-i18n="process_faq_title">Preguntas frecuentes</p>
+      <h4 class="process-faq-title" data-i18n="process_faq_title">Preguntas frecuentes</h4>
       <div class="process-faq-list">
         <div class="process-faq-item">
           <h3 class="process-faq-q-heading">
@@ -1117,7 +1127,7 @@
 
     <div class="process-node process-node-end reveal">
       <div class="process-end-card">
-        <span class="process-end-tag" data-i18n="process_status_end">Llegaste acá</span>
+        <h4 class="process-end-tag" data-i18n="process_status_end">Llegaste acá</h4>
         <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
         <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
         <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
@@ -1368,7 +1378,7 @@
   function buildMosaicCard(item, index) {
     const card = document.createElement('div');
     card.className = `mosaic-card span-${item.span}`;
-    const num = document.createElement('span');
+    const num = document.createElement('h4');
     num.className = 'mosaic-card-num';
     num.textContent = String(index + 1).padStart(2, '0');
     const title = document.createElement('h3');
@@ -2280,7 +2290,7 @@
       <div class="athlete-panel${i === athletesActiveIndex ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="${verVerb} ${a.fullName}" style="background-image:url(${a.photo})">
         <div class="athlete-body">
           <h3 class="athlete-name">${a.surname}</h3>
-          <div class="athlete-role">${a.role[lang] || a.role.es}</div>
+          <h4 class="athlete-role">${a.role[lang] || a.role.es}</h4>
           <div class="athlete-stats">
             ${a.stats.map(s => `<div class="athlete-stat"><span class="athlete-stat-label">${dict[s.labelKey] || s.labelKey}</span><span class="athlete-stat-value">${s[lang] || s.es}</span></div>`).join('')}
             <div class="athlete-quote">${a.quote[lang] || a.quote.es}</div>
