@@ -59,6 +59,7 @@
     --accent-hover:#e3ff6e;
     --accent-ink:#0A0A0C;
     --bg-light:#faf8f6;
+    --proj-bg:#ffffff;
     --accent-glow:0 0 8px rgba(215,245,81,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
@@ -331,42 +332,79 @@
     .mosaic-services{padding:64px 0}
   }
 
-  /* ---------- TRABAJOS ---------- */
-  .work{background:var(--bg-light);color:#111;padding:96px 60px 100px}
-  .work-title{max-width:700px;color:#111;margin-bottom:40px}
-  .work-mosaic{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-rows:290px 290px;gap:14px}
-  .work-compare,.work-mini{position:relative;border-radius:18px;overflow:hidden;background:#15151a}
-  .work-compare{grid-row:span 2;cursor:ew-resize;user-select:none;touch-action:none}
-  .work-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-  .work-compare-media{position:absolute;inset:0}
-  .work-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
-  .work-compare-after{clip-path:inset(0 0 0 50%)}
-  .work-compare-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,.3) 0%,rgba(10,10,12,0) 42%,rgba(10,10,12,.94) 100%);pointer-events:none}
-  .work-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent);box-shadow:0 0 10px rgba(215,245,81,.5);transform:translateX(-50%);pointer-events:none}
-  .work-compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:56px;border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
-  .work-compare-grip{width:10px;height:2px;border-radius:1px;background:var(--accent-ink)}
-  .work-compare-tag{position:absolute;top:20px;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2;pointer-events:none}
-  .work-compare-tag.before{left:20px;color:#fff}
-  .work-compare-tag.after{right:20px;color:var(--accent)}
-  .work-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;pointer-events:none}
-  .work-compare-name{color:#fff;margin:0}
-  .work-compare-desc{font-family:var(--title);font-weight:400;font-size:.875rem;line-height:1.35;color:var(--accent);max-width:420px;margin:0}
-  .work-compare-info .btn{pointer-events:auto;min-height:44px;padding:8px 18px;font-size:.9rem;margin-top:4px}
-  .work-mini{background-image:var(--photo,none);background-size:cover;background-position:center}
-  .work-mini::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,12,0) 35%,rgba(10,10,12,.92) 100%)}
-  .work-mini-info{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
-  .work-mini-info h3{color:#fff;margin-bottom:8px}
-  .work-mini-info p{font-family:var(--title);font-weight:400;font-size:.8125rem;line-height:1.35;color:var(--accent);margin:0}
-  @media(max-width:1024px){
-    .work{padding:80px 40px 88px}
+  /* ---------- PROYECTOS ---------- */
+  .projects{position:relative;overflow:hidden;background:var(--proj-bg)}
+  .projects-glow{position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:radial-gradient(100% 68% at 50% 50%,rgba(198,242,78,.98) 0%,rgba(198,242,78,.8) 32%,rgba(198,242,78,.45) 56%,rgba(198,242,78,.18) 76%,rgba(255,255,255,0) 92%);
+    animation:projectsGlowMove 16s ease-in-out infinite}
+  @keyframes projectsGlowMove{
+    0%,100%{transform:translate3d(0,0,0) scale(1)}
+    50%{transform:translate3d(0,-2.5%,0) scale(1.06)}
   }
+  .projects-fade{position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.62) 11%,transparent 27%,transparent 73%,rgba(255,255,255,.62) 89%,#fff 100%)}
+  @media(prefers-reduced-motion:reduce){
+    .projects-glow{animation:none}
+  }
+  .projects-inner{position:relative;z-index:3;max-width:1440px;margin-inline:auto;padding:124px 96px 116px}
+  @media(max-width:1024px){.projects-inner{padding:96px 48px 88px}}
+  @media(max-width:640px){.projects-inner{padding:64px 24px 56px}}
+  .projects-title{text-align:center;color:#0b1207;max-width:900px;margin-inline:auto}
+
+  .projects-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:56px}
+  @media(max-width:900px){.projects-grid{grid-template-columns:1fr}}
+
+  /* Comparador Eze Neira: "después" abajo, sin recorte; "antes" encima,
+     desaturada y recortada por JS según el arrastre (ver script). */
+  .projects-compare{position:relative;overflow:hidden;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:#0e1210;min-height:560px;cursor:ew-resize;user-select:none;touch-action:none}
+  .projects-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+  .projects-compare-media{position:absolute;inset:0}
+  .projects-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
+  .projects-compare-before{filter:saturate(.5) brightness(.82)}
+  .projects-compare-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 0%,transparent 42%,rgba(6,8,7,.9) 100%);pointer-events:none}
+  .projects-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#c6f24e;box-shadow:0 0 22px rgba(198,242,78,.75);pointer-events:none;z-index:3}
+  .projects-compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#c6f24e;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .projects-compare-grip{width:2px;height:16px;border-radius:1px;background:#0a1005}
+  .projects-tag{position:absolute;top:20px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:6px;padding:6px 12px;z-index:2;pointer-events:none}
+  .projects-tag-before{left:20px;background:rgba(6,8,7,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#f5f6f2}
+  .projects-tag-after{right:20px;background:#c6f24e;color:#0a1005}
+  .projects-compare-info{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;pointer-events:none}
+  .projects-compare-meta{color:#c6f24e;margin-bottom:8px}
+  .projects-compare-name{color:#f5f6f2}
+  .projects-compare-desc{font-size:16px;font-weight:500;line-height:1.4;color:#c6f24e;max-width:480px;margin-top:8px}
+  .projects-compare-info .btn{pointer-events:auto;flex:none;background:#c6f24e;color:#0a1005}
+
+  /* Columna derecha: dos tarjetas apiladas, mismo lenguaje visual que el
+     mosaico de Servicios (fondo oscuro + rayas), sin fotos. */
+  .projects-side{display:grid;grid-template-rows:1fr 1fr;gap:18px}
+  .projects-card{position:relative;overflow:hidden;background:#0e1210;border-radius:6px;border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:271px;display:flex;flex-direction:column;justify-content:space-between}
+  .projects-card-stripes{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0px,rgba(255,255,255,.035) 2px,transparent 2px,transparent 11px)}
+  .projects-card-top{position:relative;z-index:1}
+  .projects-card-meta{display:flex;justify-content:space-between;gap:14px;color:#c6f24e}
+  .projects-card-year{color:rgba(255,255,255,.4)}
+  .projects-card-bottom{position:relative;z-index:1}
+  .projects-card-name{color:#f5f6f2;margin-bottom:8px}
+  .projects-card-desc{font-size:15px;line-height:1.5;color:#c6f24e}
+  .projects-card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .projects-card-tag{font-size:12px;color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 10px}
+
+  @keyframes projectsCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  .projects-compare.reveal-up,.projects-card.reveal-up{opacity:0;transform:translateY(18px)}
+  .projects-compare.reveal-up.on,.projects-card.reveal-up.on{animation:projectsCardIn .6s ease both}
+  .projects-compare.reveal-up{animation-delay:0ms}
+  .projects-side .projects-card:nth-child(1).reveal-up{animation-delay:120ms}
+  .projects-side .projects-card:nth-child(2).reveal-up{animation-delay:240ms}
+  @media(prefers-reduced-motion:reduce){
+    .projects-compare.reveal-up,.projects-card.reveal-up{opacity:1;transform:none}
+    .projects-compare.reveal-up.on,.projects-card.reveal-up.on{animation:none}
+  }
+
   @media(max-width:900px){
-    .work{padding:64px 20px 72px}
-    .work-title{margin-bottom:28px}
-    .work-mosaic{grid-template-columns:1fr;grid-template-rows:none;gap:14px}
-    .work-compare{grid-row:auto;height:420px}
-    .work-compare-handle{width:24px;height:48px}
-    .work-mini{height:280px}
+    .projects-compare{min-height:360px}
+    .projects-side{grid-template-rows:none}
+    .projects-card{min-height:220px}
+    .projects-compare-info{flex-direction:column;align-items:flex-start;gap:14px}
+    .projects-compare-desc{max-width:none}
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
@@ -830,7 +868,7 @@
   </div>
   <div class="mosaic-wave bottom" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
+      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--proj-bg)"/>
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
@@ -852,49 +890,45 @@
   </div>
 </section>
 
-<!-- ============ TRABAJOS ============ -->
-<section id="trabajo" class="work">
-  <div class="wrap">
-    <h2 class="work-title reveal" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
-    <div class="work-mosaic">
-      <div class="work-compare reveal" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
-        <div class="work-compare-media">
-          <img class="work-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
-          <img class="work-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
+<!-- ============ PROYECTOS ============ -->
+<!-- Las dos tarjetas de la derecha se generan en JS desde PROJECTS_DATA
+     (ver el bloque "Proyectos" en el script). El comparador de Eze Neira
+     queda como markup fijo por su interacción propia (arrastre). -->
+<section id="trabajo" class="projects">
+  <div class="projects-glow" aria-hidden="true"></div>
+  <div class="projects-fade" aria-hidden="true"></div>
+  <div class="projects-inner">
+    <h2 class="projects-title reveal" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
+    <div class="projects-grid">
+      <div class="projects-compare reveal-up" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
+        <div class="projects-compare-media">
+          <img class="projects-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
+          <img class="projects-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
         </div>
-        <div class="work-compare-scrim" aria-hidden="true"></div>
-        <div class="work-compare-divider" aria-hidden="true">
-          <span class="work-compare-handle">
-            <span class="work-compare-grip"></span>
-            <span class="work-compare-grip"></span>
-            <span class="work-compare-grip"></span>
+        <span class="projects-tag projects-tag-before" data-i18n="compare_before">Antes</span>
+        <span class="projects-tag projects-tag-after" data-i18n="compare_after">Con HRK</span>
+        <div class="projects-compare-divider" aria-hidden="true">
+          <span class="projects-compare-handle">
+            <span class="projects-compare-grip"></span>
+            <span class="projects-compare-grip"></span>
           </span>
         </div>
-        <span class="work-compare-tag before" data-i18n="compare_before">Antes</span>
-        <span class="work-compare-tag after" data-i18n="compare_after">Con HRK</span>
-        <div class="work-compare-info">
-          <h3 class="work-compare-name">Eze Neira</h3>
-          <p class="work-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
+        <div class="projects-compare-scrim" aria-hidden="true"></div>
+        <div class="projects-compare-info">
+          <div>
+            <h4 class="projects-compare-meta" data-i18n="compare_meta">01 · Deportista · 2024–2025</h4>
+            <h3 class="projects-compare-name">Eze Neira</h3>
+            <p class="projects-compare-desc" data-i18n="compare_desc">Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.</p>
+          </div>
           <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener" class="btn" data-i18n="compare_cta">Ver proyecto</a>
         </div>
       </div>
-      <div class="work-mini reveal" style="--photo:url(assets/legion.jpg)">
-        <div class="work-mini-info">
-          <h3>La Legión Producciones</h3>
-          <p data-i18n="work_legion_p">Rebranding, identidad visual y cobertura de eventos deportivos.</p>
-        </div>
-      </div>
-      <div class="work-mini reveal" style="--photo:url(assets/street-clash.jpg)">
-        <div class="work-mini-info">
-          <h3>Street Clash</h3>
-          <p data-i18n="work_street_p">Identidad visual, comunicación y cobertura del torneo.</p>
-        </div>
-      </div>
+      <div class="projects-side" id="projectsSide"></div>
     </div>
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--proj-bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -1903,18 +1937,82 @@
     handleModeChange();
   })();
 
-  // Comparador antes/después de Trabajos
+  // Proyectos: tarjetas de la columna derecha, generadas desde este array
+  // (título, meta con número/categoría/año, descripción y tags — todo vía
+  // claves i18n) más el comparador de Eze Neira con su arrastre propio.
   (function () {
+    const PROJECTS_DATA = [
+      {
+        num: '02', categoryKey: 'work_legion_category', year: '2025',
+        name: 'La Legión Producciones', descKey: 'work_legion_p',
+        tagKeys: ['tag_rebranding', 'tag_visual_identity', 'tag_events']
+      },
+      {
+        num: '03', categoryKey: 'work_street_category', year: '2026',
+        name: 'Street Clash', descKey: 'work_street_p',
+        tagKeys: ['tag_identity', 'tag_communication', 'tag_coverage']
+      }
+    ];
+
+    const side = document.getElementById('projectsSide');
+    if (side) {
+      PROJECTS_DATA.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'projects-card reveal-up';
+
+        const stripes = document.createElement('div');
+        stripes.className = 'projects-card-stripes';
+        stripes.setAttribute('aria-hidden', 'true');
+
+        const top = document.createElement('div');
+        top.className = 'projects-card-top';
+        const meta = document.createElement('h4');
+        meta.className = 'projects-card-meta';
+        const category = document.createElement('span');
+        category.append(`${project.num} · `);
+        const categoryName = document.createElement('span');
+        categoryName.setAttribute('data-i18n', project.categoryKey);
+        category.appendChild(categoryName);
+        const year = document.createElement('span');
+        year.className = 'projects-card-year';
+        year.textContent = project.year;
+        meta.append(category, year);
+        top.appendChild(meta);
+
+        const bottom = document.createElement('div');
+        bottom.className = 'projects-card-bottom';
+        const name = document.createElement('h3');
+        name.className = 'projects-card-name';
+        name.textContent = project.name;
+        const desc = document.createElement('p');
+        desc.className = 'projects-card-desc';
+        desc.setAttribute('data-i18n', project.descKey);
+        const tags = document.createElement('div');
+        tags.className = 'projects-card-tags';
+        project.tagKeys.forEach(key => {
+          const tag = document.createElement('span');
+          tag.className = 'projects-card-tag';
+          tag.setAttribute('data-i18n', key);
+          tags.appendChild(tag);
+        });
+        bottom.append(name, desc, tags);
+
+        card.append(stripes, top, bottom);
+        side.appendChild(card);
+      });
+    }
+
+    // Comparador antes/después
     const compare = document.getElementById('workCompare');
     if (!compare) return;
-    const beforeImg = compare.querySelector('.work-compare-before');
-    const afterImg = compare.querySelector('.work-compare-after');
-    const divider = compare.querySelector('.work-compare-divider');
+    const beforeImg = compare.querySelector('.projects-compare-before');
+    const afterImg = compare.querySelector('.projects-compare-after');
+    const divider = compare.querySelector('.projects-compare-divider');
     let dragging = false;
 
     function setPosition(pct) {
       pct = Math.min(100, Math.max(0, pct));
-      afterImg.style.clipPath = `inset(0 0 0 ${pct}%)`;
+      beforeImg.style.clipPath = `inset(0 0 0 ${pct}%)`;
       divider.style.left = pct + '%';
       compare.setAttribute('aria-valuenow', String(Math.round(pct)));
     }
@@ -1967,6 +2065,19 @@
     });
 
     setPosition(50);
+
+    // Entrada escalonada de las tarjetas (comparador + las dos de al lado)
+    // al entrar la sección en pantalla, una sola vez.
+    const revealTargets = document.querySelectorAll('#trabajo .reveal-up');
+    const revealIO = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('on');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .2 });
+    revealTargets.forEach(el => revealIO.observe(el));
   })();
 
   // Diccionario de idiomas
@@ -2025,10 +2136,15 @@
       svc_cta_brand: 'Quiero ser Partner', svc_cta_event: 'Cotizar cobertura',
 
       work_headline: 'Selección de proyectos que llevamos adelante',
+      work_legion_category: 'Productora audiovisual',
       work_legion_p: 'Rebranding, identidad visual y cobertura de eventos deportivos.',
+      work_street_category: 'Torneo 3v3',
       work_street_p: 'Identidad visual, comunicación y cobertura del torneo.',
+      tag_rebranding: 'Rebranding', tag_visual_identity: 'Identidad visual', tag_events: 'Eventos',
+      tag_identity: 'Identidad', tag_communication: 'Comunicación', tag_coverage: 'Cobertura',
 
       compare_before: 'Antes', compare_after: 'Con HRK',
+      compare_meta: '01 · Deportista · 2024–2025',
       compare_desc: 'Imagen, contenido, highlights y posicionamiento digital durante su etapa en Venezuela.',
       compare_cta: 'Ver proyecto',
       compare_aria: 'Comparador antes y después de Eze Neira',
@@ -2143,10 +2259,15 @@
       svc_cta_brand: 'I want to be a Partner', svc_cta_event: 'Get a coverage quote',
 
       work_headline: 'A selection of projects we\'ve led',
+      work_legion_category: 'Audiovisual production company',
       work_legion_p: 'Rebranding, visual identity, and sports event coverage.',
+      work_street_category: '3v3 tournament',
       work_street_p: 'Visual identity, communication, and tournament coverage.',
+      tag_rebranding: 'Rebranding', tag_visual_identity: 'Visual identity', tag_events: 'Events',
+      tag_identity: 'Identity', tag_communication: 'Communication', tag_coverage: 'Coverage',
 
       compare_before: 'Before', compare_after: 'With HRK',
+      compare_meta: '01 · Athlete · 2024–2025',
       compare_desc: 'Image, content, highlights, and digital positioning during his time in Venezuela.',
       compare_cta: 'View project',
       compare_aria: 'Before and after comparison of Eze Neira',
