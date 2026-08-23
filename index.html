@@ -1410,7 +1410,14 @@
 
   // Primer armado: la pestaña inicial ya está visible en el DOM, así que se
   // deja lista (prep, sin transición) apenas se construye, y se suelta
-  // (play) recién cuando la sección entra en pantalla por primera vez.
+  // (play) recién cuando el usuario ya está encima del mosaico — no apenas
+  // asoma por abajo. Se observa el propio contenedor de tarjetas (no toda
+  // la sección, que incluye el encabezado) y se achica el root con
+  // rootMargin para que sólo cuente la franja central de la pantalla.
+  // El threshold se deja bajo a propósito: en paneles más altos que el
+  // viewport (mobile, con las 9 tarjetas apiladas en una columna) exigir
+  // que un 35% DEL PANEL entre en esa franja central nunca se cumpliría,
+  // porque la franja es más chica que el propio panel.
   const mosaicInitialPanel = mosaicPanelsEl.children[0];
   prepPuzzlePieces(mosaicInitialPanel);
   const mosaicRevealIO = new IntersectionObserver((entries, obs) => {
@@ -1418,8 +1425,8 @@
       playPuzzlePieces(mosaicInitialPanel);
       obs.disconnect();
     }
-  }, { threshold: .15 });
-  mosaicRevealIO.observe(document.getElementById('servicios'));
+  }, { threshold: .01, rootMargin: '-25% 0px -25% 0px' });
+  mosaicRevealIO.observe(mosaicPanelsEl);
 
   // En la carga inicial, I18N todavía no existe (se define más abajo en el
   // script) — applyI18n() completa el texto del CTA ahí a partir del
