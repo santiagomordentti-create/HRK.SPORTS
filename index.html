@@ -267,15 +267,17 @@
   .mosaic-wave.top{top:-1px}
   .mosaic-wave.bottom{bottom:-1px}
   @media(max-width:640px){.mosaic-wave{height:54px}}
-  .mosaic-services-inner{position:relative;z-index:5;max-width:1180px;margin-inline:auto;padding:0 24px}
+  .mosaic-services-inner{position:relative;z-index:5;max-width:1440px;margin-inline:auto;padding:0 96px}
+  @media(max-width:1024px){.mosaic-services-inner{padding:0 48px}}
+  @media(max-width:640px){.mosaic-services-inner{padding:0 24px}}
 
-  .mosaic-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:40px}
+  .mosaic-head{text-align:center;margin-bottom:40px}
   .mosaic-kicker{display:block;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
   .mosaic-title{color:#fff}
   .mosaic-title-dot{color:var(--accent)}
-  .mosaic-head-dek{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:340px;margin:0}
+  .mosaic-head-dek{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:620px;margin:14px auto 0}
 
-  .mosaic-tabs{display:flex;flex-wrap:wrap;gap:10px;list-style:none}
+  .mosaic-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;list-style:none}
   .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:2px;border:1px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;white-space:nowrap}
   .mosaic-tab:not(.active):hover{border-color:rgba(255,255,255,.4);color:#fff}
   .mosaic-tab.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -311,8 +313,6 @@
     .mosaic-services{padding:80px 0}
   }
   @media(max-width:900px){
-    .mosaic-head{grid-template-columns:1fr}
-    .mosaic-head-dek{max-width:none}
     .mosaic-tabs{
       flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
       scroll-snap-type:x mandatory;
@@ -829,10 +829,8 @@
 
   <div class="mosaic-services-inner">
     <div class="mosaic-head reveal">
-      <div>
-        <span class="mosaic-kicker" data-i18n="services_kicker">Área de servicio</span>
-        <h2 class="mosaic-title"><span data-i18n="services_title">Servicios</span><span class="mosaic-title-dot" aria-hidden="true">.</span></h2>
-      </div>
+      <span class="mosaic-kicker" data-i18n="services_kicker">Área de servicio</span>
+      <h2 class="mosaic-title"><span data-i18n="services_title">Servicios</span><span class="mosaic-title-dot" aria-hidden="true">.</span></h2>
       <p class="mosaic-head-dek" data-i18n="services_dek">Decinos quién sos y te mostramos qué hacemos por vos.</p>
     </div>
 
