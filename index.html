@@ -333,25 +333,25 @@
   }
 
   /* ---------- PROYECTOS ---------- */
-  .projects{position:relative;overflow:hidden;background:var(--proj-bg)}
+  .projects{position:relative;overflow:hidden;background:var(--proj-bg);padding:0}
   .projects-glow{position:absolute;inset:0;pointer-events:none;z-index:1;
-    background:radial-gradient(100% 68% at 50% 50%,rgba(198,242,78,.98) 0%,rgba(198,242,78,.8) 32%,rgba(198,242,78,.45) 56%,rgba(198,242,78,.18) 76%,rgba(255,255,255,0) 92%);
+    background:radial-gradient(110% 90% at 50% 48%,rgba(198,242,78,.98) 0%,rgba(198,242,78,.8) 32%,rgba(198,242,78,.45) 56%,rgba(198,242,78,.18) 76%,rgba(255,255,255,0) 92%);
     animation:projectsGlowMove 16s ease-in-out infinite}
   @keyframes projectsGlowMove{
     0%,100%{transform:translate3d(0,0,0) scale(1)}
     50%{transform:translate3d(0,-2.5%,0) scale(1.06)}
   }
   .projects-fade{position:absolute;inset:0;pointer-events:none;z-index:2;
-    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.62) 11%,transparent 27%,transparent 73%,rgba(255,255,255,.62) 89%,#fff 100%)}
+    background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.5) 5%,transparent 14%,transparent 86%,rgba(255,255,255,.5) 95%,#fff 100%)}
   @media(prefers-reduced-motion:reduce){
     .projects-glow{animation:none}
   }
-  .projects-inner{position:relative;z-index:3;max-width:1440px;margin-inline:auto;padding:124px 96px 116px}
-  @media(max-width:1024px){.projects-inner{padding:96px 48px 88px}}
-  @media(max-width:640px){.projects-inner{padding:64px 24px 56px}}
+  .projects-inner{position:relative;z-index:3;max-width:1440px;margin-inline:auto;padding:64px 96px 72px}
+  @media(max-width:1024px){.projects-inner{padding:56px 48px 64px}}
+  @media(max-width:640px){.projects-inner{padding:48px 24px 48px}}
   .projects-title{text-align:center;color:#0b1207;max-width:900px;margin-inline:auto}
 
-  .projects-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:56px}
+  .projects-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:40px}
   @media(max-width:900px){.projects-grid{grid-template-columns:1fr}}
 
   /* Comparador Eze Neira: "después" abajo, sin recorte; "antes" encima,
