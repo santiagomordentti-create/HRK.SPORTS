@@ -236,7 +236,7 @@
      línea lima que calca el mismo path se agrega aparte, encima de todo. */
   .mosaic-services{
     --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,84%20C120,84%20120,30%20240,30%20C360,30%20360,84%20480,84%20C600,84%20600,30%20720,30%20C840,30%20840,84%20960,84%20C1080,84%201080,30%201200,30%20C1320,30%201320,84%201440,84%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
-    position:relative;overflow:hidden;background:#08090a;color:#fff;padding:96px 80px;
+    position:relative;overflow:hidden;background:#08090a;color:#fff;padding:96px 0;
     margin-top:-90px;
     -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000);
     -webkit-mask-size:100% 90px,100% calc(100% - 90px);
@@ -267,7 +267,7 @@
   .mosaic-wave.top{top:-1px}
   .mosaic-wave.bottom{bottom:-1px}
   @media(max-width:640px){.mosaic-wave{height:54px}}
-  .mosaic-services-inner{position:relative;z-index:5;max-width:1280px;margin:0 auto}
+  .mosaic-services-inner{position:relative;z-index:5;max-width:1180px;margin-inline:auto;padding:0 24px}
 
   .mosaic-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:40px}
   .mosaic-kicker{display:block;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
@@ -314,7 +314,7 @@
     .mosaic-card.anim-a,.mosaic-card.anim-b{animation:none}
   }
   @media(max-width:1024px){
-    .mosaic-services{padding:80px 40px}
+    .mosaic-services{padding:80px 0}
   }
   @media(max-width:900px){
     .mosaic-head{grid-template-columns:1fr}
@@ -330,7 +330,7 @@
     .mosaic-card{grid-column:span 1}
   }
   @media(max-width:720px){
-    .mosaic-services{padding:64px 20px}
+    .mosaic-services{padding:64px 0}
   }
 
   /* ---------- TRABAJOS ---------- */
