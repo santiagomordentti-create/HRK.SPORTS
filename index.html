@@ -284,7 +284,14 @@
   .mosaic-panels{position:relative}
   .mosaic-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
   .mosaic-grid[hidden]{display:none}
-  .mosaic-card{grid-column:span 3;background:#0e1210;padding:30px 28px;transition:background .2s ease}
+  /* Rompecabezas: cada pieza entra desde una dirección al azar (--dx/--dy,
+     asignadas en JS en cada disparo) con una leve escala, y encaja con una
+     curva que se pasa un poco y asienta. .piece-enter es el estado "todavía
+     no llegó" — la propia .mosaic-card (con su fondo) es el estado final,
+     así que mientras la pieza no llegó se ve el hueco: el fondo más claro
+     de .mosaic-grid asomando en esa celda. */
+  .mosaic-card{grid-column:span 3;background:#0e1210;padding:30px 28px;transition:background .2s ease,transform .55s cubic-bezier(.16,1.02,.3,1),opacity .35s ease}
+  .mosaic-card.piece-enter{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.94)}
   .mosaic-card:hover{background:#16211a}
   .mosaic-card.span-2{grid-column:span 2}
   .mosaic-card.span-3{grid-column:span 3}
@@ -293,25 +300,12 @@
   .mosaic-card h3{color:#fff;margin-bottom:10px}
   .mosaic-card p{font-size:15px;line-height:1.55;color:rgba(255,255,255,.72)}
 
-  @keyframes mosaicFadeInA{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes mosaicFadeInB{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .mosaic-card.anim-a{animation:mosaicFadeInA .5s ease both}
-  .mosaic-card.anim-b{animation:mosaicFadeInB .5s ease both}
-  .mosaic-card:nth-child(1){animation-delay:0ms}
-  .mosaic-card:nth-child(2){animation-delay:40ms}
-  .mosaic-card:nth-child(3){animation-delay:80ms}
-  .mosaic-card:nth-child(4){animation-delay:120ms}
-  .mosaic-card:nth-child(5){animation-delay:160ms}
-  .mosaic-card:nth-child(6){animation-delay:200ms}
-  .mosaic-card:nth-child(7){animation-delay:240ms}
-  .mosaic-card:nth-child(8){animation-delay:280ms}
-  .mosaic-card:nth-child(9){animation-delay:320ms}
-
   .mosaic-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;margin-top:32px}
   .mosaic-foot-note{font-size:.95rem;color:var(--ink-faint)}
 
   @media(prefers-reduced-motion:reduce){
-    .mosaic-card.anim-a,.mosaic-card.anim-b{animation:none}
+    .mosaic-card{transition:background .2s ease}
+    .mosaic-card.piece-enter{opacity:1;transform:none}
   }
   @media(max-width:1024px){
     .mosaic-services{padding:80px 0}
@@ -1307,7 +1301,75 @@
   const mosaicTabsEl = document.getElementById('mosaicTabs');
   const mosaicPanelsEl = document.getElementById('mosaicPanels');
   const mosaicCtaEl = document.getElementById('mosaicCta');
-  let mosaicAnimFlip = false;
+
+  // Animación de "rompecabezas": cada pieza se pone en un estado de
+  // espera (prepPuzzlePieces, sin transición) desplazada al azar en una
+  // de estas cuatro direcciones, y después se suelta (playPuzzlePieces)
+  // con un orden y un stagger que se vuelven a sortear en cada disparo.
+  const PUZZLE_DIRECTIONS = [
+    { dx: '0px', dy: '-26px' },
+    { dx: '0px', dy: '26px' },
+    { dx: '-26px', dy: '0px' },
+    { dx: '26px', dy: '0px' }
+  ];
+  const PUZZLE_SETTLE_MS = 550; // debe coincidir con la transición de transform en CSS
+  const PUZZLE_TOTAL_BUDGET_MS = 1500;
+
+  function reduceMotionActive() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function prepPuzzlePieces(panel) {
+    if (reduceMotionActive()) return;
+    Array.from(panel.children).forEach(card => {
+      const dir = PUZZLE_DIRECTIONS[Math.floor(Math.random() * PUZZLE_DIRECTIONS.length)];
+      card.style.transition = 'none';
+      card.style.setProperty('--dx', dir.dx);
+      card.style.setProperty('--dy', dir.dy);
+      card.classList.add('piece-enter');
+      void card.offsetWidth;
+      card.style.transition = '';
+    });
+  }
+
+  function playPuzzlePieces(panel) {
+    const cards = Array.from(panel.children);
+    if (reduceMotionActive()) {
+      cards.forEach(card => {
+        card.classList.remove('piece-enter');
+        card.style.transitionDelay = '';
+        card.style.removeProperty('--dx');
+        card.style.removeProperty('--dy');
+      });
+      return;
+    }
+    const order = cards.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    const maxBudget = Math.max(0, PUZZLE_TOTAL_BUDGET_MS - PUZZLE_SETTLE_MS);
+    const step = cards.length > 1 ? Math.min(70, maxBudget / (cards.length - 1)) : 0;
+
+    cards.forEach((card, idx) => {
+      const delay = Math.round(order.indexOf(idx) * step);
+      card.style.willChange = 'transform, opacity';
+      card.style.transitionDelay = `${delay}ms`;
+      card.classList.remove('piece-enter');
+      let cleaned = false;
+      const cleanup = () => {
+        if (cleaned) return;
+        cleaned = true;
+        card.style.willChange = '';
+        card.style.transitionDelay = '';
+        card.style.removeProperty('--dx');
+        card.style.removeProperty('--dy');
+        card.removeEventListener('transitionend', cleanup);
+      };
+      card.addEventListener('transitionend', cleanup);
+      setTimeout(cleanup, delay + PUZZLE_SETTLE_MS + 200);
+    });
+  }
 
   function buildMosaicCard(item, index) {
     const card = document.createElement('div');
@@ -1348,6 +1410,19 @@
 
   const mosaicTabs = Array.from(mosaicTabsEl.children);
 
+  // Primer armado: la pestaña inicial ya está visible en el DOM, así que se
+  // deja lista (prep, sin transición) apenas se construye, y se suelta
+  // (play) recién cuando la sección entra en pantalla por primera vez.
+  const mosaicInitialPanel = mosaicPanelsEl.children[0];
+  prepPuzzlePieces(mosaicInitialPanel);
+  const mosaicRevealIO = new IntersectionObserver((entries, obs) => {
+    if (entries.some(e => e.isIntersecting)) {
+      playPuzzlePieces(mosaicInitialPanel);
+      obs.disconnect();
+    }
+  }, { threshold: .15 });
+  mosaicRevealIO.observe(document.getElementById('servicios'));
+
   // En la carga inicial, I18N todavía no existe (se define más abajo en el
   // script) — applyI18n() completa el texto del CTA ahí a partir del
   // data-i18n. En los cambios de pestaña, que sólo ocurren después de esa
@@ -1357,29 +1432,79 @@
     mosaicCtaEl.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(group.waText)}`;
   }
 
+  let mosaicSwitchTimer = null;
+
   function activateMosaicTab(tab) {
     const group = SERVICES_DATA.find(g => g.id === tab.dataset.tab);
+    const newPanel = document.getElementById(`mosaic-panel-${group.id}`);
+    const oldPanel = Array.from(mosaicPanelsEl.children).find(p => p !== newPanel && !p.hidden);
+
     mosaicTabs.forEach(t => {
       const active = t === tab;
       t.classList.toggle('active', active);
       t.setAttribute('aria-selected', active ? 'true' : 'false');
       t.tabIndex = active ? 0 : -1;
     });
-    mosaicAnimFlip = !mosaicAnimFlip;
-    Array.from(mosaicPanelsEl.children).forEach(panel => {
-      if (panel.id === `mosaic-panel-${group.id}`) {
-        panel.hidden = false;
-        Array.from(panel.children).forEach(card => {
-          card.classList.remove('anim-a', 'anim-b');
-          void card.offsetWidth;
-          card.classList.add(mosaicAnimFlip ? 'anim-a' : 'anim-b');
-        });
-      } else {
-        panel.hidden = true;
-      }
-    });
     updateMosaicCtaLink(group);
     mosaicCtaEl.textContent = I18N[currentLang][group.ctaKey];
+
+    if (!oldPanel || oldPanel === newPanel) return;
+
+    // Si había un cambio de pestaña a medio hacer, lo resolvemos de una para
+    // no dejar dos paneles visibles ni pisar el timer anterior (oldPanel
+    // sigue su fade normal más abajo; cualquier otro panel suelto se oculta
+    // de una, sin animación, porque ya venía de un cambio interrumpido).
+    if (mosaicSwitchTimer) { clearTimeout(mosaicSwitchTimer); mosaicSwitchTimer = null; }
+    Array.from(mosaicPanelsEl.children).forEach(p => { if (p !== newPanel && p !== oldPanel) p.hidden = true; });
+
+    // Alto fijo durante la transición, para que el cambio de una grilla de
+    // 2 filas a una de 4 (u otra combinación) no salte de golpe.
+    const startHeight = mosaicPanelsEl.getBoundingClientRect().height;
+    mosaicPanelsEl.style.height = `${startHeight}px`;
+    mosaicPanelsEl.style.overflow = 'hidden';
+    mosaicPanelsEl.style.transition = 'height .3s ease';
+
+    Array.from(oldPanel.children).forEach(card => {
+      card.style.transition = 'opacity .15s ease';
+      card.style.opacity = '0';
+    });
+
+    mosaicSwitchTimer = setTimeout(() => {
+      mosaicSwitchTimer = null;
+      oldPanel.hidden = true;
+      Array.from(oldPanel.children).forEach(card => {
+        card.style.opacity = '';
+        card.style.transition = '';
+      });
+
+      newPanel.hidden = false;
+      prepPuzzlePieces(newPanel);
+      // Medimos el panel nuevo, no el contenedor: el contenedor sigue
+      // clavado en startHeight hasta este punto, así que su propio
+      // getBoundingClientRect() todavía devolvería el alto viejo.
+      const endHeight = newPanel.getBoundingClientRect().height;
+      void mosaicPanelsEl.offsetHeight;
+      mosaicPanelsEl.style.height = `${endHeight}px`;
+      playPuzzlePieces(newPanel);
+
+      // Si el alto nuevo coincidiera por casualidad con el viejo, la
+      // transición no dispararía transitionend — por eso el timeout de
+      // respaldo, para no dejar el alto clavado en pixeles para siempre.
+      let heightUnlocked = false;
+      const unlockHeight = () => {
+        if (heightUnlocked) return;
+        heightUnlocked = true;
+        mosaicPanelsEl.style.height = '';
+        mosaicPanelsEl.style.overflow = '';
+        mosaicPanelsEl.style.transition = '';
+        mosaicPanelsEl.removeEventListener('transitionend', onHeightDone);
+      };
+      const onHeightDone = (e) => {
+        if (e.target === mosaicPanelsEl && e.propertyName === 'height') unlockHeight();
+      };
+      mosaicPanelsEl.addEventListener('transitionend', onHeightDone);
+      setTimeout(unlockHeight, 350);
+    }, 150);
   }
 
   mosaicTabs.forEach(tab => {
