@@ -536,6 +536,18 @@
   .process-step-num-col{flex:none;display:flex;align-items:center;padding-top:6px}
   .process-step-num{white-space:nowrap}
 
+  /* Mockup de celular con la captura del perfil en esa etapa — todavía sin
+     usar (ver el comentario "MOCKUP PENDIENTE" en cada paso del HTML). Se
+     agrega como tercer elemento de la fila, después de la tarjeta, así el
+     mismo row-reverse que arma el zigzag ([data-step="1"] arriba) lo deja
+     del lado contrario a la tarjeta en cada paso sin necesitar CSS aparte. */
+  .process-step-mockup{flex:none;width:200px;align-self:center}
+  .process-step-phone{position:relative;width:100%;aspect-ratio:9/19;background:#111;border:8px solid #111;border-radius:32px;box-shadow:0 20px 44px rgba(17,17,17,.16);overflow:hidden}
+  .process-step-phone::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:38%;height:18px;background:#111;border-radius:0 0 10px 10px;z-index:1}
+  .process-step-phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  @media(max-width:1100px){.process-step-mockup{width:160px}}
+  @media(max-width:900px){.process-step-mockup{display:none}}
+
   .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--proc-radius);padding:var(--proc-pad);box-shadow:0 10px 34px rgba(17,17,17,.06)}
   /* Un solo bloque de 620px para todo el contenido de la tarjeta —badge,
      título, párrafo, chips, "Al terminar" y "Tu parte"— centrado dentro
@@ -1009,7 +1021,7 @@
       <div class="process-node process-node-start reveal">
         <h4 class="process-status-chip">
           <span class="process-status-dot" aria-hidden="true"></span>
-          <span data-i18n="process_status_start">Estás acá</span>
+          <span data-i18n="process_status_start">Arrancás acá</span>
         </h4>
         <h3 class="process-node-lead" data-i18n="process_start_text">Tenés talento. Tu imagen todavía no lo cuenta.</h3>
       </div>
@@ -1022,8 +1034,8 @@
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <h4 class="process-step-badge" data-i18n="proc_s1_badge">Diagnóstico</h4>
-          <h3 class="process-step-title" data-i18n="proc_s1_title">Vemos dónde estás parado y qué te está frenando.</h3>
+          <h4 class="process-step-badge" data-i18n="proc_s1_badge">Pretemporada</h4>
+          <h3 class="process-step-title" data-i18n="proc_s1_title">Antes de salir a la cancha, miramos el video.</h3>
           <p class="process-step-desc" data-i18n="proc_s1_desc">Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.</p>
           <div class="process-step-chips">
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s1_chip1">Auditoría de redes</span></span>
@@ -1033,16 +1045,24 @@
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s1_result">Al terminar: un informe con lo que hoy te está costando oportunidades.</span>
+            <span data-i18n="proc_s1_result">Al terminar: el informe de cómo te ve hoy un club o una marca.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
-          <!-- <p class="process-step-stat"><strong>+[N]</strong> deportistas ya pasaron por este diagnóstico</p> -->
+          <!-- <p class="process-step-stat"><strong>+[N]</strong> deportistas ya pasaron por esta pretemporada</p> -->
           <div class="process-step-yours">
             <h4 class="process-yours-label" data-i18n="process_yours_label">Tu parte</h4>
             <span class="process-yours-text" data-i18n="proc_s1_yours">Una llamada de 30 minutos y acceso a tus redes. Nada más.</span>
           </div>
           </div>
         </div>
+        <!-- MOCKUP PENDIENTE: descomentar cuando estén las capturas del perfil -->
+        <!--
+        <div class="process-step-mockup">
+          <div class="process-step-phone">
+            <img src="assets/perfil-paso-1.jpg" alt="Perfil del deportista antes de empezar a trabajar la imagen" loading="lazy">
+          </div>
+        </div>
+        -->
       </div>
 
       <div class="process-connector" aria-hidden="true"></div>
@@ -1053,8 +1073,8 @@
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <h4 class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</h4>
-          <h3 class="process-step-title" data-i18n="proc_s2_title">Armamos el plan que ordena tus próximos tres meses.</h3>
+          <h4 class="process-step-badge" data-i18n="proc_s2_badge">Plan de juego</h4>
+          <h3 class="process-step-title" data-i18n="proc_s2_title">Definimos cómo vas a jugar los próximos tres meses.</h3>
           <p class="process-step-desc" data-i18n="proc_s2_desc">Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.</p>
           <div class="process-step-chips">
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s2_chip1">Plan de 3 meses</span></span>
@@ -1064,7 +1084,7 @@
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s2_result">Al terminar: tu calendario de contenido de los próximos 3 meses, aprobado.</span>
+            <span data-i18n="proc_s2_result">Al terminar: tu calendario de los próximos 3 meses, aprobado.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Esta etapa toma en promedio <strong>[N] días</strong></p> -->
@@ -1074,6 +1094,14 @@
           </div>
           </div>
         </div>
+        <!-- MOCKUP PENDIENTE: descomentar cuando estén las capturas del perfil -->
+        <!--
+        <div class="process-step-mockup">
+          <div class="process-step-phone">
+            <img src="assets/perfil-paso-2.jpg" alt="Perfil del deportista con el plan de contenido definido" loading="lazy">
+          </div>
+        </div>
+        -->
       </div>
 
       <div class="process-connector" aria-hidden="true"></div>
@@ -1084,8 +1112,8 @@
         </div>
         <div class="process-step-card">
           <div class="process-step-body">
-          <h4 class="process-step-badge" data-i18n="proc_s3_badge">Ejecución</h4>
-          <h3 class="process-step-title" data-i18n="proc_s3_title">Publicamos, medimos y te abrimos puertas.</h3>
+          <h4 class="process-step-badge" data-i18n="proc_s3_badge">Temporada</h4>
+          <h3 class="process-step-title" data-i18n="proc_s3_title">Salimos a jugar, y medimos cada fecha.</h3>
           <p class="process-step-desc" data-i18n="proc_s3_desc">Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.</p>
           <div class="process-step-chips">
             <span class="process-step-chip"><span class="process-step-chip-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span><span data-i18n="proc_s3_chip1">Reporte mensual</span></span>
@@ -1095,7 +1123,7 @@
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
             <svg class="process-step-result-mark" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-            <span data-i18n="proc_s3_result">Al terminar cada mes: un reporte de qué creció y qué contactos aparecieron.</span>
+            <span data-i18n="proc_s3_result">Al cerrar cada mes: qué creció y qué contactos aparecieron.</span>
           </p>
           <!-- DATO REAL PENDIENTE: reemplazar por cifra que pase el socio -->
           <!-- <p class="process-step-stat">Producimos en promedio <strong>[N] piezas</strong> de contenido por mes</p> -->
@@ -1105,6 +1133,14 @@
           </div>
           </div>
         </div>
+        <!-- MOCKUP PENDIENTE: descomentar cuando estén las capturas del perfil -->
+        <!--
+        <div class="process-step-mockup">
+          <div class="process-step-phone">
+            <img src="assets/perfil-paso-3.jpg" alt="Perfil del deportista publicando contenido en temporada" loading="lazy">
+          </div>
+        </div>
+        -->
       </div>
     </div>
 
@@ -1150,7 +1186,7 @@
 
     <div class="process-node process-node-end reveal">
       <div class="process-end-card">
-        <h4 class="process-end-tag" data-i18n="process_status_end">Llegaste acá</h4>
+        <h4 class="process-end-tag" data-i18n="process_status_end">Terminás acá</h4>
         <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
         <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
         <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
@@ -2105,28 +2141,28 @@
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
 
       process_title_a: 'El camino de tu', process_title_highlight: 'imagen,', process_title_b: 'paso a paso',
-      process_status_start: 'Estás acá',
+      process_status_start: 'Arrancás acá',
       process_start_text: 'Tenés talento. Tu imagen todavía no lo cuenta.',
       process_yours_label: 'Tu parte',
-      proc_step1_label: 'Paso 1', proc_s1_badge: 'Diagnóstico',
-      proc_s1_title: 'Vemos dónde estás parado y qué te está frenando.',
+      proc_step1_label: 'Paso 1', proc_s1_badge: 'Pretemporada',
+      proc_s1_title: 'Antes de salir a la cancha, miramos el video.',
       proc_s1_desc: 'Miramos tus redes como las mira un club o una marca. Sin filtros: qué se entiende de vos hoy y qué se pierde en el camino.',
       proc_s1_chip1: 'Auditoría de redes', proc_s1_chip2: 'Informe de imagen', proc_s1_chip3: 'Reunión de devolución',
-      proc_s1_result: 'Al terminar: un informe con lo que hoy te está costando oportunidades.',
+      proc_s1_result: 'Al terminar: el informe de cómo te ve hoy un club o una marca.',
       proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
-      proc_step2_label: 'Paso 2', proc_s2_badge: 'Estrategia',
-      proc_s2_title: 'Armamos el plan que ordena tus próximos tres meses.',
+      proc_step2_label: 'Paso 2', proc_s2_badge: 'Plan de juego',
+      proc_s2_title: 'Definimos cómo vas a jugar los próximos tres meses.',
       proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
       proc_s2_chip1: 'Plan de 3 meses', proc_s2_chip2: 'Objetivos claros', proc_s2_chip3: 'Identidad visual definida',
-      proc_s2_result: 'Al terminar: tu calendario de contenido de los próximos 3 meses, aprobado.',
+      proc_s2_result: 'Al terminar: tu calendario de los próximos 3 meses, aprobado.',
       proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
-      proc_step3_label: 'Paso 3', proc_s3_badge: 'Ejecución',
-      proc_s3_title: 'Publicamos, medimos y te abrimos puertas.',
+      proc_step3_label: 'Paso 3', proc_s3_badge: 'Temporada',
+      proc_s3_title: 'Salimos a jugar, y medimos cada fecha.',
       proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
       proc_s3_chip1: 'Reporte mensual', proc_s3_chip2: 'Contacto con marcas', proc_s3_chip3: 'Highlights y matchday',
-      proc_s3_result: 'Al terminar cada mes: un reporte de qué creció y qué contactos aparecieron.',
+      proc_s3_result: 'Al cerrar cada mes: qué creció y qué contactos aparecieron.',
       proc_s3_yours: 'Jugar. Nos mandás el material del partido y seguimos nosotros.',
-      process_status_end: 'Llegaste acá',
+      process_status_end: 'Terminás acá',
       process_end_title: 'Una carrera que se cuenta sola',
       process_end_text: 'Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.',
       process_cta: 'Empezar el diagnóstico',
@@ -2222,28 +2258,28 @@
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
 
       process_title_a: 'The path to your', process_title_highlight: 'image,', process_title_b: 'one step at a time',
-      process_status_start: 'You are here',
+      process_status_start: 'You kick off here',
       process_start_text: 'You\'ve got the talent. Your image doesn\'t show it yet.',
       process_yours_label: 'Your part',
-      proc_step1_label: 'Step 1', proc_s1_badge: 'Diagnosis',
-      proc_s1_title: 'We find out where you stand and what\'s holding you back.',
+      proc_step1_label: 'Step 1', proc_s1_badge: 'Preseason',
+      proc_s1_title: 'Before you take the field, we watch the tape.',
       proc_s1_desc: 'We look at your social media the way a club or a brand would. No filters: what comes across today, and what gets lost along the way.',
       proc_s1_chip1: 'Social media audit', proc_s1_chip2: 'Image report', proc_s1_chip3: 'Feedback session',
-      proc_s1_result: 'When it\'s done: a report on what\'s costing you opportunities today.',
+      proc_s1_result: 'When it\'s done: the report on how a club or brand sees you today.',
       proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
-      proc_step2_label: 'Step 2', proc_s2_badge: 'Strategy',
-      proc_s2_title: 'We build the plan that organizes your next three months.',
+      proc_step2_label: 'Step 2', proc_s2_badge: 'Game plan',
+      proc_s2_title: 'We define how you\'ll play the next three months.',
       proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
       proc_s2_chip1: '3-month plan', proc_s2_chip2: 'Clear goals', proc_s2_chip3: 'Defined visual identity',
-      proc_s2_result: 'When it\'s done: your content calendar for the next 3 months, approved.',
+      proc_s2_result: 'When it\'s done: your calendar for the next 3 months, approved.',
       proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
-      proc_step3_label: 'Step 3', proc_s3_badge: 'Execution',
-      proc_s3_title: 'We publish, measure, and open doors for you.',
+      proc_step3_label: 'Step 3', proc_s3_badge: 'Season',
+      proc_s3_title: 'We take the field, and track every matchday.',
       proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
       proc_s3_chip1: 'Monthly report', proc_s3_chip2: 'Brand outreach', proc_s3_chip3: 'Highlights and matchday',
-      proc_s3_result: 'At the end of each month: a report on what grew and which contacts came in.',
+      proc_s3_result: 'At the close of each month: what grew and which contacts came in.',
       proc_s3_yours: 'Play. You send us the matchday material and we take it from there.',
-      process_status_end: 'You made it',
+      process_status_end: 'You finish here',
       process_end_title: 'A career that speaks for itself',
       process_end_text: 'A polished profile, steady content, and brands paying attention. The first step takes 30 minutes.',
       process_cta: 'Start the discovery process',
