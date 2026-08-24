@@ -486,10 +486,11 @@
      (para sentirse atado al scroll), todo posicionado por JS a partir del
      centro real de cada punto (ver el bloque de script de "Cómo
      trabajamos" al final del archivo), porque depende del alto de las
-     tarjetas — cambia con el idioma y con el ancho de pantalla. Mismo
-     ancho y offset que tenía el conector viejo, para que seguir alineada
-     con la columna del número sea automático. */
-  .process-line-track,.process-line-fill{position:absolute;width:2px;pointer-events:none}
+     tarjetas — cambia con el idioma y con el ancho de pantalla. Un solo
+     ancho para las dos capas (nunca se desalinean entre sí); el JS resta
+     la mitad de ese ancho al centrar contra el punto, así que si este
+     valor cambia el centrado se ajusta solo, sin tocar el script. */
+  .process-line-track,.process-line-fill{position:absolute;width:5px;pointer-events:none}
   .process-line-track{background:color-mix(in srgb, var(--bg) 20%, transparent)}
   .process-line-fill{background:var(--accent);height:0}
 
@@ -548,13 +549,18 @@
      entrar a cada uno. */
   .process-step-row[data-step="1"]{transition-delay:.12s}
   .process-step-row[data-step="2"]{transition-delay:.24s}
-  .process-step-num-col{position:absolute;left:0;top:6px;width:140px;display:flex;align-items:center;gap:10px}
+  .process-step-num-col{position:absolute;left:0;top:3px;width:140px;display:flex;align-items:center;gap:10px}
   /* Arranca apagado (mismo tono que la línea de fondo) y se enciende en
      lima cuando el relleno de la línea lo alcanza (JS agrega/saca .on) —
      con una transición corta para que el encendido no sea un salto. */
-  .process-step-dot{flex:none;width:10px;height:10px;border-radius:50%;background:color-mix(in srgb, var(--bg) 20%, transparent);transition:background-color .25s ease}
+  .process-step-dot{flex:none;width:16px;height:16px;border-radius:50%;background:color-mix(in srgb, var(--bg) 20%, transparent);transition:background-color .25s ease}
   .process-step-dot.on{background:var(--accent)}
-  .process-step-num{white-space:nowrap}
+  /* Rótulo de nivel: se lee como tal, más grande que el cuerpo de la
+     tarjeta — sólo el tamaño se pisa acá, la familia (Anton), mayúsculas,
+     tracking y leading siguen viniendo del h4 base (--title-tracking/
+     --title-leading), unificados con el resto de la jerarquía tipográfica. */
+  .process-step-num{font-size:22px;white-space:nowrap}
+  @media(max-width:640px){.process-step-num{font-size:18px}}
 
   /* Mockup de celular con la captura del perfil en esa etapa — todavía sin
      usar (ver el comentario "MOCKUP PENDIENTE" en cada paso del HTML). Va
@@ -1672,6 +1678,10 @@
     const journey = document.getElementById('processJourney');
     if (!journey || !processLineTrack || !processLineFill || processLineDots.length < 2) return;
     const journeyRect = journey.getBoundingClientRect();
+    // El ancho de la línea es el mismo para track y fill (ver CSS); se lee
+    // acá en vez de hardcodearlo para que el centrado se ajuste solo si
+    // ese valor cambia.
+    const lineWidth = processLineTrack.getBoundingClientRect().width;
     const centers = processLineDots.map(dot => {
       const r = dot.getBoundingClientRect();
       return { x: r.left + r.width / 2 - journeyRect.left, y: r.top + r.height / 2 - journeyRect.top };
@@ -1680,7 +1690,8 @@
     const last = centers[centers.length - 1];
     processLineTotalHeight = Math.max(0, last.y - first.y);
     processLineDotOffsets = centers.map(c => c.y - first.y);
-    processLineTrack.style.left = processLineFill.style.left = first.x + 'px';
+    const lineLeft = first.x - lineWidth / 2;
+    processLineTrack.style.left = processLineFill.style.left = lineLeft + 'px';
     processLineTrack.style.top = processLineFill.style.top = first.y + 'px';
     processLineTrack.style.height = processLineTotalHeight + 'px';
   }
