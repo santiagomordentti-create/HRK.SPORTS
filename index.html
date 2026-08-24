@@ -523,15 +523,23 @@
   .faq-cta{position:relative;z-index:1;text-align:center;margin-top:var(--space-block)}
   .faq-cta-note{font-size:.82rem;color:var(--proc-ink-faint);margin-top:var(--space-item)}
 
-  /* Filas de pasos — misma estructura en las tres, sin zigzag: columna
-     angosta fija con "Paso N" a la izquierda, tarjeta ocupando el resto. */
-  .process-step-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:clamp(28px,4vw,64px)}
+  /* Filas de pasos — misma estructura en las tres, sin zigzag. La tarjeta
+     se centra en el eje del contenedor (el mismo del título de la
+     sección) con margin-inline:auto; "Paso N" NO es su compañera de fila
+     — va aparte, posicionada contra el borde izquierdo del contenedor,
+     para no correr ese centrado ni sumar anchos. El ancho de la tarjeta
+     reserva simétricamente (140px de columna + 24px de aire) a los dos
+     lados aunque sólo se use el de la izquierda: así "Paso N" nunca la
+     pisa, en cualquier ancho, sin necesidad de un breakpoint intermedio
+     — a los anchos de verificación (1440/1280/1920) ya da los 850px de
+     objetivo, porque ahí el contenedor está topado en su --container. */
+  .process-step-row{position:relative;z-index:1}
   /* Escalonado corto de los tres pasos como una sola unidad: los disparan
      juntos (ver data-reveal-group en el JS), y sólo cambia cuándo le toca
      entrar a cada uno. */
   .process-step-row[data-step="1"]{transition-delay:.12s}
   .process-step-row[data-step="2"]{transition-delay:.24s}
-  .process-step-num-col{flex:none;width:140px;display:flex;align-items:center;gap:10px;padding-top:6px}
+  .process-step-num-col{position:absolute;left:0;top:6px;width:140px;display:flex;align-items:center;gap:10px}
   .process-step-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent)}
   .process-step-num{white-space:nowrap}
 
@@ -546,14 +554,16 @@
   @media(max-width:1100px){.process-step-mockup{width:160px}}
   @media(max-width:900px){.process-step-mockup{display:none}}
 
-  .process-step-card{flex:1;min-width:0;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);padding:var(--proc-pad);box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
-  /* Un solo bloque de 620px para todo el contenido de la tarjeta —badge,
-     título, párrafo, resultado y "Tu parte"— centrado dentro de la tarjeta
-     (el texto adentro sigue alineado a la izquierda: lo que se centra es
-     el bloque, no cada línea). Cinco elementos siempre, mismo orden y
-     mismo ritmo vertical en las tres tarjetas: tight entre badge y título,
-     item entre el resto. */
-  .process-step-body{max-width:620px;margin-inline:auto}
+  .process-step-card{width:min(850px, 100% - 328px);margin-inline:auto;background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);padding:var(--proc-pad);box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
+  /* Un solo bloque para todo el contenido de la tarjeta —badge, título,
+     párrafo, resultado y "Tu parte"— centrado dentro de la tarjeta (el
+     texto adentro sigue alineado a la izquierda: lo que se centra es el
+     bloque, no cada línea). Cinco elementos siempre, mismo orden y mismo
+     ritmo vertical en las tres tarjetas: tight entre badge y título, item
+     entre el resto. 630px (no los 740px del ancho "de catálogo") porque
+     con esta copia y esta tipografía, a 740px la línea más larga pasa los
+     90 caracteres (~102); 630px es el techo real que la mantiene debajo. */
+  .process-step-body{max-width:630px;margin-inline:auto}
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:var(--radius-sm)}
   .process-step-title{margin-top:var(--space-tight)}
   .process-step-desc{font-size:16px;line-height:1.5;margin-top:var(--space-item);color:var(--proc-ink-soft)}
@@ -579,8 +589,9 @@
     .process-faq-a,.process-faq-icon::after{transition:none}
   }
   @media(max-width:900px){
-    .process-step-row{flex-direction:column;gap:var(--space-tight)}
-    .process-step-num-col{width:auto;justify-content:center;padding-top:0}
+    .process-step-row{display:flex;flex-direction:column;gap:var(--space-tight)}
+    .process-step-num-col{position:static;left:auto;top:auto;width:auto;justify-content:center;padding-top:0}
+    .process-step-card{width:100%;margin-inline:0}
     .process-connector{width:auto;height:24px}
     .process-connector::before{left:50%;transform:translateX(-50%)}
   }
