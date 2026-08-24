@@ -472,17 +472,26 @@
 
   /* Recorrido */
   /* Sin gap uniforme a propósito: entre el nodo de inicio y el paso 1 el
-     espacio es --space-block (margin-top explícito en el primer paso),
-     pero entre pasos el conector de 40px YA ES todo el espacio — un gap
-     acá se sumaría a esos 40px y volveríamos a un salto grande. */
-  .process-journey{display:flex;flex-direction:column}
+     espacio es --space-block (margin-top explícito en el primer paso);
+     entre pasos son 40px fijos (24px en mobile) — antes ese espacio lo
+     daba un conector de relleno, ahora es margin-top directo porque el
+     conector pasó a ser una única línea continua superpuesta (ver más
+     abajo), no una pieza por hueco. */
+  .process-journey{display:flex;flex-direction:column;position:relative}
   .process-step-row[data-step="0"]{margin-top:var(--space-block)}
-  /* Conector: línea fina + punto en cada paso, todo en la columna angosta
-     de la izquierda (mismo ancho fijo que .process-step-num-col, mismo
-     offset horizontal para el punto y la línea) — así se ve continua entre
-     los tres pasos sin medir nada por JS. */
-  .process-connector{width:140px;height:40px;position:relative}
-  .process-connector::before{content:"";position:absolute;left:4px;top:0;bottom:0;width:2px;background:var(--accent);opacity:.5}
+  .process-step-row[data-step="1"],.process-step-row[data-step="2"]{margin-top:40px}
+  /* Línea conectora con progreso de scroll: dos capas superpuestas en vez
+     de una — el fondo apagado queda fijo (todo el trayecto, siempre
+     visible) y el relleno lima crece por arriba sin transición propia
+     (para sentirse atado al scroll), todo posicionado por JS a partir del
+     centro real de cada punto (ver el bloque de script de "Cómo
+     trabajamos" al final del archivo), porque depende del alto de las
+     tarjetas — cambia con el idioma y con el ancho de pantalla. Mismo
+     ancho y offset que tenía el conector viejo, para que seguir alineada
+     con la columna del número sea automático. */
+  .process-line-track,.process-line-fill{position:absolute;width:2px;pointer-events:none}
+  .process-line-track{background:color-mix(in srgb, var(--bg) 20%, transparent)}
+  .process-line-fill{background:var(--accent);height:0}
 
   /* Nodo de inicio */
   .process-node{position:relative;z-index:1;text-align:center}
@@ -540,7 +549,11 @@
   .process-step-row[data-step="1"]{transition-delay:.12s}
   .process-step-row[data-step="2"]{transition-delay:.24s}
   .process-step-num-col{position:absolute;left:0;top:6px;width:140px;display:flex;align-items:center;gap:10px}
-  .process-step-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  /* Arranca apagado (mismo tono que la línea de fondo) y se enciende en
+     lima cuando el relleno de la línea lo alcanza (JS agrega/saca .on) —
+     con una transición corta para que el encendido no sea un salto. */
+  .process-step-dot{flex:none;width:10px;height:10px;border-radius:50%;background:color-mix(in srgb, var(--bg) 20%, transparent);transition:background-color .25s ease}
+  .process-step-dot.on{background:var(--accent)}
   .process-step-num{white-space:nowrap}
 
   /* Mockup de celular con la captura del perfil en esa etapa — todavía sin
@@ -590,10 +603,9 @@
   }
   @media(max-width:900px){
     .process-step-row{display:flex;flex-direction:column;gap:var(--space-tight)}
+    .process-step-row[data-step="1"],.process-step-row[data-step="2"]{margin-top:24px}
     .process-step-num-col{position:static;left:auto;top:auto;width:auto;justify-content:center;padding-top:0}
     .process-step-card{width:100%;margin-inline:0}
-    .process-connector{width:auto;height:24px}
-    .process-connector::before{left:50%;transform:translateX(-50%)}
   }
 
   /* ---------- PRENSA (FRANJA A SANGRE) ---------- */
@@ -1025,6 +1037,8 @@
     </div>
 
     <div class="process-journey" id="processJourney">
+      <div class="process-line-track" id="processLineTrack" aria-hidden="true"></div>
+      <div class="process-line-fill" id="processLineFill" aria-hidden="true"></div>
       <div class="process-node process-node-start reveal" data-reveal-group="proceso-intro">
         <h4 class="process-status-chip">
           <span class="process-status-dot" aria-hidden="true"></span>
@@ -1066,8 +1080,6 @@
         -->
       </div>
 
-      <div class="process-connector" aria-hidden="true"></div>
-
       <div class="process-step-row process-step-follow" data-reveal-group="proceso-steps" data-step="1">
         <div class="process-step-num-col">
           <span class="process-step-dot" aria-hidden="true"></span>
@@ -1100,8 +1112,6 @@
         </div>
         -->
       </div>
-
-      <div class="process-connector" aria-hidden="true"></div>
 
       <div class="process-step-row process-step-follow" data-reveal-group="proceso-steps" data-step="2">
         <div class="process-step-num-col">
@@ -1637,6 +1647,105 @@
         }
       });
     });
+  })();
+
+  // "Cómo trabajamos" — línea conectora con progreso de scroll: una capa
+  // de fondo apagada fija (todo el trayecto) y, encima, el relleno lima
+  // que crece con el scroll, sin transición propia (para sentirse atado
+  // al movimiento, no animado aparte). El progreso usa el mismo criterio
+  // que el scroll-scrubbing de "Quiénes somos" — la posición del punto
+  // contra el viewport, no el final de la sección —: 0% cuando el primer
+  // punto entra en pantalla (su borde superior toca el piso de la
+  // ventana), 100% cuando el último punto está cómodo, al 60% del alto
+  // de la ventana. Los puntos se prenden comparando su propio offset
+  // dentro de la línea contra ese avance, no con delays fijos. Expuesta
+  // como funciones sueltas (no en la IIFE de arriba) porque applyI18n
+  // necesita volver a llamarla cuando cambia el idioma — el alto de las
+  // tarjetas cambia con el texto.
+  const processLineDots = Array.from(document.querySelectorAll('#processJourney .process-step-dot'));
+  const processLineTrack = document.getElementById('processLineTrack');
+  const processLineFill = document.getElementById('processLineFill');
+  let processLineTotalHeight = 0;
+  let processLineDotOffsets = [];
+
+  function updateProcessLineLayout() {
+    const journey = document.getElementById('processJourney');
+    if (!journey || !processLineTrack || !processLineFill || processLineDots.length < 2) return;
+    const journeyRect = journey.getBoundingClientRect();
+    const centers = processLineDots.map(dot => {
+      const r = dot.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - journeyRect.left, y: r.top + r.height / 2 - journeyRect.top };
+    });
+    const first = centers[0];
+    const last = centers[centers.length - 1];
+    processLineTotalHeight = Math.max(0, last.y - first.y);
+    processLineDotOffsets = centers.map(c => c.y - first.y);
+    processLineTrack.style.left = processLineFill.style.left = first.x + 'px';
+    processLineTrack.style.top = processLineFill.style.top = first.y + 'px';
+    processLineTrack.style.height = processLineTotalHeight + 'px';
+  }
+
+  function processLineProgress() {
+    const vh = window.innerHeight;
+    const r0 = processLineDots[0].getBoundingClientRect();
+    const rN = processLineDots[processLineDots.length - 1].getBoundingClientRect();
+    const startTrigger = vh;      // el primer punto "entra en pantalla"
+    const endTrigger = vh * 0.6;  // el último punto, cómodo, al 60% de la ventana
+    const denom = (vh - endTrigger) + (rN.top - r0.top);
+    if (denom <= 0) return 1;
+    const raw = (startTrigger - r0.top) / denom;
+    return raw < 0 ? 0 : raw > 1 ? 1 : raw;
+  }
+
+  function renderProcessLine() {
+    if (!processLineFill || processLineDots.length < 2) return;
+    const fillPx = processLineProgress() * processLineTotalHeight;
+    processLineFill.style.height = fillPx + 'px';
+    processLineDots.forEach((dot, i) => {
+      dot.classList.toggle('on', fillPx >= processLineDotOffsets[i] - 0.5);
+    });
+  }
+
+  // Punto de entrada único: recalcula el layout y, según prefers-reduced-
+  // motion, deja todo prendido de una o vuelve a dibujar según el scroll
+  // actual. La llama tanto el arranque de acá abajo como applyI18n.
+  function refreshProcessLine() {
+    if (!processLineTrack || !processLineFill || processLineDots.length < 2) return;
+    updateProcessLineLayout();
+    if (reduceMotionActive()) {
+      processLineFill.style.height = processLineTotalHeight + 'px';
+      processLineDots.forEach(dot => dot.classList.add('on'));
+    } else {
+      renderProcessLine();
+    }
+  }
+
+  (function () {
+    if (!processLineTrack || !processLineFill || processLineDots.length < 2) return;
+    refreshProcessLine();
+
+    // Si las tipografías (Anton/Archivo) todavía no habían cargado en el
+    // primer cálculo, "Paso N" mide distinto con la fuente de sistema y
+    // el punto queda corrido — se recalcula apenas terminan de aplicarse
+    // (afecta a las dos ramas: la del scroll y la de prefers-reduced-motion).
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(refreshProcessLine);
+    }
+
+    if (reduceMotionActive()) return;
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { renderProcessLine(); ticking = false; });
+    }, { passive: true });
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(refreshProcessLine, 120);
+    }, { passive: true });
   })();
 
   // "Quiénes somos" — genera tantas líneas de "HRK.SPORTS" como hagan falta para
@@ -2330,6 +2439,7 @@
     });
     document.documentElement.lang = dict === 'en' ? 'en' : 'es-AR';
     renderAthletes(dict);
+    refreshProcessLine();
     document.querySelectorAll('#langCurrent, #langCurrentMobile').forEach(el => { el.textContent = dict.toUpperCase(); });
     document.querySelectorAll('.lang-option').forEach(btn => {
       const isActive = btn.dataset.lang === dict;
