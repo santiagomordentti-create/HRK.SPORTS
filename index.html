@@ -178,33 +178,40 @@
   .btn-secondary:hover{border-color:#fff;box-shadow:var(--glow-hover)}
 
   /* ---------- QUIÉNES SOMOS ---------- */
-  /* El borde inferior en forma de onda se logra RECORTANDO la sección con
+  /* Los dos bordes en forma de onda (arriba, contra el video del hero;
+     abajo, contra la foto de Prensa) se logran RECORTANDO la sección con
      un mask-image (no rellenando un path sólido aparte): así lo que se ve
-     por encima de la curva es el fondo real de la sección (--bg, plano),
-     nunca un color aproximado que pueda desentonar. La máscara tiene dos
-     capas: un rectángulo sólido
-     que cubre todo menos los últimos 90px (54px en mobile) — para que el
-     resto de la sección quede intacto — y la curva de la onda en esa franja
-     final. Prensa se sube por debajo con margin-top negativo para que su
-     foto quede justo detrás del recorte, y #nosotros necesita z-index para
-     pintarse arriba en esa zona de superposición. La línea lima que calca
-     el mismo path se agrega como capa aparte al final de la sección.  */
+     a los lados de la curva es lo que hay realmente detrás — el video en
+     el borde superior, la foto de Prensa en el inferior — nunca un color
+     aproximado que pueda desentonar. La máscara tiene tres capas: la curva
+     de arriba, un rectángulo sólido en el medio que cubre el resto de la
+     sección, y la curva de abajo (90px cada franja de onda, 54px en
+     mobile). #nosotros se sube por arriba con margin-top negativo para
+     solaparse con el video (mismo criterio que usa Prensa para solaparse
+     con #nosotros por abajo) y necesita z-index para pintarse arriba del
+     hero en esa zona de superposición. Las líneas lima que calcan esos
+     mismos paths se agregan como capa aparte (.media-wave), sin relleno. */
   #nosotros{
-    --wave-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,86%20C144,86%20144,32%20288,32%20C432,32%20432,86%20576,86%20C720,86%20720,32%20864,32%20C1008,32%201008,86%201152,86%20C1296,86%201296,32%201440,32%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
+    --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,33%20C120,33%20120,85%20240,85%20C360,85%20360,33%20480,33%20C600,33%20600,85%20720,85%20C840,85%20840,33%20960,33%20C1080,33%201080,85%201200,85%20C1320,85%201320,33%201440,33%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
+    --wave-mask-bottom:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,86%20C144,86%20144,32%20288,32%20C432,32%20432,86%20576,86%20C720,86%20720,32%20864,32%20C1008,32%201008,86%201152,86%20C1296,86%201296,32%201440,32%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
     position:relative;z-index:1;overflow:hidden;
-    -webkit-mask-image:linear-gradient(#000,#000),var(--wave-mask);
-    -webkit-mask-size:100% calc(100% - 90px),100% 90px;
-    -webkit-mask-position:top left,bottom left;
-    -webkit-mask-repeat:no-repeat,no-repeat;
-    mask-image:linear-gradient(#000,#000),var(--wave-mask);
-    mask-size:100% calc(100% - 90px),100% 90px;
-    mask-position:top left,bottom left;
-    mask-repeat:no-repeat,no-repeat;
+    margin-top:-90px;
+    -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    -webkit-mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    -webkit-mask-position:top left,0 90px,bottom left;
+    -webkit-mask-repeat:no-repeat,no-repeat,no-repeat;
+    mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    mask-position:top left,0 90px,bottom left;
+    mask-repeat:no-repeat,no-repeat,no-repeat;
   }
   @media(max-width:640px){
     #nosotros{
-      -webkit-mask-size:100% calc(100% - 54px),100% 54px;
-      mask-size:100% calc(100% - 54px),100% 54px;
+      margin-top:-54px;
+      -webkit-mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      -webkit-mask-position:top left,0 54px,bottom left;
+      mask-position:top left,0 54px,bottom left;
     }
     .press{margin-top:-54px}
   }
@@ -778,7 +785,6 @@
 <section id="nosotros" class="about">
   <div class="media-wave top" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33 L1440,0 L0,0 Z" fill="var(--bg)"/>
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
