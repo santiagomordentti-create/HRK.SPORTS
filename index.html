@@ -425,20 +425,26 @@
      (--bg) para puntuar el recorrido. Los tres pasos van uno debajo del
      otro (sin zigzag) y se conectan con una línea + puntos simples — nada
      de SVG medido/redibujado por JS. */
-  #proceso{
+  /* #faq comparte la paleta clara de #proceso: misma banda de fondo, sin
+     onda separadora entre ambas (evita dos secciones claras seguidas con
+     un separador de por medio) — el único wave-seam de este tramo pasó a
+     vivir entre #faq y #contacto. */
+  #proceso, #faq{
     --proc-ink:var(--bg);
     --proc-ink-soft:color-mix(in srgb, var(--bg) 68%, transparent);
     --proc-ink-faint:color-mix(in srgb, var(--bg) 50%, transparent);
     --proc-card-bg:#fff;
     --proc-border:1.5px solid color-mix(in srgb, var(--bg) 12%, transparent);
-    --proc-pad:clamp(26px,3vw,44px);
+    --proc-pad:28px;
     --proc-contrast-bg:var(--bg);
     --proc-contrast-ink:#fff;
     position:relative;
     background:var(--bg-light);
     color:var(--proc-ink);
   }
-  #proceso .wrap{position:relative;z-index:1}
+  #proceso .wrap, #faq .wrap{position:relative;z-index:1}
+  #proceso{padding-bottom:var(--space-block)}
+  #faq{padding-top:var(--space-block)}
 
   /* Encabezado */
   .process-head{margin:0 auto var(--space-block);text-align:center}
@@ -469,10 +475,10 @@
     50%{box-shadow:0 0 0 6px rgba(215,245,81,0)}
   }
 
-  /* Mini-FAQ — vive fuera de #processJourney (no forma parte del recorrido
-     de pasos numerados), con su propio margin-top hacia el paso 3. */
-  .process-faq{position:relative;z-index:1;max-width:760px;margin:var(--space-block) auto 0}
-  .process-faq-title{color:var(--proc-ink-faint);text-align:center;margin-bottom:var(--space-tight)}
+  /* FAQ — sección propia (#faq), con su título en el h2 del .process-head
+     de esa sección; el margen hacia ese título ya lo da el margin-bottom
+     de .process-head, así que acá no se repite. */
+  .process-faq{position:relative;z-index:1;max-width:760px;margin:0 auto}
   .process-faq-list{background:var(--proc-card-bg);border:var(--proc-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 10px 34px color-mix(in srgb, var(--bg) 6%, transparent)}
   .process-faq-item{border-top:1px solid color-mix(in srgb, var(--bg) 10%, transparent)}
   .process-faq-item:first-child{border-top:0}
@@ -493,15 +499,10 @@
   .process-faq-item.open .process-faq-a{max-height:220px}
   .process-faq-a p{padding:0 24px 20px;font-size:.95rem;line-height:1.55;color:var(--proc-ink-soft)}
 
-  /* Tarjeta final — misma escala que las tarjetas de paso: tight entre la
-     etiqueta y el título, item entre el resto de los bloques. */
-  .process-node-end{margin-top:var(--space-block)}
-  .process-end-card{background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);border-radius:var(--radius-lg);padding:var(--proc-pad);max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.18)}
-  .process-end-tag{color:var(--accent)}
-  .process-end-title{margin-top:var(--space-tight)}
-  .process-end-text{font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:440px;margin-top:var(--space-item)}
-  .process-end-card>.btn{margin-top:var(--space-item)}
-  .process-end-note{font-size:.82rem;color:rgba(255,255,255,.55);margin-top:var(--space-item)}
+  /* CTA de cierre de #faq — mismo botón que usaba la tarjeta de destino
+     final, ahora suelto debajo del acordeón. */
+  .faq-cta{position:relative;z-index:1;text-align:center;margin-top:var(--space-block)}
+  .faq-cta-note{font-size:.82rem;color:var(--proc-ink-faint);margin-top:var(--space-item)}
 
   /* Filas de pasos — misma estructura en las tres, sin zigzag: columna
      angosta fija con "Paso N" a la izquierda, tarjeta ocupando el resto. */
@@ -531,7 +532,7 @@
   .process-step-body{max-width:620px;margin-inline:auto}
   .process-step-badge{display:inline-flex;align-items:center;background:var(--accent);color:var(--accent-ink);padding:6px 12px;border-radius:var(--radius-sm)}
   .process-step-title{margin-top:var(--space-tight)}
-  .process-step-desc{font-size:17px;line-height:1.6;margin-top:var(--space-item);color:var(--proc-ink-soft)}
+  .process-step-desc{font-size:16px;line-height:1.5;margin-top:var(--space-item);color:var(--proc-ink-soft)}
   /* Dato duro opcional (cantidad de deportistas, tiempo real de la etapa,
      piezas por mes...): la regla queda lista para cuando se descomente el
      marcador "DATO REAL PENDIENTE" correspondiente en el HTML de cada paso. */
@@ -552,9 +553,6 @@
   @media(prefers-reduced-motion:reduce){
     .process-status-dot{animation:none}
     .process-faq-a,.process-faq-icon::after{transition:none}
-  }
-  @media(max-width:1024px){
-    .process-step-card{padding:clamp(22px,3vw,36px)}
   }
   @media(max-width:900px){
     .process-step-row{flex-direction:column;gap:var(--space-tight)}
@@ -1098,9 +1096,17 @@
         -->
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+<section id="faq" class="faq-section">
+  <div class="wrap">
+    <div class="process-head reveal">
+      <h2 class="process-title" data-i18n="process_faq_title">Preguntas frecuentes</h2>
+    </div>
 
     <div class="process-faq reveal">
-      <h4 class="process-faq-title" data-i18n="process_faq_title">Preguntas frecuentes</h4>
       <div class="process-faq-list">
         <div class="process-faq-item">
           <h3 class="process-faq-q-heading">
@@ -1139,14 +1145,9 @@
       </div>
     </div>
 
-    <div class="process-node process-node-end reveal">
-      <div class="process-end-card">
-        <h4 class="process-end-tag" data-i18n="process_status_end">Terminás acá</h4>
-        <h3 class="process-end-title" data-i18n="process_end_title">Una carrera que se cuenta sola</h3>
-        <p class="process-end-text" data-i18n="process_end_text">Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.</p>
-        <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
-        <p class="process-end-note" data-i18n="process_end_marks">Sin compromiso · 30 minutos · Respondemos en 24 hs</p>
-      </div>
+    <div class="faq-cta reveal">
+      <a href="#contacto" class="btn" data-i18n="process_cta">Empezar el diagnóstico</a>
+      <p class="faq-cta-note" data-i18n="process_end_marks">Sin compromiso · 30 minutos · Respondemos en 24 hs</p>
     </div>
   </div>
 </section>
@@ -1996,9 +1997,6 @@
       proc_s3_desc: 'Contenido de matchday, highlights y reportes todos los meses. Cuando tu perfil ya sostiene una conversación, te acercamos marcas.',
       proc_s3_result: 'Al cerrar cada mes: qué creció y qué contactos aparecieron — reporte mensual, contacto con marcas y highlights.',
       proc_s3_yours: 'Jugar. Nos mandás el material del partido y seguimos nosotros.',
-      process_status_end: 'Terminás acá',
-      process_end_title: 'Una carrera que se cuenta sola',
-      process_end_text: 'Perfil ordenado, contenido constante y marcas que te miran. El primer paso son 30 minutos.',
       process_cta: 'Empezar el diagnóstico',
       process_end_marks: 'Sin compromiso · 30 minutos · Respondemos en 24 hs',
       process_faq_title: 'Preguntas frecuentes',
@@ -2110,9 +2108,6 @@
       proc_s3_desc: 'Matchday content, highlights, and reports every month. Once your profile can hold a conversation on its own, we bring brands to you.',
       proc_s3_result: 'At the close of each month: what grew and which contacts came in — monthly report, brand outreach and highlights.',
       proc_s3_yours: 'Play. You send us the matchday material and we take it from there.',
-      process_status_end: 'You finish here',
-      process_end_title: 'A career that speaks for itself',
-      process_end_text: 'A polished profile, steady content, and brands paying attention. The first step takes 30 minutes.',
       process_cta: 'Start the discovery process',
       process_end_marks: 'No commitment · 30 minutes · We respond within 24 hours',
       process_faq_title: 'Frequently asked questions',
