@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gracias por tu consulta — HRK Sports</title>
+<meta name="description" content="Recibimos tu consulta. El equipo de HRK Sports te responde en menos de 24 horas.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#16161a">
+<!-- ⚠ hrk-sports.vercel.app es la URL real actual. Cuando se conecte el dominio propio, actualizar esta canonical igual que en index.html. -->
+<link rel="canonical" href="https://hrk-sports.vercel.app/gracias.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Expanded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#16161a;
+    --surface:#1e1e23;
+    --card:var(--surface);
+    --ink:#ffffff;
+    --ink-faint:rgba(255,255,255,.6);
+    --line:rgba(255,255,255,.16);
+    --accent:#D7F551;
+    --accent-hover:#e3ff6e;
+    --accent-ink:var(--bg);
+    --accent-deep:#5c6810;
+    --bg-light:#faf8f6;
+    --glow-hover:0 0 8px rgba(255,255,255,.2);
+    --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
+    --radius-sm:8px;
+    --radius-lg:24px;
+    --container:1280px;
+    --container-pad:48px;
+    --space-section:96px;
+    --space-item:24px;
+    --font:'Archivo',system-ui,sans-serif;
+    --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
+    --title:'Anton',var(--display),sans-serif;
+    --title-tracking:0.02em;
+    --title-leading:0.95;
+    --h1:clamp(1.35rem,6.5vw + .1rem,5.75rem);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--container-pad)}
+  section{padding:var(--space-section) 0;scroll-margin-top:90px}
+
+  /* ---------- NAV (idéntico a index.html, sin selector de idioma:
+     esta página sólo existe en español) ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:200}
+  header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,10,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px;padding:0 16px}
+  .nav-group{display:flex;align-items:center}
+  .nav-group.left{justify-content:space-evenly}
+  .nav-group.right{justify-content:space-evenly}
+  .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-size:.8125rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9a9aa5;transition:color .2s ease;white-space:nowrap}
+  .nav-group .nav-link{font-size:.875rem;letter-spacing:.04em}
+  .nav-link:hover{color:var(--accent)}
+  .logo{grid-column:2;display:inline-flex;align-items:center;justify-self:center;gap:9px;font-family:var(--title);font-weight:400;font-size:1.625rem;line-height:var(--title-leading);letter-spacing:var(--title-tracking);text-transform:uppercase;color:#fff}
+  .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .burger{grid-column:3;justify-self:end;display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;position:relative;z-index:160}
+  .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto;transition:.3s}
+  .nav-links{display:none}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;gap:10px;background:var(--accent);color:var(--accent-ink) !important;padding:10px 22px;border-radius:var(--radius-sm);font-weight:700;font-size:1rem;border:0;cursor:pointer;text-decoration:none;box-shadow:0 0 6px rgba(215,245,81,.25);transition:background .2s ease,box-shadow .2s ease}
+  .btn:hover{background:var(--accent-hover);box-shadow:0 0 10px rgba(227,255,110,.4)}
+
+  /* ---------- GRACIAS ---------- */
+  .thanks{min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--bg);color:#fff}
+  .thanks-content{max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:var(--space-item)}
+  .thanks-title{font-family:var(--title);font-weight:400;text-transform:uppercase;font-size:var(--h1);line-height:var(--title-leading);letter-spacing:var(--title-tracking)}
+  .thanks-text{font-size:1.125rem;line-height:1.6;color:rgba(255,255,255,.85)}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--bg-light);color:var(--bg);padding:36px 0}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap}
+  .foot .logo{color:var(--bg);font-size:1.1rem}
+  .foot p{color:#57534d;font-size:.85rem}
+  .foot-social{display:flex;gap:var(--space-item)}
+  .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
+  .foot-social a:hover{color:var(--accent-deep)}
+
+  /* ---------- WHATSAPP FLOTANTE ---------- */
+  .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
+  .whatsapp-float:hover{box-shadow:var(--glow-hover)}
+  .whatsapp-float svg{width:28px;height:28px}
+
+  /* ---------- SEPARADOR ONDULADO ---------- */
+  .wave-seam{position:relative;width:100%;height:90px;line-height:0;pointer-events:none}
+  .wave-seam svg{display:block;width:100%;height:100%}
+  @media(max-width:640px){.wave-seam{height:54px}}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:960px){
+    .nav-group{display:none}
+    .nav-links{display:flex;position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .3s;z-index:150}
+    .nav-links.open{transform:none}
+    .nav-links .nav-link{font-size:1.2rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:6px 0}
+    .nav-links a.btn{font-size:1.2rem}
+    .burger{display:block}
+    body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--ink)}
+    body.menu-open .burger span:nth-child(2){opacity:0}
+    body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--ink)}
+  }
+  @media(max-width:680px){
+    :root{
+      --container-pad:24px;
+      --space-section:64px;
+    }
+    footer{padding-bottom:96px}
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <nav class="nav-group left" aria-label="Navegación principal">
+      <a href="index.html#nosotros" class="nav-link">Nosotros</a>
+      <a href="index.html#prensa" class="nav-link">Blog</a>
+      <a href="index.html#servicios" class="nav-link">Servicios</a>
+      <a href="index.html#trabajo" class="nav-link">Proyectos</a>
+    </nav>
+    <a href="index.html" class="logo"><span class="logo-dot" aria-hidden="true"></span>HRK.SPORTS</a>
+    <nav class="nav-group right" aria-label="Navegación secundaria">
+      <a href="index.html#deportistas" class="nav-link">Deportistas</a>
+      <a href="index.html#proceso" class="nav-link">Proceso</a>
+      <a href="index.html#contacto" class="nav-link">Contacto</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html#nosotros" class="nav-link">Nosotros</a>
+    <a href="index.html#prensa" class="nav-link">Blog</a>
+    <a href="index.html#servicios" class="nav-link">Servicios</a>
+    <a href="index.html#trabajo" class="nav-link">Proyectos</a>
+    <a href="index.html#deportistas" class="nav-link">Deportistas</a>
+    <a href="index.html#proceso" class="nav-link">Proceso</a>
+    <a href="index.html#contacto" class="btn">Contacto</a>
+  </nav>
+</header>
+
+<main>
+<section class="thanks">
+  <div class="wrap thanks-content">
+    <h1 class="thanks-title">Gracias por escribirnos</h1>
+    <p class="thanks-text">Recibimos tu mensaje. Te respondemos en menos de 24&nbsp;hs.</p>
+    <a href="index.html" class="btn">Volver al inicio</a>
+  </div>
+</section>
+</main>
+
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+
+<a class="whatsapp-float" href="https://wa.me/5492494577556?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
+</a>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html" class="logo">HRK<span>.</span>SPORTS</a>
+    <p>© 2026 HRK Sports — Asesoría de imagen y marketing deportivo</p>
+    <div class="foot-social">
+      <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hrk.sports2025@gmail.com">Mail</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    links.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }));
+</script>
+</body>
+</html>

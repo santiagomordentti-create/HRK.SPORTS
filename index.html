@@ -611,6 +611,8 @@
     .field textarea{min-height:88px}
   }
   .form-note{color:var(--ink-faint);font-size:.82rem}
+  .form-status{font-size:.82rem;font-weight:700;margin-top:6px}
+  .form-status:empty{display:none;margin:0}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--bg-light);color:var(--bg);padding:36px 0}
@@ -1171,21 +1173,24 @@
         <form class="contact-form" action="https://formsubmit.co/hrk.sports2025@gmail.com" method="POST">
           <input type="hidden" name="_subject" value="Nueva consulta desde la web HRK">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <!-- ⚠ hrk-sports.vercel.app es la URL real actual. Cuando se conecte el dominio propio, actualizar esta URL igual que el canonical/og:url del <head>. -->
+          <input type="hidden" name="_next" value="https://hrk-sports.vercel.app/gracias.html">
           <div class="field">
             <label for="cf-nombre" data-i18n="form_name">Nombre y apellido</label>
-            <input type="text" id="cf-nombre" name="Nombre y apellido" required>
+            <input type="text" id="cf-nombre" name="nombre" autocomplete="name" required>
           </div>
           <div class="field">
             <label for="cf-email" data-i18n="form_email">Email</label>
-            <input type="email" id="cf-email" name="Email" required>
+            <input type="email" id="cf-email" name="email" autocomplete="email" inputmode="email" required>
           </div>
           <div class="field">
             <label for="cf-telefono" data-i18n="form_phone">Teléfono (opcional)</label>
-            <input type="tel" id="cf-telefono" name="Teléfono">
+            <input type="tel" id="cf-telefono" name="telefono" autocomplete="tel" inputmode="tel">
           </div>
           <div class="field">
             <label for="cf-quien" data-i18n="form_who">¿Quién sos?</label>
-            <select id="cf-quien" name="Quién sos">
+            <select id="cf-quien" name="perfil">
               <option data-i18n="form_opt_athlete">Deportista</option>
               <option data-i18n="form_opt_agency">Agencia</option>
               <option data-i18n="form_opt_brand">Marca</option>
@@ -1196,11 +1201,12 @@
           </div>
           <div class="field">
             <label for="cf-mensaje" data-i18n="form_message">Contanos sobre tu proyecto</label>
-            <textarea id="cf-mensaje" name="Mensaje" rows="4" required></textarea>
+            <textarea id="cf-mensaje" name="mensaje" rows="4" required></textarea>
           </div>
           <div class="form-submit-group">
             <button type="submit" class="btn contact-submit" data-i18n="form_submit">Enviar consulta</button>
             <p class="form-note" data-i18n="form_note">Respondemos en menos de 24 hs.</p>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           </div>
         </form>
       </div>
