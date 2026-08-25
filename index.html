@@ -1674,12 +1674,18 @@
   const processLineDots = Array.from(document.querySelectorAll('#processJourney .process-step-dot'));
   const processLineTrack = document.getElementById('processLineTrack');
   const processLineFill = document.getElementById('processLineFill');
+  // La línea no termina en el punto del Paso 3 sino en el borde inferior
+  // de su tarjeta — así el recorrido acompaña la lectura completa del
+  // último paso en vez de cortarse justo cuando empieza.
+  const processLineLastCard = processLineDots.length
+    ? processLineDots[processLineDots.length - 1].closest('.process-step-row').querySelector('.process-step-card')
+    : null;
   let processLineTotalHeight = 0;
   let processLineDotOffsets = [];
 
   function updateProcessLineLayout() {
     const journey = document.getElementById('processJourney');
-    if (!journey || !processLineTrack || !processLineFill || processLineDots.length < 2) return;
+    if (!journey || !processLineTrack || !processLineFill || processLineDots.length < 2 || !processLineLastCard) return;
     const journeyRect = journey.getBoundingClientRect();
     // El ancho de la línea es el mismo para track y fill (ver CSS); se lee
     // acá en vez de hardcodearlo para que el centrado se ajuste solo si
@@ -1690,8 +1696,11 @@
       return { x: r.left + r.width / 2 - journeyRect.left, y: r.top + r.height / 2 - journeyRect.top };
     });
     const first = centers[0];
-    const last = centers[centers.length - 1];
-    processLineTotalHeight = Math.max(0, last.y - first.y);
+    const lastCardBottom = processLineLastCard.getBoundingClientRect().bottom - journeyRect.top;
+    processLineTotalHeight = Math.max(0, lastCardBottom - first.y);
+    // Los tres puntos se prenden por su propia posición (borde superior de
+    // cada tarjeta), no por el final de la línea — así el punto 3 sigue
+    // encendiéndose ahí aunque el trayecto ahora siga más abajo.
     processLineDotOffsets = centers.map(c => c.y - first.y);
     const lineLeft = first.x - lineWidth / 2;
     processLineTrack.style.left = processLineFill.style.left = lineLeft + 'px';
@@ -1700,12 +1709,13 @@
   }
 
   function processLineProgress() {
+    if (!processLineLastCard) return 0;
     const vh = window.innerHeight;
     const r0 = processLineDots[0].getBoundingClientRect();
-    const rN = processLineDots[processLineDots.length - 1].getBoundingClientRect();
-    const startTrigger = vh;      // el primer punto "entra en pantalla"
-    const endTrigger = vh * 0.6;  // el último punto, cómodo, al 60% de la ventana
-    const denom = (vh - endTrigger) + (rN.top - r0.top);
+    const cardBottom = processLineLastCard.getBoundingClientRect().bottom;
+    const startTrigger = vh;       // el primer punto "entra en pantalla"
+    const endTrigger = vh * 0.7;   // el borde inferior de la tercera tarjeta, cómodo, al 70% de la ventana
+    const denom = (vh - endTrigger) + (cardBottom - r0.top);
     if (denom <= 0) return 1;
     const raw = (startTrigger - r0.top) / denom;
     return raw < 0 ? 0 : raw > 1 ? 1 : raw;
