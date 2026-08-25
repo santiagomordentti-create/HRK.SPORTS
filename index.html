@@ -314,13 +314,17 @@
   .mosaic-title-dot{color:var(--accent)}
   .mosaic-head-dek{font-size:var(--text-md);line-height:var(--leading);color:var(--ink-soft);max-width:620px;margin:var(--space-tight) auto 0}
 
-  .mosaic-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-tight);list-style:none}
-  .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;white-space:nowrap}
-  .mosaic-tab:not(.active):hover{border-color:rgba(255,255,255,.4);color:#fff}
-  .mosaic-tab.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-  .mosaic-divider{height:1px;background:rgba(255,255,255,.14);margin:var(--space-item) 0}
+  /* Control segmentado: un solo contenedor (fondo --surface, borde sutil,
+     radio grande) ajustado a su contenido y centrado — no una fila de
+     tabs sueltos. Los tabs van pegados adentro con un gap mínimo y su
+     propio radio chico; ya no llevan borde propio, así leen como un
+     solo grupo en vez de cuatro cajas separadas. */
+  .mosaic-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;list-style:none;width:fit-content;max-width:100%;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:6px}
+  .mosaic-tab{font-family:var(--font);font-size:15px;font-weight:600;padding:13px 24px;min-height:44px;border-radius:var(--radius-sm);border:0;background:transparent;color:rgba(255,255,255,.75);cursor:pointer;transition:background .2s ease,color .2s ease;white-space:nowrap}
+  .mosaic-tab:not(.active):hover{background:rgba(255,255,255,.08);color:#fff}
+  .mosaic-tab.active{background:var(--accent);color:var(--accent-ink)}
 
-  .mosaic-panels{position:relative}
+  .mosaic-panels{position:relative;margin-top:var(--space-item)}
   .mosaic-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-lg);overflow:hidden}
   .mosaic-grid[hidden]{display:none}
   /* Rompecabezas: cada pieza entra desde una dirección al azar (--dx/--dy,
@@ -346,6 +350,7 @@
   }
   @media(max-width:900px){
     .mosaic-tabs{
+      width:100%;justify-content:flex-start;
       flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
       scroll-snap-type:x mandatory;
       scrollbar-width:none;
@@ -413,7 +418,7 @@
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
   #deportistas .wrap{max-width:var(--container);padding-inline:var(--container-pad)}
-  .athletes-title{color:#fff;margin-bottom:var(--space-block)}
+  .athletes-title{color:#fff;text-align:center;margin-bottom:var(--space-block)}
   .athletes-strip{display:flex;gap:var(--space-item);height:560px}
   .athlete-panel{position:relative;flex:1;min-width:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
   .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
@@ -508,13 +513,6 @@
 
   /* Nodo de inicio */
   .process-node{position:relative;z-index:1;text-align:center}
-  .process-status-chip{display:inline-flex;align-items:center;gap:8px;background:var(--proc-contrast-bg);color:var(--proc-contrast-ink);padding:9px 16px;border-radius:var(--radius-lg)}
-  .process-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;animation:procPulse 1.8s ease-in-out infinite}
-  .process-node-lead{margin-top:var(--space-tight)}
-  @keyframes procPulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(215,245,81,.55)}
-    50%{box-shadow:0 0 0 6px rgba(215,245,81,0)}
-  }
 
   /* FAQ — sección propia (#faq), con su título en el h2 del .process-head
      de esa sección; el margen hacia ese título ya lo da el margin-bottom
@@ -615,7 +613,6 @@
   .process-yours-text{font-size:var(--text-md);font-weight:600;line-height:var(--leading);color:#fff}
 
   @media(prefers-reduced-motion:reduce){
-    .process-status-dot{animation:none}
     .process-faq-a,.process-faq-icon::after{transition:none}
   }
   @media(max-width:900px){
@@ -927,7 +924,6 @@
 
     <div class="mosaic-content reveal">
       <div class="mosaic-tabs" role="tablist" aria-label="Servicios por público" id="mosaicTabs"></div>
-      <div class="mosaic-divider" aria-hidden="true"></div>
 
       <div class="mosaic-panels" id="mosaicPanels"></div>
 
@@ -1060,10 +1056,6 @@
       <div class="process-line-track" id="processLineTrack" aria-hidden="true"></div>
       <div class="process-line-fill" id="processLineFill" aria-hidden="true"></div>
       <div class="process-node process-node-start reveal" data-reveal-group="proceso-intro">
-        <h4 class="process-status-chip">
-          <span class="process-status-dot" aria-hidden="true"></span>
-          <span data-i18n="process_status_start">Arrancás acá</span>
-        </h4>
         <h3 class="process-node-lead" data-i18n="process_start_text">Tenés talento. Tu imagen todavía no lo cuenta.</h3>
       </div>
 
@@ -1108,7 +1100,7 @@
         <div class="process-step-card">
           <div class="process-step-body">
           <h4 class="process-step-badge" data-i18n="proc_s2_badge">Estrategia</h4>
-          <h3 class="process-step-title" data-i18n="proc_s2_title">Definimos cómo vas a jugar los próximos tres meses.</h3>
+          <h3 class="process-step-title" data-i18n="proc_s2_title">Definimos cómo vas a jugar la temporada.</h3>
           <p class="process-step-desc" data-i18n="proc_s2_desc">Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.</p>
           <!-- Copy de arranque — reemplazar por el entregable real que use HRK para este paso -->
           <p class="process-step-result">
@@ -2178,7 +2170,6 @@
       stat_position: 'Posición', stat_age: 'Edad', stat_height: 'Altura', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Desde',
 
       process_title_a: 'El camino de tu', process_title_highlight: 'imagen,', process_title_b: 'paso a paso',
-      process_status_start: 'Arrancás acá',
       process_start_text: 'Tenés talento. Tu imagen todavía no lo cuenta.',
       process_yours_label: 'Tu parte',
       proc_step1_label: 'Paso 1', proc_s1_badge: 'Diagnóstico',
@@ -2187,7 +2178,7 @@
       proc_s1_result: 'Al terminar: el informe de cómo te ve hoy un club o una marca — auditoría de redes, informe de imagen y reunión de devolución.',
       proc_s1_yours: 'Una llamada de 30 minutos y acceso a tus redes. Nada más.',
       proc_step2_label: 'Paso 2', proc_s2_badge: 'Estrategia',
-      proc_s2_title: 'Definimos cómo vas a jugar los próximos tres meses.',
+      proc_s2_title: 'Definimos cómo vas a jugar la temporada.',
       proc_s2_desc: 'Definimos cómo te mostrás, qué se publica y cuándo. Se termina el improvisar: cada pieza tiene un objetivo.',
       proc_s2_result: 'Al terminar: tu calendario de los próximos 3 meses, aprobado — plan de contenido, objetivos e identidad visual definida.',
       proc_s2_yours: 'Aprobás el plan en una reunión. Nosotros lo dejamos listo.',
@@ -2288,7 +2279,6 @@
       stat_position: 'Position', stat_age: 'Age', stat_height: 'Height', stat_club: 'Club', stat_ranking: 'Ranking', stat_since: 'Since',
 
       process_title_a: 'The path to your', process_title_highlight: 'image,', process_title_b: 'one step at a time',
-      process_status_start: 'You kick off here',
       process_start_text: 'You\'ve got the talent. Your image doesn\'t show it yet.',
       process_yours_label: 'Your part',
       proc_step1_label: 'Step 1', proc_s1_badge: 'Diagnosis',
@@ -2297,7 +2287,7 @@
       proc_s1_result: 'When it\'s done: the report on how a club or brand sees you today — social media audit, image report and feedback session.',
       proc_s1_yours: 'A 30-minute call and access to your accounts. That\'s it.',
       proc_step2_label: 'Step 2', proc_s2_badge: 'Strategy',
-      proc_s2_title: 'We define how you\'ll play the next three months.',
+      proc_s2_title: 'We define how you\'ll play the season.',
       proc_s2_desc: 'We define how you present yourself, what gets posted and when. No more winging it: every piece has a purpose.',
       proc_s2_result: 'When it\'s done: your calendar for the next 3 months, approved — 3-month plan, clear goals and defined visual identity.',
       proc_s2_yours: 'You approve the plan in one meeting. We take it from there.',
