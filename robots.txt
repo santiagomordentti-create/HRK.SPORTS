@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hrk-sports.vercel.app/sitemap.xml
+Sitemap: https://www.hrk-sports.com/sitemap.xml
