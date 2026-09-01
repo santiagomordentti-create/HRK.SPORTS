@@ -255,13 +255,16 @@
   .pillar-title{color:#fff;margin-top:var(--space-tight)}
   .pillar-desc{font-size:var(--text-md);line-height:var(--leading);color:rgba(255,255,255,.85);margin-top:var(--space-tight)}
 
+  /* El patrón "HRK.SPORTS" de fondo funciona en desktop porque las letras
+     son enormes respecto del ancho y se leen como textura; en mobile
+     (75px contra un párrafo de 17px) atraviesan el texto y compiten con
+     la lectura. Se oculta entero — es position:absolute e inset:0, así
+     que sacarlo no mueve el alto de la sección ni dejar un hueco. El
+     párrafo no se toca. */
   @media(max-width:900px){
-    .about-ghost-line{font-size:27vw}
+    .about-ghost-pattern{display:none}
     .about-pillars{grid-template-columns:1fr;gap:var(--space-tight);padding:var(--space-item) var(--container-pad)}
     .pillar-card{padding:var(--space-item)}
-  }
-  @media(max-width:640px){
-    .about-ghost-line{font-size:20vw}
   }
   @media(prefers-reduced-motion:reduce){
     .about-title,.about-lead-text,.about-cta{opacity:1 !important;transform:none !important}
@@ -348,15 +351,27 @@
     .mosaic-card{transition:none}
     .mosaic-card.piece-enter{opacity:1;transform:none}
   }
+  /* Mobile: el corte de la tira tiene que caer A MITAD del tercer tab, no
+     justo en el borde del contenedor — un tab partido a la mitad es la
+     señal de "hay más" que un borde limpio no da (se lee como el final
+     de la lista). Por eso el padding horizontal de cada tab baja tanto
+     acá: con el padding de escritorio (24px) el corte cae casi al final
+     del segundo tab y se lee como una lista completa. El degradado
+     (mask-image, no un pseudo-elemento con color de fondo fijo) refuerza
+     esa continuidad y se apaga solo al llegar al final del scroll (JS,
+     ver el bloque de "Mosaico de Servicios" del script). */
   @media(max-width:900px){
     .mosaic-tabs{
       width:100%;justify-content:flex-start;
       flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
-      scroll-snap-type:x mandatory;
+      scroll-snap-type:x proximity;
       scrollbar-width:none;
+      mask-image:linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+      -webkit-mask-image:linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
     }
     .mosaic-tabs::-webkit-scrollbar{display:none}
-    .mosaic-tab{flex:none;scroll-snap-align:start}
+    .mosaic-tabs.at-scroll-end{mask-image:none;-webkit-mask-image:none}
+    .mosaic-tab{flex:none;padding:13px 8px;scroll-snap-align:start}
     .mosaic-head{margin-bottom:var(--space-item)}
     .mosaic-grid{grid-template-columns:1fr}
     .mosaic-card{grid-column:span 1;padding:16px}
@@ -1573,6 +1588,10 @@
       t.setAttribute('aria-selected', active ? 'true' : 'false');
       t.tabIndex = active ? 0 : -1;
     });
+    // En mobile la tira scrollea horizontal (ver CSS); en desktop no hay
+    // overflow así que esto no mueve nada — no hace falta separarlo por
+    // media query.
+    tab.scrollIntoView({ inline: 'center', behavior: 'smooth' });
     updateMosaicCtaLink(group);
     mosaicCtaEl.textContent = I18N[currentLang][group.ctaKey];
 
@@ -1649,6 +1668,17 @@
   });
 
   updateMosaicCtaLink(SERVICES_DATA[0]);
+
+  // Degradado del borde derecho de la tira de tabs (mobile, ver CSS): se
+  // apaga con .at-scroll-end apenas no queda nada más para scrollear a la
+  // derecha, para no insinuar contenido que ya no está.
+  function updateMosaicTabsFade() {
+    const atEnd = mosaicTabsEl.scrollLeft + mosaicTabsEl.clientWidth >= mosaicTabsEl.scrollWidth - 2;
+    mosaicTabsEl.classList.toggle('at-scroll-end', atEnd);
+  }
+  mosaicTabsEl.addEventListener('scroll', updateMosaicTabsFade, { passive: true });
+  window.addEventListener('resize', updateMosaicTabsFade, { passive: true });
+  updateMosaicTabsFade();
 
   // Mini-FAQ de "Cómo trabajamos": acordeón accesible en JS plano. El panel
   // arranca con [hidden] (afuera del árbol de accesibilidad y sin layout);
@@ -1816,6 +1846,11 @@
 
     function buildLines() {
       container.innerHTML = '';
+      // En mobile el patrón se oculta por CSS (display:none) porque a ese
+      // tamaño de letra atraviesa el párrafo — ni siquiera lo armamos ahí:
+      // sin esto, el probe mide 0 (getBoundingClientRect de un contenedor
+      // oculto) y el fallback de abajo generaría cientos de líneas de más.
+      if (getComputedStyle(container).display === 'none') return;
       const probe = document.createElement('span');
       probe.className = 'about-ghost-line';
       probe.style.visibility = 'hidden';
