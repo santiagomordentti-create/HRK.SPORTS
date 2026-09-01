@@ -722,6 +722,16 @@
   .foot-social{display:flex;gap:var(--space-item)}
   .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
   .foot-social a:hover{color:var(--accent-deep)}
+  /* Crédito de autoría: mismo tono apagado que el copyright (.foot p ya le
+     da tamaño/color), a la derecha de la fila — es un crédito, no un
+     segundo logo, así que no lleva peso ni tamaño propios. */
+  .foot-credit{margin-left:auto}
+  .foot-credit a{color:inherit;text-decoration:none;transition:color .2s}
+  .foot-credit a:hover{color:var(--accent-deep)}
+  @media(max-width:680px){
+    .foot{flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .foot-credit{margin-left:0}
+  }
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -1341,6 +1351,8 @@
       <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:hrk.sports2025@gmail.com" data-i18n="footer_mail">Mail</a>
     </div>
+    <!-- ⚠ Reemplazar [URL_PENDIENTE] por la URL real del sitio/portfolio de Santiago Mordentti. -->
+    <p class="foot-credit"><span data-i18n="footer_credit_label">Diseño y desarrollo:</span> <a href="[URL_PENDIENTE]" target="_blank" rel="noopener">Santiago Mordentti</a></p>
   </div>
 </footer>
 
@@ -2276,7 +2288,8 @@
       form_note: 'Respondemos en menos de 24 hs.',
 
       footer_copyright: '© 2026 HRK Sports — Asesoría de imagen y marketing deportivo',
-      footer_mail: 'Mail'
+      footer_mail: 'Mail',
+      footer_credit_label: 'Diseño y desarrollo:'
     },
     en: {
       nav_servicios: 'Services', nav_trabajos: 'Projects', nav_deportistas: 'Athletes',
@@ -2385,7 +2398,8 @@
       form_note: 'We respond within 24 hours.',
 
       footer_copyright: '© 2026 HRK Sports — Image consulting and sports marketing',
-      footer_mail: 'Email'
+      footer_mail: 'Email',
+      footer_credit_label: 'Design and development:'
     }
   };
 

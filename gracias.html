@@ -39,6 +39,8 @@
     --title-tracking:0.02em;
     --title-leading:0.95;
     --h1:clamp(1.35rem,6.5vw + .1rem,5.75rem);
+    --text-sm:14px;
+    --leading:1.6;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -81,6 +83,14 @@
   .foot-social{display:flex;gap:var(--space-item)}
   .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
   .foot-social a:hover{color:var(--accent-deep)}
+  .foot .foot-credit{color:#57534d;font-size:var(--text-sm);line-height:var(--leading)}
+  .foot-credit{margin-left:auto}
+  .foot-credit a{color:inherit;text-decoration:none;transition:color .2s}
+  .foot-credit a:hover{color:var(--accent-deep)}
+  @media(max-width:680px){
+    .foot{flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .foot-credit{margin-left:0}
+  }
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -166,6 +176,8 @@
       <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:hrk.sports2025@gmail.com">Mail</a>
     </div>
+    <!-- ⚠ Reemplazar [URL_PENDIENTE] por la URL real del sitio/portfolio de Santiago Mordentti. -->
+    <p class="foot-credit">Diseño y desarrollo: <a href="[URL_PENDIENTE]" target="_blank" rel="noopener">Santiago Mordentti</a></p>
   </div>
 </footer>
 
