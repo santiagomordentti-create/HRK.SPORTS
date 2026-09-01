@@ -257,7 +257,8 @@
 
   @media(max-width:900px){
     .about-ghost-line{font-size:27vw}
-    .about-pillars{grid-template-columns:1fr}
+    .about-pillars{grid-template-columns:1fr;gap:var(--space-tight);padding:var(--space-item) var(--container-pad)}
+    .pillar-card{padding:var(--space-item)}
   }
   @media(max-width:640px){
     .about-ghost-line{font-size:20vw}
@@ -356,8 +357,13 @@
     }
     .mosaic-tabs::-webkit-scrollbar{display:none}
     .mosaic-tab{flex:none;scroll-snap-align:start}
+    .mosaic-head{margin-bottom:var(--space-item)}
     .mosaic-grid{grid-template-columns:1fr}
-    .mosaic-card{grid-column:span 1}
+    .mosaic-card{grid-column:span 1;padding:16px}
+    .mosaic-card h3{font-size:1.15rem}
+    .mosaic-card p{font-size:var(--text-sm)}
+    .mosaic-panels{margin-top:var(--space-tight)}
+    .mosaic-foot{margin-top:var(--space-tight)}
   }
   /* ---------- PROYECTOS ---------- */
   .projects{position:relative;overflow:hidden;background:var(--bg-light);padding:var(--space-section) 0}
@@ -440,15 +446,31 @@
     .athlete-stat-value{font-size:1.05rem}
     .athlete-quote{-webkit-line-clamp:2}
   }
+  /* Mobile: de columna apilada (5 × ~400px) a carrusel horizontal con
+     scroll-snap — es el mayor ahorro de alto de toda la sección. El
+     shell rompe el padding-inline de .wrap con márgenes negativos para
+     que el padding-inline:11vw de la tira se calcule contra el viewport
+     completo (78vw + 11vw + 11vw = 100vw), así la primera y la última
+     ficha quedan centradas en los extremos del scroll. El degradado del
+     borde derecho es el único indicador de que hay más — sin flechas. */
   @media(max-width:900px){
-    .athletes-strip{flex-direction:column;height:auto}
-    .athlete-panel,.athlete-panel.active{flex:none;height:auto;min-height:360px;border-color:var(--line)}
-    .athlete-body{position:relative;padding:180px 18px 18px}
+    .athletes-strip-shell{position:relative;margin-inline:calc(-1 * var(--container-pad))}
+    .athletes-strip-shell::after{content:"";position:absolute;top:0;right:0;bottom:0;width:28px;background:linear-gradient(to right, transparent, var(--bg));pointer-events:none}
+    .athletes-strip{
+      flex-direction:row;height:auto;gap:12px;
+      overflow-x:auto;-webkit-overflow-scrolling:touch;
+      scroll-snap-type:x mandatory;
+      scrollbar-width:none;
+      padding-inline:11vw;
+    }
+    .athletes-strip::-webkit-scrollbar{display:none}
+    .athlete-panel,.athlete-panel.active{flex:none;width:78vw;height:324px;border-color:var(--line);scroll-snap-align:center}
+    .athlete-body{position:relative;padding:100px 16px 16px}
     .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
-    .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:12px}
+    .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:10px}
     .athlete-stat{max-width:none}
     .athlete-stat-label,.athlete-stat-value{overflow:visible;text-overflow:clip}
-    .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:unset;display:block}
+    .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:2}
   }
 
   /* ---------- PROCESO (RECORRIDO EN COLUMNA) ---------- */
@@ -615,8 +637,10 @@
     .process-faq-a,.process-faq-icon::after{transition:none}
   }
   @media(max-width:900px){
+    .process-head{margin-bottom:var(--space-item)}
     .process-step-row{display:flex;flex-direction:column;gap:var(--space-tight)}
-    .process-step-row[data-step="1"],.process-step-row[data-step="2"]{margin-top:24px}
+    .process-step-row[data-step="0"]{margin-top:var(--space-item)}
+    .process-step-row[data-step="1"],.process-step-row[data-step="2"]{margin-top:var(--space-tight)}
     .process-step-num-col{position:static;left:auto;top:auto;width:auto;justify-content:center;padding-top:0}
     .process-step-card{width:100%;margin-inline:0}
   }
@@ -713,6 +737,11 @@
     .reveal,.process-step-follow{opacity:1;transform:none;transition:none}
   }
 
+  @media(max-width:900px){
+    .contact-grid{gap:var(--space-item)}
+    .contact-cards{gap:var(--space-tight)}
+  }
+
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
     .contact-grid{grid-template-columns:1fr}
@@ -736,7 +765,7 @@
       --text-sm:13px;
     }
     footer{padding-bottom:96px}
-    .press{min-height:560px;height:auto;padding:120px 0 64px}
+    .press{min-height:560px;height:auto;padding:var(--space-section) 0}
     .press-media::after{background:linear-gradient(to bottom,rgba(250,248,246,.55) 0%,rgba(250,248,246,.97) 100%)}
   }
 </style>
@@ -972,6 +1001,7 @@
   <div class="wrap">
     <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
     <!-- Pre-renderizado en español para que los nombres existan como texto real en el HTML (SEO); el JS lo reemplaza al cargar para manejar idioma e interacción. -->
+    <div class="athletes-strip-shell">
     <div class="athletes-strip reveal" id="athletesStrip">
       <div class="athlete-panel active" data-index="0" tabindex="0" role="button" aria-label="Ver a Lucas Razzeto" style="background-image:url(assets/razzeto.jpg)">
         <div class="athlete-body">
@@ -1038,6 +1068,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </section>
