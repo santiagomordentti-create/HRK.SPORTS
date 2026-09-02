@@ -437,7 +437,8 @@
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  #deportistas .wrap{max-width:var(--container);padding-inline:var(--container-pad)}
+  #deportistas{position:relative}
+  #deportistas .wrap{position:relative;z-index:1;max-width:var(--container);padding-inline:var(--container-pad)}
   .athletes-title{color:#fff;text-align:center;margin-bottom:var(--space-block)}
   .athletes-strip{display:flex;gap:var(--space-item);height:560px}
   .athlete-panel{position:relative;flex:1;min-width:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
@@ -687,6 +688,8 @@
   .press .btn-secondary:hover{border-color:var(--bg);box-shadow:0 0 8px color-mix(in srgb, var(--bg) 15%, transparent)}
 
   /* ---------- CONTACTO ---------- */
+  #contacto{position:relative}
+  #contacto .wrap{position:relative;z-index:1}
   .contact-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:var(--space-block);align-items:start}
   .contact-info h2{margin-bottom:var(--space-tight)}
   .contact-info .section-dek{text-align:left;margin:var(--space-tight) 0 var(--space-item)}
@@ -751,6 +754,38 @@
   .media-wave.top{top:-1px}
   .media-wave.bottom{bottom:-1px}
   @media(max-width:640px){.media-wave{height:54px}}
+
+  /* ---------- RESPLANDOR LIMA (separador entre secciones) ---------- */
+  /* Capa única y reutilizable — se repite igual en todas las secciones,
+     nada se ajusta sección por sección salvo el modo de mezcla. Dos
+     radial-gradient del mismo --accent, anchos y bajos (120% de ancho
+     por 40% de alto), anclados arriba y abajo de la sección y
+     desvaneciendo a transparente hacia el centro. Intensidad fija: .18
+     de opacidad en el punto más intenso.
+     Sobre fondo oscuro, ese mismo rgba translúcido se promedia con el
+     negro y da verde oliva sucio — es lo que venía fallando en los
+     intentos anteriores. La solución no es bajar la opacidad: es sumar
+     mix-blend-mode:screen (.section-glow--dark) para que el lima se
+     SUME al fondo en vez de promediarse, y se lea como luz, no como
+     verdín. En fondo claro no hace falta ningún blend: el lima ya se ve
+     limpio en capas normales.
+     Va como capa absoluta (inset:0), primera hija de cada sección
+     (o inmediatamente después de cualquier foto/video de fondo que la
+     taparía del todo — Hero y Prensa), con z-index:0 para quedar
+     siempre detrás del contenido real; las ondas separadoras y las
+     líneas lima que las calcan tienen su propio z-index más alto, así
+     que el resplandor no las toca. */
+  .section-glow{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.18), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,.18), rgba(215,245,81,0) 70%);
+    background-repeat:no-repeat;
+  }
+  .section-glow--dark{mix-blend-mode:screen}
 
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
@@ -864,6 +899,7 @@
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
   </div>
+  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
     <div class="hero-cta">
@@ -878,6 +914,7 @@
 
 <!-- ============ QUIÉNES SOMOS ============ -->
 <section id="nosotros" class="about">
+  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="media-wave top" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
@@ -936,6 +973,7 @@
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
   </div>
+  <div class="section-glow" aria-hidden="true"></div>
   <div class="press-content">
     <div class="press-text reveal">
       <div class="press-eyebrow">
@@ -956,6 +994,7 @@
 <!-- El contenido (pestañas, tarjetas y CTA) se genera en JS desde SERVICES_DATA:
      ver el array SERVICES_DATA en el bloque de script "Mosaico de Servicios". -->
 <section id="servicios" class="mosaic-services">
+  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <!-- Sólo la línea: el recorte real de este borde lo hace el mask-image
        de .mosaic-services (mismo path, mismo preserveAspectRatio, para
        que calcen exacto). -->
@@ -994,6 +1033,7 @@
      (ver el bloque "Proyectos" en el script). El comparador de Eze Neira
      queda como markup fijo por su interacción propia (arrastre). -->
 <section id="trabajo" class="projects">
+  <div class="section-glow" aria-hidden="true"></div>
   <div class="projects-inner">
     <h2 class="projects-title" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
     <div class="projects-grid">
@@ -1025,6 +1065,7 @@
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
+  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="wrap">
     <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
     <!-- Pre-renderizado en español para que los nombres existan como texto real en el HTML (SEO); el JS lo reemplaza al cargar para manejar idioma e interacción. -->
@@ -1104,6 +1145,7 @@
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
+  <div class="section-glow" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal" data-reveal-group="proceso-intro">
       <h2 class="process-title"><span data-i18n="process_title_a">El camino de tu</span> <span class="process-title-highlight" data-i18n="process_title_highlight">imagen,</span> <span data-i18n="process_title_b">paso a paso</span></h2>
@@ -1220,6 +1262,7 @@
 
 <!-- ============ PREGUNTAS FRECUENTES ============ -->
 <section id="faq" class="faq-section">
+  <div class="section-glow" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal">
       <h2 class="process-title" data-i18n="process_faq_title">Preguntas frecuentes</h2>
@@ -1274,6 +1317,7 @@
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
+  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="wrap">
     <div class="contact-grid">
       <div class="contact-info reveal">
