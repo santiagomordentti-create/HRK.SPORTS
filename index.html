@@ -788,6 +788,54 @@
   }
   .section-glow--dark{mix-blend-mode:screen}
 
+  /* En #nosotros y #servicios, arriba y/o abajo, la onda no es un
+     .wave-seam aparte: es la PROPIA sección la que se recorta con
+     mask-image (o queda tapada por una capa propia, como
+     .mosaic-wave.bottom) — .media-wave/.mosaic-wave sólo calcan la línea
+     encima, el recorte real pasa por el mask/la capa. El resplandor de
+     .section-glow sigue ahí adentro sin recortar, con su origen en el
+     borde real de la caja (0%/100%) — así que el pico de intensidad cae
+     siempre detrás de la franja tapada, y lo que se ve por debajo de la
+     curva es la cola casi transparente.
+     La franja tiene 90px (54px en mobile) de alto, pero la curva NO es
+     una línea recta a esa distancia: cada path ondula entre dos valores
+     de Y distintos, y el punto que importa es dónde cae la curva en el
+     centro del ancho (x:50%, donde el ojo mira primero), leído directo
+     de cada path SVG:
+     - #nosotros arriba (--wave-mask-top, nodo x=720 → y=85/120): 64px.
+     - #nosotros abajo (--wave-mask-bottom, x=720 entre nodos 576/864,
+       y≈59/120): 46px.
+     - #servicios arriba (mismo path que .mosaic-wave.top, nodo x=720 →
+       y=30/120): 23px.
+     - #servicios abajo (.mosaic-wave.bottom, mismo path, nodo x=720 →
+       y=30/120, medido desde el borde inferior real): 68px.
+     Cada sección necesita su propio par de valores — no son simétricos
+     ni intercambiables porque las cuatro curvas están desfasadas entre
+     sí. En mobile (banda de 54px) se escalan por el mismo factor
+     54/90=0.6. */
+  .section-glow--nosotros-edges{
+    background-image:
+      radial-gradient(ellipse 120% 40% at 50% 64px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 46px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+  }
+  .section-glow--servicios-edges{
+    background-image:
+      radial-gradient(ellipse 120% 40% at 50% 23px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+  }
+  @media(max-width:640px){
+    .section-glow--nosotros-edges{
+      background-image:
+        radial-gradient(ellipse 120% 40% at 50% 38px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 27px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+    }
+    .section-glow--servicios-edges{
+      background-image:
+        radial-gradient(ellipse 120% 40% at 50% 14px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+    }
+  }
+
   /* Puente en las ondas separadoras independientes (.wave-seam): esas
      ondas son elementos aparte, no hijos de ninguna sección, así que el
      resplandor de una sección (inset:0 dentro de su propia caja) nunca
@@ -931,7 +979,7 @@
 
 <!-- ============ QUIÉNES SOMOS ============ -->
 <section id="nosotros" class="about">
-  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
+  <div class="section-glow section-glow--dark section-glow--nosotros-edges" aria-hidden="true"></div>
   <div class="media-wave top" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
@@ -1011,7 +1059,7 @@
 <!-- El contenido (pestañas, tarjetas y CTA) se genera en JS desde SERVICES_DATA:
      ver el array SERVICES_DATA en el bloque de script "Mosaico de Servicios". -->
 <section id="servicios" class="mosaic-services">
-  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
+  <div class="section-glow section-glow--dark section-glow--servicios-edges" aria-hidden="true"></div>
   <!-- Sólo la línea: el recorte real de este borde lo hace el mask-image
        de .mosaic-services (mismo path, mismo preserveAspectRatio, para
        que calcen exacto). -->
