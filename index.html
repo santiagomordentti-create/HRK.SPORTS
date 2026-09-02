@@ -715,13 +715,25 @@
   .form-status:empty{display:none;margin:0}
 
   /* ---------- FOOTER ---------- */
-  footer{background:var(--bg-light);color:var(--bg);padding:36px 0}
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap}
+  footer{background:var(--bg-light);color:var(--bg)}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap;padding:36px 0}
   .foot .logo{color:var(--bg);font-size:1.1rem}
   .foot p{color:#57534d;font-size:var(--text-sm);line-height:var(--leading)}
   .foot-social{display:flex;gap:var(--space-item)}
   .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
   .foot-social a:hover{color:var(--accent-deep)}
+
+  /* Banda de crédito — franja aparte debajo de la fila del footer, no un
+     bloque más del sitio: fondo apenas un paso más oscuro que --bg-light
+     (color-mix, no un hex nuevo) y padding chico (--space-tight) para que
+     se lea compacta. Discreta a propósito: es un crédito, no un segundo
+     logo, así que no compite con la marca — nada de peso ni tamaño extra. */
+  .foot-credit-band{border-top:1px solid color-mix(in srgb, var(--bg) 12%, transparent);background:color-mix(in srgb, var(--bg) 4%, var(--bg-light));padding:var(--space-tight) 0;text-align:center}
+  .foot-credit-label{font-size:var(--text-sm);letter-spacing:.18em;text-transform:uppercase;color:#57534d}
+  .foot-credit-name{margin-top:2px;font-style:italic;color:var(--bg)}
+  .foot-credit-name .dash{color:var(--accent)}
+  .foot-credit-name a{color:inherit;text-decoration:none;transition:color .2s}
+  .foot-credit-name a:hover{color:var(--accent)}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -779,7 +791,7 @@
       --text-md:15px;
       --text-sm:13px;
     }
-    footer{padding-bottom:96px}
+    .foot-credit-band{padding-bottom:96px}
     .press{min-height:560px;height:auto;padding:var(--space-section) 0}
     .press-media::after{background:linear-gradient(to bottom,rgba(250,248,246,.55) 0%,rgba(250,248,246,.97) 100%)}
   }
@@ -1340,6 +1352,13 @@
     <div class="foot-social">
       <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:hrk.sports2025@gmail.com" data-i18n="footer_mail">Mail</a>
+    </div>
+  </div>
+  <div class="foot-credit-band">
+    <div class="wrap">
+      <p class="foot-credit-label" data-i18n="footer_credit_label">Diseño y desarrollo</p>
+      <!-- ⚠ Reemplazar [URL_PENDIENTE] por la URL real del sitio/portfolio de Santiago Mordentti. -->
+      <p class="foot-credit-name"><span class="dash" aria-hidden="true">—</span> <a href="[URL_PENDIENTE]" target="_blank" rel="noopener">Santiago Mordentti</a> <span class="dash" aria-hidden="true">—</span></p>
     </div>
   </div>
 </footer>
@@ -2276,7 +2295,8 @@
       form_note: 'Respondemos en menos de 24 hs.',
 
       footer_copyright: '© 2026 HRK Sports — Asesoría de imagen y marketing deportivo',
-      footer_mail: 'Mail'
+      footer_mail: 'Mail',
+      footer_credit_label: 'Diseño y desarrollo'
     },
     en: {
       nav_servicios: 'Services', nav_trabajos: 'Projects', nav_deportistas: 'Athletes',
@@ -2385,7 +2405,8 @@
       form_note: 'We respond within 24 hours.',
 
       footer_copyright: '© 2026 HRK Sports — Image consulting and sports marketing',
-      footer_mail: 'Email'
+      footer_mail: 'Email',
+      footer_credit_label: 'Design and development'
     }
   };
 

@@ -33,6 +33,8 @@
     --container-pad:48px;
     --space-section:96px;
     --space-item:24px;
+    --space-tight:12px;
+    --text-sm:14px;
     --font:'Archivo',system-ui,sans-serif;
     --display:'Archivo Expanded','Archivo',system-ui,sans-serif;
     --title:'Anton',var(--display),sans-serif;
@@ -74,13 +76,24 @@
   .thanks-text{font-size:1.125rem;line-height:1.6;color:rgba(255,255,255,.85)}
 
   /* ---------- FOOTER ---------- */
-  footer{background:var(--bg-light);color:var(--bg);padding:36px 0}
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap}
+  footer{background:var(--bg-light);color:var(--bg)}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap;padding:36px 0}
   .foot .logo{color:var(--bg);font-size:1.1rem}
   .foot p{color:#57534d;font-size:.85rem}
   .foot-social{display:flex;gap:var(--space-item)}
   .foot-social a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;color:#57534d;font-size:.88rem;font-weight:600;transition:color .2s}
   .foot-social a:hover{color:var(--accent-deep)}
+
+  /* Banda de crédito — franja aparte debajo de la fila del footer, no un
+     bloque más de la página: fondo apenas un paso más oscuro que
+     --bg-light (color-mix, no un hex nuevo) y padding chico
+     (--space-tight). Discreta a propósito, no compite con la marca. */
+  .foot-credit-band{border-top:1px solid color-mix(in srgb, var(--bg) 12%, transparent);background:color-mix(in srgb, var(--bg) 4%, var(--bg-light));padding:var(--space-tight) 0;text-align:center}
+  .foot-credit-label{font-size:var(--text-sm);letter-spacing:.18em;text-transform:uppercase;color:#57534d}
+  .foot-credit-name{margin-top:2px;font-style:italic;color:var(--bg)}
+  .foot-credit-name .dash{color:var(--accent)}
+  .foot-credit-name a{color:inherit;text-decoration:none;transition:color .2s}
+  .foot-credit-name a:hover{color:var(--accent)}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -109,7 +122,7 @@
       --container-pad:24px;
       --space-section:64px;
     }
-    footer{padding-bottom:96px}
+    .foot-credit-band{padding-bottom:96px}
   }
 </style>
 </head>
@@ -165,6 +178,13 @@
     <div class="foot-social">
       <a href="https://www.instagram.com/hrk.sports/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:hrk.sports2025@gmail.com">Mail</a>
+    </div>
+  </div>
+  <div class="foot-credit-band">
+    <div class="wrap">
+      <p class="foot-credit-label">Diseño y desarrollo</p>
+      <!-- ⚠ Reemplazar [URL_PENDIENTE] por la URL real del sitio/portfolio de Santiago Mordentti. -->
+      <p class="foot-credit-name"><span class="dash" aria-hidden="true">—</span> <a href="[URL_PENDIENTE]" target="_blank" rel="noopener">Santiago Mordentti</a> <span class="dash" aria-hidden="true">—</span></p>
     </div>
   </div>
 </footer>
