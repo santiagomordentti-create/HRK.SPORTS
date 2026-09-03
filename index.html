@@ -755,180 +755,6 @@
   .media-wave.bottom{bottom:-1px}
   @media(max-width:640px){.media-wave{height:54px}}
 
-  /* ---------- RESPLANDOR LIMA (separador entre secciones) ---------- */
-  /* Capa única y reutilizable — se repite igual en todas las secciones,
-     nada se ajusta sección por sección salvo el modo de mezcla y la
-     intensidad. Dos radial-gradient del mismo --accent, anchos y bajos
-     (120% de ancho por 40% de alto), anclados arriba y abajo de la
-     sección y desvaneciendo a transparente hacia el centro.
-     Intensidad vía --glow-opacity (default .35, usado en secciones
-     claras: ahí el lima ya se lee limpio en capas normales y subirlo lo
-     haría chillón). En fondo oscuro, ese mismo .35 con mix-blend-mode:
-     screen da lo más intenso que ese blend puede dar (~90 de canal rojo
-     sobre #16161a) pero se percibe como oliva apagado — así que
-     .section-glow--dark sube --glow-opacity a .7 (~160 de canal rojo:
-     lima claramente luminoso) además de aplicar el blend, que sigue
-     haciendo falta para que el lima se SUME al fondo en vez de
-     promediarse y de verdín en vez de luz.
-     Va como capa absoluta (inset:0), primera hija de cada sección
-     (o inmediatamente después de cualquier foto/video de fondo que la
-     taparía del todo — Hero y Prensa), con z-index:0 para quedar
-     siempre detrás del contenido real; las ondas separadoras y las
-     líneas lima que las calcan tienen su propio z-index más alto, así
-     que el resplandor no las toca. */
-  .section-glow{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    background-image:
-      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-    background-repeat:no-repeat;
-  }
-  .section-glow--dark{mix-blend-mode:screen;--glow-opacity:.7}
-
-  /* En #nosotros y #servicios, arriba y/o abajo, la onda no es un
-     .wave-seam aparte: es la PROPIA sección la que se recorta con
-     mask-image (o queda tapada por una capa propia, como
-     .mosaic-wave.bottom) — .media-wave/.mosaic-wave sólo calcan la línea
-     encima, el recorte real pasa por el mask/la capa. El resplandor de
-     .section-glow sigue ahí adentro sin recortar, con su origen en el
-     borde real de la caja (0%/100%) — así que el pico de intensidad cae
-     siempre detrás de la franja tapada, y lo que se ve por debajo de la
-     curva es la cola casi transparente.
-     La franja tiene 90px (54px en mobile) de alto, pero la curva NO es
-     una línea recta a esa distancia: cada path ondula entre dos valores
-     de Y distintos, y el punto que importa es dónde cae la curva en el
-     centro del ancho (x:50%, donde el ojo mira primero), leído directo
-     de cada path SVG:
-     - #nosotros arriba (--wave-mask-top, nodo x=720 → y=85/120): 64px.
-     - #nosotros abajo (--wave-mask-bottom, x=720 entre nodos 576/864,
-       y≈59/120): 46px.
-     - #servicios arriba (mismo path que .mosaic-wave.top, nodo x=720 →
-       y=30/120): 23px.
-     - #servicios abajo (.mosaic-wave.bottom, mismo path, nodo x=720 →
-       y=30/120, medido desde el borde inferior real): 68px.
-     Cada sección necesita su propio par de valores — no son simétricos
-     ni intercambiables porque las cuatro curvas están desfasadas entre
-     sí. En mobile (banda de 54px) se escalan por el mismo factor
-     54/90=0.6. */
-  .section-glow--nosotros-edges{
-    background-image:
-      radial-gradient(ellipse 120% 40% at 50% 64px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 46px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-  .section-glow--servicios-edges{
-    background-image:
-      radial-gradient(ellipse 120% 40% at 50% 23px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-  @media(max-width:640px){
-    .section-glow--nosotros-edges{
-      background-image:
-        radial-gradient(ellipse 120% 40% at 50% 38px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 27px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-    }
-    .section-glow--servicios-edges{
-      background-image:
-        radial-gradient(ellipse 120% 40% at 50% 14px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-    }
-  }
-
-  /* Las cuatro correcciones de arriba resuelven el lado que RECORTA
-     (#nosotros y #servicios, dueñas del mask-image/la capa opaca). Pero
-     cada una de esas ondas tiene un vecino del OTRO lado que se ve a
-     través de la franja tapada — Hero por arriba de #nosotros y Prensa
-     por abajo de #nosotros y por arriba de #servicios, ambas jaladas
-     hacia arriba con margin-top negativo para meterse debajo de la
-     franja — y ese vecino sigue con su propio .section-glow sin correr:
-     su pico natural cae en su propio borde real (0%/100%), que también
-     queda tapado (esta vez por la sección de arriba, no por su propio
-     mask). Es la misma cuenta pero en espejo: la profundidad visible del
-     vecino es el COMPLEMENTO de la ya medida (90px menos esa distancia,
-     porque ambas comparten la misma banda de 90px/54px):
-     - Hero abajo (complemento del tope de #nosotros, 90-64): 26px.
-     - Prensa arriba (complemento del fondo de #nosotros, 90-46): 44px.
-     - Prensa abajo (complemento del tope de #servicios, 90-23): 68px.
-     Prensa necesita los dos bordes porque queda entre dos ondas. Hero
-     sólo necesita el de abajo: arriba no tiene onda (es el borde
-     superior de la página). */
-  .section-glow--hero-edges{
-    background-image:
-      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 26px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-  .section-glow--press-edges{
-    background-image:
-      radial-gradient(ellipse 120% 40% at 50% 44px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-  @media(max-width:640px){
-    .section-glow--hero-edges{
-      background-image:
-        radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 16px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-    }
-    .section-glow--press-edges{
-      background-image:
-        radial-gradient(ellipse 120% 40% at 50% 27px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-    }
-  }
-
-  /* Puente en las ondas separadoras independientes (.wave-seam): esas
-     ondas son elementos aparte, no hijos de ninguna sección, así que el
-     resplandor de una sección (inset:0 dentro de su propia caja) nunca
-     llegaba hasta ellas — quedaba una franja plana entre el borde de
-     cada sección y la curva.
-     Un offset fijo (como en #nosotros/#servicios) no sirve acá: ahí el
-     offset se calibra para un único x (el centro), pero acá la curva
-     ondula visiblemente a lo ancho de TODA la sección y un offset fijo
-     deja un hueco negro en las crestas (donde la curva queda lejos del
-     origen) — medido: hasta 30px de plano casi negro entre la línea y el
-     arranque del degradado. La solución que sí seguí la curva en todo
-     su ancho: un trazo grueso calcado sobre el mismo path (mismo `d` que
-     ya usan el relleno y la línea lima), desenfocado con filter:blur.
-     Un trazo blureado tiene intensidad máxima SOBRE el path y se apaga
-     con la distancia PERPENDICULAR a él en cualquier punto — o sea que
-     seguí la forma exacta de la onda, cresta o valle, sin depender de un
-     offset fijo. filter:blur (CSS, no SVG nativo) opera en píxeles reales
-     de pantalla, no en las unidades del viewBox — así que no lo distorsiona
-     el escalado no-uniforme de preserveAspectRatio="none" (1440→ancho real
-     vs 120→90px/54px de alto). Cada mitad se recorta con su propio
-     clip-path (el mismo path cerrado arriba o abajo) para que el trazo
-     iluminado sólo aparezca del lado que le corresponde, con blend sólo
-     del lado que da a una sección oscura. */
-  .seam-glow-path{fill:none;stroke-width:48px;vector-effect:non-scaling-stroke;filter:blur(32px)}
-  .seam-glow-path--light{stroke:rgba(215,245,81,.5)}
-  .seam-glow-path--dark{stroke:rgba(215,245,81,1);mix-blend-mode:screen}
-  @media(max-width:640px){
-    .seam-glow-path{stroke-width:29px;filter:blur(19px)}
-  }
-
-  /* Todo borde que tiene su propia onda con trazo curvo blureado
-     (.seam-glow-path, arriba) NO debe conservar además el degradado de
-     .section-glow en ese mismo borde: son dos resplandores de forma
-     distinta — uno ceñido a la curva real, otro una elipse ancha y baja
-     pensada para un borde recto — con picos en puntos distintos (la
-     curva vs. el borde de la caja de la sección). Entre ambos queda una
-     franja donde el primero ya se apagó y el segundo todavía no llegó a
-     su propio pico, que se lee como dos manchas apiladas en vez de una
-     transición continua. La curva reemplaza al degradado de sección en
-     ese borde, no lo complementa.
-     --no-bottom deja sólo el degradado de arriba (borde sin onda propia
-     que lo cubra); --no-top, sólo el de abajo. Deportistas y Contacto
-     tienen onda en AMBOS bordes (encajan entre dos .wave-seam) así que
-     directamente no llevan div .section-glow — no les queda ningún
-     borde propio que resplandecer. */
-  .section-glow--no-bottom{
-    background-image:radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-  .section-glow--no-top{
-    background-image:radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
-  }
-
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
   .reveal.on{opacity:1;transform:none}
@@ -1041,7 +867,6 @@
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="section-glow section-glow--dark section-glow--hero-edges" aria-hidden="true"></div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
     <div class="hero-cta">
@@ -1056,7 +881,6 @@
 
 <!-- ============ QUIÉNES SOMOS ============ -->
 <section id="nosotros" class="about">
-  <div class="section-glow section-glow--dark section-glow--nosotros-edges" aria-hidden="true"></div>
   <div class="media-wave top" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
@@ -1115,7 +939,6 @@
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
   </div>
-  <div class="section-glow section-glow--press-edges" aria-hidden="true"></div>
   <div class="press-content">
     <div class="press-text reveal">
       <div class="press-eyebrow">
@@ -1136,7 +959,6 @@
 <!-- El contenido (pestañas, tarjetas y CTA) se genera en JS desde SERVICES_DATA:
      ver el array SERVICES_DATA en el bloque de script "Mosaico de Servicios". -->
 <section id="servicios" class="mosaic-services">
-  <div class="section-glow section-glow--dark section-glow--servicios-edges" aria-hidden="true"></div>
   <!-- Sólo la línea: el recorte real de este borde lo hace el mask-image
        de .mosaic-services (mismo path, mismo preserveAspectRatio, para
        que calcen exacto). -->
@@ -1175,7 +997,6 @@
      (ver el bloque "Proyectos" en el script). El comparador de Eze Neira
      queda como markup fijo por su interacción propia (arrastre). -->
 <section id="trabajo" class="projects">
-  <div class="section-glow section-glow--no-bottom" aria-hidden="true"></div>
   <div class="projects-inner">
     <h2 class="projects-title" data-i18n="work_headline">Selección de proyectos que llevamos adelante</h2>
     <div class="projects-grid">
@@ -1203,7 +1024,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><defs><clipPath id="seamClipAbove0" clipPathUnits="userSpaceOnUse"><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamClipBelow0" clipPathUnits="userSpaceOnUse"><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z"/></clipPath></defs><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path class="seam-glow-path seam-glow-path--light" clip-path="url(#seamClipAbove0)" d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86"/><path class="seam-glow-path seam-glow-path--dark" clip-path="url(#seamClipBelow0)" d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -1282,11 +1103,10 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><defs><clipPath id="seamClipAbove1" clipPathUnits="userSpaceOnUse"><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamClipBelow1" clipPathUnits="userSpaceOnUse"><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z"/></clipPath></defs><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path class="seam-glow-path seam-glow-path--dark" clip-path="url(#seamClipAbove1)" d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84"/><path class="seam-glow-path seam-glow-path--light" clip-path="url(#seamClipBelow1)" d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
-  <div class="section-glow section-glow--no-top" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal" data-reveal-group="proceso-intro">
       <h2 class="process-title"><span data-i18n="process_title_a">El camino de tu</span> <span class="process-title-highlight" data-i18n="process_title_highlight">imagen,</span> <span data-i18n="process_title_b">paso a paso</span></h2>
@@ -1403,7 +1223,6 @@
 
 <!-- ============ PREGUNTAS FRECUENTES ============ -->
 <section id="faq" class="faq-section">
-  <div class="section-glow section-glow--no-bottom" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal">
       <h2 class="process-title" data-i18n="process_faq_title">Preguntas frecuentes</h2>
@@ -1454,7 +1273,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><defs><clipPath id="seamClipAbove2" clipPathUnits="userSpaceOnUse"><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamClipBelow2" clipPathUnits="userSpaceOnUse"><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z"/></clipPath></defs><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path class="seam-glow-path seam-glow-path--light" clip-path="url(#seamClipAbove2)" d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84"/><path class="seam-glow-path seam-glow-path--dark" clip-path="url(#seamClipBelow2)" d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
@@ -1523,7 +1342,7 @@
 </section>
 </main>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><defs><clipPath id="seamClipAbove3" clipPathUnits="userSpaceOnUse"><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamClipBelow3" clipPathUnits="userSpaceOnUse"><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z"/></clipPath></defs><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path class="seam-glow-path seam-glow-path--dark" clip-path="url(#seamClipAbove3)" d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88"/><path class="seam-glow-path seam-glow-path--light" clip-path="url(#seamClipBelow3)" d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <a class="whatsapp-float" href="https://wa.me/5492494577556?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
