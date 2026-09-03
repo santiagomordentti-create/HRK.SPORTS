@@ -907,17 +907,26 @@
     .seam-glow-path{stroke-width:29px;filter:blur(19px)}
   }
 
-  /* .projects es la única sección cuyo borde de onda (hacia Deportistas)
-     ahora lo cubre por completo el resplandor nuevo, curvo, del propio
-     .wave-seam de arriba. Su propio .section-glow (elipse ancha y baja,
-     120%/40%, pensada para un borde recto) seguía además con el pico
-     propio en el mismo punto (at 50% 100%) — dos resplandores de forma
-     distinta superpuestos ahí formaban un contorno visible, como un
-     borde, aunque no hubiera ningún border/outline real (verificado por
-     CSS). --no-bottom deja sólo el degradado de arriba (borde con
-     Servicios, sin onda propia que lo cubra) y saca el de abajo. */
+  /* Todo borde que tiene su propia onda con trazo curvo blureado
+     (.seam-glow-path, arriba) NO debe conservar además el degradado de
+     .section-glow en ese mismo borde: son dos resplandores de forma
+     distinta — uno ceñido a la curva real, otro una elipse ancha y baja
+     pensada para un borde recto — con picos en puntos distintos (la
+     curva vs. el borde de la caja de la sección). Entre ambos queda una
+     franja donde el primero ya se apagó y el segundo todavía no llegó a
+     su propio pico, que se lee como dos manchas apiladas en vez de una
+     transición continua. La curva reemplaza al degradado de sección en
+     ese borde, no lo complementa.
+     --no-bottom deja sólo el degradado de arriba (borde sin onda propia
+     que lo cubra); --no-top, sólo el de abajo. Deportistas y Contacto
+     tienen onda en AMBOS bordes (encajan entre dos .wave-seam) así que
+     directamente no llevan div .section-glow — no les queda ningún
+     borde propio que resplandecer. */
   .section-glow--no-bottom{
     background-image:radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
+  }
+  .section-glow--no-top{
+    background-image:radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
   }
 
   /* ---------- REVEAL ---------- */
@@ -1198,7 +1207,6 @@
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
-  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="wrap">
     <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
     <!-- Pre-renderizado en español para que los nombres existan como texto real en el HTML (SEO); el JS lo reemplaza al cargar para manejar idioma e interacción. -->
@@ -1278,7 +1286,7 @@
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
-  <div class="section-glow" aria-hidden="true"></div>
+  <div class="section-glow section-glow--no-top" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal" data-reveal-group="proceso-intro">
       <h2 class="process-title"><span data-i18n="process_title_a">El camino de tu</span> <span class="process-title-highlight" data-i18n="process_title_highlight">imagen,</span> <span data-i18n="process_title_b">paso a paso</span></h2>
@@ -1395,7 +1403,7 @@
 
 <!-- ============ PREGUNTAS FRECUENTES ============ -->
 <section id="faq" class="faq-section">
-  <div class="section-glow" aria-hidden="true"></div>
+  <div class="section-glow section-glow--no-bottom" aria-hidden="true"></div>
   <div class="wrap">
     <div class="process-head reveal">
       <h2 class="process-title" data-i18n="process_faq_title">Preguntas frecuentes</h2>
@@ -1450,7 +1458,6 @@
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
-  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
   <div class="wrap">
     <div class="contact-grid">
       <div class="contact-info reveal">
