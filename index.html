@@ -757,19 +757,19 @@
 
   /* ---------- RESPLANDOR LIMA (separador entre secciones) ---------- */
   /* Capa única y reutilizable — se repite igual en todas las secciones,
-     nada se ajusta sección por sección salvo el modo de mezcla. Dos
-     radial-gradient del mismo --accent, anchos y bajos (120% de ancho
-     por 40% de alto), anclados arriba y abajo de la sección y
-     desvaneciendo a transparente hacia el centro. Intensidad: .35 de
-     opacidad en el punto más intenso (a propósito bien visible para
-     evaluar el efecto; se baja después si hace falta).
-     Sobre fondo oscuro, ese mismo rgba translúcido se promedia con el
-     negro y da verde oliva sucio — es lo que venía fallando en los
-     intentos anteriores. La solución no es bajar la opacidad: es sumar
-     mix-blend-mode:screen (.section-glow--dark) para que el lima se
-     SUME al fondo en vez de promediarse, y se lea como luz, no como
-     verdín. En fondo claro no hace falta ningún blend: el lima ya se ve
-     limpio en capas normales.
+     nada se ajusta sección por sección salvo el modo de mezcla y la
+     intensidad. Dos radial-gradient del mismo --accent, anchos y bajos
+     (120% de ancho por 40% de alto), anclados arriba y abajo de la
+     sección y desvaneciendo a transparente hacia el centro.
+     Intensidad vía --glow-opacity (default .35, usado en secciones
+     claras: ahí el lima ya se lee limpio en capas normales y subirlo lo
+     haría chillón). En fondo oscuro, ese mismo .35 con mix-blend-mode:
+     screen da lo más intenso que ese blend puede dar (~90 de canal rojo
+     sobre #16161a) pero se percibe como oliva apagado — así que
+     .section-glow--dark sube --glow-opacity a .7 (~160 de canal rojo:
+     lima claramente luminoso) además de aplicar el blend, que sigue
+     haciendo falta para que el lima se SUME al fondo en vez de
+     promediarse y de verdín en vez de luz.
      Va como capa absoluta (inset:0), primera hija de cada sección
      (o inmediatamente después de cualquier foto/video de fondo que la
      taparía del todo — Hero y Prensa), con z-index:0 para quedar
@@ -782,11 +782,11 @@
     z-index:0;
     pointer-events:none;
     background-image:
-      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% 100%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
     background-repeat:no-repeat;
   }
-  .section-glow--dark{mix-blend-mode:screen}
+  .section-glow--dark{mix-blend-mode:screen;--glow-opacity:.7}
 
   /* En #nosotros y #servicios, arriba y/o abajo, la onda no es un
      .wave-seam aparte: es la PROPIA sección la que se recorta con
@@ -815,24 +815,24 @@
      54/90=0.6. */
   .section-glow--nosotros-edges{
     background-image:
-      radial-gradient(ellipse 120% 40% at 50% 64px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 46px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+      radial-gradient(ellipse 120% 40% at 50% 64px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 46px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
   }
   .section-glow--servicios-edges{
     background-image:
-      radial-gradient(ellipse 120% 40% at 50% 23px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+      radial-gradient(ellipse 120% 40% at 50% 23px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
   }
   @media(max-width:640px){
     .section-glow--nosotros-edges{
       background-image:
-        radial-gradient(ellipse 120% 40% at 50% 38px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 27px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+        radial-gradient(ellipse 120% 40% at 50% 38px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 27px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
     }
     .section-glow--servicios-edges{
       background-image:
-        radial-gradient(ellipse 120% 40% at 50% 14px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+        radial-gradient(ellipse 120% 40% at 50% 14px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
     }
   }
 
@@ -856,24 +856,24 @@
      superior de la página). */
   .section-glow--hero-edges{
     background-image:
-      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 26px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 26px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
   }
   .section-glow--press-edges{
     background-image:
-      radial-gradient(ellipse 120% 40% at 50% 44px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+      radial-gradient(ellipse 120% 40% at 50% 44px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
   }
   @media(max-width:640px){
     .section-glow--hero-edges{
       background-image:
-        radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 16px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+        radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 16px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
     }
     .section-glow--press-edges{
       background-image:
-        radial-gradient(ellipse 120% 40% at 50% 27px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
-        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+        radial-gradient(ellipse 120% 40% at 50% 27px, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%);
     }
   }
 
@@ -890,8 +890,8 @@
      oscura — para que el resplandor de cada sección se sienta
      continuo hasta la curva. */
   .seam-glow{position:absolute;left:0;right:0;height:50%;z-index:0;pointer-events:none;background-repeat:no-repeat}
-  .seam-glow--top{top:0;background-image:radial-gradient(ellipse 120% 100% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%)}
-  .seam-glow--bottom{bottom:0;background-image:radial-gradient(ellipse 120% 100% at 50% 100%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%)}
+  .seam-glow--top{top:0;background-image:radial-gradient(ellipse 120% 100% at 50% 0%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%)}
+  .seam-glow--bottom{bottom:0;background-image:radial-gradient(ellipse 120% 100% at 50% 100%, rgba(215,245,81,var(--glow-opacity,.35)), rgba(215,245,81,0) 70%)}
 
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
