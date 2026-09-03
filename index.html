@@ -63,6 +63,10 @@
        verde" porque se deriva de --accent, no es un tono aparte. */
     --accent-deep:#5c6810;
     --bg-light:#faf8f6;
+    /* Resplandor entre secciones: ver bloque "RESPLANDOR DE ONDA" más abajo.
+       Todo el efecto se deriva de estos dos números. */
+    --glow-reach:160px;
+    --glow-strength:.28;
     --accent-glow:0 0 8px rgba(215,245,81,.45);
     --glow-hover:0 0 8px rgba(255,255,255,.2);
     --glow-primary-rest:0 0 6px rgba(255,255,255,.14);
@@ -201,6 +205,12 @@
      hero en esa zona de superposición. Las líneas lima que calcan esos
      mismos paths se agregan como capa aparte (.media-wave), sin relleno. */
   #nosotros{
+    /* Nosotros linda con Hero y con Prensa por sus dos ondas propias, pero
+       ninguna de las dos queda con resplandor propio (ver bloque
+       "RESPLANDOR DE ONDA"): sólo se resplandece el lado oscuro, que es
+       siempre el propio #nosotros. Acá además se pide mucho más sutil que
+       el resto del sitio — casi invisible. */
+    --glow-strength:.10;
     --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,33%20C120,33%20120,85%20240,85%20C360,85%20360,33%20480,33%20C600,33%20600,85%20720,85%20C840,85%20840,33%20960,33%20C1080,33%201080,85%201200,85%20C1320,85%201320,33%201440,33%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
     --wave-mask-bottom:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,86%20C144,86%20144,32%20288,32%20C432,32%20432,86%20576,86%20C720,86%20720,32%20864,32%20C1008,32%201008,86%201152,86%20C1296,86%201296,32%201440,32%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
     position:relative;z-index:1;overflow:hidden;
@@ -755,6 +765,54 @@
   .media-wave.bottom{bottom:-1px}
   @media(max-width:640px){.media-wave{height:54px}}
 
+  /* ---------- RESPLANDOR DE ONDA ---------- */
+  /* Sistema único: el resplandor vive DENTRO del SVG de cada onda, como un
+     trazo (stroke) grueso calcado sobre el MISMO path de la curva y
+     desenfocado con filter:blur. Al ser el mismo `d`, sigue la cresta y el
+     valle automáticamente — no hay ningún offset fijo ni radial-gradient
+     por sección: eso fue lo que falló en el sistema anterior (dos capas
+     independientes, una por sección y otra por onda, que no coincidían).
+     Cada .wave-glow es un <svg> HERMANO del svg de recorte/línea de cada
+     onda (mismo contenedor, no lo reemplaza) con su propio viewBox a
+     escala 1:1 con píxeles reales (nada de preserveAspectRatio heredado
+     del viewBox 0..120 de la onda) para que stroke-width/blur en px se
+     razonen directo. El trazo se parte en dos con clip-path: la mitad que
+     cae en fondo oscuro (mix-blend-mode:screen, el lima SUMA luz) y la
+     que cae en fondo claro (mix-blend-mode:multiply, el lima resta luz —
+     con screen ahí no pasa nada visible sobre un fondo casi blanco).
+     --glow-reach controla cuánto se abre el halo a cada lado de la curva
+     (stroke-width y blur derivan de ese único valor); --glow-strength
+     controla la opacidad del trazo antes de blur/blend. Cambiando esos
+     dos tokens en :root se ajusta el efecto en todo el sitio.
+     El lienzo de cada .wave-glow es más alto que la onda que decora (deja
+     margen fijo de sobra para que el halo, calculado a partir de
+     --glow-reach, quepa entero sin recortarse contra el borde del propio
+     svg) pero está posicionado en absoluto sin alterar el alto en flujo
+     de nada — nunca agrega scroll ni mueve el resto de la página. */
+  .wave-glow{position:absolute;left:0;width:100%;z-index:0;pointer-events:none;display:block;overflow:visible}
+  .wave-glow-path{fill:none;vector-effect:non-scaling-stroke;stroke-width:calc(var(--glow-reach) * .875);filter:blur(calc(var(--glow-reach) * .33))}
+  .wave-glow-path--dark{stroke:rgba(215,245,81,var(--glow-strength));mix-blend-mode:screen}
+  .wave-glow-path--light{stroke:rgba(215,245,81,var(--glow-strength));mix-blend-mode:multiply}
+  /* La franja de la onda mide 54px en mobile en vez de 90 (escala .45 en
+     vez de .75 sobre el mismo viewBox 0..120) — la curva del resplandor
+     recalculada a esa escala, mismo margen de lienzo (220px) para que
+     siga centrada en el mismo punto real. `d` como propiedad CSS permite
+     este override por breakpoint sin duplicar el <svg>. */
+  @media(max-width:640px){
+    #nosotrosTopGlow{d:path("M0,14.85 C120,14.85 120,38.25 240,38.25 C360,38.25 360,14.85 480,14.85 C600,14.85 600,38.25 720,38.25 C840,38.25 840,14.85 960,14.85 C1080,14.85 1080,38.25 1200,38.25 C1320,38.25 1320,14.85 1440,14.85")}
+    #nosotrosBottomGlow{d:path("M0,258.7 C144,258.7 144,234.4 288,234.4 C432,234.4 432,258.7 576,258.7 C720,258.7 720,234.4 864,234.4 C1008,234.4 1008,258.7 1152,258.7 C1296,258.7 1296,234.4 1440,234.4")}
+    #serviciosTopGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
+    #serviciosBottomGlow{d:path("M0,257.8 C120,257.8 120,233.5 240,233.5 C360,233.5 360,257.8 480,257.8 C600,257.8 600,233.5 720,233.5 C840,233.5 840,257.8 960,257.8 C1080,257.8 1080,233.5 1200,233.5 C1320,233.5 1320,257.8 1440,257.8")}
+    #seam0Above{d:path("M0,235.3 C144,235.3 144,258.7 288,258.7 C432,258.7 432,235.3 576,235.3 C720,235.3 720,258.7 864,258.7 C1008,258.7 1008,235.3 1152,235.3 C1296,235.3 1296,258.7 1440,258.7")}
+    #seam0Below{d:path("M0,235.3 C144,235.3 144,258.7 288,258.7 C432,258.7 432,235.3 576,235.3 C720,235.3 720,258.7 864,258.7 C1008,258.7 1008,235.3 1152,235.3 C1296,235.3 1296,258.7 1440,258.7")}
+    #seam1Above{d:path("M0,257.8 C120,257.8 120,233.5 240,233.5 C360,233.5 360,257.8 480,257.8 C600,257.8 600,233.5 720,233.5 C840,233.5 840,257.8 960,257.8 C1080,257.8 1080,233.5 1200,233.5 C1320,233.5 1320,257.8 1440,257.8")}
+    #seam1Below{d:path("M0,257.8 C120,257.8 120,233.5 240,233.5 C360,233.5 360,257.8 480,257.8 C600,257.8 600,233.5 720,233.5 C840,233.5 840,257.8 960,257.8 C1080,257.8 1080,233.5 1200,233.5 C1320,233.5 1320,257.8 1440,257.8")}
+    #seam2Above{d:path("M0,257.8 C120,257.8 120,233.5 240,233.5 C360,233.5 360,257.8 480,257.8 C600,257.8 600,233.5 720,233.5 C840,233.5 840,257.8 960,257.8 C1080,257.8 1080,233.5 1200,233.5 C1320,233.5 1320,257.8 1440,257.8")}
+    #seam2Below{d:path("M0,257.8 C120,257.8 120,233.5 240,233.5 C360,233.5 360,257.8 480,257.8 C600,257.8 600,233.5 720,233.5 C840,233.5 840,257.8 960,257.8 C1080,257.8 1080,233.5 1200,233.5 C1320,233.5 1320,257.8 1440,257.8")}
+    #seam3Above{d:path("M0,259.6 C180,259.6 180,233.5 360,233.5 C540,233.5 540,259.6 720,259.6 C900,259.6 900,233.5 1080,233.5 C1260,233.5 1260,259.6 1440,259.6")}
+    #seam3Below{d:path("M0,259.6 C180,259.6 180,233.5 360,233.5 C540,233.5 540,259.6 720,259.6 C900,259.6 900,233.5 1080,233.5 C1260,233.5 1260,259.6 1440,259.6")}
+  }
+
   /* ---------- REVEAL ---------- */
   .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
   .reveal.on{opacity:1;transform:none}
@@ -886,6 +944,15 @@
       <path d="M0,33 C120,33 120,85 240,85 C360,85 360,33 480,33 C600,33 600,85 720,85 C840,85 840,33 960,33 C1080,33 1080,85 1200,85 C1320,85 1320,33 1440,33" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
+  <!-- Resplandor: sólo el lado oscuro (el propio #nosotros); Hero no lleva
+       difuminado. Lienzo 1:1 en px reales, curva calcada del mismo path
+       de arriba pero convertida a esa escala (90px reales / 120 unidades
+       del viewBox de la onda = *.75). -->
+  <div class="wave-glow" style="top:-1px;height:310px" aria-hidden="true">
+    <svg viewBox="0 0 1440 310" preserveAspectRatio="none">
+      <path class="wave-glow-path wave-glow-path--dark" id="nosotrosTopGlow" d="M0,24.75 C120,24.75 120,63.75 240,63.75 C360,63.75 360,24.75 480,24.75 C600,24.75 600,63.75 720,63.75 C840,63.75 840,24.75 960,24.75 C1080,24.75 1080,63.75 1200,63.75 C1320,63.75 1320,24.75 1440,24.75"/>
+    </svg>
+  </div>
   <div class="about-ghost-pattern" id="aboutGhostPattern" aria-hidden="true"></div>
   <div class="about-hero">
     <h2 class="about-title"><span data-i18n="about_title_a">El talento necesita una imagen que lo</span> <span class="about-title-highlight" data-i18n="about_title_highlight">represente</span></h2>
@@ -929,6 +996,15 @@
       <path d="M0,86 C144,86 144,32 288,32 C432,32 432,86 576,86 C720,86 720,32 864,32 C1008,32 1008,86 1152,86 C1296,86 1296,32 1440,32" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
+  <!-- Resplandor: sólo el lado oscuro (el propio #nosotros); Prensa no
+       lleva difuminado. Ancla abajo (bottom:-1px) y crece hacia arriba,
+       así que la curva queda desplazada 220px (el margen del lienzo)
+       desde el techo del svg en vez de en su posición "natural". -->
+  <div class="wave-glow" style="bottom:-1px;height:310px" aria-hidden="true">
+    <svg viewBox="0 0 1440 310" preserveAspectRatio="none">
+      <path class="wave-glow-path wave-glow-path--dark" id="nosotrosBottomGlow" d="M0,284.5 C144,284.5 144,244 288,244 C432,244 432,284.5 576,284.5 C720,284.5 720,244 864,244 C1008,244 1008,284.5 1152,284.5 C1296,284.5 1296,244 1440,244"/>
+    </svg>
+  </div>
 </section>
 
 <!-- ============ PRENSA (FRANJA A SANGRE) ============ -->
@@ -967,10 +1043,26 @@
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
     </svg>
   </div>
+  <!-- Resplandor: sólo el lado oscuro (el propio #servicios); Prensa no
+       lleva difuminado. -->
+  <div class="wave-glow" style="top:-1px;height:310px" aria-hidden="true">
+    <svg viewBox="0 0 1440 310" preserveAspectRatio="none">
+      <path class="wave-glow-path wave-glow-path--dark" id="serviciosTopGlow" d="M0,63 C120,63 120,22.5 240,22.5 C360,22.5 360,63 480,63 C600,63 600,22.5 720,22.5 C840,22.5 840,63 960,63 C1080,63 1080,22.5 1200,22.5 C1320,22.5 1320,63 1440,63"/>
+    </svg>
+  </div>
   <div class="mosaic-wave bottom" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/>
       <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <!-- Resplandor: sólo el lado oscuro (el propio #servicios, arriba de la
+       curva); abajo es el parche que imita el color de Proyectos, no una
+       sección con su propio difuminado. Ancla abajo y crece hacia arriba
+       (mismo criterio que el borde inferior de #nosotros). -->
+  <div class="wave-glow" style="bottom:-1px;height:310px" aria-hidden="true">
+    <svg viewBox="0 0 1440 310" preserveAspectRatio="none">
+      <path class="wave-glow-path wave-glow-path--dark" id="serviciosBottomGlow" d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283"/>
     </svg>
   </div>
 
@@ -1024,7 +1116,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg><div class="wave-glow" style="top:-220px;height:530px" aria-hidden="true"><svg viewBox="0 0 1440 530" preserveAspectRatio="none"><defs><clipPath id="seamGlowClipAbove0" clipPathUnits="userSpaceOnUse"><path d="M0,245.5 C144,245.5 144,284.5 288,284.5 C432,284.5 432,245.5 576,245.5 C720,245.5 720,284.5 864,284.5 C1008,284.5 1008,245.5 1152,245.5 C1296,245.5 1296,284.5 1440,284.5 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamGlowClipBelow0" clipPathUnits="userSpaceOnUse"><path d="M0,245.5 C144,245.5 144,284.5 288,284.5 C432,284.5 432,245.5 576,245.5 C720,245.5 720,284.5 864,284.5 C1008,284.5 1008,245.5 1152,245.5 C1296,245.5 1296,284.5 1440,284.5 L1440,530 L0,530 Z"/></clipPath></defs><path class="wave-glow-path wave-glow-path--light" id="seam0Above" clip-path="url(#seamGlowClipAbove0)" d="M0,245.5 C144,245.5 144,284.5 288,284.5 C432,284.5 432,245.5 576,245.5 C720,245.5 720,284.5 864,284.5 C1008,284.5 1008,245.5 1152,245.5 C1296,245.5 1296,284.5 1440,284.5"/><path class="wave-glow-path wave-glow-path--dark" id="seam0Below" clip-path="url(#seamGlowClipBelow0)" d="M0,245.5 C144,245.5 144,284.5 288,284.5 C432,284.5 432,245.5 576,245.5 C720,245.5 720,284.5 864,284.5 C1008,284.5 1008,245.5 1152,245.5 C1296,245.5 1296,284.5 1440,284.5"/></svg></div></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
@@ -1103,7 +1195,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg><div class="wave-glow" style="top:-220px;height:530px" aria-hidden="true"><svg viewBox="0 0 1440 530" preserveAspectRatio="none"><defs><clipPath id="seamGlowClipAbove1" clipPathUnits="userSpaceOnUse"><path d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamGlowClipBelow1" clipPathUnits="userSpaceOnUse"><path d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283 L1440,530 L0,530 Z"/></clipPath></defs><path class="wave-glow-path wave-glow-path--dark" id="seam1Above" clip-path="url(#seamGlowClipAbove1)" d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283"/><path class="wave-glow-path wave-glow-path--light" id="seam1Below" clip-path="url(#seamGlowClipBelow1)" d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283"/></svg></div></div>
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
@@ -1273,7 +1365,7 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg><div class="wave-glow" style="top:-220px;height:530px" aria-hidden="true"><svg viewBox="0 0 1440 530" preserveAspectRatio="none"><defs><clipPath id="seamGlowClipAbove2" clipPathUnits="userSpaceOnUse"><path d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamGlowClipBelow2" clipPathUnits="userSpaceOnUse"><path d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283 L1440,530 L0,530 Z"/></clipPath></defs><path class="wave-glow-path wave-glow-path--light" id="seam2Above" clip-path="url(#seamGlowClipAbove2)" d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283"/><path class="wave-glow-path wave-glow-path--dark" id="seam2Below" clip-path="url(#seamGlowClipBelow2)" d="M0,283 C120,283 120,242.5 240,242.5 C360,242.5 360,283 480,283 C600,283 600,242.5 720,242.5 C840,242.5 840,283 960,283 C1080,283 1080,242.5 1200,242.5 C1320,242.5 1320,283 1440,283"/></svg></div></div>
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
@@ -1342,7 +1434,7 @@
 </section>
 </main>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg><div class="wave-glow" style="top:-220px;height:530px" aria-hidden="true"><svg viewBox="0 0 1440 530" preserveAspectRatio="none"><defs><clipPath id="seamGlowClipAbove3" clipPathUnits="userSpaceOnUse"><path d="M0,286 C180,286 180,242.5 360,242.5 C540,242.5 540,286 720,286 C900,286 900,242.5 1080,242.5 C1260,242.5 1260,286 1440,286 L1440,0 L0,0 Z"/></clipPath><clipPath id="seamGlowClipBelow3" clipPathUnits="userSpaceOnUse"><path d="M0,286 C180,286 180,242.5 360,242.5 C540,242.5 540,286 720,286 C900,286 900,242.5 1080,242.5 C1260,242.5 1260,286 1440,286 L1440,530 L0,530 Z"/></clipPath></defs><path class="wave-glow-path wave-glow-path--dark" id="seam3Above" clip-path="url(#seamGlowClipAbove3)" d="M0,286 C180,286 180,242.5 360,242.5 C540,242.5 540,286 720,286 C900,286 900,242.5 1080,242.5 C1260,242.5 1260,286 1440,286"/><path class="wave-glow-path wave-glow-path--light" id="seam3Below" clip-path="url(#seamGlowClipBelow3)" d="M0,286 C180,286 180,242.5 360,242.5 C540,242.5 540,286 720,286 C900,286 900,242.5 1080,242.5 C1260,242.5 1260,286 1440,286"/></svg></div></div>
 
 <a class="whatsapp-float" href="https://wa.me/5492494577556?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
