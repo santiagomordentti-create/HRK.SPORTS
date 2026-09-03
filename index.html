@@ -836,6 +836,47 @@
     }
   }
 
+  /* Las cuatro correcciones de arriba resuelven el lado que RECORTA
+     (#nosotros y #servicios, dueñas del mask-image/la capa opaca). Pero
+     cada una de esas ondas tiene un vecino del OTRO lado que se ve a
+     través de la franja tapada — Hero por arriba de #nosotros y Prensa
+     por abajo de #nosotros y por arriba de #servicios, ambas jaladas
+     hacia arriba con margin-top negativo para meterse debajo de la
+     franja — y ese vecino sigue con su propio .section-glow sin correr:
+     su pico natural cae en su propio borde real (0%/100%), que también
+     queda tapado (esta vez por la sección de arriba, no por su propio
+     mask). Es la misma cuenta pero en espejo: la profundidad visible del
+     vecino es el COMPLEMENTO de la ya medida (90px menos esa distancia,
+     porque ambas comparten la misma banda de 90px/54px):
+     - Hero abajo (complemento del tope de #nosotros, 90-64): 26px.
+     - Prensa arriba (complemento del fondo de #nosotros, 90-46): 44px.
+     - Prensa abajo (complemento del tope de #servicios, 90-23): 68px.
+     Prensa necesita los dos bordes porque queda entre dos ondas. Hero
+     sólo necesita el de abajo: arriba no tiene onda (es el borde
+     superior de la página). */
+  .section-glow--hero-edges{
+    background-image:
+      radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 26px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+  }
+  .section-glow--press-edges{
+    background-image:
+      radial-gradient(ellipse 120% 40% at 50% 44px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+      radial-gradient(ellipse 120% 40% at 50% calc(100% - 68px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+  }
+  @media(max-width:640px){
+    .section-glow--hero-edges{
+      background-image:
+        radial-gradient(ellipse 120% 40% at 50% 0%, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 16px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+    }
+    .section-glow--press-edges{
+      background-image:
+        radial-gradient(ellipse 120% 40% at 50% 27px, rgba(215,245,81,.35), rgba(215,245,81,0) 70%),
+        radial-gradient(ellipse 120% 40% at 50% calc(100% - 41px), rgba(215,245,81,.35), rgba(215,245,81,0) 70%);
+    }
+  }
+
   /* Puente en las ondas separadoras independientes (.wave-seam): esas
      ondas son elementos aparte, no hijos de ninguna sección, así que el
      resplandor de una sección (inset:0 dentro de su propia caja) nunca
@@ -964,7 +1005,7 @@
       <source src="assets/hero-hrk.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="section-glow section-glow--dark" aria-hidden="true"></div>
+  <div class="section-glow section-glow--dark section-glow--hero-edges" aria-hidden="true"></div>
   <div class="wrap hero-content">
     <h1><span data-i18n="hero_pre">Construimos la imagen de quienes</span> <em data-i18n="hero_em">viven para competir</em></h1>
     <div class="hero-cta">
@@ -1038,7 +1079,7 @@
   <div class="press-media" aria-hidden="true">
     <img src="assets/prensa-uade-hub.jpg" alt="Emprendedores seleccionados por UADE HUB — nota de Perfil" loading="lazy">
   </div>
-  <div class="section-glow" aria-hidden="true"></div>
+  <div class="section-glow section-glow--press-edges" aria-hidden="true"></div>
   <div class="press-content">
     <div class="press-text reveal">
       <div class="press-eyebrow">
