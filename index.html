@@ -447,7 +447,41 @@
   }
 
   /* ---------- DEPORTISTAS (ACORDEÓN) ---------- */
-  #deportistas{position:relative;overflow:hidden}
+  /* Antes las ondas de arriba y abajo eran un div.wave-seam suelto de
+     90px ENTRE las secciones — la curva vivía a 90px de cualquiera de
+     los dos bordes, y ningún resplandor anclado al borde de su propia
+     sección podía alcanzarla nunca (quedaban 90px de franja plana entre
+     el tinte y la curva). La solución: el mismo criterio que ya usa
+     #nosotros — la onda deja de ser un elemento aparte y pasa a ser la
+     propia sección recortándose con mask-image (arriba Y abajo, tres
+     capas: curva, sólido, curva), subida por arriba con margin-top
+     negativo para solaparse con Proyectos (mismo trato que #nosotros
+     con Hero). Con la curva ahora en el borde real de la caja, el
+     resplandor (mismo bloque .wave-glow de siempre) queda en el mismo
+     contexto de recorte y sí llega hasta ella. */
+  #deportistas{
+    --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,34%20C144,34%20144,86%20288,86%20C432,86%20432,34%20576,34%20C720,34%20720,86%20864,86%20C1008,86%201008,34%201152,34%20C1296,34%201296,86%201440,86%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
+    --wave-mask-bottom:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,84%20C120,84%20120,30%20240,30%20C360,30%20360,84%20480,84%20C600,84%20600,30%20720,30%20C840,30%20840,84%20960,84%20C1080,84%201080,30%201200,30%20C1320,30%201320,84%201440,84%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
+    position:relative;z-index:1;overflow:hidden;background:var(--bg);
+    margin-top:-90px;
+    -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    -webkit-mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    -webkit-mask-position:top left,0 90px,bottom left;
+    -webkit-mask-repeat:no-repeat,no-repeat,no-repeat;
+    mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    mask-position:top left,0 90px,bottom left;
+    mask-repeat:no-repeat,no-repeat,no-repeat;
+  }
+  @media(max-width:640px){
+    #deportistas{
+      margin-top:-54px;
+      -webkit-mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      -webkit-mask-position:top left,0 54px,bottom left;
+      mask-position:top left,0 54px,bottom left;
+    }
+  }
   #deportistas .wrap{position:relative;z-index:1;max-width:var(--container);padding-inline:var(--container-pad)}
   .athletes-title{color:#fff;text-align:center;margin-bottom:var(--space-block)}
   .athletes-strip{display:flex;gap:var(--space-item);height:560px}
@@ -501,17 +535,17 @@
 
   /* ---------- PROCESO (RECORRIDO EN COLUMNA) ---------- */
   /* La sección conserva el fondo claro (--bg-light) que ya le correspondía
-     en la alternancia de bandas de la página (comprobable en las ondas de
-     los .wave-seam justo antes y después). Con fondo claro, las tarjetas
-     van en blanco con borde sutil, y los elementos "contrastantes" (chip de
-     inicio, barra "Tu parte", tarjeta final) van en el oscuro del sitio
-     (--bg) para puntuar el recorrido. Los tres pasos van uno debajo del
-     otro (sin zigzag) y se conectan con una línea + puntos simples — nada
-     de SVG medido/redibujado por JS. */
+     en la alternancia de bandas de la página (comprobable en las ondas que
+     recortan a #deportistas justo antes y a #contacto justo después). Con
+     fondo claro, las tarjetas van en blanco con borde sutil, y los
+     elementos "contrastantes" (chip de inicio, barra "Tu parte", tarjeta
+     final) van en el oscuro del sitio (--bg) para puntuar el recorrido.
+     Los tres pasos van uno debajo del otro (sin zigzag) y se conectan con
+     una línea + puntos simples — nada de SVG medido/redibujado por JS. */
   /* #faq comparte la paleta clara de #proceso: misma banda de fondo, sin
      onda separadora entre ambas (evita dos secciones claras seguidas con
-     un separador de por medio) — el único wave-seam de este tramo pasó a
-     vivir entre #faq y #contacto. */
+     una curva de por medio) — la única onda de este tramo pasó a vivir
+     entre #faq y #contacto, recortada en el propio #contacto. */
   #proceso, #faq{
     --proc-ink:var(--bg);
     --proc-ink-soft:color-mix(in srgb, var(--bg) 68%, transparent);
@@ -526,6 +560,12 @@
     color:var(--proc-ink);
   }
   .process,.faq-section{position:relative;overflow:hidden}
+  /* .process es el lado "revelado" de la onda que ahora recorta
+     #deportistas (ver bloque DEPORTISTAS): no lleva mask propia, sólo se
+     sube por arriba para quedar detrás de la franja transparente de
+     #deportistas — mismo trato que .press le da a #nosotros. */
+  .process{margin-top:-90px;z-index:0}
+  @media(max-width:640px){.process{margin-top:-54px}}
   #proceso .wrap, #faq .wrap{position:relative;z-index:1}
   #proceso{padding-bottom:var(--space-block)}
   #faq{padding-top:var(--space-block)}
@@ -699,7 +739,33 @@
   .press .btn-secondary:hover{border-color:var(--bg);box-shadow:0 0 8px color-mix(in srgb, var(--bg) 15%, transparent)}
 
   /* ---------- CONTACTO ---------- */
-  #contacto{position:relative;overflow:hidden}
+  /* Mismo criterio que #deportistas más arriba: las ondas con FAQ (arriba)
+     y Footer (abajo) dejan de ser un div.wave-seam suelto y pasan a ser
+     la propia sección recortándose con mask-image, subida con margin-top
+     negativo para solaparse con FAQ. */
+  #contacto{
+    --wave-mask-top:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,84%20C120,84%20120,30%20240,30%20C360,30%20360,84%20480,84%20C600,84%20600,30%20720,30%20C840,30%20840,84%20960,84%20C1080,84%201080,30%201200,30%20C1320,30%201320,84%201440,84%20L1440,120%20L0,120%20Z'%20fill='white'/%3E%3C/svg%3E");
+    --wave-mask-bottom:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%20120'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0,88%20C180,88%20180,30%20360,30%20C540,30%20540,88%20720,88%20C900,88%20900,30%201080,30%20C1260,30%201260,88%201440,88%20L1440,0%20L0,0%20Z'%20fill='white'/%3E%3C/svg%3E");
+    position:relative;z-index:1;overflow:hidden;background:var(--bg);
+    margin-top:-90px;
+    -webkit-mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    -webkit-mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    -webkit-mask-position:top left,0 90px,bottom left;
+    -webkit-mask-repeat:no-repeat,no-repeat,no-repeat;
+    mask-image:var(--wave-mask-top),linear-gradient(#000,#000),var(--wave-mask-bottom);
+    mask-size:100% 90px,100% calc(100% - 180px),100% 90px;
+    mask-position:top left,0 90px,bottom left;
+    mask-repeat:no-repeat,no-repeat,no-repeat;
+  }
+  @media(max-width:640px){
+    #contacto{
+      margin-top:-54px;
+      -webkit-mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      mask-size:100% 54px,100% calc(100% - 108px),100% 54px;
+      -webkit-mask-position:top left,0 54px,bottom left;
+      mask-position:top left,0 54px,bottom left;
+    }
+  }
   #contacto .wrap{position:relative;z-index:1}
   .contact-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:var(--space-block);align-items:start}
   .contact-info h2{margin-bottom:var(--space-tight)}
@@ -729,9 +795,23 @@
   .form-status:empty{display:none;margin:0}
 
   /* ---------- FOOTER ---------- */
-  footer{position:relative;overflow:hidden;background:var(--bg-light);color:var(--bg)}
+  /* Lado "revelado" de la onda de #contacto (ver bloque CONTACTO): sólo
+     se sube por arriba para quedar detrás de su franja transparente,
+     igual que .process con #deportistas. */
+  footer{position:relative;overflow:hidden;background:var(--bg-light);color:var(--bg);margin-top:-90px;z-index:0}
+  @media(max-width:640px){footer{margin-top:-54px}}
   footer .wrap{position:relative;z-index:1}
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap;padding:36px 0}
+  /* footer{padding:0} — el propio <footer> no tiene padding, y ahora que
+     se solapa 90px (54px en mobile) con #contacto para que su onda lo
+     recorte, ese solape le come directamente a .foot su padding-top
+     original de 36px: el contenido (logo, copyright, social) queda dentro
+     de la franja que #contacto todavía pinta encima en las crestas de la
+     curva (donde tapa hasta 66px), cortado a mitad de texto. Sumar el
+     solape al padding-top (36+90) garantiza que el contenido arranque
+     recién donde el solape termina siempre, sin importar la profundidad
+     de la curva en ese punto. */
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap;padding:calc(36px + 90px) 0 36px}
+  @media(max-width:640px){.foot{padding-top:calc(36px + 54px)}}
   .foot .logo{color:var(--bg);font-size:1.1rem}
   .foot p{color:#57534d;font-size:var(--text-sm);line-height:var(--leading)}
   .foot-social{display:flex;gap:var(--space-item)}
@@ -755,11 +835,6 @@
   .whatsapp-float:hover{box-shadow:var(--glow-hover)}
   .whatsapp-float svg{width:28px;height:28px}
 
-  /* ---------- SEPARADORES ONDULADOS ---------- */
-  .wave-seam{position:relative;width:100%;height:90px;line-height:0;pointer-events:none}
-  .wave-seam svg{display:block;width:100%;height:100%}
-  @media(max-width:640px){.wave-seam{height:54px}}
-
   /* Ondas montadas directamente sobre una franja con foto/video (sin banda plana intermedia) */
   .media-wave{position:absolute;left:0;width:100%;height:90px;z-index:1;pointer-events:none;display:block}
   .media-wave svg{display:block;width:100%;height:100%}
@@ -770,19 +845,23 @@
   /* ---------- RESPLANDOR DE ONDA ---------- */
   /* Sistema único: el resplandor vive DENTRO de la sección que le
      corresponde, como fondo (z-index:0, por debajo del contenido real que
-     ya usa z-index:1+ en todo el sitio) — nunca en el separador
-     (.wave-seam) ni cruzando el límite hacia la sección vecina.
-     Un separador (.wave-seam) es un elemento APARTE entre dos secciones,
-     pintado ANTES que la sección de abajo: si el resplandor viviera ahí y
-     quisiera extenderse más allá de la franja de 90px del propio
-     separador, la sección de abajo (opaca, pintada después) lo tapa a
-     mitad de camino — eso fue el bug ("rectángulo verde" cortado a
-     cuchillo). La solución: cada mitad vive DENTRO de la sección que le
-     toca, anclada a SU PROPIO borde, creciendo hacia adentro. Como
-     overflow:hidden ya está puesto (o se agrega acá) en cada una de esas
-     secciones, ese overflow pasa de enemigo a aliado: recorta el halo
-     justo donde tiene que terminar, en vez de dejarlo a mitad de un
-     separador ajeno.
+     ya usa z-index:1+ en todo el sitio) — nunca cruzando el límite hacia
+     la sección vecina, y nunca en un separador aparte.
+     Las ocho uniones del sitio comparten AHORA la misma estructura de
+     #nosotros/#servicios: la onda no es un div.wave-seam suelto entre
+     dos secciones — es la propia sección la que se recorta con
+     mask-image en su propio borde (subida con margin-top negativo para
+     solaparse con la sección de arriba, igual que #nosotros con Hero).
+     Antes, cuatro uniones (Deportistas y Contacto en sus dos bordes)
+     usaban un div.wave-seam de 90px APARTE, con la curva viviendo a
+     90px de distancia de cualquiera de las dos secciones — ningún
+     resplandor anclado al borde de su propia sección podía alcanzarla,
+     y quedaban 90px de banda plana sin degradado entre el tinte y la
+     curva (visible como líneas rectas horizontales cortando la
+     transición). Con la curva ahora en el borde real de la caja de la
+     sección que la recorta, el resplandor —mismo bloque .wave-glow de
+     siempre— queda en el mismo contexto de recorte y la alcanza sin
+     costura, igual que en #nosotros/#servicios desde el principio.
      Técnica sin cambios: un trazo (stroke) grueso calcado sobre el MISMO
      path de la curva de la onda vecina (desplazado 90px/54px según haga
      falta, mismo criterio en las dos mitades para que calcen sin
@@ -818,14 +897,14 @@
     #serviciosTopGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
     #serviciosBottomGlow{d:path("M0,16.2 C120,16.2 120,40.5 240,40.5 C360,40.5 360,16.2 480,16.2 C600,16.2 600,40.5 720,40.5 C840,40.5 840,16.2 960,16.2 C1080,16.2 1080,40.5 1200,40.5 C1320,40.5 1320,16.2 1440,16.2")}
     #projectsTopGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
-    #projectsBottomGlow{d:path("M0,15.3 C144,15.3 144,38.7 288,38.7 C432,38.7 432,15.3 576,15.3 C720,15.3 720,38.7 864,38.7 C1008,38.7 1008,15.3 1152,15.3 C1296,15.3 1296,38.7 1440,38.7")}
-    #deportistasTopGlow{d:path("M0,38.7 C144,38.7 144,15.3 288,15.3 C432,15.3 432,38.7 576,38.7 C720,38.7 720,15.3 864,15.3 C1008,15.3 1008,38.7 1152,38.7 C1296,38.7 1296,15.3 1440,15.3")}
-    #deportistasBottomGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
-    #procesoTopGlow{d:path("M0,16.2 C120,16.2 120,40.5 240,40.5 C360,40.5 360,16.2 480,16.2 C600,16.2 600,40.5 720,40.5 C840,40.5 840,16.2 960,16.2 C1080,16.2 1080,40.5 1200,40.5 C1320,40.5 1320,16.2 1440,16.2")}
-    #faqBottomGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
-    #contactoTopGlow{d:path("M0,16.2 C120,16.2 120,40.5 240,40.5 C360,40.5 360,16.2 480,16.2 C600,16.2 600,40.5 720,40.5 C840,40.5 840,16.2 960,16.2 C1080,16.2 1080,40.5 1200,40.5 C1320,40.5 1320,16.2 1440,16.2")}
-    #contactoBottomGlow{d:path("M0,39.6 C180,39.6 180,13.5 360,13.5 C540,13.5 540,39.6 720,39.6 C900,39.6 900,13.5 1080,13.5 C1260,13.5 1260,39.6 1440,39.6")}
-    #footerTopGlow{d:path("M0,14.4 C180,14.4 180,40.5 360,40.5 C540,40.5 540,14.4 720,14.4 C900,14.4 900,40.5 1080,40.5 C1260,40.5 1260,14.4 1440,14.4")}
+    #projectsBottomGlow{d:path("M0,211.3 C144,211.3 144,234.7 288,234.7 C432,234.7 432,211.3 576,211.3 C720,211.3 720,234.7 864,234.7 C1008,234.7 1008,211.3 1152,211.3 C1296,211.3 1296,234.7 1440,234.7")}
+    #deportistasTopGlow{d:path("M0,15.3 C144,15.3 144,38.7 288,38.7 C432,38.7 432,15.3 576,15.3 C720,15.3 720,38.7 864,38.7 C1008,38.7 1008,15.3 1152,15.3 C1296,15.3 1296,38.7 1440,38.7")}
+    #deportistasBottomGlow{d:path("M0,233.8 C120,233.8 120,209.5 240,209.5 C360,209.5 360,233.8 480,233.8 C600,233.8 600,209.5 720,209.5 C840,209.5 840,233.8 960,233.8 C1080,233.8 1080,209.5 1200,209.5 C1320,209.5 1320,233.8 1440,233.8")}
+    #procesoTopGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
+    #faqBottomGlow{d:path("M0,233.8 C120,233.8 120,209.5 240,209.5 C360,209.5 360,233.8 480,233.8 C600,233.8 600,209.5 720,209.5 C840,209.5 840,233.8 960,233.8 C1080,233.8 1080,209.5 1200,209.5 C1320,209.5 1320,233.8 1440,233.8")}
+    #contactoTopGlow{d:path("M0,37.8 C120,37.8 120,13.5 240,13.5 C360,13.5 360,37.8 480,37.8 C600,37.8 600,13.5 720,13.5 C840,13.5 840,37.8 960,37.8 C1080,37.8 1080,13.5 1200,13.5 C1320,13.5 1320,37.8 1440,37.8")}
+    #contactoBottomGlow{d:path("M0,235.6 C180,235.6 180,209.5 360,209.5 C540,209.5 540,235.6 720,235.6 C900,235.6 900,209.5 1080,209.5 C1260,209.5 1260,235.6 1440,235.6")}
+    #footerTopGlow{d:path("M0,39.6 C180,39.6 180,13.5 360,13.5 C540,13.5 540,39.6 720,39.6 C900,39.6 900,13.5 1080,13.5 C1260,13.5 1260,39.6 1440,39.6")}
   }
 
   /* ---------- REVEAL ---------- */
@@ -1111,7 +1190,7 @@
   </div>
   <div class="wave-glow" style="bottom:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--light" id="projectsBottomGlow" d="M0,224.5 C144,224.5 144,185.5 288,185.5 C432,185.5 432,224.5 576,224.5 C720,224.5 720,185.5 864,185.5 C1008,185.5 1008,224.5 1152,224.5 C1296,224.5 1296,185.5 1440,185.5"/>
+      <path class="wave-glow-path wave-glow-path--light" id="projectsBottomGlow" d="M0,185.5 C144,185.5 144,224.5 288,224.5 C432,224.5 432,185.5 576,185.5 C720,185.5 720,224.5 864,224.5 C1008,224.5 1008,185.5 1152,185.5 C1296,185.5 1296,224.5 1440,224.5"/>
     </svg>
   </div>
   <div class="projects-inner">
@@ -1141,18 +1220,27 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ DEPORTISTAS ============ -->
 <section id="deportistas">
+  <div class="media-wave top" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,34 C144,34 144,86 288,86 C432,86 432,34 576,34 C720,34 720,86 864,86 C1008,86 1008,34 1152,34 C1296,34 1296,86 1440,86" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="media-wave bottom" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
   <div class="wave-glow" style="top:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--dark" id="deportistasTopGlow" d="M0,64.5 C144,64.5 144,25.5 288,25.5 C432,25.5 432,64.5 576,64.5 C720,64.5 720,25.5 864,25.5 C1008,25.5 1008,64.5 1152,64.5 C1296,64.5 1296,25.5 1440,25.5"/>
+      <path class="wave-glow-path wave-glow-path--dark" id="deportistasTopGlow" d="M0,25.5 C144,25.5 144,64.5 288,64.5 C432,64.5 432,25.5 576,25.5 C720,25.5 720,64.5 864,64.5 C1008,64.5 1008,25.5 1152,25.5 C1296,25.5 1296,64.5 1440,64.5"/>
     </svg>
   </div>
   <div class="wave-glow" style="bottom:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--dark" id="deportistasBottomGlow" d="M0,187 C120,187 120,227.5 240,227.5 C360,227.5 360,187 480,187 C600,187 600,227.5 720,227.5 C840,227.5 840,187 960,187 C1080,187 1080,227.5 1200,227.5 C1320,227.5 1320,187 1440,187"/>
+      <path class="wave-glow-path wave-glow-path--dark" id="deportistasBottomGlow" d="M0,223 C120,223 120,182.5 240,182.5 C360,182.5 360,223 480,223 C600,223 600,182.5 720,182.5 C840,182.5 840,223 960,223 C1080,223 1080,182.5 1200,182.5 C1320,182.5 1320,223 1440,223"/>
     </svg>
   </div>
   <div class="wrap">
@@ -1230,13 +1318,12 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ PROCESO ============ -->
 <section id="proceso" class="process">
   <div class="wave-glow" style="top:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--light" id="procesoTopGlow" d="M0,27 C120,27 120,67.5 240,67.5 C360,67.5 360,27 480,27 C600,27 600,67.5 720,67.5 C840,67.5 840,27 960,27 C1080,27 1080,67.5 1200,67.5 C1320,67.5 1320,27 1440,27"/>
+      <path class="wave-glow-path wave-glow-path--light" id="procesoTopGlow" d="M0,63 C120,63 120,22.5 240,22.5 C360,22.5 360,63 480,63 C600,63 600,22.5 720,22.5 C840,22.5 840,63 960,63 C1080,63 1080,22.5 1200,22.5 C1320,22.5 1320,63 1440,63"/>
     </svg>
   </div>
   <div class="wrap">
@@ -1357,7 +1444,7 @@
 <section id="faq" class="faq-section">
   <div class="wave-glow" style="bottom:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--light" id="faqBottomGlow" d="M0,187 C120,187 120,227.5 240,227.5 C360,227.5 360,187 480,187 C600,187 600,227.5 720,227.5 C840,227.5 840,187 960,187 C1080,187 1080,227.5 1200,227.5 C1320,227.5 1320,187 1440,187"/>
+      <path class="wave-glow-path wave-glow-path--light" id="faqBottomGlow" d="M0,223 C120,223 120,182.5 240,182.5 C360,182.5 360,223 480,223 C600,223 600,182.5 720,182.5 C840,182.5 840,223 960,223 C1080,223 1080,182.5 1200,182.5 C1320,182.5 1320,223 1440,223"/>
     </svg>
   </div>
   <div class="wrap">
@@ -1410,18 +1497,27 @@
   </div>
 </section>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg-light)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84 L1440,120 L0,120 Z" fill="var(--bg)"/><path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <!-- ============ CONTACTO ============ -->
 <section id="contacto">
+  <div class="media-wave top" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,84 C120,84 120,30 240,30 C360,30 360,84 480,84 C600,84 600,30 720,30 C840,30 840,84 960,84 C1080,84 1080,30 1200,30 C1320,30 1320,84 1440,84" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="media-wave bottom" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
   <div class="wave-glow" style="top:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--dark" id="contactoTopGlow" d="M0,27 C120,27 120,67.5 240,67.5 C360,67.5 360,27 480,27 C600,27 600,67.5 720,67.5 C840,67.5 840,27 960,27 C1080,27 1080,67.5 1200,67.5 C1320,67.5 1320,27 1440,27"/>
+      <path class="wave-glow-path wave-glow-path--dark" id="contactoTopGlow" d="M0,63 C120,63 120,22.5 240,22.5 C360,22.5 360,63 480,63 C600,63 600,22.5 720,22.5 C840,22.5 840,63 960,63 C1080,63 1080,22.5 1200,22.5 C1320,22.5 1320,63 1440,63"/>
     </svg>
   </div>
   <div class="wave-glow" style="bottom:0;height:250px" aria-hidden="true">
     <svg viewBox="0 0 1440 250" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--dark" id="contactoBottomGlow" d="M0,184 C180,184 180,227.5 360,227.5 C540,227.5 540,184 720,184 C900,184 900,227.5 1080,227.5 C1260,227.5 1260,184 1440,184"/>
+      <path class="wave-glow-path wave-glow-path--dark" id="contactoBottomGlow" d="M0,226 C180,226 180,182.5 360,182.5 C540,182.5 540,226 720,226 C900,226 900,182.5 1080,182.5 C1260,182.5 1260,226 1440,226"/>
     </svg>
   </div>
   <div class="wrap">
@@ -1489,7 +1585,6 @@
 </section>
 </main>
 
-<div class="wave-seam" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><rect width="1440" height="120" fill="var(--bg)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88 L1440,120 L0,120 Z" fill="var(--bg-light)"/><path d="M0,88 C180,88 180,30 360,30 C540,30 540,88 720,88 C900,88 900,30 1080,30 C1260,30 1260,88 1440,88" fill="none" stroke="var(--accent)" stroke-width="4" vector-effect="non-scaling-stroke"/></svg></div>
 
 <a class="whatsapp-float" href="https://wa.me/5492494577556?text=Hola%20HRK%20Sports%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20servicios." target="_blank" rel="noopener" aria-label="Escribirle a HRK Sports por WhatsApp">
   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.19-1.77 1.24-.45.05-.9.2-3.02-.63-2.56-1.02-4.2-3.6-4.33-3.77-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.88-2.1.22-.25.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.73 1.83.79 1.96.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.88 1.81 1.15 2.07 1.28.26.13.41.11.56-.06.15-.17.65-.75.83-1.01.17-.26.34-.21.56-.13.22.09 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.6-.16 1.22z"/></svg>
@@ -1498,7 +1593,7 @@
 <footer>
   <div class="wave-glow" style="top:0;height:120px" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path class="wave-glow-path wave-glow-path--light" id="footerTopGlow" d="M0,24 C180,24 180,67.5 360,67.5 C540,67.5 540,24 720,24 C900,24 900,67.5 1080,67.5 C1260,67.5 1260,24 1440,24"/>
+      <path class="wave-glow-path wave-glow-path--light" id="footerTopGlow" d="M0,66 C180,66 180,22.5 360,22.5 C540,22.5 540,66 720,66 C900,66 900,22.5 1080,22.5 C1260,22.5 1260,66 1440,66"/>
     </svg>
   </div>
   <div class="wrap foot">
