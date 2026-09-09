@@ -508,7 +508,6 @@
   .carousel-viewport{position:relative;flex:none;width:calc(var(--card-w) * 1.8);height:var(--card-h);perspective:1600px}
   .carousel-track{position:absolute;inset:0;list-style:none;margin:0;padding:0}
   .carousel-slide{position:absolute;top:50%;left:50%;width:var(--card-w);aspect-ratio:1080/1350;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg);cursor:pointer;transform:translate(-50%,-50%) scale(.4);opacity:0;z-index:1;pointer-events:none}
-  .carousel-slide img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg);pointer-events:none}
   @media(prefers-reduced-motion:no-preference){
     .carousel-slide{transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .55s ease,border-color .3s ease}
   }
@@ -517,6 +516,28 @@
   .carousel-slide[data-pos="next"]{transform:translate(-50%,-50%) translateX(58%) rotateY(-30deg) scale(.68);opacity:.5;z-index:2;pointer-events:auto}
   .carousel-slide[data-pos="prev"]:hover,.carousel-slide[data-pos="next"]:hover{opacity:.8}
   .carousel-arrow:focus-visible,.carousel-viewport:focus-visible,.carousel-dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* Enlace a Instagram: sólo la centrada, y sólo una vez QUIETA — no
+     apenas llega al centro. El <a> no lleva href por defecto (queda
+     como envoltorio inerte, sin foco, sin menú contextual de "abrir en
+     pestaña nueva"); el JS se lo agrega recién cuando termina la
+     transición (misma duración que .carousel-slide de arriba, controlada
+     por un timer, no por CSS) y se lo saca en cuanto deja de ser la
+     centrada. Así un arrastre que termina sobre la centrada, o un clic
+     justo cuando otra tarjeta está llegando al medio, no puede abrir
+     nada: en ambos casos el href todavía no existe en ese momento.
+     pointer-events:none de base + auto sólo con .is-settled es una
+     segunda barrera (por si el href quedara puesto por algún borde no
+     contemplado) para que las laterales nunca reciban el clic ahí. */
+  .carousel-slide-link{position:absolute;inset:0;display:block;pointer-events:none}
+  .carousel-slide-link img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg);pointer-events:none}
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link{pointer-events:auto;cursor:pointer}
+  .carousel-slide-link:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link:hover,
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link:focus-visible{box-shadow:inset 0 0 0 3px rgba(215,245,81,.6)}
+  .carousel-ig-badge{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(10,10,12,.75);color:#fff;font-size:13px;font-weight:600;white-space:nowrap;pointer-events:none;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  .carousel-ig-badge svg{width:16px;height:16px;flex:none}
+  .carousel-slide[data-pos="center"] .carousel-ig-badge{display:inline-flex}
 
   .carousel-dots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:var(--space-item)}
   .carousel-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);border:none;padding:0;cursor:pointer;transition:background .2s ease,transform .2s ease}
@@ -1303,16 +1324,40 @@
       <div class="carousel-viewport" id="athletesViewport" tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Deportistas que confían en HRK">
         <ul class="carousel-track" id="athletesTrack">
           <li class="carousel-slide" data-index="0">
-            <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-ig-url="https://www.instagram.com/santirazzeto_1/" target="_blank" rel="noopener noreferrer" aria-label="Ver a Santiago Razzeto en Instagram (abre en una pestaña nueva)">
+              <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+              <span class="carousel-ig-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>@santirazzeto_1</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="1">
-            <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-ig-url="https://www.instagram.com/ezeneira2/" target="_blank" rel="noopener noreferrer" aria-label="Ver a Ezequiel Neira en Instagram (abre en una pestaña nueva)">
+              <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+              <span class="carousel-ig-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>@ezeneira2</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="2">
-            <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-ig-url="https://www.instagram.com/axel_abet/" target="_blank" rel="noopener noreferrer" aria-label="Ver a Axel Abet en Instagram (abre en una pestaña nueva)">
+              <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
+              <span class="carousel-ig-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>@axel_abet</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="3">
-            <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-ig-url="https://www.instagram.com/manuelcuestasp/" target="_blank" rel="noopener noreferrer" aria-label="Ver a Manuel Cuestas en Instagram (abre en una pestaña nueva)">
+              <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
+              <span class="carousel-ig-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>@manuelcuestasp</span>
+              </span>
+            </a>
           </li>
         </ul>
       </div>
@@ -2689,6 +2734,34 @@
     if (!n) return;
     let current = 0;
 
+    // El enlace a Instagram de la centrada no se activa apenas llega al
+    // medio: se activa recién cuando termina la transición (mismo
+    // criterio de tiempo que usa el CSS de .carousel-slide). El <a> no
+    // lleva href hasta ese momento — no sólo deshabilitado por CSS, sino
+    // sin destino real — así que ni un arrastre que suelta sobre la
+    // centrada ni un clic a mitad de camino pueden abrir nada: en ambos
+    // casos el href todavía no existe cuando el navegador procesa el
+    // clic. settleToken descarta timers viejos si el usuario vuelve a
+    // navegar antes de que se cumpla el plazo.
+    let settleTimer = null;
+    let settleToken = 0;
+    function scheduleSettle() {
+      const myToken = ++settleToken;
+      if (settleTimer) clearTimeout(settleTimer);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      settleTimer = setTimeout(() => {
+        if (myToken !== settleToken) return;
+        const centerSlide = slides[current];
+        if (!centerSlide || centerSlide.dataset.pos !== 'center') return;
+        centerSlide.classList.add('is-settled');
+        const link = centerSlide.querySelector('.carousel-slide-link');
+        if (link && link.dataset.igUrl) {
+          link.href = link.dataset.igUrl;
+          link.tabIndex = 0;
+        }
+      }, reduceMotion ? 0 : 580);
+    }
+
     function render() {
       slides.forEach((slide, i) => {
         let diff = i - current;
@@ -2697,10 +2770,14 @@
         const pos = diff === 0 ? 'center' : diff === -1 ? 'prev' : diff === 1 ? 'next' : 'hidden';
         slide.dataset.pos = pos;
         slide.setAttribute('aria-hidden', pos === 'center' ? 'false' : 'true');
+        slide.classList.remove('is-settled');
+        const link = slide.querySelector('.carousel-slide-link');
+        if (link) { link.removeAttribute('href'); link.tabIndex = -1; }
       });
       dots.forEach((dot, i) => dot.setAttribute('aria-current', i === current ? 'true' : 'false'));
       const img = slides[current].querySelector('img');
       if (live && img) live.textContent = `Mostrando deportista ${current + 1} de ${n}: ${img.alt}`;
+      scheduleSettle();
     }
 
     function goTo(index) {
@@ -2721,18 +2798,32 @@
     // mouse y táctil unificados): si el desplazamiento supera el umbral
     // es arrastre; si no, y cayó sobre una tarjeta que no es la central,
     // es un clic para centrarla. Evita que ambos disparen a la vez.
+    // El pointer capture se pide recién cuando hay movimiento real (no
+    // en el pointerdown): capturar de entrada, incluso sin arrastre,
+    // hace que Chromium descarte la navegación nativa del <a> de la
+    // centrada — un toque limpio dejaría de abrir Instagram.
     let dragStartX = null;
     let dragStartSlide = null;
+    let pointerCaptured = false;
     const DRAG_THRESHOLD = 40;
+    const CAPTURE_INTENT_THRESHOLD = 10;
     viewport.addEventListener('pointerdown', (e) => {
       dragStartX = e.clientX;
       dragStartSlide = e.target.closest('.carousel-slide');
-      try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+      pointerCaptured = false;
+    });
+    viewport.addEventListener('pointermove', (e) => {
+      if (dragStartX === null || pointerCaptured) return;
+      if (Math.abs(e.clientX - dragStartX) > CAPTURE_INTENT_THRESHOLD) {
+        try { viewport.setPointerCapture(e.pointerId); pointerCaptured = true; } catch (err) {}
+      }
     });
     viewport.addEventListener('pointerup', (e) => {
       if (dragStartX === null) return;
       const dx = e.clientX - dragStartX;
+      if (pointerCaptured) { try { viewport.releasePointerCapture(e.pointerId); } catch (err) {} }
       dragStartX = null;
+      pointerCaptured = false;
       if (dx > DRAG_THRESHOLD) { goTo(current - 1); return; }
       if (dx < -DRAG_THRESHOLD) { goTo(current + 1); return; }
       if (dragStartSlide && dragStartSlide.dataset.pos !== 'center') {
@@ -2740,7 +2831,7 @@
         if (!Number.isNaN(idx)) goTo(idx);
       }
     });
-    viewport.addEventListener('pointercancel', () => { dragStartX = null; dragStartSlide = null; });
+    viewport.addEventListener('pointercancel', () => { dragStartX = null; dragStartSlide = null; pointerCaptured = false; });
 
     render();
   })();
