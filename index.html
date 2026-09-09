@@ -484,44 +484,63 @@
   }
   #deportistas .wrap{position:relative;z-index:1;max-width:var(--container);padding-inline:var(--container-pad)}
   .athletes-title{color:#fff;text-align:center;margin-bottom:var(--space-block)}
-  /* Las credenciales son rectángulos diseñados con el nombre y los datos
-     pintados dentro del archivo (1080×1350, 4:5) — recortarlas les corta
-     el texto. La tarjeta se fija a esa misma proporción con aspect-ratio
-     y la imagen entra con object-fit:contain, así nunca se recorta ni se
-     deforma, en reposo ni durante la interacción.
-     Al pasar el cursor la tarjeta entera crece y se eleva por encima de
-     las demás (transform:scale + z-index, no flex-basis): no reacomoda
-     a las otras tres, sólo se les baja la opacidad. No hay giro ni
-     contenido que aparecer — no hay nada oculto, el texto ya está
-     pintado en la imagen. Todo el bloque va detrás de
-     hover:hover+pointer:fine para que en celular (sin cursor) las cuatro
-     queden siempre en su tamaño normal, sin estado especial. */
-  .athletes-strip{display:flex;gap:var(--space-item)}
-  .athlete-panel{position:relative;flex:1;min-width:0;aspect-ratio:1080/1350;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg)}
-  .athlete-panel img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg)}
-  @media(hover:hover) and (pointer:fine){
-    .athlete-panel{transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .3s ease,box-shadow .4s ease,border-color .3s ease}
-    .athletes-strip:hover .athlete-panel{opacity:.55}
-    .athlete-panel:hover{opacity:1;transform:scale(1.16);z-index:2;border-color:var(--line-strong);box-shadow:0 24px 48px rgba(0,0,0,.4)}
+
+  /* ---------- CARRUSEL COVERFLOW ---------- */
+  /* El tamaño de la tarjeta central NO es una decisión estética: las
+     credenciales llevan nombre, equipo y posición pintados adentro del
+     archivo, y a 276px de ancho (la fila de cuatro que reemplaza este
+     carrusel) ese texto no se lee. --card-w es lo bastante grande como
+     para que se lea de verdad — se ajustó mirando capturas, no a ojo:
+     ver la nota de verificación en el commit. Las vecinas comparten la
+     misma caja base (mismo --card-w) y se achican con scale() en vez de
+     tener su propio ancho, para que translateX + rotateY + scale puedan
+     ir en un solo transform por posición.
+     Cíclico: la posición de cada tarjeta (center/prev/next/hidden) se
+     recalcula en JS con distancia circular — después de la última
+     vuelve a la primera. Sólo la central es accesible a lectores de
+     pantalla (aria-hidden en las demás); las vecinas son una vista
+     previa puramente visual, la navegación real pasa por flechas y
+     puntos, que tienen su propia etiqueta. */
+  .athletes-carousel{--card-w:520px;--card-h:calc(var(--card-w) * 1350 / 1080);display:flex;align-items:center;justify-content:center;gap:20px}
+  .carousel-arrow{flex:none;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+  .carousel-arrow svg{width:22px;height:22px}
+  .carousel-arrow:hover{background:rgba(255,255,255,.14);border-color:var(--line-strong)}
+  .carousel-viewport{position:relative;flex:none;width:calc(var(--card-w) * 1.8);height:var(--card-h);perspective:1600px}
+  .carousel-track{position:absolute;inset:0;list-style:none;margin:0;padding:0}
+  .carousel-slide{position:absolute;top:50%;left:50%;width:var(--card-w);aspect-ratio:1080/1350;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg);cursor:pointer;transform:translate(-50%,-50%) scale(.4);opacity:0;z-index:1;pointer-events:none}
+  .carousel-slide img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg);pointer-events:none}
+  @media(prefers-reduced-motion:no-preference){
+    .carousel-slide{transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .55s ease,border-color .3s ease}
   }
-  /* Mobile: carrusel horizontal con scroll-snap. El shell rompe el
-     padding-inline de .wrap con márgenes negativos para que el
-     padding-inline:11vw de la tira se calcule contra el viewport
-     completo (78vw + 11vw + 11vw = 100vw), así la primera y la última
-     ficha quedan centradas en los extremos del scroll. El degradado del
-     borde derecho es el único indicador de que hay más — sin flechas. */
+  .carousel-slide[data-pos="center"]{transform:translate(-50%,-50%) translateX(0) rotateY(0) scale(1);opacity:1;z-index:3;cursor:default;border-color:var(--line-strong);pointer-events:auto}
+  .carousel-slide[data-pos="prev"]{transform:translate(-50%,-50%) translateX(-58%) rotateY(30deg) scale(.68);opacity:.5;z-index:2;pointer-events:auto}
+  .carousel-slide[data-pos="next"]{transform:translate(-50%,-50%) translateX(58%) rotateY(-30deg) scale(.68);opacity:.5;z-index:2;pointer-events:auto}
+  .carousel-slide[data-pos="prev"]:hover,.carousel-slide[data-pos="next"]:hover{opacity:.8}
+  .carousel-arrow:focus-visible,.carousel-viewport:focus-visible,.carousel-dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  .carousel-dots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:var(--space-item)}
+  .carousel-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);border:none;padding:0;cursor:pointer;transition:background .2s ease,transform .2s ease}
+  .carousel-dot[aria-current="true"]{background:var(--accent);transform:scale(1.35)}
+
+  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* Mobile: si las flechas se quedan en el flex al lado del viewport,
+     le comen ~140px de ancho a la tarjeta central (dos flechas + gaps)
+     dentro de los ~340px que deja el padding-inline del .wrap — no
+     alcanza para que el texto se lea. Se sacan del flujo (position:
+     absolute sobre .athletes-carousel) y quedan flotando en los bordes,
+     así la central usa casi todo el ancho disponible. Las laterales no
+     entran a ese tamaño sin invadir el espacio de las flechas: se
+     ocultan (opacity:0) y quedan sólo flechas + puntos, tal como pide
+     la instrucción para este caso. */
   @media(max-width:900px){
-    .athletes-strip-shell{position:relative;margin-inline:calc(-1 * var(--container-pad))}
-    .athletes-strip-shell::after{content:"";position:absolute;top:0;right:0;bottom:0;width:28px;background:linear-gradient(to right, transparent, var(--bg));pointer-events:none}
-    .athletes-strip{
-      gap:12px;
-      overflow-x:auto;-webkit-overflow-scrolling:touch;
-      scroll-snap-type:x mandatory;
-      scrollbar-width:none;
-      padding-inline:11vw;
-    }
-    .athletes-strip::-webkit-scrollbar{display:none}
-    .athlete-panel{flex:none;width:78vw;border-color:var(--line);scroll-snap-align:center}
+    .athletes-carousel{--card-w:min(82vw,320px);position:relative;gap:0}
+    .carousel-viewport{width:var(--card-w)}
+    .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;z-index:4;background:rgba(10,10,12,.55)}
+    .carousel-arrow svg{width:16px;height:16px}
+    .carousel-arrow--prev{left:-2px}
+    .carousel-arrow--next{right:-2px}
+    .carousel-slide[data-pos="prev"],.carousel-slide[data-pos="next"]{opacity:0;pointer-events:none}
   }
 
   /* ---------- PROCESO (RECORRIDO EN COLUMNA) ---------- */
@@ -1275,23 +1294,39 @@
          nombre y los datos ya pintados adentro. El alt transcribe
          exactamente lo que dice cada credencial, porque ni Google ni un
          lector de pantalla leen texto pintado dentro de un archivo de
-         imagen. -->
-    <div class="athletes-strip-shell">
-    <div class="athletes-strip reveal" id="athletesStrip">
-      <div class="athlete-panel">
-        <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+         imagen. Navegación 100% manual (flechas, puntos, clic en
+         lateral, teclado, arrastre) — sin rotación automática. -->
+    <div class="athletes-carousel reveal" id="athletesCarousel">
+      <button class="carousel-arrow carousel-arrow--prev" id="athletesPrevBtn" type="button" aria-label="Deportista anterior">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="carousel-viewport" id="athletesViewport" tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Deportistas que confían en HRK">
+        <ul class="carousel-track" id="athletesTrack">
+          <li class="carousel-slide" data-index="0">
+            <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+          </li>
+          <li class="carousel-slide" data-index="1">
+            <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+          </li>
+          <li class="carousel-slide" data-index="2">
+            <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
+          </li>
+          <li class="carousel-slide" data-index="3">
+            <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
+          </li>
+        </ul>
       </div>
-      <div class="athlete-panel">
-        <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
-      </div>
-      <div class="athlete-panel">
-        <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
-      </div>
-      <div class="athlete-panel">
-        <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
-      </div>
+      <button class="carousel-arrow carousel-arrow--next" id="athletesNextBtn" type="button" aria-label="Deportista siguiente">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
     </div>
+    <div class="carousel-dots" id="athletesDots" role="group" aria-label="Elegir deportista">
+      <button class="carousel-dot" type="button" data-index="0" aria-label="Deportista 1 de 4" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="1" aria-label="Deportista 2 de 4" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="2" aria-label="Deportista 3 de 4" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="3" aria-label="Deportista 4 de 4" aria-current="false"></button>
     </div>
+    <p class="visually-hidden" id="athletesLive" aria-live="polite"></p>
   </div>
 </section>
 
@@ -2636,6 +2671,79 @@
       footer_credit_label: 'Design and development'
     }
   };
+
+  // ---------- Deportistas: carrusel coverflow ----------
+  // Posición de cada tarjeta (center/prev/next/hidden) por distancia
+  // circular al índice actual — cíclico, sin límites en los extremos.
+  // Todo disparo de navegación pasa por goTo(); nada se mueve solo.
+  (function initAthletesCarousel() {
+    const viewport = document.getElementById('athletesViewport');
+    const track = document.getElementById('athletesTrack');
+    if (!viewport || !track) return;
+    const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+    const prevBtn = document.getElementById('athletesPrevBtn');
+    const nextBtn = document.getElementById('athletesNextBtn');
+    const dots = Array.from(document.querySelectorAll('#athletesDots .carousel-dot'));
+    const live = document.getElementById('athletesLive');
+    const n = slides.length;
+    if (!n) return;
+    let current = 0;
+
+    function render() {
+      slides.forEach((slide, i) => {
+        let diff = i - current;
+        if (diff > n / 2) diff -= n;
+        if (diff < -n / 2) diff += n;
+        const pos = diff === 0 ? 'center' : diff === -1 ? 'prev' : diff === 1 ? 'next' : 'hidden';
+        slide.dataset.pos = pos;
+        slide.setAttribute('aria-hidden', pos === 'center' ? 'false' : 'true');
+      });
+      dots.forEach((dot, i) => dot.setAttribute('aria-current', i === current ? 'true' : 'false'));
+      const img = slides[current].querySelector('img');
+      if (live && img) live.textContent = `Mostrando deportista ${current + 1} de ${n}: ${img.alt}`;
+    }
+
+    function goTo(index) {
+      current = ((index % n) + n) % n;
+      render();
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    viewport.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+    });
+
+    // Arrastre y clic en lateral van por el mismo gesto (Pointer Events,
+    // mouse y táctil unificados): si el desplazamiento supera el umbral
+    // es arrastre; si no, y cayó sobre una tarjeta que no es la central,
+    // es un clic para centrarla. Evita que ambos disparen a la vez.
+    let dragStartX = null;
+    let dragStartSlide = null;
+    const DRAG_THRESHOLD = 40;
+    viewport.addEventListener('pointerdown', (e) => {
+      dragStartX = e.clientX;
+      dragStartSlide = e.target.closest('.carousel-slide');
+      try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    viewport.addEventListener('pointerup', (e) => {
+      if (dragStartX === null) return;
+      const dx = e.clientX - dragStartX;
+      dragStartX = null;
+      if (dx > DRAG_THRESHOLD) { goTo(current - 1); return; }
+      if (dx < -DRAG_THRESHOLD) { goTo(current + 1); return; }
+      if (dragStartSlide && dragStartSlide.dataset.pos !== 'center') {
+        const idx = Number(dragStartSlide.dataset.index);
+        if (!Number.isNaN(idx)) goTo(idx);
+      }
+    });
+    viewport.addEventListener('pointercancel', () => { dragStartX = null; dragStartSlide = null; });
+
+    render();
+  })();
 
   // Scrollspy nav
   const spySections = ['nosotros', 'prensa', 'servicios', 'trabajo', 'deportistas', 'proceso', 'contacto'];
