@@ -484,32 +484,29 @@
   }
   #deportistas .wrap{position:relative;z-index:1;max-width:var(--container);padding-inline:var(--container-pad)}
   .athletes-title{color:#fff;text-align:center;margin-bottom:var(--space-block)}
-  .athletes-strip{display:flex;gap:var(--space-item);height:560px}
-  .athlete-panel{position:relative;flex:1;min-width:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);cursor:pointer;background-size:cover;background-position:center;transition:flex .45s cubic-bezier(.22,1,.36,1),border-color .3s ease}
-  .athlete-panel:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-  .athlete-panel.active{flex:2;border-color:var(--line-strong)}
-  .athlete-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(22,22,26,0) 0%,rgba(22,22,26,.1) 40%,rgba(22,22,26,.95) 100%);pointer-events:none}
-  .athlete-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px}
-  .athlete-name{color:#fff;overflow-wrap:break-word}
-  .athlete-role{max-height:0;opacity:0;overflow:hidden;margin-top:2px;color:rgba(255,255,255,.85);transition:max-height .35s ease,opacity .3s ease}
-  .athlete-panel.active .athlete-role{max-height:30px;opacity:1}
-  .athlete-stats{display:flex;align-items:flex-start;gap:10px;height:0;opacity:0;overflow:hidden;margin-top:14px;transition:height .45s cubic-bezier(.22,1,.36,1),opacity .35s ease}
-  .athlete-panel.active .athlete-stats{height:58px;opacity:1}
-  .athlete-stat{display:flex;flex-direction:column;gap:4px;padding-right:10px;border-right:1px solid rgba(255,255,255,.18);flex:none;max-width:82px;min-width:0}
-  .athlete-stat:last-of-type{border-right:0}
-  .athlete-stat-label{font-size:.656rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .athlete-stat-value{font-size:1.1875rem;font-weight:700;color:#fff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .athlete-quote{flex:1 1 0%;min-width:0;font-size:var(--text-sm);line-height:var(--leading);color:rgba(255,255,255,.85);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
-  @media(max-width:1200px){
-    .athletes-strip{height:480px}
-    .athlete-stat{max-width:60px;padding-right:8px}
-    .athlete-stat-value{font-size:1.05rem}
-    .athlete-quote{-webkit-line-clamp:2}
+  /* Las credenciales son rectángulos diseñados con el nombre y los datos
+     pintados dentro del archivo (1080×1350, 4:5) — recortarlas les corta
+     el texto. La tarjeta se fija a esa misma proporción con aspect-ratio
+     y la imagen entra con object-fit:contain, así nunca se recorta ni se
+     deforma, en reposo ni durante la interacción.
+     Al pasar el cursor la tarjeta entera crece y se eleva por encima de
+     las demás (transform:scale + z-index, no flex-basis): no reacomoda
+     a las otras tres, sólo se les baja la opacidad. No hay giro ni
+     contenido que aparecer — no hay nada oculto, el texto ya está
+     pintado en la imagen. Todo el bloque va detrás de
+     hover:hover+pointer:fine para que en celular (sin cursor) las cuatro
+     queden siempre en su tamaño normal, sin estado especial. */
+  .athletes-strip{display:flex;gap:var(--space-item)}
+  .athlete-panel{position:relative;flex:1;min-width:0;aspect-ratio:1080/1350;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg)}
+  .athlete-panel img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg)}
+  @media(hover:hover) and (pointer:fine){
+    .athlete-panel{transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .3s ease,box-shadow .4s ease,border-color .3s ease}
+    .athletes-strip:hover .athlete-panel{opacity:.55}
+    .athlete-panel:hover{opacity:1;transform:scale(1.16);z-index:2;border-color:var(--line-strong);box-shadow:0 24px 48px rgba(0,0,0,.4)}
   }
-  /* Mobile: de columna apilada (5 × ~400px) a carrusel horizontal con
-     scroll-snap — es el mayor ahorro de alto de toda la sección. El
-     shell rompe el padding-inline de .wrap con márgenes negativos para
-     que el padding-inline:11vw de la tira se calcule contra el viewport
+  /* Mobile: carrusel horizontal con scroll-snap. El shell rompe el
+     padding-inline de .wrap con márgenes negativos para que el
+     padding-inline:11vw de la tira se calcule contra el viewport
      completo (78vw + 11vw + 11vw = 100vw), así la primera y la última
      ficha quedan centradas en los extremos del scroll. El degradado del
      borde derecho es el único indicador de que hay más — sin flechas. */
@@ -517,20 +514,14 @@
     .athletes-strip-shell{position:relative;margin-inline:calc(-1 * var(--container-pad))}
     .athletes-strip-shell::after{content:"";position:absolute;top:0;right:0;bottom:0;width:28px;background:linear-gradient(to right, transparent, var(--bg));pointer-events:none}
     .athletes-strip{
-      flex-direction:row;height:auto;gap:12px;
+      gap:12px;
       overflow-x:auto;-webkit-overflow-scrolling:touch;
       scroll-snap-type:x mandatory;
       scrollbar-width:none;
       padding-inline:11vw;
     }
     .athletes-strip::-webkit-scrollbar{display:none}
-    .athlete-panel,.athlete-panel.active{flex:none;width:78vw;height:324px;border-color:var(--line);scroll-snap-align:center}
-    .athlete-body{position:relative;padding:100px 16px 16px}
-    .athlete-role,.athlete-panel.active .athlete-role{max-height:none;opacity:1;overflow:visible}
-    .athlete-stats,.athlete-panel.active .athlete-stats{height:auto;opacity:1;overflow:visible;flex-wrap:wrap;row-gap:10px}
-    .athlete-stat{max-width:none}
-    .athlete-stat-label,.athlete-stat-value{overflow:visible;text-overflow:clip}
-    .athlete-quote{flex:1 1 100%;min-width:0;-webkit-line-clamp:2}
+    .athlete-panel{flex:none;width:78vw;border-color:var(--line);scroll-snap-align:center}
   }
 
   /* ---------- PROCESO (RECORRIDO EN COLUMNA) ---------- */
@@ -1280,73 +1271,24 @@
   </div>
   <div class="wrap">
     <h2 class="athletes-title reveal" data-i18n="athletes_title">Deportistas que confían en HRK</h2>
-    <!-- Pre-renderizado en español para que los nombres existan como texto real en el HTML (SEO); el JS lo reemplaza al cargar para manejar idioma e interacción. -->
+    <!-- Sin texto propio: cada credencial es una imagen diseñada con el
+         nombre y los datos ya pintados adentro. El alt transcribe
+         exactamente lo que dice cada credencial, porque ni Google ni un
+         lector de pantalla leen texto pintado dentro de un archivo de
+         imagen. -->
     <div class="athletes-strip-shell">
     <div class="athletes-strip reveal" id="athletesStrip">
-      <div class="athlete-panel active" data-index="0" tabindex="0" role="button" aria-label="Ver a Lucas Razzeto" style="background-image:url(assets/razzeto.jpg)">
-        <div class="athlete-body">
-          <h3 class="athlete-name">Razzeto</h3>
-          <h4 class="athlete-role">Mediocampista central</h4>
-          <div class="athlete-stats">
-            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Volante</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">23</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,78</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Sportivo SF</span></div>
-            <div class="athlete-quote">“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”</div>
-          </div>
-        </div>
+      <div class="athlete-panel">
+        <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
       </div>
-      <div class="athlete-panel" data-index="1" tabindex="0" role="button" aria-label="Ver a Tomás Spertino" style="background-image:url(assets/spertino.jpg)">
-        <div class="athlete-body">
-          <h3 class="athlete-name">Spertino</h3>
-          <h4 class="athlete-role">Delantero</h4>
-          <div class="athlete-stats">
-            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Delantero</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">19</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,81</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Central Cba.</span></div>
-            <div class="athlete-quote">“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”</div>
-          </div>
-        </div>
+      <div class="athlete-panel">
+        <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
       </div>
-      <div class="athlete-panel" data-index="2" tabindex="0" role="button" aria-label="Ver a Matías Neira" style="background-image:url(assets/neira.jpg)">
-        <div class="athlete-body">
-          <h3 class="athlete-name">Neira</h3>
-          <h4 class="athlete-role">Lateral derecho</h4>
-          <div class="athlete-stats">
-            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Lateral</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">25</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,75</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Dep. Lara</span></div>
-            <div class="athlete-quote">“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”</div>
-          </div>
-        </div>
+      <div class="athlete-panel">
+        <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
       </div>
-      <div class="athlete-panel" data-index="3" tabindex="0" role="button" aria-label="Ver a Ivo Garayalde" style="background-image:url(assets/garayalde.jpg)">
-        <div class="athlete-body">
-          <h3 class="athlete-name">Garayalde</h3>
-          <h4 class="athlete-role">Tenis de playa</h4>
-          <div class="athlete-stats">
-            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">21</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Ranking</span><span class="athlete-stat-value">Top 10</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,83</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Desde</span><span class="athlete-stat-value">2018</span></div>
-            <div class="athlete-quote">“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”</div>
-          </div>
-        </div>
-      </div>
-      <div class="athlete-panel" data-index="4" tabindex="0" role="button" aria-label="Ver a Julián Vanega" style="background-image:url(assets/vanega.jpg)">
-        <div class="athlete-body">
-          <h3 class="athlete-name">Vanega</h3>
-          <h4 class="athlete-role">Arquero</h4>
-          <div class="athlete-stats">
-            <div class="athlete-stat"><span class="athlete-stat-label">Posición</span><span class="athlete-stat-value">Arquero</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Edad</span><span class="athlete-stat-value">27</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Altura</span><span class="athlete-stat-value">1,89</span></div>
-            <div class="athlete-stat"><span class="athlete-stat-label">Club</span><span class="athlete-stat-value">Dep. Morón</span></div>
-            <div class="athlete-quote">“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”</div>
-          </div>
-        </div>
+      <div class="athlete-panel">
+        <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
       </div>
     </div>
     </div>
@@ -2695,110 +2637,6 @@
     }
   };
 
-  // Deportistas — acordeón (datos provisorios, fáciles de editar acá)
-  // role/quote/stat-values en {es,en}; los nombres propios (surname, fullName, club) no se traducen.
-  const ATHLETES = [
-    {
-      photo: 'assets/razzeto.jpg',
-      surname: 'Razzeto',
-      fullName: 'Lucas Razzeto',
-      role: { es: 'Mediocampista central', en: 'Central midfielder' },
-      stats: [
-        { labelKey: 'stat_position', es: 'Volante', en: 'Midfielder' },
-        { labelKey: 'stat_age', es: '23', en: '23' },
-        { labelKey: 'stat_height', es: '1,78', en: '1.78 m' },
-        { labelKey: 'stat_club', es: 'Sportivo SF', en: 'Sportivo SF' }
-      ],
-      quote: { es: '“Empezó jugando de nueve y lo pasaron al medio a los 16. Nunca volvió al área.”', en: '“He started out as a striker and got moved to midfield at 16. He never went back to the box.”' }
-    },
-    {
-      photo: 'assets/spertino.jpg',
-      surname: 'Spertino',
-      fullName: 'Tomás Spertino',
-      role: { es: 'Delantero', en: 'Forward' },
-      stats: [
-        { labelKey: 'stat_position', es: 'Delantero', en: 'Forward' },
-        { labelKey: 'stat_age', es: '19', en: '19' },
-        { labelKey: 'stat_height', es: '1,81', en: '1.81 m' },
-        { labelKey: 'stat_club', es: 'Central Cba.', en: 'Central Cba.' }
-      ],
-      quote: { es: '“Hizo 14 goles en su primera temporada en reserva. Sigue viviendo en la pensión del club.”', en: '“He scored 14 goals in his first reserve-team season. He still lives at the club\'s boarding house.”' }
-    },
-    {
-      photo: 'assets/neira.jpg',
-      surname: 'Neira',
-      fullName: 'Matías Neira',
-      role: { es: 'Lateral derecho', en: 'Right-back' },
-      stats: [
-        { labelKey: 'stat_position', es: 'Lateral', en: 'Fullback' },
-        { labelKey: 'stat_age', es: '25', en: '25' },
-        { labelKey: 'stat_height', es: '1,75', en: '1.75 m' },
-        { labelKey: 'stat_club', es: 'Dep. Lara', en: 'Dep. Lara' }
-      ],
-      quote: { es: '“Juega en Venezuela desde 2022. Todos los partidos los mira su familia desde Rosario.”', en: '“He\'s been playing in Venezuela since 2022. His family watches every match from back home in Rosario.”' }
-    },
-    {
-      photo: 'assets/garayalde.jpg',
-      surname: 'Garayalde',
-      fullName: 'Ivo Garayalde',
-      role: { es: 'Tenis de playa', en: 'Beach tennis' },
-      stats: [
-        { labelKey: 'stat_age', es: '21', en: '21' },
-        { labelKey: 'stat_ranking', es: 'Top 10', en: 'Top 10' },
-        { labelKey: 'stat_height', es: '1,83', en: '1.83 m' },
-        { labelKey: 'stat_since', es: '2018', en: '2018' }
-      ],
-      quote: { es: '“Entrena en la playa todo el año, también en invierno. Empezó jugando pádel.”', en: '“He trains on the beach all year round, even in winter. He started out playing padel.”' }
-    },
-    {
-      photo: 'assets/vanega.jpg',
-      surname: 'Vanega',
-      fullName: 'Julián Vanega',
-      role: { es: 'Arquero', en: 'Goalkeeper' },
-      stats: [
-        { labelKey: 'stat_position', es: 'Arquero', en: 'Goalkeeper' },
-        { labelKey: 'stat_age', es: '27', en: '27' },
-        { labelKey: 'stat_height', es: '1,89', en: '1.89 m' },
-        { labelKey: 'stat_club', es: 'Dep. Morón', en: 'Dep. Morón' }
-      ],
-      quote: { es: '“Es hincha del club en el que juega. Debutó en la cancha a la que iba de chico.”', en: '“He\'s a fan of the club he plays for. He made his debut on the very pitch he used to watch from the stands as a kid.”' }
-    }
-  ];
-
-  let athletesActiveIndex = 0;
-  function renderAthletes(lang) {
-    const strip = document.getElementById('athletesStrip');
-    if (!strip) return;
-    const dict = I18N[lang] || {};
-    const verVerb = lang === 'en' ? 'View' : 'Ver a';
-
-    strip.innerHTML = ATHLETES.map((a, i) => `
-      <div class="athlete-panel${i === athletesActiveIndex ? ' active' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="${verVerb} ${a.fullName}" style="background-image:url(${a.photo})">
-        <div class="athlete-body">
-          <h3 class="athlete-name">${a.surname}</h3>
-          <h4 class="athlete-role">${a.role[lang] || a.role.es}</h4>
-          <div class="athlete-stats">
-            ${a.stats.map(s => `<div class="athlete-stat"><span class="athlete-stat-label">${dict[s.labelKey] || s.labelKey}</span><span class="athlete-stat-value">${s[lang] || s.es}</span></div>`).join('')}
-            <div class="athlete-quote">${a.quote[lang] || a.quote.es}</div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-
-    const panels = Array.from(strip.querySelectorAll('.athlete-panel'));
-
-    function setActive(index) {
-      athletesActiveIndex = index;
-      panels.forEach((p, i) => p.classList.toggle('active', i === index));
-    }
-
-    panels.forEach((panel, i) => {
-      panel.addEventListener('mouseenter', () => setActive(i));
-      panel.addEventListener('focus', () => setActive(i));
-      panel.addEventListener('click', () => setActive(i));
-    });
-  }
-
   // Scrollspy nav
   const spySections = ['nosotros', 'prensa', 'servicios', 'trabajo', 'deportistas', 'proceso', 'contacto'];
   const navLinkMap = {};
@@ -2834,7 +2672,6 @@
       if (strings[key] != null) el.setAttribute('aria-label', strings[key]);
     });
     document.documentElement.lang = dict === 'en' ? 'en' : 'es-AR';
-    renderAthletes(dict);
     refreshProcessLine();
     document.querySelectorAll('#langCurrent, #langCurrentMobile').forEach(el => { el.textContent = dict.toUpperCase(); });
     document.querySelectorAll('.lang-option').forEach(btn => {
