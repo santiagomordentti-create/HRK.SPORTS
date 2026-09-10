@@ -508,7 +508,6 @@
   .carousel-viewport{position:relative;flex:none;width:calc(var(--card-w) * 1.8);height:var(--card-h);perspective:1600px}
   .carousel-track{position:absolute;inset:0;list-style:none;margin:0;padding:0}
   .carousel-slide{position:absolute;top:50%;left:50%;width:var(--card-w);aspect-ratio:1080/1350;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg);cursor:pointer;transform:translate(-50%,-50%) scale(.4);opacity:0;z-index:1;pointer-events:none}
-  .carousel-slide img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg);pointer-events:none}
   @media(prefers-reduced-motion:no-preference){
     .carousel-slide{transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .55s ease,border-color .3s ease}
   }
@@ -517,6 +516,28 @@
   .carousel-slide[data-pos="next"]{transform:translate(-50%,-50%) translateX(58%) rotateY(-30deg) scale(.68);opacity:.5;z-index:2;pointer-events:auto}
   .carousel-slide[data-pos="prev"]:hover,.carousel-slide[data-pos="next"]:hover{opacity:.8}
   .carousel-arrow:focus-visible,.carousel-viewport:focus-visible,.carousel-dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* Enlace al CV: sólo la centrada, sólo una vez QUIETA, y sólo si esa
+     tarjeta tiene data-cv-url (hoy nada más Eze). El <a> no lleva href
+     por defecto — ni foco, ni menú contextual, ni clic posible — hasta
+     que JS se lo agrega, al terminar la transición, en la tarjeta que
+     sigue centrada Y tiene data-cv-url. Mismo mecanismo que se usó para
+     el enlace a Instagram: un arrastre que suelta sobre la centrada, o
+     un clic justo cuando otra tarjeta está llegando al medio, no puede
+     abrir nada, porque el href todavía no existe en ese momento. Las
+     tarjetas sin data-cv-url (santi, axel, manu) nunca reciben href:
+     quedan inertes para siempre, sin importar el estado.
+     pointer-events:none de base + auto sólo con .is-settled es una
+     segunda barrera para que las laterales nunca reciban el clic ahí. */
+  .carousel-slide-link{position:absolute;inset:0;display:block;pointer-events:none}
+  .carousel-slide-link img{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg);pointer-events:none}
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link[data-cv-url]{pointer-events:auto;cursor:pointer}
+  .carousel-slide-link:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link[data-cv-url]:hover,
+  .carousel-slide[data-pos="center"].is-settled .carousel-slide-link[data-cv-url]:focus-visible{box-shadow:inset 0 0 0 3px rgba(215,245,81,.6)}
+  .carousel-cv-badge{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(10,10,12,.75);color:#fff;font-size:13px;font-weight:600;white-space:nowrap;pointer-events:none;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  .carousel-cv-badge svg{width:16px;height:16px;flex:none}
+  .carousel-slide[data-pos="center"] .carousel-slide-link[data-cv-url] .carousel-cv-badge{display:inline-flex}
 
   .carousel-dots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:var(--space-item)}
   .carousel-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);border:none;padding:0;cursor:pointer;transition:background .2s ease,transform .2s ease}
@@ -1305,19 +1326,51 @@
              santi → @santirazzeto_1
              eze   → @ezeneira2
              axel  → @axel_abet
-             manu  → @manuelcuestasp -->
+             manu  → @manuelcuestasp
+
+             CV: por ahora sólo Eze tiene. La estructura de las cuatro
+             tarjetas ya es idéntica a propósito — sumar el CV de otro
+             jugador es agregarle data-cv-url y su aria-label (mismo
+             formato que el de Eze) al <a> correspondiente; el CSS y el
+             JS del carrusel no se tocan, ya saben mostrar la señal y
+             activar el enlace solo cuando esa tarjeta está centrada y
+             quieta, y ya la ocultan cuando data-cv-url no está. -->
         <ul class="carousel-track" id="athletesTrack">
           <li class="carousel-slide" data-index="0">
-            <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link">
+              <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+              <span class="carousel-cv-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Ver CV</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="1">
-            <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-cv-url="/cv/ezequiel-neira" aria-label="Ver el CV de Ezequiel Neira">
+              <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+              <span class="carousel-cv-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Ver CV</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="2">
-            <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link">
+              <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
+              <span class="carousel-cv-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Ver CV</span>
+              </span>
+            </a>
           </li>
           <li class="carousel-slide" data-index="3">
-            <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link">
+              <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
+              <span class="carousel-cv-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Ver CV</span>
+              </span>
+            </a>
           </li>
         </ul>
       </div>
@@ -2694,6 +2747,33 @@
     if (!n) return;
     let current = 0;
 
+    // El enlace al CV de la centrada no se activa apenas llega al medio:
+    // se activa recién cuando termina la transición. El <a> no lleva
+    // href hasta ese momento — no sólo deshabilitado por CSS, sino sin
+    // destino real — así que ni un arrastre que suelta sobre la
+    // centrada ni un clic a mitad de camino pueden abrir nada. Sólo
+    // afecta a tarjetas con data-cv-url: las que no lo tienen jamás
+    // reciben href, pase lo que pase. settleToken descarta timers viejos
+    // si el usuario vuelve a navegar antes de que se cumpla el plazo.
+    let settleTimer = null;
+    let settleToken = 0;
+    function scheduleSettle() {
+      const myToken = ++settleToken;
+      if (settleTimer) clearTimeout(settleTimer);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      settleTimer = setTimeout(() => {
+        if (myToken !== settleToken) return;
+        const centerSlide = slides[current];
+        if (!centerSlide || centerSlide.dataset.pos !== 'center') return;
+        centerSlide.classList.add('is-settled');
+        const link = centerSlide.querySelector('.carousel-slide-link');
+        if (link && link.dataset.cvUrl) {
+          link.href = link.dataset.cvUrl;
+          link.tabIndex = 0;
+        }
+      }, reduceMotion ? 0 : 580);
+    }
+
     function render() {
       slides.forEach((slide, i) => {
         let diff = i - current;
@@ -2702,10 +2782,14 @@
         const pos = diff === 0 ? 'center' : diff === -1 ? 'prev' : diff === 1 ? 'next' : 'hidden';
         slide.dataset.pos = pos;
         slide.setAttribute('aria-hidden', pos === 'center' ? 'false' : 'true');
+        slide.classList.remove('is-settled');
+        const link = slide.querySelector('.carousel-slide-link');
+        if (link && link.dataset.cvUrl) { link.removeAttribute('href'); link.tabIndex = -1; }
       });
       dots.forEach((dot, i) => dot.setAttribute('aria-current', i === current ? 'true' : 'false'));
       const img = slides[current].querySelector('img');
       if (live && img) live.textContent = `Mostrando deportista ${current + 1} de ${n}: ${img.alt}`;
+      scheduleSettle();
     }
 
     function goTo(index) {
@@ -2726,18 +2810,32 @@
     // mouse y táctil unificados): si el desplazamiento supera el umbral
     // es arrastre; si no, y cayó sobre una tarjeta que no es la central,
     // es un clic para centrarla. Evita que ambos disparen a la vez.
+    // El pointer capture se pide recién cuando hay movimiento real (no
+    // en el pointerdown): capturar de entrada, incluso sin arrastre,
+    // hace que Chromium descarte la navegación nativa del <a> de la
+    // centrada — un toque limpio dejaría de abrir el CV de Eze.
     let dragStartX = null;
     let dragStartSlide = null;
+    let pointerCaptured = false;
     const DRAG_THRESHOLD = 40;
+    const CAPTURE_INTENT_THRESHOLD = 10;
     viewport.addEventListener('pointerdown', (e) => {
       dragStartX = e.clientX;
       dragStartSlide = e.target.closest('.carousel-slide');
-      try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+      pointerCaptured = false;
+    });
+    viewport.addEventListener('pointermove', (e) => {
+      if (dragStartX === null || pointerCaptured) return;
+      if (Math.abs(e.clientX - dragStartX) > CAPTURE_INTENT_THRESHOLD) {
+        try { viewport.setPointerCapture(e.pointerId); pointerCaptured = true; } catch (err) {}
+      }
     });
     viewport.addEventListener('pointerup', (e) => {
       if (dragStartX === null) return;
       const dx = e.clientX - dragStartX;
+      if (pointerCaptured) { try { viewport.releasePointerCapture(e.pointerId); } catch (err) {} }
       dragStartX = null;
+      pointerCaptured = false;
       if (dx > DRAG_THRESHOLD) { goTo(current - 1); return; }
       if (dx < -DRAG_THRESHOLD) { goTo(current + 1); return; }
       if (dragStartSlide && dragStartSlide.dataset.pos !== 'center') {
@@ -2745,7 +2843,7 @@
         if (!Number.isNaN(idx)) goTo(idx);
       }
     });
-    viewport.addEventListener('pointercancel', () => { dragStartX = null; dragStartSlide = null; });
+    viewport.addEventListener('pointercancel', () => { dragStartX = null; dragStartSlide = null; pointerCaptured = false; });
 
     render();
   })();
