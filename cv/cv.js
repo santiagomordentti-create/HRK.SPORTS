@@ -183,6 +183,189 @@
     });
   }
 
+  // ---------- Entrada "el nombre que se arma" ----------
+  // El texto que vuela es una copia exacta del nombre real (mismo texto,
+  // misma clase que .photo-cap__name, así hereda su tipografía sin
+  // copiar nada a mano) para que el aterrizaje sea posible sin salto: el
+  // clon arranca grande y centrado y termina en transform:none, que cae
+  // exactamente sobre el rect medido del elemento real — no hay que
+  // "acertar" una posición a mano. Atrás, una marca de agua gigante con
+  // solo el apellido (CV_DATA.lastName) da la idea de "arma el nombre"
+  // sin tener que igualar su tipografía a nada. El contenido real (foto,
+  // ficha, cancha, video) ya se renderizó antes de llamar a esto y no
+  // depende en nada de que esta función corra: si algo acá falla, el CV
+  // de abajo queda intacto.
+  function initIntro(data) {
+    if (!data.lastName) {
+      console.warn('cv.js: falta CV_DATA.lastName — no se muestra la entrada "el nombre que se arma".');
+      return;
+    }
+
+    const STORAGE_KEY = 'hrk_cv_intro_seen::' + location.pathname;
+    let alreadySeen = false;
+    try { alreadySeen = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (err) {}
+    if (alreadySeen) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const targetEl = document.querySelector('.photo-cap__name');
+    if (!targetEl) return;
+
+    // Sin Web Animations API no hay forma confiable de saber cuándo
+    // terminó la animación para sacar el overlay: mejor no mostrar la
+    // entrada que arriesgarse a taparle el CV a alguien para siempre.
+    if (typeof document.body.animate !== 'function') return;
+
+    function markSeen() {
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (err) {}
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'cv-intro';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    const watermark = document.createElement('div');
+    watermark.className = 'cv-intro__watermark';
+    watermark.textContent = data.lastName;
+
+    const flying = document.createElement('span');
+    flying.className = 'photo-cap__name cv-intro__name';
+    flying.textContent = targetEl.textContent;
+
+    overlay.appendChild(watermark);
+    overlay.appendChild(flying);
+    document.body.appendChild(overlay);
+    const shownAt = performance.now();
+
+    let done = false;
+    let anims = [];
+
+    function finish() {
+      if (done) return;
+      done = true;
+      window.removeEventListener('pointerdown', finish, true);
+      window.removeEventListener('keydown', finish, true);
+      anims.forEach((a) => { try { a.cancel(); } catch (err) {} });
+      overlay.remove();
+      markSeen();
+      // Sin console.log a propósito (no ensuciar la consola de un usuario
+      // real); el dato queda accesible para pruebas/depuración vía esta
+      // propiedad, no vía texto impreso.
+      window.__hrkCvIntroLastVisibleMs = performance.now() - shownAt;
+    }
+
+    window.addEventListener('pointerdown', finish, true);
+    window.addEventListener('keydown', finish, true);
+
+    function start(DURATION) {
+      if (done) return; // se saltó mientras esperábamos las fuentes
+
+      const rect = targetEl.getBoundingClientRect();
+      flying.style.left = rect.left + 'px';
+      flying.style.top = rect.top + 'px';
+      flying.style.width = rect.width + 'px';
+      flying.style.height = rect.height + 'px';
+
+      // .photo-cap__name es un item de un flex column: su caja se
+      // estira a lo ancho del contenedor, pero el texto queda alineado
+      // a la izquierda adentro — el CENTRO DE LA CAJA no es el centro
+      // VISUAL del texto. Si escalamos/centramos sobre el centro de la
+      // caja, el nombre grande queda pegado a la izquierda en vez de
+      // centrado en pantalla. Medimos el texto real (Range) y fijamos
+      // ahí el transform-origin, en px relativos a la propia caja, para
+      // que el scale() y el translate() giren alrededor de las letras y
+      // no del hueco vacío a la derecha. Esto no afecta el aterrizaje:
+      // a transform:none el transform-origin no cambia nada.
+      const textRange = document.createRange();
+      textRange.selectNodeContents(targetEl);
+      const textRect = textRange.getBoundingClientRect();
+      const originX = (textRect.left - rect.left) + textRect.width / 2;
+      const originY = (textRect.top - rect.top) + textRect.height / 2;
+      flying.style.transformOrigin = `${originX}px ${originY}px`;
+
+      const cx = textRect.left + textRect.width / 2;
+      const cy = textRect.top + textRect.height / 2;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const dxCenter = (vw / 2) - cx;
+      const dyCenter = (vh / 2) - cy;
+      const dyBelow = dyCenter + vh * 0.7;
+
+      // El "grande y centrado" tiene que entrar en la pantalla tanto en
+      // alto como en ancho — un nombre largo no puede escalarse solo en
+      // base a la altura de fuente o se va de los bordes (le pasaba a
+      // "Ezequiel Neira": mucho más ancho que "Neira" solo).
+      const realFontSize = parseFloat(getComputedStyle(targetEl).fontSize) || rect.height;
+      const heightScale = (Math.min(vw, vh) * 0.16) / realFontSize;
+      const widthScale = (vw * 0.86) / textRect.width;
+      const scale = Math.max(1, Math.min(heightScale, widthScale));
+
+      const EASE = 'cubic-bezier(.22,1,.36,1)';
+
+      // Importante: la curva de aceleración va puesta en CADA keyframe
+      // (easing = de ese keyframe al siguiente), no como opción general
+      // de .animate(). Una easing general no suaviza cada tramo por
+      // separado: deforma la LÍNEA DE TIEMPO completa antes de ubicar
+      // los offsets, así que con una curva ease-out el "offset .45" deja
+      // de caer a mitad de duración real — pasa mucho antes, arrastrando
+      // con él el encogido/aterrizaje que dependía de esos offsets.
+      try {
+        anims.push(overlay.animate([
+          { opacity: 1, offset: 0 },
+          { opacity: 1, offset: 0.55 },
+          { opacity: 0, offset: 1 },
+        ], { duration: DURATION, easing: 'linear', fill: 'forwards' }));
+
+        anims.push(watermark.animate([
+          { transform: 'translate(-50%,-50%) scale(.55)', opacity: 0, offset: 0, easing: EASE },
+          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: .45, easing: 'linear' },
+          { transform: 'translate(-50%,-50%) scale(1.05)', opacity: .12, offset: .6, easing: EASE },
+          { transform: 'translate(-50%,-50%) scale(1.3)', opacity: 0, offset: 1 },
+        ], { duration: DURATION, fill: 'forwards' }));
+
+        anims.push(flying.animate([
+          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 0, offset: 0, easing: 'ease-out' },
+          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 1, offset: .08, easing: EASE },
+          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: .45, easing: 'linear' },
+          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: .58, easing: EASE },
+          { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 1 },
+        ], { duration: DURATION, fill: 'forwards' }));
+      } catch (err) {
+        finish();
+        return;
+      }
+
+      Promise.all(anims.map((a) => a.finished)).then(finish).catch(finish);
+    }
+
+    // La medición del texto real (arriba, en start()) sólo es exacta con
+    // la tipografía final ya cargada: medir antes, con la fuente de
+    // reemplazo del navegador, hace que el clon aterrice mal (se mide un
+    // ancho de texto que después cambia). Por eso esperamos document.fonts
+    // .ready ANTES de medir — pero con un techo: si tarda más de
+    // FONT_WAIT_CEILING (una red muy lenta, o la fuente no carga),
+    // preferimos no mostrar nada a mostrar una entrada con la posición
+    // mal calculada. El presupuesto total (espera + animación) se ajusta
+    // para no acercarse nunca al máximo de 1,5s pedido.
+    const introRequestedAt = (window.performance && performance.now) ? performance.now() : Date.now();
+    const TOTAL_BUDGET = 1350; // ms — deja margen real bajo el máximo de 1500ms
+    const FONT_WAIT_CEILING = 900; // ms
+
+    const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    const fontsOutcome = Promise.race([
+      fontsReady.then(() => true),
+      new Promise((resolve) => setTimeout(() => resolve(false), FONT_WAIT_CEILING)),
+    ]);
+
+    fontsOutcome.then((fontsOk) => {
+      if (!fontsOk) { finish(); return; } // muy lento: mejor no mostrar nada a mostrarlo mal
+      const now = (window.performance && performance.now) ? performance.now() : Date.now();
+      const elapsed = now - introRequestedAt;
+      const duration = Math.max(500, Math.min(1000, TOTAL_BUDGET - elapsed));
+      start(duration);
+    }, finish);
+  }
+
   function init() {
     const data = window.CV_DATA;
     if (!data) {
@@ -194,6 +377,7 @@
     renderFacts(data);
     renderPitch(data);
     renderVideo(data);
+    initIntro(data);
   }
 
   if (document.readyState === 'loading') {

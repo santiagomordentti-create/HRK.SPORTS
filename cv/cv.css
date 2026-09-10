@@ -268,3 +268,48 @@ a{color:inherit}
   .back{transition:color .15s ease}
   .facts__ig{transition:border-color .15s ease}
 }
+
+/* ---------- entrada: "el nombre que se arma" ----------
+   La arma cv.js (ver initIntro): un clon del apellido, con la misma
+   clase que el real (photo-cap__name) para heredar su tipografía sin
+   copiar nada a mano, viaja desde abajo-grande hasta transform:none, que
+   por construcción cae exacto sobre el nombre real. Todo lo que hay acá
+   es sólo el aspecto visual — el armado y el desarmado son de cv.js. */
+.cv-intro{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  overflow:hidden;
+  background:var(--club-deep);
+  cursor:pointer;
+}
+.cv-intro__watermark{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(.55);
+  opacity:0;
+  font-family:var(--font-display);
+  font-size:32vw;
+  line-height:1;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:1.5px var(--club-accent);
+  text-transform:uppercase;
+  white-space:nowrap;
+  pointer-events:none;
+}
+.cv-intro__name{
+  position:fixed;
+  margin:0;
+  display:block;
+  opacity:0;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+/* Segunda barrera además del chequeo en JS: si por lo que sea la
+   entrada llegara a crearse con esta preferencia activa, no se ve. */
+@media(prefers-reduced-motion:reduce){
+  .cv-intro{display:none}
+}
