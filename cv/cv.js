@@ -237,6 +237,16 @@
     document.body.appendChild(overlay);
     const shownAt = performance.now();
 
+    // Tres tiempos fijos: llegada, reposo (el único momento en que el
+    // nombre se puede leer — no puede bajar de 800ms) y viaje. Fijos
+    // porque antes se repartían dentro de un presupuesto total que se
+    // encogía según cuánto hubiera tardado la fuente en cargar, y eso
+    // se comía justo el reposo, el tramo que más importa.
+    const ENTRADA_MS = 250;
+    const REPOSO_MS = 900;
+    const VIAJE_MS = 300;
+    const DURATION = ENTRADA_MS + REPOSO_MS + VIAJE_MS; // 1450ms
+
     let done = false;
     let anims = [];
 
@@ -257,7 +267,7 @@
     window.addEventListener('pointerdown', finish, true);
     window.addEventListener('keydown', finish, true);
 
-    function start(DURATION) {
+    function start() {
       if (done) return; // se saltó mientras esperábamos las fuentes
 
       const rect = targetEl.getBoundingClientRect();
@@ -302,32 +312,44 @@
 
       const EASE = 'cubic-bezier(.22,1,.36,1)';
 
+      // Tres tiempos, fijos (no se acortan según cuánto haya tardado la
+      // espera de fuentes de más abajo — eso fue justamente el bug: antes
+      // el reposo se comía primero cuando la fuente tardaba, y la entrada
+      // terminaba pasando de largo sin dar tiempo a leer el nombre):
+      //   llegada (ENTRADA_MS): sube y se arma, centrada y grande.
+      //   reposo (REPOSO_MS):   queda del todo quieta — el único momento
+      //                         en que el nombre se puede leer.
+      //   viaje (VIAJE_MS):     se achica y viaja hasta transform:none,
+      //                         que cae exacto sobre el nombre real.
+      const entradaEnd = ENTRADA_MS / DURATION;
+      const reposoEnd = (ENTRADA_MS + REPOSO_MS) / DURATION;
+
       // Importante: la curva de aceleración va puesta en CADA keyframe
       // (easing = de ese keyframe al siguiente), no como opción general
       // de .animate(). Una easing general no suaviza cada tramo por
       // separado: deforma la LÍNEA DE TIEMPO completa antes de ubicar
-      // los offsets, así que con una curva ease-out el "offset .45" deja
-      // de caer a mitad de duración real — pasa mucho antes, arrastrando
-      // con él el encogido/aterrizaje que dependía de esos offsets.
+      // los offsets, así que con una curva ease-out el offset del final
+      // de la entrada dejaba de caer donde correspondía — pasaba mucho
+      // antes, arrastrando con él el reposo y el aterrizaje.
       try {
         anims.push(overlay.animate([
           { opacity: 1, offset: 0 },
-          { opacity: 1, offset: 0.55 },
+          { opacity: 1, offset: reposoEnd },
           { opacity: 0, offset: 1 },
         ], { duration: DURATION, easing: 'linear', fill: 'forwards' }));
 
         anims.push(watermark.animate([
           { transform: 'translate(-50%,-50%) scale(.55)', opacity: 0, offset: 0, easing: EASE },
-          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: .45, easing: 'linear' },
-          { transform: 'translate(-50%,-50%) scale(1.05)', opacity: .12, offset: .6, easing: EASE },
+          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: entradaEnd, easing: 'linear' },
+          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: reposoEnd, easing: EASE },
           { transform: 'translate(-50%,-50%) scale(1.3)', opacity: 0, offset: 1 },
         ], { duration: DURATION, fill: 'forwards' }));
 
         anims.push(flying.animate([
           { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 0, offset: 0, easing: 'ease-out' },
-          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 1, offset: .08, easing: EASE },
-          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: .45, easing: 'linear' },
-          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: .58, easing: EASE },
+          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 1, offset: entradaEnd * 0.15, easing: EASE },
+          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: entradaEnd, easing: 'linear' },
+          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: reposoEnd, easing: EASE },
           { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 1 },
         ], { duration: DURATION, fill: 'forwards' }));
       } catch (err) {
@@ -345,12 +367,11 @@
     // .ready ANTES de medir — pero con un techo: si tarda más de
     // FONT_WAIT_CEILING (una red muy lenta, o la fuente no carga),
     // preferimos no mostrar nada a mostrar una entrada con la posición
-    // mal calculada. El presupuesto total (espera + animación) se ajusta
-    // para no acercarse nunca al máximo de 1,5s pedido.
-    const introRequestedAt = (window.performance && performance.now) ? performance.now() : Date.now();
-    const TOTAL_BUDGET = 1350; // ms — deja margen real bajo el máximo de 1500ms
-    const FONT_WAIT_CEILING = 900; // ms
-
+    // mal calculada. Los tres tiempos de la animación son fijos (ver
+    // ENTRADA_MS/REPOSO_MS/VIAJE_MS en start()) — el techo de espera de
+    // fuentes está calculado para que, incluso sumado a esos tres
+    // tiempos en el peor caso, el total nunca se acerque al máximo de 2s.
+    const FONT_WAIT_CEILING = 500; // ms
     const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     const fontsOutcome = Promise.race([
       fontsReady.then(() => true),
@@ -359,10 +380,7 @@
 
     fontsOutcome.then((fontsOk) => {
       if (!fontsOk) { finish(); return; } // muy lento: mejor no mostrar nada a mostrarlo mal
-      const now = (window.performance && performance.now) ? performance.now() : Date.now();
-      const elapsed = now - introRequestedAt;
-      const duration = Math.max(500, Math.min(1000, TOTAL_BUDGET - elapsed));
-      start(duration);
+      start();
     }, finish);
   }
 
