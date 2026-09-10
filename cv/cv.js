@@ -242,10 +242,10 @@
     // porque antes se repartían dentro de un presupuesto total que se
     // encogía según cuánto hubiera tardado la fuente en cargar, y eso
     // se comía justo el reposo, el tramo que más importa.
-    const ENTRADA_MS = 250;
-    const REPOSO_MS = 900;
-    const VIAJE_MS = 300;
-    const DURATION = ENTRADA_MS + REPOSO_MS + VIAJE_MS; // 1450ms
+    const ENTRADA_MS = 500;
+    const REPOSO_MS = 1100;
+    const VIAJE_MS = 700;
+    const DURATION = ENTRADA_MS + REPOSO_MS + VIAJE_MS; // 2300ms
 
     let done = false;
     let anims = [];
@@ -310,7 +310,14 @@
       const widthScale = (vw * 0.86) / textRect.width;
       const scale = Math.max(1, Math.min(heightScale, widthScale));
 
-      const EASE = 'cubic-bezier(.22,1,.36,1)';
+      // Curva de los dos tramos de movimiento (la subida y el viaje):
+      // easeInOutCubic, simétrica — arranca despacio, acelera al medio,
+      // frena despacio. Antes usaban una curva ease-out "expo" (arranque
+      // en seco, cola larga) pensada para una entrada corta y snappy;
+      // con tramos de 500-700ms esa curva se sentía apurada al arrancar
+      // aunque el tiempo total fuera más largo — la sensación de calma
+      // depende de la curva, no sólo de la duración.
+      const MOVE_EASE = 'cubic-bezier(.65,0,.35,1)';
 
       // Tres tiempos, fijos (no se acortan según cuánto haya tardado la
       // espera de fuentes de más abajo — eso fue justamente el bug: antes
@@ -339,17 +346,17 @@
         ], { duration: DURATION, easing: 'linear', fill: 'forwards' }));
 
         anims.push(watermark.animate([
-          { transform: 'translate(-50%,-50%) scale(.55)', opacity: 0, offset: 0, easing: EASE },
+          { transform: 'translate(-50%,-50%) scale(.55)', opacity: 0, offset: 0, easing: MOVE_EASE },
           { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: entradaEnd, easing: 'linear' },
-          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: reposoEnd, easing: EASE },
+          { transform: 'translate(-50%,-50%) scale(1)', opacity: .16, offset: reposoEnd, easing: MOVE_EASE },
           { transform: 'translate(-50%,-50%) scale(1.3)', opacity: 0, offset: 1 },
         ], { duration: DURATION, fill: 'forwards' }));
 
         anims.push(flying.animate([
           { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 0, offset: 0, easing: 'ease-out' },
-          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 1, offset: entradaEnd * 0.15, easing: EASE },
+          { transform: `translate(${dxCenter}px, ${dyBelow}px) scale(${scale})`, opacity: 1, offset: entradaEnd * 0.15, easing: MOVE_EASE },
           { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: entradaEnd, easing: 'linear' },
-          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: reposoEnd, easing: EASE },
+          { transform: `translate(${dxCenter}px, ${dyCenter}px) scale(${scale})`, opacity: 1, offset: reposoEnd, easing: MOVE_EASE },
           { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 1 },
         ], { duration: DURATION, fill: 'forwards' }));
       } catch (err) {
@@ -368,10 +375,10 @@
     // FONT_WAIT_CEILING (una red muy lenta, o la fuente no carga),
     // preferimos no mostrar nada a mostrar una entrada con la posición
     // mal calculada. Los tres tiempos de la animación son fijos (ver
-    // ENTRADA_MS/REPOSO_MS/VIAJE_MS en start()) — el techo de espera de
-    // fuentes está calculado para que, incluso sumado a esos tres
-    // tiempos en el peor caso, el total nunca se acerque al máximo de 2s.
-    const FONT_WAIT_CEILING = 500; // ms
+    // ENTRADA_MS/REPOSO_MS/VIAJE_MS en start(), suman 2300ms) — el techo
+    // de espera de fuentes deja margen real bajo el máximo de 3s incluso
+    // en el peor caso (2300 + 600 = 2900ms).
+    const FONT_WAIT_CEILING = 600; // ms
     const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     const fontsOutcome = Promise.race([
       fontsReady.then(() => true),
