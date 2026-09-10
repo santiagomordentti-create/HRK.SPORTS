@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ezequiel Neira | HRK Sports</title>
+<meta name="description" content="Perfil deportivo de Ezequiel Neira, defensor central de Carabobo FC. Producido por HRK Sports.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Ezequiel Neira — Defensor central, Carabobo FC">
+<meta property="og:description" content="Perfil deportivo de Ezequiel Neira. Producido por HRK Sports.">
+<meta property="og:image" content="../assets/neira.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cv.css">
+
+<!-- =====================================================================
+     BLOQUE DE DATOS — lo único que cambia de un jugador a otro.
+     Para sumar un jugador nuevo: copiar este archivo entero y reemplazar
+     SOLO lo que hay entre estas marcas. No hace falta tocar cv.css ni cv.js.
+
+     Un campo en null se muestra como guion largo (—) en la ficha y se
+     lista aparte como dato pendiente. No completar con estimaciones:
+     lo que no está confirmado va en null hasta que se confirme.
+     ===================================================================== -->
+<script>
+window.CV_DATA = {
+  name: "Ezequiel Neira",
+  number: 32,
+  position: "Defensor central",
+
+  club: {
+    name: "Carabobo FC"
+    // theme: { deep:"#...", base:"#...", mid:"#...", light:"#...", label:"#..." }
+    // ↑ opcional: para un jugador de otro club, sobreescribe la paleta bordó del CSS
+  },
+
+  // Datos aún no confirmados — se muestran como pendientes, no se inventan.
+  nationality: null,
+  birth: null,
+  foot: null,
+  height: null,
+
+  career: ["Instituto (formativas)", "Desamparados", "Sol de América", "Gimnasia y Tiro"],
+
+  instagram: { handle: "@ezeneira2", url: "https://www.instagram.com/ezeneira2/" },
+
+  photo: {
+    src: "../assets/neira.jpg",
+    alt: "Ezequiel Neira con la camiseta bordó de Carabobo FC, mirando hacia un costado, con el público de fondo desenfocado."
+  },
+
+  video: {
+    src: null,   // ej: "../assets/neira-highlights.mp4"
+    poster: null,
+    alt: "Highlights de Ezequiel Neira"
+  }
+};
+</script>
+<!-- ================= FIN DEL BLOQUE DE DATOS ================= -->
+</head>
+<body>
+
+<main class="cv">
+  <div class="cv__top">
+    <a class="back" href="../index.html#deportistas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      Volver a HRK Sports
+    </a>
+  </div>
+
+  <div class="grid">
+    <!-- arriba izquierda: foto -->
+    <section class="zone zone--photo" data-cv="photo" aria-label="Foto del jugador"></section>
+
+    <!-- arriba derecha: cancha horizontal con la posición marcada -->
+    <section class="card card--pitch" aria-labelledby="pos-t">
+      <h2 class="card__label" id="pos-t">Posición</h2>
+      <div class="pitch" data-cv="pitch"></div>
+      <p class="pitch-desc" data-cv="pitch-desc"></p>
+    </section>
+
+    <!-- abajo izquierda: ficha de datos -->
+    <section class="card card--facts" aria-labelledby="ficha-t">
+      <h2 class="card__label" id="ficha-t">Ficha</h2>
+      <ul class="facts" data-cv="facts"></ul>
+    </section>
+
+    <!-- abajo derecha: video de highlights (reservado hasta que llegue el archivo) -->
+    <section class="zone zone--video" data-cv="video" aria-label="Video de highlights"></section>
+  </div>
+
+  <footer class="cv__foot">
+    <span class="sig">Material producido por <strong>HRK Sports</strong></span>
+  </footer>
+</main>
+
+<script src="cv.js"></script>
+</body>
+</html>

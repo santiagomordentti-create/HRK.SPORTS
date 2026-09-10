@@ -1,0 +1,262 @@
+/* ==========================================================================
+   Plantilla de CV de jugador — HRK Sports.
+   Compartida por todos los jugadores: no se toca para sumar uno nuevo.
+
+   Paleta del club: son las únicas 4 variables que hay que cambiar para
+   armar el CV de un jugador de otro club. Los valores de abajo son los
+   de Carabobo FC (bordó). Un jugador puede además pisarlas puntualmente
+   desde su propio bloque de datos (CV_DATA.club.theme), que cv.js aplica
+   como custom properties inline si están presentes.
+   ========================================================================== */
+:root{
+  --club-deep:#2A0E19;   /* fondo de página */
+  --club-base:#3A1524;   /* paneles secundarios / cancha */
+  --club-mid:#6B2C41;    /* tarjetas (ficha, posición) */
+  --club-light:#A35C6B;  /* acento decorativo — NO usar como texto chico: no llega a AA */
+  --club-label:#D9A6B5;  /* derivado de --club-light, sí cumple AA para texto chico */
+
+  --ink:#FFFFFF;
+  --ink-soft:rgba(255,255,255,.82);
+  --ink-faint:rgba(255,255,255,.6);
+  --line:rgba(255,255,255,.18);
+
+  --accent:#D7F551; /* mismo verde de hrk-sports.com, solo para foco y firma */
+
+  --font-display:'Anton', sans-serif;
+  --font-body:'Archivo', sans-serif;
+
+  --radius:20px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--club-deep);
+  color:var(--ink);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ---------- estructura ---------- */
+.cv{
+  display:flex;
+  flex-direction:column;
+  min-height:100dvh;
+  padding:18px clamp(16px,3vw,32px);
+  gap:14px;
+}
+.cv__top{flex:none}
+.back{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink-soft);
+  text-decoration:none;
+  padding:6px 4px;
+}
+.back svg{width:16px;height:16px}
+.back:hover{color:var(--ink)}
+
+.grid{
+  flex:1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:14px;
+}
+
+.cv__foot{flex:none;display:flex;justify-content:center;padding-top:2px}
+.sig{font-size:12px;color:var(--ink-faint)}
+.sig strong{color:var(--ink-soft);font-weight:700}
+
+/* ---------- zona: foto ---------- */
+.zone--photo{
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:var(--club-base);
+}
+.zone--photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 20%;
+}
+.photo-cap{
+  position:absolute;
+  inset:auto 0 0 0;
+  padding:20px clamp(16px,3vw,28px) 18px;
+  background:linear-gradient(to top, rgba(10,3,6,.92) 0%, rgba(10,3,6,.55) 55%, transparent 100%);
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.photo-cap__num{
+  font-family:var(--font-display);
+  font-size:clamp(28px,3.4vw,40px);
+  line-height:1;
+  color:var(--accent);
+}
+.photo-cap__name{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.6vw,30px);
+  line-height:1.05;
+  letter-spacing:.01em;
+  text-transform:uppercase;
+}
+.photo-cap__club{
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+/* ---------- tarjetas (ficha / posición) ---------- */
+.card{
+  background:var(--club-mid);
+  border-radius:var(--radius);
+  padding:18px clamp(16px,2.6vw,26px);
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.card__label{
+  margin:0 0 12px;
+  font-family:var(--font-display);
+  font-size:13px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--club-label);
+}
+
+/* ---------- ficha de datos ---------- */
+.facts{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  overflow-y:auto;
+  min-height:0;
+}
+.facts li{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:14px;
+  padding-bottom:9px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+}
+.facts__k{
+  flex:none;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--club-label);
+}
+.facts__v{
+  text-align:right;
+  font-weight:600;
+  color:var(--ink);
+}
+.facts__v--pending{
+  font-weight:400;
+  font-style:italic;
+  color:var(--ink-faint);
+}
+.facts__ig{
+  text-decoration:none;
+  font-weight:600;
+  border-bottom:1px solid transparent;
+}
+.facts__ig:hover{border-bottom-color:currentColor}
+.facts__note{
+  border-bottom:none;
+  padding-top:2px;
+  font-size:12px;
+  line-height:1.5;
+  color:var(--ink-faint);
+  display:block;
+}
+
+/* ---------- cancha / posición ---------- */
+.card--pitch{gap:10px}
+.pitch{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.pitch svg{width:100%;height:100%;max-height:100%}
+.pitch__turf{fill:var(--club-base)}
+.pitch__line{stroke:rgba(255,255,255,.5);stroke-width:1}
+.pitch__marker{fill:var(--accent)}
+.pitch__number{
+  fill:var(--club-deep);
+  font-family:var(--font-display);
+  font-size:9px;
+}
+.pitch-desc{
+  margin:0;
+  font-size:12px;
+  line-height:1.5;
+  color:var(--ink-faint);
+}
+
+/* ---------- video (placeholder si todavía no hay archivo) ---------- */
+.zone--video{
+  position:relative;
+  border-radius:var(--radius);
+  background:var(--club-base);
+  overflow:hidden;
+}
+.zone--video video{width:100%;height:100%;object-fit:cover;display:block}
+.zone--video.zone--pending{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px dashed var(--line);
+}
+.pending__icon{width:30px;height:30px;color:var(--ink-faint)}
+.pending__label{
+  margin:0;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+/* ---------- desktop: entra todo sin scroll ---------- */
+@media(min-width:861px){
+  html,body{height:100%}
+  .cv{height:100dvh;overflow:hidden}
+}
+
+/* ---------- mobile: una columna con scroll ---------- */
+@media(max-width:860px){
+  .cv{padding:16px}
+  .grid{
+    grid-template-columns:1fr;
+    grid-template-rows:none;
+    gap:16px;
+  }
+  .zone--photo{aspect-ratio:4/5}
+  .card--facts{order:2}
+  .card--pitch{order:3}
+  .zone--video{order:4;aspect-ratio:16/9}
+  .zone--photo{order:1}
+}
+
+@media(prefers-reduced-motion:no-preference){
+  .back{transition:color .15s ease}
+  .facts__ig{transition:border-color .15s ease}
+}
