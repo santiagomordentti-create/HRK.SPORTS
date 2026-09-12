@@ -1,0 +1,13 @@
+{
+  "name": "HRK Sports",
+  "short_name": "HRK",
+  "description": "Asesoría de imagen y marketing deportivo para deportistas profesionales.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#16161a",
+  "theme_color": "#16161a",
+  "icons": [
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

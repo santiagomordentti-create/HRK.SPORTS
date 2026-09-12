@@ -183,6 +183,36 @@
     });
   }
 
+  // Sale entero de CV_DATA — sumar un jugador nuevo no toca esta función,
+  // hereda el mismo Person automáticamente. Sólo van los campos ya
+  // confirmados: nacionalidad, fecha de nacimiento, pie hábil y altura
+  // quedan pendientes (null en CV_DATA) y por eso no tienen equivalente
+  // en schema.org acá — no hay que inventarlos para completar el bloque.
+  const SITE_ORIGIN = 'https://www.hrk-sports.com';
+  function renderStructuredData(data) {
+    const pageUrl = SITE_ORIGIN + location.pathname.replace(/\.html$/, '');
+    const person = {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: data.name,
+      url: pageUrl,
+    };
+    if (data.photo && data.photo.src) {
+      person.image = new URL(data.photo.src, SITE_ORIGIN + location.pathname).href;
+    }
+    if (data.position) person.jobTitle = data.position;
+    if (data.club && data.club.name) {
+      person.affiliation = { '@type': 'SportsTeam', name: data.club.name };
+    }
+    if (data.instagram && data.instagram.url) {
+      person.sameAs = [data.instagram.url];
+    }
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(person);
+    document.head.appendChild(script);
+  }
+
   // ---------- Entrada "el nombre que se arma" ----------
   // El texto que vuela es una copia exacta del nombre real (mismo texto,
   // misma clase que .photo-cap__name, así hereda su tipografía sin
@@ -402,6 +432,7 @@
     renderFacts(data);
     renderPitch(data);
     renderVideo(data);
+    renderStructuredData(data);
     initIntro(data);
   }
 
