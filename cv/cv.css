@@ -400,7 +400,11 @@ a{color:inherit}
   color:var(--club-label);
 }
 
-/* ---------- video (placeholder si todavía no hay archivo) ---------- */
+/* ---------- video (placeholder si todavía no hay archivo) ----------
+   aspect-ratio:16/9 es sólo el valor de arranque, antes de que el
+   video cargue: cv.js lo pisa en cuanto conoce las medidas reales
+   (videoWidth/videoHeight), así el cuadrante termina con la
+   proporción real de cada video en vez de una fija para todos. */
 .zone--video{
   position:relative;
   border-radius:var(--radius);
@@ -408,7 +412,47 @@ a{color:inherit}
   overflow:hidden;
   aspect-ratio:16/9;
 }
-.zone--video video{width:100%;height:100%;object-fit:cover;display:block}
+.zone--video video{width:100%;height:100%;object-fit:contain;display:block;background:var(--club-base)}
+.video-sound{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,3,6,.6);
+  border:1px solid rgba(255,255,255,.25);
+  color:var(--ink);
+  cursor:pointer;
+}
+.video-sound svg{width:18px;height:18px}
+@media(prefers-reduced-motion:no-preference){
+  .video-sound{transition:background .15s ease}
+}
+.video-sound:hover{background:rgba(10,3,6,.8)}
+.video-play{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,3,6,.65);
+  border:1px solid rgba(255,255,255,.3);
+  color:var(--ink);
+  cursor:pointer;
+}
+.video-play svg{width:26px;height:26px;margin-left:3px}
+@media(prefers-reduced-motion:no-preference){
+  .video-play{transition:background .15s ease}
+}
+.video-play:hover{background:rgba(10,3,6,.85)}
 .zone--video.zone--pending{
   display:flex;
   flex-direction:column;

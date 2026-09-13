@@ -217,16 +217,70 @@
     `).join('');
   }
 
+  // Sin silencio no hay autoplay en ningún navegador, así que el video
+  // arranca muted siempre. El botón de sonido no depende del navegador
+  // para su ícono: cv.js lo dibuja según video.muted, así funciona
+  // igual en los cuatro. El cuadrante toma la proporción real del
+  // video (videoWidth/videoHeight, recién se sabe al cargar el
+  // archivo) en vez de una relación fija — así no lo deforma ni lo
+  // recorta sea vertical u horizontal.
   function renderVideo(data) {
     const zone = document.querySelector('[data-cv="video"]');
     if (!zone) return;
     if (data.video && data.video.src) {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       const video = document.createElement('video');
       video.src = data.video.src;
       if (data.video.poster) video.poster = data.video.poster;
-      video.controls = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
       video.setAttribute('aria-label', data.video.alt || `Highlights de ${data.name}`);
+      if (!reduceMotion) video.autoplay = true;
+
+      video.addEventListener('loadedmetadata', () => {
+        if (video.videoWidth && video.videoHeight) {
+          zone.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+        }
+      }, { once: true });
+
+      const soundBtn = document.createElement('button');
+      soundBtn.type = 'button';
+      soundBtn.className = 'video-sound';
+      const ICON_MUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>';
+      const ICON_UNMUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';
+      const updateSoundBtn = () => {
+        soundBtn.setAttribute('aria-label', video.muted ? 'Activar el sonido' : 'Silenciar el video');
+        soundBtn.innerHTML = video.muted ? ICON_MUTED : ICON_UNMUTED;
+      };
+      updateSoundBtn();
+      soundBtn.addEventListener('click', () => {
+        video.muted = !video.muted;
+        updateSoundBtn();
+      });
+
       zone.appendChild(video);
+      zone.appendChild(soundBtn);
+
+      // Con movimiento reducido no arranca solo: se ve la portada y un
+      // botón grande de reproducir. Ese primer play sí es un gesto del
+      // usuario, pero lo dejamos igual muted — es el mismo video en los
+      // dos casos, el botón de sonido de arriba es lo que lo activa.
+      if (reduceMotion) {
+        const playBtn = document.createElement('button');
+        playBtn.type = 'button';
+        playBtn.className = 'video-play';
+        playBtn.setAttribute('aria-label', `Reproducir highlights de ${data.name}`);
+        playBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+        playBtn.addEventListener('click', () => {
+          video.play();
+          playBtn.remove();
+        });
+        zone.appendChild(playBtn);
+      }
     } else {
       zone.classList.add('zone--pending');
       zone.setAttribute('role', 'img');
