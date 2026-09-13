@@ -19,36 +19,40 @@
       .toLowerCase().trim();
   }
 
-  // Cancha horizontal, arco propio a la izquierda: x 0–150 (largo), y 0–100
-  // (ancho). "Izquierda"/"derecha" de cada posición son las del jugador
-  // mirando hacia el arco rival (a la derecha del dibujo) — por eso un
-  // lateral izquierdo queda arriba del gráfico, no abajo.
+  // Cancha vertical, arco propio abajo: x 0–100 (ancho), y 0–150 (largo,
+  // 0=arco rival arriba, 150=arco propio abajo). "Izquierda"/"derecha" de
+  // cada posición siguen siendo las del jugador mirando hacia el arco
+  // rival (hacia arriba del dibujo) — un lateral izquierdo queda a la
+  // izquierda del gráfico, un lateral derecho a la derecha; eso no cambió
+  // al pasar de horizontal a vertical, sólo cambiaron x/y. (Se obtienen
+  // rotando 90° la tabla horizontal anterior: nuevo_x = viejo_y,
+  // nuevo_y = 150 − viejo_x.)
   const POSITION_COORDS = {
-    'arquero': { x: 10, y: 50, zone: 'bajo el arco propio' },
-    'defensor central': { x: 24, y: 50, zone: 'el centro del último tercio' },
-    'central': { x: 24, y: 50, zone: 'el centro del último tercio' },
-    'lateral derecho': { x: 30, y: 82, zone: 'la banda derecha del último tercio' },
-    'lateral izquierdo': { x: 30, y: 18, zone: 'la banda izquierda del último tercio' },
-    'carrilero derecho': { x: 55, y: 85, zone: 'la banda derecha, cerca del mediocampo' },
-    'carrilero izquierdo': { x: 55, y: 15, zone: 'la banda izquierda, cerca del mediocampo' },
-    'volante defensivo': { x: 55, y: 50, zone: 'el centro, delante de la defensa' },
-    'mediocampista defensivo': { x: 55, y: 50, zone: 'el centro, delante de la defensa' },
-    'volante central': { x: 75, y: 50, zone: 'el centro de la cancha' },
-    'mediocampista central': { x: 75, y: 50, zone: 'el centro de la cancha' },
-    'centrocampista': { x: 75, y: 50, zone: 'el centro de la cancha' },
-    'volante por derecha': { x: 75, y: 80, zone: 'la banda derecha, en la mitad de la cancha' },
-    'volante por izquierda': { x: 75, y: 20, zone: 'la banda izquierda, en la mitad de la cancha' },
-    'interior derecho': { x: 75, y: 78, zone: 'la banda derecha, en la mitad de la cancha' },
-    'interior izquierdo': { x: 75, y: 22, zone: 'la banda izquierda, en la mitad de la cancha' },
-    'mediapunta': { x: 100, y: 50, zone: 'el centro del último tercio ofensivo' },
-    'enganche': { x: 100, y: 50, zone: 'el centro del último tercio ofensivo' },
-    'extremo derecho': { x: 118, y: 85, zone: 'la banda derecha del último tercio ofensivo' },
-    'extremo izquierdo': { x: 118, y: 15, zone: 'la banda izquierda del último tercio ofensivo' },
-    'delantero centro': { x: 132, y: 50, zone: 'el centro del último tercio ofensivo' },
-    'centrodelantero': { x: 132, y: 50, zone: 'el centro del último tercio ofensivo' },
-    'delantero': { x: 132, y: 50, zone: 'el centro del último tercio ofensivo' },
+    'arquero': { x: 50, y: 140, zone: 'bajo el arco propio' },
+    'defensor central': { x: 50, y: 126, zone: 'el centro del último tercio' },
+    'central': { x: 50, y: 126, zone: 'el centro del último tercio' },
+    'lateral derecho': { x: 82, y: 120, zone: 'la banda derecha del último tercio' },
+    'lateral izquierdo': { x: 18, y: 120, zone: 'la banda izquierda del último tercio' },
+    'carrilero derecho': { x: 85, y: 95, zone: 'la banda derecha, cerca del mediocampo' },
+    'carrilero izquierdo': { x: 15, y: 95, zone: 'la banda izquierda, cerca del mediocampo' },
+    'volante defensivo': { x: 50, y: 95, zone: 'el centro, delante de la defensa' },
+    'mediocampista defensivo': { x: 50, y: 95, zone: 'el centro, delante de la defensa' },
+    'volante central': { x: 50, y: 75, zone: 'el centro de la cancha' },
+    'mediocampista central': { x: 50, y: 75, zone: 'el centro de la cancha' },
+    'centrocampista': { x: 50, y: 75, zone: 'el centro de la cancha' },
+    'volante por derecha': { x: 80, y: 75, zone: 'la banda derecha, en la mitad de la cancha' },
+    'volante por izquierda': { x: 20, y: 75, zone: 'la banda izquierda, en la mitad de la cancha' },
+    'interior derecho': { x: 78, y: 75, zone: 'la banda derecha, en la mitad de la cancha' },
+    'interior izquierdo': { x: 22, y: 75, zone: 'la banda izquierda, en la mitad de la cancha' },
+    'mediapunta': { x: 50, y: 50, zone: 'el centro del último tercio ofensivo' },
+    'enganche': { x: 50, y: 50, zone: 'el centro del último tercio ofensivo' },
+    'extremo derecho': { x: 85, y: 32, zone: 'la banda derecha del último tercio ofensivo' },
+    'extremo izquierdo': { x: 15, y: 32, zone: 'la banda izquierda del último tercio ofensivo' },
+    'delantero centro': { x: 50, y: 18, zone: 'el centro del último tercio ofensivo' },
+    'centrodelantero': { x: 50, y: 18, zone: 'el centro del último tercio ofensivo' },
+    'delantero': { x: 50, y: 18, zone: 'el centro del último tercio ofensivo' },
   };
-  const FALLBACK_COORDS = { x: 75, y: 50, zone: 'el centro de la cancha' };
+  const FALLBACK_COORDS = { x: 50, y: 75, zone: 'el centro de la cancha' };
 
   function coordsFor(position) {
     const key = normalizePosition(position);
@@ -58,7 +62,7 @@
   }
 
   function pitchDescription(data, coords) {
-    return `Cancha de fútbol vista desde arriba, en forma horizontal, con el arco propio hacia la izquierda y el arco rival hacia la derecha. Un círculo con el número ${data.number} marca la posición de ${data.name} en ${coords.zone}: ${data.position}.`;
+    return `Cancha de fútbol vista desde arriba, en forma vertical, con el arco propio abajo y el arco rival arriba. Un círculo con el número ${data.number} marca la posición de ${data.name} en ${coords.zone}: ${data.position}.`;
   }
 
   // El nombre en grande ya vive en el encabezado de arriba de la página
@@ -164,14 +168,17 @@
 
     const coords = coordsFor(data.position);
 
+    // Vertical: arco rival arriba (y chico), arco propio abajo (y
+    // grande) — viewBox 100×150, girado 90° respecto del dibujo
+    // horizontal anterior (ver comentario junto a POSITION_COORDS).
     pitchEl.innerHTML = `
-      <svg viewBox="0 0 150 100" aria-hidden="true" focusable="false">
-        <rect class="pitch__turf" x="0" y="0" width="150" height="100" rx="3"/>
-        <rect class="pitch__line" fill="none" x="3" y="3" width="144" height="94"/>
-        <line class="pitch__line" x1="75" y1="3" x2="75" y2="97"/>
-        <circle class="pitch__line" fill="none" cx="75" cy="50" r="13"/>
-        <rect class="pitch__line" fill="none" x="3" y="24" width="18" height="52"/>
-        <rect class="pitch__line" fill="none" x="129" y="24" width="18" height="52"/>
+      <svg viewBox="0 0 100 150" aria-hidden="true" focusable="false">
+        <rect class="pitch__turf" x="0" y="0" width="100" height="150" rx="3"/>
+        <rect class="pitch__line" fill="none" x="3" y="3" width="94" height="144"/>
+        <line class="pitch__line" x1="3" y1="75" x2="97" y2="75"/>
+        <circle class="pitch__line" fill="none" cx="50" cy="75" r="13"/>
+        <rect class="pitch__line" fill="none" x="24" y="3" width="52" height="18"/>
+        <rect class="pitch__line" fill="none" x="24" y="129" width="52" height="18"/>
         <circle class="pitch__marker" cx="${coords.x}" cy="${coords.y}" r="9"/>
         <text class="pitch__number" x="${coords.x}" y="${coords.y}" text-anchor="middle" dominant-baseline="central">${escapeHtml(String(data.number))}</text>
       </svg>
@@ -272,7 +279,7 @@
 
   // ---------- Entrada "el nombre que se arma" ----------
   // El texto que vuela es una copia exacta del nombre real (mismo texto,
-  // misma clase que .photo-cap__name, así hereda su tipografía sin
+  // misma clase que .cv-header__name, así hereda su tipografía sin
   // copiar nada a mano) para que el aterrizaje sea posible sin salto: el
   // clon arranca grande y centrado y termina en transform:none, que cae
   // exactamente sobre el rect medido del elemento real — no hay que
@@ -282,6 +289,13 @@
   // ficha, cancha, video) ya se renderizó antes de llamar a esto y no
   // depende en nada de que esta función corra: si algo acá falla, el CV
   // de abajo queda intacto.
+  //
+  // Aterriza en el encabezado (.cv-header__name), no en el nombre
+  // superpuesto de la foto: antes apuntaba a .photo-cap__name, y como
+  // los jugadores con la credencial como foto no tienen ese elemento
+  // (se sacó para no repetir el nombre tres veces en el mismo
+  // cuadrante), la entrada dejaba de mostrarse para ellos. El
+  // encabezado existe siempre, en los cuatro CV.
   function initIntro(data) {
     if (!data.lastName) {
       console.warn('cv.js: falta CV_DATA.lastName — no se muestra la entrada "el nombre que se arma".');
@@ -295,7 +309,7 @@
 
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const targetEl = document.querySelector('.photo-cap__name');
+    const targetEl = document.querySelector('.cv-header__name');
     if (!targetEl) return;
 
     // Sin Web Animations API no hay forma confiable de saber cuándo
@@ -316,7 +330,7 @@
     watermark.textContent = data.lastName;
 
     const flying = document.createElement('span');
-    flying.className = 'photo-cap__name cv-intro__name';
+    flying.className = 'cv-header__name cv-intro__name';
     flying.textContent = targetEl.textContent;
 
     overlay.appendChild(watermark);
@@ -337,18 +351,47 @@
     let done = false;
     let anims = [];
 
-    function finish() {
-      if (done) return;
-      done = true;
+    // BUG encontrado (reporte de "a veces corre y a veces no"): finish()
+    // hacía dos cosas a la vez — sacar el overlay Y marcar la sesión como
+    // "ya la vio" — y se llamaba también desde la rama de "la fuente
+    // tardó más que FONT_WAIT_CEILING" (más abajo), que NUNCA llega a
+    // llamar a start(): ahí no se armó ninguna animación, no se vio nada,
+    // y sin embargo la sesión quedaba marcada como vista para siempre.
+    // Con conexión/caché de fuente variable, esa carrera contra 600ms se
+    // gana o se pierde de forma inconsistente — coincide exactamente con
+    // "a Razzeto nunca la vi, a Neira algunas veces sí y otras no": no es
+    // que la entrada fallara al correr, es que muchas veces ni llegaba a
+    // arrancar y aun así quedaba marcada como si hubiera corrido. Se
+    // separa la limpieza (sacar el overlay, cancelar animaciones) de
+    // marcar la sesión: eso último sólo pasa cuando la entrada realmente
+    // se mostró completa o el usuario la salteó a propósito, nunca
+    // cuando se descarta sin haber llegado a mostrar nada.
+    function cleanup() {
       window.removeEventListener('pointerdown', finish, true);
       window.removeEventListener('keydown', finish, true);
       anims.forEach((a) => { try { a.cancel(); } catch (err) {} });
       overlay.remove();
+    }
+
+    function finish() {
+      if (done) return;
+      done = true;
+      cleanup();
       markSeen();
       // Sin console.log a propósito (no ensuciar la consola de un usuario
       // real); el dato queda accesible para pruebas/depuración vía esta
       // propiedad, no vía texto impreso.
       window.__hrkCvIntroLastVisibleMs = performance.now() - shownAt;
+    }
+
+    // Mismo cierre que finish(), pero para cuando NO se llegó a mostrar
+    // nada (la fuente no cargó a tiempo, o falló algo antes de animar):
+    // no marca la sesión, para que la entrada se pueda intentar de nuevo
+    // la próxima vez.
+    function abort() {
+      if (done) return;
+      done = true;
+      cleanup();
     }
 
     window.addEventListener('pointerdown', finish, true);
@@ -363,16 +406,13 @@
       flying.style.width = rect.width + 'px';
       flying.style.height = rect.height + 'px';
 
-      // .photo-cap__name es un item de un flex column: su caja se
-      // estira a lo ancho del contenedor, pero el texto queda alineado
-      // a la izquierda adentro — el CENTRO DE LA CAJA no es el centro
-      // VISUAL del texto. Si escalamos/centramos sobre el centro de la
-      // caja, el nombre grande queda pegado a la izquierda en vez de
-      // centrado en pantalla. Medimos el texto real (Range) y fijamos
-      // ahí el transform-origin, en px relativos a la propia caja, para
-      // que el scale() y el translate() giren alrededor de las letras y
-      // no del hueco vacío a la derecha. Esto no afecta el aterrizaje:
-      // a transform:none el transform-origin no cambia nada.
+      // No asumimos que el centro de la caja del título coincide con el
+      // centro visual del texto (con textos cortos en un flex baseline
+      // suele coincidir, pero no es una garantía del layout). Medimos el
+      // texto real (Range) y fijamos ahí el transform-origin, en px
+      // relativos a la propia caja, para que el scale() y el translate()
+      // giren siempre alrededor de las letras. Esto no afecta el
+      // aterrizaje: a transform:none el transform-origin no cambia nada.
       const textRange = document.createRange();
       textRange.selectNodeContents(targetEl);
       const textRect = textRange.getBoundingClientRect();
@@ -447,11 +487,11 @@
           { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 1 },
         ], { duration: DURATION, fill: 'forwards' }));
       } catch (err) {
-        finish();
+        abort();
         return;
       }
 
-      Promise.all(anims.map((a) => a.finished)).then(finish).catch(finish);
+      Promise.all(anims.map((a) => a.finished)).then(finish).catch(abort);
     }
 
     // La medición del texto real (arriba, en start()) sólo es exacta con
@@ -473,9 +513,13 @@
     ]);
 
     fontsOutcome.then((fontsOk) => {
-      if (!fontsOk) { finish(); return; } // muy lento: mejor no mostrar nada a mostrarlo mal
+      // muy lento: no se llegó a mostrar nada, así que no se marca la
+      // sesión — abort(), no finish(). Es la causa del bug de "a veces
+      // corre y a veces no" (ver el comentario junto a cleanup()/finish()
+      // /abort() más arriba).
+      if (!fontsOk) { abort(); return; }
       start();
-    }, finish);
+    }, abort);
   }
 
   function init() {

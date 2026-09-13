@@ -257,7 +257,7 @@ a{color:inherit}
    existe. */
 .card--pitch{gap:18px}
 .pitch{display:flex;align-items:center;justify-content:center}
-.pitch svg{width:100%;height:auto;aspect-ratio:150/100}
+.pitch svg{width:100%;height:auto;aspect-ratio:100/150}
 .pitch__turf{fill:var(--club-base)}
 .pitch__line{stroke:rgba(255,255,255,.5);stroke-width:1}
 .pitch__marker{fill:var(--club-accent)}
