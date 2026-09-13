@@ -344,58 +344,199 @@
     if (printText) printText.textContent = `Contacto: WhatsApp ${HRK_WHATSAPP_DISPLAY}`;
   }
 
-  // Compartir: menú nativo del sistema en celular; copiar el enlace y
-  // avisar en computadora. navigator.share por sí solo NO alcanza para
-  // distinguir uno de otro: Chrome y Safari de escritorio en Mac
-  // también lo implementan (abren el panel de compartir del sistema
-  // operativo), así que una compu con ese navegador pasaría por acá
-  // como si fuera celular. Lo que de verdad distingue "celular" es el
-  // puntero: grosero (dedo, sin precisión) en celular/tablet, fino
-  // (mouse o trackpad) en computadora. Si el navegador no tiene
-  // navigator.share, o si copiar falla, siempre cae en copiar el
-  // enlace. Descargar: imprimir del navegador, para que el usuario lo
-  // guarde como PDF (ver la hoja de estilos de impresión en cv.css). El
-  // contenedor ya deja lugar para sumar un tercer botón (idioma) más
-  // adelante sin rehacer nada: es un flex con gap, cualquier <button>
-  // nuevo entra en la fila sin tocar los que ya están.
+  // Compartir: menú nativo del sistema en celular (sin cambios); en
+  // computadora, una lista propia con cuatro opciones. navigator.share
+  // por sí solo NO alcanza para distinguir uno de otro: Chrome y Safari
+  // de escritorio en Mac también lo implementan (abrirían el panel del
+  // sistema operativo en vez de la lista), así que una compu con ese
+  // navegador pasaría por acá como si fuera celular. Lo que de verdad
+  // distingue "celular" es el puntero: grosero (dedo, sin precisión) en
+  // celular/tablet, fino (mouse o trackpad) en computadora. Si el
+  // celular no tiene navigator.share, cae en la misma lista propia que
+  // usa computadora.
+  //
+  // Sin Instagram en la lista: no admite compartir un enlace desde una
+  // web, así que un botón ahí no podría funcionar. "Copiar enlace" es
+  // justamente el camino para llevar el CV a Instagram a mano.
+  //
+  // Descargar: imprimir del navegador, para que el usuario lo guarde
+  // como PDF (ver la hoja de estilos de impresión en cv.css) — sin
+  // cambios acá.
   function renderActions(data) {
     const shareBtn = document.querySelector('[data-cv-action="share"]');
     const printBtn = document.querySelector('[data-cv-action="print"]');
-    const toast = document.querySelector('[data-cv="actions-toast"]');
-    let toastTimer = null;
-
-    function showToast(text) {
-      if (!toast) return;
-      toast.textContent = text;
-      toast.classList.add('is-visible');
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => { toast.classList.remove('is-visible'); }, 2500);
-    }
 
     if (printBtn) {
       printBtn.addEventListener('click', () => window.print());
     }
 
-    if (shareBtn) {
-      shareBtn.addEventListener('click', async () => {
-        const shareData = { title: `${data.name} | HRK Sports`, url: location.href };
-        const isMobileLike = window.matchMedia('(pointer: coarse)').matches;
-        if (navigator.share && isMobileLike) {
-          try { await navigator.share(shareData); } catch (err) { /* el usuario canceló el menú del sistema */ }
-          return;
-        }
-        try {
-          await navigator.clipboard.writeText(location.href);
-          showToast('Enlace copiado');
-        } catch (err) {
-          if (navigator.share) {
-            try { await navigator.share(shareData); } catch (err2) { /* el usuario canceló el menú del sistema */ }
-            return;
-          }
-          showToast('No se pudo copiar el enlace');
-        }
-      });
+    if (!shareBtn) return;
+
+    const shareUrl = location.href;
+    const shareTitle = `${data.name} | HRK Sports`;
+
+    // El botón ya vive en las cuatro páginas (plantilla) — acá se
+    // envuelve en un contenedor propio para anclar la lista debajo,
+    // sin tener que tocar ningún HTML por jugador.
+    const wrap = document.createElement('div');
+    wrap.className = 'cv-share';
+    shareBtn.parentNode.insertBefore(wrap, shareBtn);
+    wrap.appendChild(shareBtn);
+    shareBtn.setAttribute('aria-haspopup', 'menu');
+    shareBtn.setAttribute('aria-expanded', 'false');
+
+    const ICON_WHATSAPP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.35 2 11.7c0 1.94.57 3.75 1.55 5.28L2 22l5.2-1.5c1.47.8 3.15 1.26 4.8 1.26 5.52 0 10-4.35 10-9.7C22 6.35 17.52 2 12 2zm5.6 13.77c-.24.67-1.4 1.28-1.93 1.33-.5.05-1.06.24-3.53-.75-2.98-1.2-4.9-4.24-5.05-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.46.76-2.17 1.03-2.47.27-.3.6-.37.8-.37h.57c.18 0 .43-.03.66.5.24.56.8 1.94.87 2.08.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.5-.15.15-.3.31-.13.6.17.3.75 1.24 1.62 2.02 1.11 1 2.05 1.32 2.35 1.47.3.15.47.12.65-.07.17-.2.72-.85.92-1.14.2-.3.4-.24.65-.15.27.1 1.7.8 2 .95.3.15.5.22.57.35.07.13.07.75-.17 1.42z"/></svg>';
+    const ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7a5 5 0 0 1 0-10h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+    const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+    const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+    const ICON_LINKEDIN = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.96-1.8-2.96-1.8 0-2.08 1.4-2.08 2.86V21H9z"/></svg>';
+
+    const menu = document.createElement('ul');
+    menu.className = 'cv-share__menu';
+    menu.setAttribute('role', 'menu');
+    menu.hidden = true;
+
+    function makeItem({ tag, label, icon, href, action }) {
+      const li = document.createElement('li');
+      li.setAttribute('role', 'none');
+      const el = document.createElement(tag);
+      el.className = 'cv-share__item';
+      el.setAttribute('role', 'menuitem');
+      el.tabIndex = -1;
+      if (tag === 'a') {
+        el.href = href;
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+      } else {
+        el.type = 'button';
+      }
+      if (action) el.dataset.shareAction = action;
+      el.innerHTML = `${icon}<span data-item-label>${escapeHtml(label)}</span>`;
+      li.appendChild(el);
+      menu.appendChild(li);
+      return el;
     }
+
+    makeItem({
+      tag: 'a',
+      label: 'WhatsApp',
+      icon: ICON_WHATSAPP,
+      href: `https://wa.me/?text=${encodeURIComponent(`Mirá el perfil de ${data.name} en HRK Sports: ${shareUrl}`)}`,
+    });
+    const copyItem = makeItem({ tag: 'button', label: 'Copiar enlace', icon: ICON_LINK, action: 'copy' });
+    makeItem({
+      tag: 'a',
+      label: 'Mail',
+      icon: ICON_MAIL,
+      href: `mailto:?subject=${encodeURIComponent(`Perfil de ${data.name} — HRK Sports`)}&body=${encodeURIComponent(`Te comparto el perfil de ${data.name} en HRK Sports: ${shareUrl}`)}`,
+    });
+    makeItem({
+      tag: 'a',
+      label: 'LinkedIn',
+      icon: ICON_LINKEDIN,
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+    });
+
+    wrap.appendChild(menu);
+
+    const items = Array.from(menu.querySelectorAll('.cv-share__item'));
+    let outsideHandler = null;
+    let keyHandler = null;
+    let copyResetTimer = null;
+
+    function isOpen() { return !menu.hidden; }
+
+    function focusItem(index) {
+      const i = (index + items.length) % items.length;
+      items[i].focus();
+    }
+
+    function openMenu() {
+      if (isOpen()) return;
+      menu.hidden = false;
+      shareBtn.setAttribute('aria-expanded', 'true');
+      focusItem(0);
+
+      outsideHandler = (e) => {
+        if (!wrap.contains(e.target)) closeMenu();
+      };
+      keyHandler = (e) => {
+        const current = items.indexOf(document.activeElement);
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeMenu();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          focusItem(current + 1);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          focusItem(current - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          focusItem(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          focusItem(items.length - 1);
+        }
+      };
+      document.addEventListener('pointerdown', outsideHandler);
+      document.addEventListener('keydown', keyHandler);
+    }
+
+    function closeMenu({ refocusTrigger = true } = {}) {
+      if (!isOpen()) return;
+      menu.hidden = true;
+      shareBtn.setAttribute('aria-expanded', 'false');
+      if (outsideHandler) document.removeEventListener('pointerdown', outsideHandler);
+      if (keyHandler) document.removeEventListener('keydown', keyHandler);
+      outsideHandler = null;
+      keyHandler = null;
+      if (refocusTrigger) shareBtn.focus();
+    }
+
+    // "Copiar enlace" avisa ahí mismo en la lista (no con un toast
+    // flotante aparte): el texto del propio ítem cambia un momento y
+    // recién ahí se cierra, para que el aviso se llegue a leer.
+    function showCopyFeedback(text) {
+      const label = copyItem.querySelector('[data-item-label]');
+      const originalLabel = 'Copiar enlace';
+      const originalIcon = ICON_LINK;
+      copyItem.innerHTML = `${ICON_CHECK}<span data-item-label>${escapeHtml(text)}</span>`;
+      if (copyResetTimer) clearTimeout(copyResetTimer);
+      copyResetTimer = setTimeout(() => {
+        copyItem.innerHTML = `${originalIcon}<span data-item-label>${escapeHtml(originalLabel)}</span>`;
+        closeMenu();
+      }, 1300);
+    }
+
+    menu.addEventListener('click', async (e) => {
+      const item = e.target.closest('.cv-share__item');
+      if (!item) return;
+      if (item.dataset.shareAction === 'copy') {
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          showCopyFeedback('Enlace copiado');
+        } catch (err) {
+          showCopyFeedback('No se pudo copiar');
+        }
+        return;
+      }
+      // WhatsApp / Mail / LinkedIn: el navegador ya abrió el enlace en
+      // una pestaña nueva antes de este handler — sólo queda cerrar.
+      closeMenu();
+    });
+
+    shareBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isMobileLike = window.matchMedia('(pointer: coarse)').matches;
+      if (navigator.share && isMobileLike) {
+        navigator.share({ title: shareTitle, url: shareUrl }).catch(() => { /* el usuario canceló el menú del sistema */ });
+        return;
+      }
+      if (isOpen()) closeMenu();
+      else openMenu();
+    });
   }
 
   // ---------- Entrada "el nombre que se arma" ----------

@@ -108,26 +108,55 @@ a{color:inherit}
 }
 .cv-actions__btn svg{width:18px;height:18px}
 .cv-actions__btn:hover{color:var(--ink);border-color:var(--ink-soft)}
-.cv-actions__toast{
+
+/* ---------- lista de compartir (computadora) ----------
+   cv.js envuelve el botón de compartir en .cv-share para anclar la
+   lista justo debajo — arriba a la derecha, así que se abre hacia
+   abajo y hacia la izquierda (right:0, crece hacia adentro de la
+   página, nunca se sale por el borde). Mismos colores de tarjeta,
+   radio y tipografía que el resto del CV: no es un menú genérico del
+   navegador. */
+.cv-share{position:relative}
+.cv-share__menu{
   position:absolute;
   top:calc(100% + 8px);
   right:0;
-  z-index:1;
-  background:var(--club-deep);
+  z-index:2;
+  margin:0;
+  padding:6px;
+  list-style:none;
+  width:max-content;
+  min-width:190px;
+  max-width:calc(100vw - 32px);
+  background:var(--club-mid);
   border:1px solid var(--line);
-  color:var(--ink);
-  font-size:12px;
-  font-weight:600;
-  padding:6px 14px;
-  border-radius:999px;
-  white-space:nowrap;
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(-4px);
+  border-radius:14px;
+  box-shadow:0 16px 36px rgba(0,0,0,.4);
 }
-.cv-actions__toast.is-visible{opacity:1;transform:translateY(0)}
-@media(prefers-reduced-motion:no-preference){
-  .cv-actions__toast{transition:opacity .2s ease, transform .2s ease}
+.cv-share__menu[hidden]{display:none}
+.cv-share__item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:10px 12px;
+  border:none;
+  border-radius:9px;
+  background:transparent;
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:14px;
+  font-weight:600;
+  text-align:left;
+  text-decoration:none;
+  cursor:pointer;
+}
+.cv-share__item svg{width:18px;height:18px;flex:none;color:var(--club-label)}
+.cv-share__item:hover{background:rgba(255,255,255,.08)}
+.cv-share__item:focus-visible{
+  background:rgba(255,255,255,.08);
+  outline:2px solid var(--club-accent);
+  outline-offset:-2px;
 }
 
 /* ---------- encabezado ----------
