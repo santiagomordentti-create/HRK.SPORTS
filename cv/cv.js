@@ -61,6 +61,18 @@
     return `Cancha de fútbol vista desde arriba, en forma horizontal, con el arco propio hacia la izquierda y el arco rival hacia la derecha. Un círculo con el número ${data.number} marca la posición de ${data.name} en ${coords.zone}: ${data.position}.`;
   }
 
+  // El nombre en grande ya vive en el encabezado de arriba de la página
+  // (ver renderHeader) — el CV antes no tenía título propio.
+  function renderHeader(data) {
+    const nameEl = document.querySelector('[data-cv="header-name"]');
+    const metaEl = document.querySelector('[data-cv="header-meta"]');
+    if (nameEl) nameEl.textContent = data.name;
+    if (metaEl) {
+      const club = (data.club && data.club.name) || '';
+      metaEl.textContent = `N.º ${data.number}${club ? ' · ' + club : ''}`;
+    }
+  }
+
   function renderPhoto(data) {
     const zone = document.querySelector('[data-cv="photo"]');
     if (!zone || !data.photo) return;
@@ -70,17 +82,22 @@
     zone.appendChild(img);
 
     // Cuando la foto es la propia credencial (data.photo.isCredential),
-    // el nombre ya está impreso adentro de la imagen — repetirlo acá
-    // arriba lo triplica junto con la marca de agua de la entrada (que
-    // además deja de mostrarse sola: initIntro no arma nada si no
-    // encuentra un .photo-cap__name real para aterrizar). Club y número
-    // sí se mantienen, no son redundantes.
+    // el número, el nombre y el club ya están impresos adentro de la
+    // imagen — superponerlos de nuevo no aporta nada, sólo repite lo que
+    // ya se ve. Con el nombre además viviendo ahora en el encabezado de
+    // arriba, no hace falta ningún texto sobre la foto en ese caso. Eze
+    // es distinto: su foto no lleva texto adentro, así que conserva su
+    // superposición completa (número, nombre y club). Sin
+    // .photo-cap__name real, initIntro no arma nada para aterrizar ahí
+    // — la entrada completa queda apagada para los jugadores con
+    // credencial, no sólo la marca de agua.
+    if (data.photo.isCredential) return;
+
     const cap = document.createElement('div');
     cap.className = 'photo-cap';
-    const showName = !(data.photo && data.photo.isCredential);
     cap.innerHTML = `
       <span class="photo-cap__num">${escapeHtml(String(data.number))}</span>
-      ${showName ? `<span class="photo-cap__name">${escapeHtml(data.name)}</span>` : ''}
+      <span class="photo-cap__name">${escapeHtml(data.name)}</span>
       <span class="photo-cap__club">${escapeHtml((data.club && data.club.name) || '')}</span>
     `;
     zone.appendChild(cap);
@@ -93,7 +110,7 @@
     const rows = [
       { k: 'Club', v: data.club && data.club.name },
       { k: 'Posición', v: data.position },
-      { k: 'Trayectoria', v: (data.career || []).join(' · ') || null },
+      { k: 'Trayectoria', v: (data.career || []).join(' · ') || null, feature: true },
       { k: 'Nacionalidad', v: data.nationality },
       { k: 'Fecha de nacimiento', v: data.birth },
       { k: 'Pie hábil', v: data.foot },
@@ -105,9 +122,10 @@
     rows.forEach((row) => {
       const isPending = row.v === null || row.v === undefined || row.v === '';
       const li = document.createElement('li');
+      if (row.feature) li.classList.add('facts__row--feature');
       li.innerHTML = `
         <span class="facts__k">${escapeHtml(row.k)}</span>
-        <span class="facts__v${isPending ? ' facts__v--pending' : ''}">${isPending ? '—' : escapeHtml(row.v)}</span>
+        <span class="facts__v${isPending ? ' facts__v--pending' : ''}${row.feature ? ' facts__v--feature' : ''}">${isPending ? '—' : escapeHtml(row.v)}</span>
       `;
       list.appendChild(li);
       if (isPending) pendingLabels.push(row.k);
@@ -467,6 +485,7 @@
       return;
     }
     applyClubTheme(data);
+    renderHeader(data);
     renderPhoto(data);
     renderFacts(data);
     renderPitch(data);

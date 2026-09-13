@@ -49,13 +49,17 @@ a{color:inherit}
 
 :focus-visible{outline:2px solid var(--club-accent);outline-offset:3px;border-radius:4px}
 
-/* ---------- estructura ---------- */
+/* ---------- estructura ----------
+   Sin altura fija ni overflow:hidden: la página tiene la altura que le
+   pida el contenido. La regla de "todo entra en una pantalla" venía del
+   boceto original, con la mitad del contenido de hoy — con la ficha,
+   las estadísticas y el encabezado ya no entraba sin cortar algo. */
 .cv{
   display:flex;
   flex-direction:column;
   min-height:100dvh;
-  padding:18px clamp(16px,3vw,32px);
-  gap:14px;
+  padding:28px clamp(16px,3vw,32px) 32px;
+  gap:22px;
 }
 .cv__top{flex:none}
 .back{
@@ -71,25 +75,57 @@ a{color:inherit}
 .back svg{width:16px;height:16px}
 .back:hover{color:var(--ink)}
 
-.grid{
-  flex:1;
-  min-height:0;
-  display:grid;
-  grid-template-columns:1.1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  gap:14px;
+/* ---------- encabezado ----------
+   El CV no tenía título propio: el nombre sólo vivía en chico, dentro
+   de la credencial. Esto es lo primero que se lee al abrir la página. */
+.cv-header{
+  flex:none;
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  column-gap:18px;
+  row-gap:4px;
+}
+.cv-header__name{
+  margin:0;
+  font-family:var(--font-display);
+  font-size:clamp(32px,4.6vw,52px);
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  color:var(--ink);
+}
+.cv-header__meta{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--club-label);
 }
 
-.cv__foot{flex:none;display:flex;justify-content:center;padding-top:2px}
+.grid{
+  flex:none;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:24px;
+}
+
+.cv__foot{flex:none;display:flex;justify-content:center;padding-top:6px}
 .sig{font-size:12px;color:var(--ink-faint)}
 .sig strong{color:var(--ink-soft);font-weight:700}
 
-/* ---------- zona: foto ---------- */
+/* ---------- zona: foto ----------
+   aspect-ratio fija (no height:100% de una fila 1fr): la altura de la
+   fila ya no viene de una pantalla completa dividida en dos, así que la
+   foto necesita su propia medida en vez de depender de ella. */
 .zone--photo{
   position:relative;
   overflow:hidden;
   border-radius:var(--radius);
   background:var(--club-base);
+  aspect-ratio:4/5;
 }
 .zone--photo img{
   width:100%;
@@ -131,13 +167,12 @@ a{color:inherit}
 .card{
   background:var(--club-mid);
   border-radius:var(--radius);
-  padding:18px clamp(16px,2.6vw,26px);
+  padding:26px clamp(20px,3vw,34px);
   display:flex;
   flex-direction:column;
-  min-height:0;
 }
 .card__label{
-  margin:0 0 12px;
+  margin:0 0 16px;
   font-family:var(--font-display);
   font-size:13px;
   letter-spacing:.09em;
@@ -145,47 +180,50 @@ a{color:inherit}
   color:var(--club-label);
 }
 
-/* ---------- ficha de datos ---------- */
+/* ---------- ficha de datos ----------
+   El valor pesa claramente más que la etiqueta: la etiqueta es
+   referencia (chica, apagada, en ink-faint — ya no en el color de
+   acento del club, que le daba demasiada presencia), el valor es el
+   contenido real (más grande, más peso, blanco pleno). */
 .facts{
   list-style:none;
   margin:0;
   padding:0;
   display:flex;
   flex-direction:column;
-  gap:9px;
-  overflow-y:auto;
-  min-height:0;
+  gap:16px;
 }
 .facts li{
   display:flex;
   align-items:baseline;
   justify-content:space-between;
   gap:14px;
-  padding-bottom:9px;
+  padding-bottom:14px;
   border-bottom:1px solid var(--line);
-  font-size:14px;
 }
 .facts__k{
   flex:none;
-  font-size:11px;
-  font-weight:700;
+  font-size:10px;
+  font-weight:600;
   text-transform:uppercase;
-  letter-spacing:.06em;
-  color:var(--club-label);
+  letter-spacing:.07em;
+  color:var(--ink-faint);
 }
 .facts__v{
   text-align:right;
-  font-weight:600;
+  font-size:17px;
+  font-weight:700;
   color:var(--ink);
 }
 .facts__v--pending{
+  font-size:14px;
   font-weight:400;
   font-style:italic;
   color:var(--ink-faint);
 }
 .facts__ig{
   text-decoration:none;
-  font-weight:600;
+  font-weight:700;
   border-bottom:1px solid transparent;
 }
 .facts__ig:hover{border-bottom-color:currentColor}
@@ -198,10 +236,28 @@ a{color:inherit}
   display:block;
 }
 
-/* ---------- cancha / posición ---------- */
-.card--pitch{gap:10px}
-.pitch{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.pitch svg{width:100%;height:100%;max-height:100%}
+/* La trayectoria es lo primero que lee quien evalúa a un jugador: se
+   apila (etiqueta arriba, texto abajo) en vez de ir en la misma línea
+   que la etiqueta, y su texto es más grande que el resto de los
+   valores — entraba apretada en un solo renglón. */
+.facts li.facts__row--feature{
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+}
+.facts__v--feature{
+  text-align:left;
+  font-size:19px;
+  line-height:1.45;
+}
+
+/* ---------- cancha / posición ----------
+   El SVG mide por aspect-ratio (su viewBox es 150×100, 3:2), no por
+   height:100% de un padre con altura fija — esa altura fija ya no
+   existe. */
+.card--pitch{gap:18px}
+.pitch{display:flex;align-items:center;justify-content:center}
+.pitch svg{width:100%;height:auto;aspect-ratio:150/100}
 .pitch__turf{fill:var(--club-base)}
 .pitch__line{stroke:rgba(255,255,255,.5);stroke-width:1}
 .pitch__marker{fill:var(--club-accent)}
@@ -253,6 +309,7 @@ a{color:inherit}
   border-radius:var(--radius);
   background:var(--club-base);
   overflow:hidden;
+  aspect-ratio:16/9;
 }
 .zone--video video{width:100%;height:100%;object-fit:cover;display:block}
 .zone--video.zone--pending{
@@ -273,24 +330,17 @@ a{color:inherit}
   letter-spacing:.05em;
 }
 
-/* ---------- desktop: entra todo sin scroll ---------- */
-@media(min-width:861px){
-  html,body{height:100%}
-  .cv{height:100dvh;overflow:hidden}
-}
-
-/* ---------- mobile: una columna con scroll ---------- */
+/* ---------- mobile: una columna ---------- */
 @media(max-width:860px){
-  .cv{padding:16px}
+  .cv{padding:20px 16px 26px}
   .grid{
     grid-template-columns:1fr;
     grid-template-rows:none;
-    gap:16px;
+    gap:18px;
   }
-  .zone--photo{aspect-ratio:4/5}
   .card--facts{order:2}
   .card--pitch{order:3}
-  .zone--video{order:4;aspect-ratio:16/9}
+  .zone--video{order:4}
   .zone--photo{order:1}
 }
 
