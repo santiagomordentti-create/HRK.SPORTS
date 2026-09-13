@@ -61,7 +61,13 @@ a{color:inherit}
   padding:28px clamp(16px,3vw,32px) 32px;
   gap:22px;
 }
-.cv__top{flex:none}
+.cv__top{
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
 .back{
   display:inline-flex;
   align-items:center;
@@ -74,6 +80,55 @@ a{color:inherit}
 }
 .back svg{width:16px;height:16px}
 .back:hover{color:var(--ink)}
+
+/* ---------- barra de acciones ----------
+   Fila simple con gap: sumar un tercer botón (idioma, más adelante) es
+   agregar otro <button class="cv-actions__btn"> acá adentro, no hay que
+   rehacer nada. */
+.cv-actions{
+  position:relative;
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.cv-actions__btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  flex:none;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--ink-soft);
+  cursor:pointer;
+  padding:0;
+}
+.cv-actions__btn svg{width:18px;height:18px}
+.cv-actions__btn:hover{color:var(--ink);border-color:var(--ink-soft)}
+.cv-actions__toast{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:0;
+  z-index:1;
+  background:var(--club-deep);
+  border:1px solid var(--line);
+  color:var(--ink);
+  font-size:12px;
+  font-weight:600;
+  padding:6px 14px;
+  border-radius:999px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(-4px);
+}
+.cv-actions__toast.is-visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:no-preference){
+  .cv-actions__toast{transition:opacity .2s ease, transform .2s ease}
+}
 
 /* ---------- encabezado ----------
    El CV no tenía título propio: el nombre sólo vivía en chico, dentro
@@ -111,6 +166,48 @@ a{color:inherit}
   grid-template-rows:auto auto;
   gap:24px;
 }
+
+/* ---------- franja de contacto ----------
+   El cierre de la página, no un banner pegado encima: mismos colores
+   de club que el resto (--club-mid, --club-accent), misma familia
+   tipográfica. Pensada para quien ya vio el perfil — un club o un
+   representante — no para el jugador. */
+.cv-contact{
+  flex:none;
+  background:var(--club-mid);
+  border-radius:var(--radius);
+  padding:clamp(24px,4vw,40px) clamp(20px,5vw,48px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:16px;
+}
+.cv-contact__lede{
+  margin:0;
+  max-width:44em;
+  font-size:15px;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.cv-contact__cta{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 28px;
+  border-radius:999px;
+  background:var(--club-accent);
+  color:var(--club-deep);
+  font-weight:700;
+  font-size:15px;
+  text-decoration:none;
+}
+.cv-contact__cta svg{width:20px;height:20px;flex:none}
+@media(prefers-reduced-motion:no-preference){
+  .cv-contact__cta{transition:filter .15s ease}
+}
+.cv-contact__cta:hover{filter:brightness(.93)}
+.cv-contact__print{display:none}
 
 .cv__foot{flex:none;display:flex;justify-content:center;padding-top:6px}
 .sig{font-size:12px;color:var(--ink-faint)}
@@ -392,4 +489,89 @@ a{color:inherit}
    entrada llegara a crearse con esta preferencia activa, no se ve. */
 @media(prefers-reduced-motion:reduce){
   .cv-intro{display:none}
+}
+
+/* ==========================================================================
+   Impresión / PDF (botón "Descargar" -> window.print())
+   Objetivo: una sola hoja A4. Se sacan los elementos que en papel no
+   sirven (barra de acciones, volver, botón de WhatsApp, video, entrada)
+   y se reduce espaciado antes que tamaño de texto para que entre todo.
+
+   El ancho imprimible de A4 (~718px a 96dpi, incluso descontando el
+   margen de @page) es MENOR que los 860px del corte a mobile — así que
+   el layout de una sola columna que ya existe para celular se activa
+   solo acá también. En vez de pelear contra eso, se aprovecha: es
+   exactamente el orden y la estructura que hace falta en una hoja
+   angosta. Lo único que compite por espacio de verdad es la foto (a
+   ancho completo, se va larga con cualquier aspect-ratio "de pantalla")
+   — por eso su relación de aspecto para impresión es bastante más
+   ancha que alta.
+   ========================================================================== */
+@media print{
+  @page{ size:A4; margin:10mm; }
+
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+
+  html,body{background:#fff}
+
+  /* El encabezado y la firma del pie quedan directo sobre la página
+     blanca (no sobre una tarjeta del color del club), así que su texto
+     ya no puede ser --ink/--ink-faint (blanco, pensado para el fondo
+     oscuro de pantalla) — sobre papel blanco sería invisible. */
+  .cv-header__name{color:#141414}
+  .cv-header__meta{color:#4a4a4a}
+  .sig,.sig strong{color:#4a4a4a}
+
+  .cv-intro{display:none !important}
+  .cv__top{display:none}
+  .zone--video,
+  .zone--video.zone--pending{display:none !important}
+  .cv-contact__cta{display:none}
+  .cv-contact__print{display:block}
+
+  .cv{
+    min-height:0;
+    padding:0;
+    gap:8px;
+  }
+
+  .cv-header{gap:5px 14px}
+  .cv-header__name{font-size:30px}
+  .cv-header__meta{font-size:11px}
+
+  .grid{gap:8px}
+  .card{padding:11px 16px}
+  .card__label{margin-bottom:6px;font-size:10px}
+
+  .facts{gap:6px}
+  .facts li{padding-bottom:6px}
+  .facts__k{font-size:7.5px}
+  .facts__v{font-size:12px}
+  .facts__v--feature{font-size:13px;line-height:1.3}
+  .facts__v--pending{font-size:10px}
+  .facts__note{font-size:8.5px}
+
+  .zone--photo{aspect-ratio:2.8/1}
+
+  .card--pitch{gap:6px}
+  .pitch svg{width:auto;height:100px;max-width:100%}
+
+  .pitch-stats{gap:3px 14px}
+  .pitch-stats__value{font-size:15px}
+  .pitch-stats__label{font-size:7.5px}
+
+  .cv-contact{padding:11px 16px;gap:6px}
+  .cv-contact__lede{font-size:9.5px}
+  .cv-contact__print{
+    margin:0;
+    font-size:11px;
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .cv__foot{padding-top:1px}
+  .sig{font-size:7.5px}
 }

@@ -81,6 +81,15 @@ window.CV_DATA = {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
       Volver a HRK Sports
     </a>
+    <div class="cv-actions" data-cv="actions">
+      <span class="cv-actions__toast" data-cv="actions-toast" role="status" aria-live="polite"></span>
+      <button type="button" class="cv-actions__btn" data-cv-action="share" aria-label="Compartir este CV">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
+      </button>
+      <button type="button" class="cv-actions__btn" data-cv-action="print" aria-label="Descargar este CV en PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7.5 10.5L12 15l4.5-4.5"/><path d="M4.5 19.5h15"/></svg>
+      </button>
+    </div>
   </div>
 
   <header class="cv-header">
@@ -109,6 +118,15 @@ window.CV_DATA = {
     <!-- abajo derecha: video de highlights (reservado hasta que llegue el archivo) -->
     <section class="zone zone--video" data-cv="video" aria-label="Video de highlights"></section>
   </div>
+
+  <section class="cv-contact">
+    <p class="cv-contact__lede" data-cv="contact-lede"></p>
+    <a class="cv-contact__cta" data-cv="contact-cta" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.35 2 11.7c0 1.94.57 3.75 1.55 5.28L2 22l5.2-1.5c1.47.8 3.15 1.26 4.8 1.26 5.52 0 10-4.35 10-9.7C22 6.35 17.52 2 12 2zm5.6 13.77c-.24.67-1.4 1.28-1.93 1.33-.5.05-1.06.24-3.53-.75-2.98-1.2-4.9-4.24-5.05-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.46.76-2.17 1.03-2.47.27-.3.6-.37.8-.37h.57c.18 0 .43-.03.66.5.24.56.8 1.94.87 2.08.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.5-.15.15-.3.31-.13.6.17.3.75 1.24 1.62 2.02 1.11 1 2.05 1.32 2.35 1.47.3.15.47.12.65-.07.17-.2.72-.85.92-1.14.2-.3.4-.24.65-.15.27.1 1.7.8 2 .95.3.15.5.22.57.35.07.13.07.75-.17 1.42z"/></svg>
+      <span data-cv="contact-cta-label"></span>
+    </a>
+    <p class="cv-contact__print" data-cv="contact-print"></p>
+  </section>
 
   <footer class="cv__foot">
     <span class="sig">Material producido por <strong>HRK Sports</strong></span>

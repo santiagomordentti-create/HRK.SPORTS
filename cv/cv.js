@@ -277,6 +277,88 @@
     document.head.appendChild(script);
   }
 
+  // Número de HRK, no del jugador — vive acá (plantilla), no en
+  // CV_DATA, porque es el mismo para los cuatro y para los que vengan.
+  const HRK_WHATSAPP_DIGITS = '5492494577556'; // +54 9 2494 57-7556, sin signos, formato wa.me
+  const HRK_WHATSAPP_DISPLAY = '+54 9 2494 57-7556';
+
+  // La franja de contacto está pensada para quien YA vio el perfil —un
+  // club o un representante— no para el jugador. El mensaje de
+  // WhatsApp sale entero de CV_DATA.name, nada tipeado fijo por
+  // jugador.
+  function renderContact(data) {
+    const lede = document.querySelector('[data-cv="contact-lede"]');
+    const cta = document.querySelector('[data-cv="contact-cta"]');
+    const ctaLabel = document.querySelector('[data-cv="contact-cta-label"]');
+    const printText = document.querySelector('[data-cv="contact-print"]');
+
+    if (lede) {
+      lede.textContent = `¿Sos de un club o representás a un jugador y querés más información sobre ${data.name}? Escribinos.`;
+    }
+    if (cta) {
+      const message = `Hola HRK Sports, vi el perfil de ${data.name} y quiero más información.`;
+      cta.href = `https://wa.me/${HRK_WHATSAPP_DIGITS}?text=${encodeURIComponent(message)}`;
+    }
+    if (ctaLabel) ctaLabel.textContent = 'Hablar con HRK Sports';
+    // Sólo se ve al imprimir (ver cv.css): en papel un botón no se toca,
+    // así que ahí el dato de contacto tiene que quedar como texto.
+    if (printText) printText.textContent = `Contacto: WhatsApp ${HRK_WHATSAPP_DISPLAY}`;
+  }
+
+  // Compartir: menú nativo del sistema en celular; copiar el enlace y
+  // avisar en computadora. navigator.share por sí solo NO alcanza para
+  // distinguir uno de otro: Chrome y Safari de escritorio en Mac
+  // también lo implementan (abren el panel de compartir del sistema
+  // operativo), así que una compu con ese navegador pasaría por acá
+  // como si fuera celular. Lo que de verdad distingue "celular" es el
+  // puntero: grosero (dedo, sin precisión) en celular/tablet, fino
+  // (mouse o trackpad) en computadora. Si el navegador no tiene
+  // navigator.share, o si copiar falla, siempre cae en copiar el
+  // enlace. Descargar: imprimir del navegador, para que el usuario lo
+  // guarde como PDF (ver la hoja de estilos de impresión en cv.css). El
+  // contenedor ya deja lugar para sumar un tercer botón (idioma) más
+  // adelante sin rehacer nada: es un flex con gap, cualquier <button>
+  // nuevo entra en la fila sin tocar los que ya están.
+  function renderActions(data) {
+    const shareBtn = document.querySelector('[data-cv-action="share"]');
+    const printBtn = document.querySelector('[data-cv-action="print"]');
+    const toast = document.querySelector('[data-cv="actions-toast"]');
+    let toastTimer = null;
+
+    function showToast(text) {
+      if (!toast) return;
+      toast.textContent = text;
+      toast.classList.add('is-visible');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('is-visible'); }, 2500);
+    }
+
+    if (printBtn) {
+      printBtn.addEventListener('click', () => window.print());
+    }
+
+    if (shareBtn) {
+      shareBtn.addEventListener('click', async () => {
+        const shareData = { title: `${data.name} | HRK Sports`, url: location.href };
+        const isMobileLike = window.matchMedia('(pointer: coarse)').matches;
+        if (navigator.share && isMobileLike) {
+          try { await navigator.share(shareData); } catch (err) { /* el usuario canceló el menú del sistema */ }
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(location.href);
+          showToast('Enlace copiado');
+        } catch (err) {
+          if (navigator.share) {
+            try { await navigator.share(shareData); } catch (err2) { /* el usuario canceló el menú del sistema */ }
+            return;
+          }
+          showToast('No se pudo copiar el enlace');
+        }
+      });
+    }
+  }
+
   // ---------- Entrada "el nombre que se arma" ----------
   // El texto que vuela es una copia exacta del nombre real (mismo texto,
   // misma clase que .cv-header__name, así hereda su tipografía sin
@@ -536,6 +618,8 @@
     renderPitchStats(data);
     renderVideo(data);
     renderStructuredData(data);
+    renderContact(data);
+    renderActions(data);
     initIntro(data);
   }
 
