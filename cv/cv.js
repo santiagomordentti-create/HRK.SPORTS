@@ -95,7 +95,13 @@
     // .photo-cap__name real, initIntro no arma nada para aterrizar ahí
     // — la entrada completa queda apagada para los jugadores con
     // credencial, no sólo la marca de agua.
-    if (data.photo.isCredential) return;
+    if (data.photo.isCredential) {
+      // La credencial es vertical y el cuadrante ahora es más ancho que
+      // alto (ver --panel-ar en cv.css): esta clase cambia el
+      // object-fit a contain para que se vea entera, nunca recortada.
+      zone.classList.add('zone--photo--credential');
+      return;
+    }
 
     const cap = document.createElement('div');
     cap.className = 'photo-cap';
@@ -220,10 +226,11 @@
   // Sin silencio no hay autoplay en ningún navegador, así que el video
   // arranca muted siempre. El botón de sonido no depende del navegador
   // para su ícono: cv.js lo dibuja según video.muted, así funciona
-  // igual en los cuatro. El cuadrante toma la proporción real del
-  // video (videoWidth/videoHeight, recién se sabe al cargar el
-  // archivo) en vez de una relación fija — así no lo deforma ni lo
-  // recorta sea vertical u horizontal.
+  // igual en los cuatro. El cuadrante NO toma su tamaño del video (ver
+  // --panel-ar en cv.css: es el mismo para los cuatro paneles, no
+  // depende de si el archivo ya cargó) — adentro, object-fit:contain
+  // muestra el video completo sin recortarlo ni deformarlo, sea cual
+  // sea su proporción real.
   function renderVideo(data) {
     const zone = document.querySelector('[data-cv="video"]');
     if (!zone) return;
@@ -240,12 +247,6 @@
       video.setAttribute('webkit-playsinline', '');
       video.setAttribute('aria-label', data.video.alt || `Highlights de ${data.name}`);
       if (!reduceMotion) video.autoplay = true;
-
-      video.addEventListener('loadedmetadata', () => {
-        if (video.videoWidth && video.videoHeight) {
-          zone.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
-        }
-      }, { once: true });
 
       const soundBtn = document.createElement('button');
       soundBtn.type = 'button';

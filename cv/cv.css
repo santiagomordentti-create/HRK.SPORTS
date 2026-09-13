@@ -58,8 +58,8 @@ a{color:inherit}
   display:flex;
   flex-direction:column;
   min-height:100dvh;
-  padding:28px clamp(16px,3vw,32px) 32px;
-  gap:22px;
+  padding:22px clamp(16px,3vw,32px) 26px;
+  gap:16px;
 }
 .cv__top{
   flex:none;
@@ -159,12 +159,26 @@ a{color:inherit}
   color:var(--club-label);
 }
 
+/* Columnas iguales (antes 1.1fr/1fr) y los cuatro paneles con la misma
+   relación de aspecto (--panel-ar): con el mismo ancho de columna, la
+   misma proporción da la misma altura sin depender de cuánto contenido
+   tenga cada uno — ni de si ya cargó el video. Antes cada zona tenía su
+   propia medida (la foto por aspect-ratio, la cancha y la ficha por su
+   contenido, el video por sus dimensiones reales) y terminaban los
+   cuatro de un tamaño distinto. */
 .grid{
   flex:none;
   display:grid;
-  grid-template-columns:1.1fr 1fr;
+  grid-template-columns:1fr 1fr;
   grid-template-rows:auto auto;
-  gap:24px;
+  gap:16px;
+  --panel-ar:4/3;
+}
+.zone--photo,
+.card--pitch,
+.card--facts,
+.zone--video{
+  aspect-ratio:var(--panel-ar);
 }
 
 /* ---------- franja de contacto ----------
@@ -176,12 +190,12 @@ a{color:inherit}
   flex:none;
   background:var(--club-mid);
   border-radius:var(--radius);
-  padding:clamp(24px,4vw,40px) clamp(20px,5vw,48px);
+  padding:clamp(18px,3vw,28px) clamp(20px,5vw,48px);
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
-  gap:16px;
+  gap:12px;
 }
 .cv-contact__lede{
   margin:0;
@@ -214,21 +228,29 @@ a{color:inherit}
 .sig strong{color:var(--ink-soft);font-weight:700}
 
 /* ---------- zona: foto ----------
-   aspect-ratio fija (no height:100% de una fila 1fr): la altura de la
-   fila ya no viene de una pantalla completa dividida en dos, así que la
-   foto necesita su propia medida en vez de depender de ella. */
+   La relación de aspecto sale de --panel-ar (compartida con los otros
+   tres paneles), no de una propia. */
 .zone--photo{
   position:relative;
   overflow:hidden;
   border-radius:var(--radius);
   background:var(--club-base);
-  aspect-ratio:4/5;
 }
 .zone--photo img{
   width:100%;
   height:100%;
   object-fit:cover;
   object-position:center 20%;
+}
+/* La credencial (isCredential:true) es vertical (4/5) y el cuadrante
+   ahora es más ancho que alto: si se recortara con object-fit:cover se
+   comería el nombre impreso en la tarjeta. object-fit:contain la deja
+   siempre entera — las franjas que sobran a los costados quedan
+   pintadas con el fondo del club (el mismo --club-base del cuadrante)
+   en vez de verse como un hueco. */
+.zone--photo--credential img{
+  object-fit:contain;
+  background:var(--club-base);
 }
 .photo-cap{
   position:absolute;
@@ -264,12 +286,12 @@ a{color:inherit}
 .card{
   background:var(--club-mid);
   border-radius:var(--radius);
-  padding:26px clamp(20px,3vw,34px);
+  padding:20px clamp(18px,2.6vw,28px);
   display:flex;
   flex-direction:column;
 }
 .card__label{
-  margin:0 0 16px;
+  margin:0 0 10px;
   font-family:var(--font-display);
   font-size:13px;
   letter-spacing:.09em;
@@ -288,14 +310,15 @@ a{color:inherit}
   padding:0;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:9px;
+  overflow-y:auto;
 }
 .facts li{
   display:flex;
   align-items:baseline;
   justify-content:space-between;
   gap:14px;
-  padding-bottom:14px;
+  padding-bottom:9px;
   border-bottom:1px solid var(--line);
 }
 .facts__k{
@@ -349,12 +372,15 @@ a{color:inherit}
 }
 
 /* ---------- cancha / posición ----------
-   El SVG mide por aspect-ratio (su viewBox es 150×100, 3:2), no por
-   height:100% de un padre con altura fija — esa altura fija ya no
-   existe. */
-.card--pitch{gap:18px}
-.pitch{display:flex;align-items:center;justify-content:center}
-.pitch svg{width:100%;height:auto;aspect-ratio:100/150}
+   La tarjeta ahora tiene una altura fija (--panel-ar), no la que le
+   pida su contenido, así que el SVG (vertical, 100×150) ya no puede
+   medir por ancho: con el ancho completo se iba mucho más alto que la
+   tarjeta. .pitch ocupa el espacio que sobra debajo de la etiqueta y de
+   las estadísticas (flex:1), y el SVG mide por alto dentro de eso —
+   más chico, pero completo y con el marcador en su lugar. */
+.card--pitch{gap:10px}
+.pitch{display:flex;align-items:center;justify-content:center;flex:1;min-height:0}
+.pitch svg{width:auto;height:100%;max-width:100%;aspect-ratio:100/150}
 .pitch__turf{fill:var(--club-base)}
 .pitch__line{stroke:rgba(255,255,255,.5);stroke-width:1}
 .pitch__marker{fill:var(--club-accent)}
@@ -401,16 +427,15 @@ a{color:inherit}
 }
 
 /* ---------- video (placeholder si todavía no hay archivo) ----------
-   aspect-ratio:16/9 es sólo el valor de arranque, antes de que el
-   video cargue: cv.js lo pisa en cuanto conoce las medidas reales
-   (videoWidth/videoHeight), así el cuadrante termina con la
-   proporción real de cada video en vez de una fija para todos. */
+   La relación de aspecto sale de --panel-ar (compartida con los otros
+   tres paneles): el cuadrante no depende de si el archivo ya cargó ni
+   de su proporción real — eso lo resuelve adentro object-fit:contain,
+   sin recortar ni deformar. */
 .zone--video{
   position:relative;
   border-radius:var(--radius);
   background:var(--club-base);
   overflow:hidden;
-  aspect-ratio:16/9;
 }
 .zone--video video{width:100%;height:100%;object-fit:contain;display:block;background:var(--club-base)}
 .video-sound{
@@ -471,7 +496,14 @@ a{color:inherit}
   letter-spacing:.05em;
 }
 
-/* ---------- mobile: una columna ---------- */
+/* ---------- mobile: una columna ----------
+   --panel-ar iguala los cuatro paneles en la grilla de dos columnas de
+   escritorio; en una sola columna angosta esa misma proporción da una
+   caja demasiado baja (el ancho ya no es la mitad, es casi todo el
+   viewport) y la ficha no entraba — quedaba con contenido cortado
+   arriba, scrolleado adentro de su propia tarjeta. Acá cada panel
+   vuelve a medir por su propio contenido o por una proporción pensada
+   para el ancho completo, como antes de esa medida compartida. */
 @media(max-width:860px){
   .cv{padding:20px 16px 26px}
   .grid{
@@ -479,10 +511,11 @@ a{color:inherit}
     grid-template-rows:none;
     gap:18px;
   }
-  .card--facts{order:2}
-  .card--pitch{order:3}
-  .zone--video{order:4}
-  .zone--photo{order:1}
+  .card--facts{order:2;aspect-ratio:auto}
+  .card--pitch{order:3;aspect-ratio:auto}
+  .pitch{flex:none}
+  .zone--video{order:4;aspect-ratio:4/5}
+  .zone--photo{order:1;aspect-ratio:4/5}
 }
 
 @media(prefers-reduced-motion:no-preference){
@@ -599,8 +632,15 @@ a{color:inherit}
   .facts__note{font-size:8.5px}
 
   .zone--photo{aspect-ratio:2.8/1}
+  /* En pantalla los cuatro paneles comparten --panel-ar para medir
+     igual. En una sola columna angosta ese molde no hace falta —
+     cancha y ficha vuelven a su alto natural, como antes de esa
+     medida compartida. */
+  .card--pitch,
+  .card--facts{aspect-ratio:auto}
 
   .card--pitch{gap:6px}
+  .pitch{flex:none}
   .pitch svg{width:auto;height:100px;max-width:100%}
 
   .pitch-stats{gap:3px 14px}
