@@ -132,7 +132,10 @@ a{color:inherit}
 
 /* ---------- encabezado ----------
    El CV no tenía título propio: el nombre sólo vivía en chico, dentro
-   de la credencial. Esto es lo primero que se lee al abrir la página. */
+   de la credencial. Esto es lo primero que se lee al abrir la página.
+   Sólo el nombre — el número y el club salían acá también, pero ya
+   están sin repetir en otro lado (club en la ficha, número en el
+   marcador de la cancha). */
 .cv-header{
   flex:none;
   display:flex;
@@ -149,14 +152,6 @@ a{color:inherit}
   text-transform:uppercase;
   letter-spacing:.01em;
   color:var(--ink);
-}
-.cv-header__meta{
-  margin:0;
-  font-size:15px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  color:var(--club-label);
 }
 
 /* Columnas iguales (antes 1.1fr/1fr) y los cuatro paneles con la misma
@@ -251,35 +246,6 @@ a{color:inherit}
 .zone--photo--credential img{
   object-fit:contain;
   background:var(--club-base);
-}
-.photo-cap{
-  position:absolute;
-  inset:auto 0 0 0;
-  padding:20px clamp(16px,3vw,28px) 18px;
-  background:linear-gradient(to top, rgba(10,3,6,.92) 0%, rgba(10,3,6,.55) 55%, transparent 100%);
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
-.photo-cap__num{
-  font-family:var(--font-display);
-  font-size:clamp(28px,3.4vw,40px);
-  line-height:1;
-  color:var(--club-accent);
-}
-.photo-cap__name{
-  font-family:var(--font-display);
-  font-size:clamp(22px,2.6vw,30px);
-  line-height:1.05;
-  letter-spacing:.01em;
-  text-transform:uppercase;
-}
-.photo-cap__club{
-  font-size:13px;
-  font-weight:600;
-  color:var(--ink-soft);
-  text-transform:uppercase;
-  letter-spacing:.06em;
 }
 
 /* ---------- tarjetas (ficha / posición) ---------- */
@@ -524,11 +490,12 @@ a{color:inherit}
 }
 
 /* ---------- entrada: "el nombre que se arma" ----------
-   La arma cv.js (ver initIntro): un clon del apellido, con la misma
-   clase que el real (photo-cap__name) para heredar su tipografía sin
-   copiar nada a mano, viaja desde abajo-grande hasta transform:none, que
-   por construcción cae exacto sobre el nombre real. Todo lo que hay acá
-   es sólo el aspecto visual — el armado y el desarmado son de cv.js. */
+   La arma cv.js (ver initIntro): un clon del nombre del encabezado, con
+   la misma clase que el real (cv-header__name) para heredar su
+   tipografía sin copiar nada a mano, viaja desde abajo-grande hasta
+   transform:none, que por construcción cae exacto sobre el nombre real.
+   Todo lo que hay acá es sólo el aspecto visual — el armado y el
+   desarmado son de cv.js. */
 .cv-intro{
   position:fixed;
   inset:0;
@@ -599,7 +566,6 @@ a{color:inherit}
      ya no puede ser --ink/--ink-faint (blanco, pensado para el fondo
      oscuro de pantalla) — sobre papel blanco sería invisible. */
   .cv-header__name{color:#141414}
-  .cv-header__meta{color:#4a4a4a}
   .sig,.sig strong{color:#4a4a4a}
 
   .cv-intro{display:none !important}
@@ -617,7 +583,6 @@ a{color:inherit}
 
   .cv-header{gap:5px 14px}
   .cv-header__name{font-size:30px}
-  .cv-header__meta{font-size:11px}
 
   .grid{gap:8px}
   .card{padding:11px 16px}

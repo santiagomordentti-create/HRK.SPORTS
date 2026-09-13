@@ -66,15 +66,14 @@
   }
 
   // El nombre en grande ya vive en el encabezado de arriba de la página
-  // (ver renderHeader) — el CV antes no tenía título propio.
+  // (ver renderHeader) — el CV antes no tenía título propio. El número y
+  // el club salían acá también (N.º 5 · FK JEZERO, al lado del nombre),
+  // pero ya están los dos en otro lado sin repetir nada — el club en la
+  // ficha, el número en el marcador de la cancha — así que se sacaron:
+  // el encabezado queda sólo con el nombre.
   function renderHeader(data) {
     const nameEl = document.querySelector('[data-cv="header-name"]');
-    const metaEl = document.querySelector('[data-cv="header-meta"]');
     if (nameEl) nameEl.textContent = data.name;
-    if (metaEl) {
-      const club = (data.club && data.club.name) || '';
-      metaEl.textContent = `N.º ${data.number}${club ? ' · ' + club : ''}`;
-    }
   }
 
   function renderPhoto(data) {
@@ -85,32 +84,17 @@
     img.alt = data.photo.alt || '';
     zone.appendChild(img);
 
-    // Cuando la foto es la propia credencial (data.photo.isCredential),
-    // el número, el nombre y el club ya están impresos adentro de la
-    // imagen — superponerlos de nuevo no aporta nada, sólo repite lo que
-    // ya se ve. Con el nombre además viviendo ahora en el encabezado de
-    // arriba, no hace falta ningún texto sobre la foto en ese caso. Eze
-    // es distinto: su foto no lleva texto adentro, así que conserva su
-    // superposición completa (número, nombre y club). Sin
-    // .photo-cap__name real, initIntro no arma nada para aterrizar ahí
-    // — la entrada completa queda apagada para los jugadores con
-    // credencial, no sólo la marca de agua.
+    // La credencial (data.photo.isCredential) es vertical y el
+    // cuadrante ahora es más ancho que alto (ver --panel-ar en
+    // cv.css): esta clase cambia el object-fit a contain para que se
+    // vea entera, nunca recortada.
     if (data.photo.isCredential) {
-      // La credencial es vertical y el cuadrante ahora es más ancho que
-      // alto (ver --panel-ar en cv.css): esta clase cambia el
-      // object-fit a contain para que se vea entera, nunca recortada.
       zone.classList.add('zone--photo--credential');
-      return;
     }
-
-    const cap = document.createElement('div');
-    cap.className = 'photo-cap';
-    cap.innerHTML = `
-      <span class="photo-cap__num">${escapeHtml(String(data.number))}</span>
-      <span class="photo-cap__name">${escapeHtml(data.name)}</span>
-      <span class="photo-cap__club">${escapeHtml((data.club && data.club.name) || '')}</span>
-    `;
-    zone.appendChild(cap);
+    // Antes acá se superponía número, nombre y club sobre la foto para
+    // los jugadores sin credencial (Eze) — se sacó: los tres datos ya
+    // están en el encabezado y en la ficha, y la foto queda limpia
+    // para los cuatro, igual que la credencial.
   }
 
   function renderFacts(data) {
