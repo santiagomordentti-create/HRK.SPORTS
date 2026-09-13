@@ -35,6 +35,7 @@
     'mediocampista defensivo': { x: 55, y: 50, zone: 'el centro, delante de la defensa' },
     'volante central': { x: 75, y: 50, zone: 'el centro de la cancha' },
     'mediocampista central': { x: 75, y: 50, zone: 'el centro de la cancha' },
+    'centrocampista': { x: 75, y: 50, zone: 'el centro de la cancha' },
     'volante por derecha': { x: 75, y: 80, zone: 'la banda derecha, en la mitad de la cancha' },
     'volante por izquierda': { x: 75, y: 20, zone: 'la banda izquierda, en la mitad de la cancha' },
     'interior derecho': { x: 75, y: 78, zone: 'la banda derecha, en la mitad de la cancha' },

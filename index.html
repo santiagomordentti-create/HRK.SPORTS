@@ -1346,16 +1346,16 @@
              axel  → @axel_abet
              manu  → @manuelcuestasp
 
-             CV: por ahora sólo Eze tiene. La estructura de las cuatro
-             tarjetas ya es idéntica a propósito — sumar el CV de otro
-             jugador es agregarle data-cv-url y su aria-label (mismo
-             formato que el de Eze) al <a> correspondiente; el CSS y el
-             JS del carrusel no se tocan, ya saben mostrar la señal y
-             activar el enlace solo cuando esa tarjeta está centrada y
-             quieta, y ya la ocultan cuando data-cv-url no está. -->
+             Las cuatro tarjetas tienen CV. La estructura es idéntica a
+             propósito — sumar el CV de un jugador nuevo es agregarle
+             data-cv-url y su aria-label (mismo formato que estos cuatro)
+             al <a> correspondiente; el CSS y el JS del carrusel no se
+             tocan, ya saben mostrar la señal y activar el enlace solo
+             cuando esa tarjeta está centrada y quieta, y ya la ocultan
+             cuando data-cv-url no está. -->
         <ul class="carousel-track" id="athletesTrack">
           <li class="carousel-slide" data-index="0">
-            <a class="carousel-slide-link">
+            <a class="carousel-slide-link" data-cv-url="/cv/santiago-razzeto" aria-label="Ver el CV de Santiago Razzeto">
               <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
               <span class="carousel-cv-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1373,7 +1373,7 @@
             </a>
           </li>
           <li class="carousel-slide" data-index="2">
-            <a class="carousel-slide-link">
+            <a class="carousel-slide-link" data-cv-url="/cv/axel-abet" aria-label="Ver el CV de Axel Abet">
               <img src="assets/axel.jpg" alt="Credencial de Axel Abet, número 05, centrocampista de Trujillanos FC" loading="lazy" width="1080" height="1350">
               <span class="carousel-cv-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1382,7 +1382,7 @@
             </a>
           </li>
           <li class="carousel-slide" data-index="3">
-            <a class="carousel-slide-link">
+            <a class="carousel-slide-link" data-cv-url="/cv/manuel-cuestas" aria-label="Ver el CV de Manuel Cuestas">
               <img src="assets/manu.jpg" alt="Credencial de Manuel Cuestas, número 05, defensor central de FK Jezero" loading="lazy" width="1080" height="1350">
               <span class="carousel-cv-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
