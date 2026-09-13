@@ -537,20 +537,28 @@ a{color:inherit}
 
 /* ==========================================================================
    Impresión / PDF (botón "Descargar" -> window.print())
-   Objetivo: una sola hoja A4. Se sacan los elementos que en papel no
-   sirven (barra de acciones, volver, botón de WhatsApp, video, entrada)
-   y se reduce espaciado antes que tamaño de texto para que entre todo.
+   Objetivo: una sola hoja A4, usada entera — no una versión achicada de
+   la pantalla. Se arma un diseño propio para papel: foto + ficha lado a
+   lado arriba (la ficha, con más contenido, manda el alto de esa fila;
+   la foto se estira para igualarlo y object-fit:contain la deja
+   siempre entera, nunca recortada), la cancha ocupa todo el ancho
+   debajo con el diagrama y las estadísticas lado a lado (así no queda
+   angosta con un vacío al costado), y el video se saca sin dejar
+   ningún cuadrante vacío porque a ninguno de los tres paneles restantes
+   le toca esa celda — el grid tiene su propio molde con nombres de
+   área (photo/facts/pitch), no depende de la posición del video en el
+   documento.
 
-   El ancho imprimible de A4 (~718px a 96dpi, incluso descontando el
-   margen de @page) es MENOR que los 860px del corte a mobile — así que
-   el layout de una sola columna que ya existe para celular se activa
-   solo acá también. En vez de pelear contra eso, se aprovecha: es
-   exactamente el orden y la estructura que hace falta en una hoja
-   angosta. Lo único que compite por espacio de verdad es la foto (a
-   ancho completo, se va larga con cualquier aspect-ratio "de pantalla")
-   — por eso su relación de aspecto para impresión es bastante más
-   ancha que alta.
-   ========================================================================== */
+   Importante: esto NO puede depender del corte de mobile
+   (@media(max-width:860px)). Se probó así en una versión anterior
+   porque el ancho de A4 a 96dpi (~718px) es menor a ese corte — pero
+   los navegadores no evalúan igual el ancho al imprimir: en Chrome, la
+   media query de mobile se resolvió contra el ancho de la ventana
+   (1440px en una prueba), no contra el de la hoja, así que el corte no
+   se activaba y el grid de dos columnas de pantalla quedaba puesto tal
+   cual — cancha diminuta con hueco al lado, cuadrante del video vacío.
+   Por eso cada regla de layout de acá abajo es explícita, sin apoyarse
+   en ninguna otra media query. */
 @media print{
   @page{ size:A4; margin:10mm; }
 
@@ -578,49 +586,95 @@ a{color:inherit}
   .cv{
     min-height:0;
     padding:0;
-    gap:8px;
+    display:block;
   }
 
-  .cv-header{gap:5px 14px}
-  .cv-header__name{font-size:30px}
+  .cv-header{margin-bottom:18px}
+  .cv-header__name{font-size:42px}
 
-  .grid{gap:8px}
-  .card{padding:11px 16px}
-  .card__label{margin-bottom:6px;font-size:10px}
+  /* Grid propio de impresión: dos columnas arriba (foto/ficha), la
+     cancha ocupa las dos abajo. Nombrado explícito en vez de depender
+     del orden del documento — así el video (sin área asignada, y
+     display:none) no puede dejar una celda vacía. */
+  .grid{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    grid-template-areas:
+      "photo facts"
+      "pitch pitch";
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .zone--photo{grid-area:photo;aspect-ratio:auto}
+  .card--facts{grid-area:facts;aspect-ratio:auto}
+  .card--pitch{grid-area:pitch;aspect-ratio:auto}
 
-  .facts{gap:6px}
-  .facts li{padding-bottom:6px}
-  .facts__k{font-size:7.5px}
-  .facts__v{font-size:12px}
-  .facts__v--feature{font-size:13px;line-height:1.3}
-  .facts__v--pending{font-size:10px}
-  .facts__note{font-size:8.5px}
+  /* La ficha manda el alto de la fila de arriba (su contenido decide
+     cuánto mide); la foto se estira para igualarlo (stretch, el
+     comportamiento por defecto de grid) y adentro object-fit:contain
+     la deja siempre entera sin importar si es vertical, horizontal o
+     una credencial — nunca la recorta de forma que corte la cara. */
+  .zone--photo img{object-fit:contain;background:var(--club-base)}
 
-  .zone--photo{aspect-ratio:2.8/1}
-  /* En pantalla los cuatro paneles comparten --panel-ar para medir
-     igual. En una sola columna angosta ese molde no hace falta —
-     cancha y ficha vuelven a su alto natural, como antes de esa
-     medida compartida. */
-  .card--pitch,
-  .card--facts{aspect-ratio:auto}
+  .card{padding:20px 24px}
+  .card__label{margin-bottom:12px;font-size:12px}
 
-  .card--pitch{gap:6px}
-  .pitch{flex:none}
-  .pitch svg{width:auto;height:100px;max-width:100%}
+  .facts{gap:11px}
+  .facts li{padding-bottom:11px}
+  .facts__k{font-size:10px}
+  .facts__v{font-size:15px}
+  .facts__v--feature{font-size:16px;line-height:1.4}
+  .facts__v--pending{font-size:13px}
+  .facts__note{font-size:10.5px}
 
-  .pitch-stats{gap:3px 14px}
-  .pitch-stats__value{font-size:15px}
-  .pitch-stats__label{font-size:7.5px}
+  /* La cancha es vertical (2:3): a lo ancho de la hoja se iría más
+     alta que la página entera. En vez de estirarla, el diagrama y las
+     estadísticas quedan lado a lado dentro de la tarjeta — el
+     diagrama mide por su propio alto (no por el ancho de la
+     tarjeta), las estadísticas ocupan el resto sin dejar un vacío al
+     costado. Sin stats (no todos los jugadores los tienen todavía),
+     :has() saca la segunda columna y el diagrama crece centrado — así
+     no queda un hueco donde iban las estadísticas. */
+  .card--pitch{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    grid-template-areas:
+      "label label"
+      "diagram stats";
+    align-items:center;
+    column-gap:32px;
+    row-gap:10px;
+  }
+  .card--pitch:has(.pitch-stats:empty){
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "label"
+      "diagram";
+    justify-items:center;
+  }
+  .card--pitch:has(.pitch-stats:empty) .pitch{justify-self:center}
+  .card--pitch:has(.pitch-stats:empty) .pitch svg{height:270px}
+  .card--pitch .card__label{grid-area:label;margin-bottom:0}
+  .pitch{grid-area:diagram;flex:none;justify-self:start}
+  .pitch svg{width:auto;height:260px;max-width:100%;aspect-ratio:100/150}
+  .pitch-stats{
+    grid-area:stats;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:13px;
+  }
+  .pitch-stats__value{font-size:22px}
+  .pitch-stats__label{font-size:10px}
 
-  .cv-contact{padding:11px 16px;gap:6px}
-  .cv-contact__lede{font-size:9.5px}
+  .cv-contact{padding:20px 24px;gap:10px;margin-bottom:10px}
+  .cv-contact__lede{font-size:12px}
   .cv-contact__print{
     margin:0;
-    font-size:11px;
+    font-size:13px;
     font-weight:700;
     color:var(--ink);
   }
 
-  .cv__foot{padding-top:1px}
-  .sig{font-size:7.5px}
+  .cv__foot{padding-top:10px}
+  .sig{font-size:9px}
 }
