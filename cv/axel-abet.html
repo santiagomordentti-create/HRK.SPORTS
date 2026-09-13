@@ -46,18 +46,27 @@ window.CV_DATA = {
     theme: { deep: "#211605", base: "#322207", mid: "#5E3F0D", light: "#B37819", label: "#E4A744", accent: "#E1DED1" }
   },
 
-  // Datos aún no confirmados — se muestran como pendientes, no se inventan.
-  nationality: null,
-  birth: null,
-  foot: null,
-  height: null,
+  // Confirmados por fuente pública, pendientes de que el jugador los
+  // valide — no son datos que él mismo nos haya dado todavía.
+  nationality: "Argentina", // fuente pública, pendiente de confirmación del jugador
+  birth: "13 de marzo de 1998", // fuente pública, pendiente de confirmación del jugador
+  foot: "Derecho", // fuente pública, pendiente de confirmación del jugador
+  height: "1,81 m", // fuente pública, pendiente de confirmación del jugador
 
   career: ["FADEP", "Fénix", "San Lorenzo", "Gimnasia y Esgrima (Jujuy)", "Tristán Suárez", "All Boys"],
+
+  stats: { matches: 2, minutes: 149 },
 
   instagram: { handle: "@axel_abet", url: "https://www.instagram.com/axel_abet/" },
 
   photo: {
     src: "../assets/axel.jpg",
+    // Todavía no hay una foto propia: el panel de foto muestra la
+    // credencial completa. isCredential:true apaga el nombre superpuesto
+    // y la marca de agua de la entrada — el nombre ya está impreso
+    // adentro de la credencial, repetirlo lo triplicaba en el mismo
+    // cuadrante.
+    isCredential: true,
     alt: "Credencial deportiva de Axel Abet para HRK Sports, con su foto, el dorsal 05 y los datos de Trujillanos FC."
   },
 
@@ -89,6 +98,7 @@ window.CV_DATA = {
       <h2 class="card__label" id="pos-t">Posición</h2>
       <div class="pitch" data-cv="pitch"></div>
       <p class="pitch-desc" data-cv="pitch-desc"></p>
+      <div class="pitch-stats" data-cv="pitch-stats"></div>
     </section>
 
     <!-- abajo izquierda: ficha de datos -->

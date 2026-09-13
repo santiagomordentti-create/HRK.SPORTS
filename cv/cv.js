@@ -69,11 +69,18 @@
     img.alt = data.photo.alt || '';
     zone.appendChild(img);
 
+    // Cuando la foto es la propia credencial (data.photo.isCredential),
+    // el nombre ya está impreso adentro de la imagen — repetirlo acá
+    // arriba lo triplica junto con la marca de agua de la entrada (que
+    // además deja de mostrarse sola: initIntro no arma nada si no
+    // encuentra un .photo-cap__name real para aterrizar). Club y número
+    // sí se mantienen, no son redundantes.
     const cap = document.createElement('div');
     cap.className = 'photo-cap';
+    const showName = !(data.photo && data.photo.isCredential);
     cap.innerHTML = `
       <span class="photo-cap__num">${escapeHtml(String(data.number))}</span>
-      <span class="photo-cap__name">${escapeHtml(data.name)}</span>
+      ${showName ? `<span class="photo-cap__name">${escapeHtml(data.name)}</span>` : ''}
       <span class="photo-cap__club">${escapeHtml((data.club && data.club.name) || '')}</span>
     `;
     zone.appendChild(cap);
@@ -152,6 +159,37 @@
       </svg>
     `;
     if (descEl) descEl.textContent = pitchDescription(data, coords);
+  }
+
+  // El cuadrante de la cancha comunicaba un solo dato (la posición, que
+  // encima ya está repetida en la ficha) usando el 25% de la página.
+  // Las estadísticas de temporada van acá abajo para equilibrar ese
+  // peso, no como un bloque nuevo. Son opcionales: si data.stats no
+  // existe (todavía no hay datos de un jugador) esta función no crea
+  // nada — nada de ceros ni de "sin datos" de relleno. Goles recibidos
+  // y vallas invictas sólo aparecen si esos campos están presentes
+  // (en la práctica, sólo un arquero los va a tener).
+  function renderPitchStats(data) {
+    const el = document.querySelector('[data-cv="pitch-stats"]');
+    if (!el || !data.stats) return;
+
+    const items = [
+      { value: data.stats.matches, label: 'Partidos' },
+      { value: data.stats.minutes, label: 'Minutos' },
+    ];
+    if (data.stats.goalsConceded !== undefined && data.stats.goalsConceded !== null) {
+      items.push({ value: data.stats.goalsConceded, label: 'Goles recibidos' });
+    }
+    if (data.stats.cleanSheets !== undefined && data.stats.cleanSheets !== null) {
+      items.push({ value: data.stats.cleanSheets, label: 'Vallas invictas' });
+    }
+
+    el.innerHTML = items.map((i) => `
+      <div class="pitch-stats__item">
+        <span class="pitch-stats__value">${escapeHtml(String(i.value))}</span>
+        <span class="pitch-stats__label">${escapeHtml(i.label)}</span>
+      </div>
+    `).join('');
   }
 
   function renderVideo(data) {
@@ -432,6 +470,7 @@
     renderPhoto(data);
     renderFacts(data);
     renderPitch(data);
+    renderPitchStats(data);
     renderVideo(data);
     renderStructuredData(data);
     initIntro(data);

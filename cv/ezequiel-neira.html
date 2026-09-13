@@ -46,13 +46,16 @@ window.CV_DATA = {
     // escudo o la camiseta del club del jugador, nunca usar el verde de HRK.
   },
 
-  // Datos aún no confirmados — se muestran como pendientes, no se inventan.
-  nationality: null,
-  birth: null,
-  foot: null,
-  height: null,
+  // Confirmados por fuente pública, pendientes de que el jugador los
+  // valide — no son datos que él mismo nos haya dado todavía.
+  nationality: "Argentina", // fuente pública, pendiente de confirmación del jugador
+  birth: "3 de febrero de 2001", // fuente pública, pendiente de confirmación del jugador
+  foot: null, // sin dato
+  height: "1,88 m", // fuente pública, pendiente de confirmación del jugador
 
   career: ["Instituto (formativas)", "Desamparados", "Sol de América", "Gimnasia y Tiro"],
+
+  stats: { matches: 6, minutes: 531 },
 
   instagram: { handle: "@ezeneira2", url: "https://www.instagram.com/ezeneira2/" },
 
@@ -89,6 +92,7 @@ window.CV_DATA = {
       <h2 class="card__label" id="pos-t">Posición</h2>
       <div class="pitch" data-cv="pitch"></div>
       <p class="pitch-desc" data-cv="pitch-desc"></p>
+      <div class="pitch-stats" data-cv="pitch-stats"></div>
     </section>
 
     <!-- abajo izquierda: ficha de datos -->

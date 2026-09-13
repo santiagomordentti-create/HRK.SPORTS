@@ -46,18 +46,27 @@ window.CV_DATA = {
     theme: { deep: "#081C17", base: "#0C2A23", mid: "#174F42", light: "#2E9E84", label: "#41C8A9", accent: "#FFFFFF" }
   },
 
-  // Datos aún no confirmados — se muestran como pendientes, no se inventan.
-  nationality: null,
-  birth: null,
-  foot: null,
-  height: null,
+  // Confirmados por fuente pública, pendientes de que el jugador los
+  // valide — no son datos que él mismo nos haya dado todavía.
+  nationality: null, // sin dato
+  birth: "5 de mayo de 2001", // fuente pública, pendiente de confirmación del jugador
+  foot: "Derecho", // fuente pública, pendiente de confirmación del jugador
+  height: "1,93 m", // fuente pública, pendiente de confirmación del jugador
 
   career: ["Belgrano (formativas)", "Independiente Rivadavia", "Academia Deportiva Cantolao"],
+
+  stats: { matches: 17, minutes: 1530, goalsConceded: 23, cleanSheets: 4 },
 
   instagram: { handle: "@santirazzeto_1", url: "https://www.instagram.com/santirazzeto_1/" },
 
   photo: {
     src: "../assets/santi.jpg",
+    // Todavía no hay una foto propia: el panel de foto muestra la
+    // credencial completa. isCredential:true apaga el nombre superpuesto
+    // y la marca de agua de la entrada — el nombre ya está impreso
+    // adentro de la credencial, repetirlo lo triplicaba en el mismo
+    // cuadrante.
+    isCredential: true,
     alt: "Credencial deportiva de Santiago Razzeto para HRK Sports, con su foto, el dorsal 01 y los datos de Técnico Universitario."
   },
 
@@ -89,6 +98,7 @@ window.CV_DATA = {
       <h2 class="card__label" id="pos-t">Posición</h2>
       <div class="pitch" data-cv="pitch"></div>
       <p class="pitch-desc" data-cv="pitch-desc"></p>
+      <div class="pitch-stats" data-cv="pitch-stats"></div>
     </section>
 
     <!-- abajo izquierda: ficha de datos -->
