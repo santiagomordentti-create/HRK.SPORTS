@@ -605,10 +605,10 @@
     // porque antes se repartían dentro de un presupuesto total que se
     // encogía según cuánto hubiera tardado la fuente en cargar, y eso
     // se comía justo el reposo, el tramo que más importa.
-    const ENTRADA_MS = 500;
-    const REPOSO_MS = 1100;
-    const VIAJE_MS = 700;
-    const DURATION = ENTRADA_MS + REPOSO_MS + VIAJE_MS; // 2300ms
+    const ENTRADA_MS = 350;
+    const REPOSO_MS = 900;
+    const VIAJE_MS = 550;
+    const DURATION = ENTRADA_MS + REPOSO_MS + VIAJE_MS; // 1800ms
 
     let done = false;
     let anims = [];
@@ -764,9 +764,9 @@
     // FONT_WAIT_CEILING (una red muy lenta, o la fuente no carga),
     // preferimos no mostrar nada a mostrar una entrada con la posición
     // mal calculada. Los tres tiempos de la animación son fijos (ver
-    // ENTRADA_MS/REPOSO_MS/VIAJE_MS en start(), suman 2300ms) — el techo
+    // ENTRADA_MS/REPOSO_MS/VIAJE_MS en start(), suman 1800ms) — el techo
     // de espera de fuentes deja margen real bajo el máximo de 3s incluso
-    // en el peor caso (2300 + 600 = 2900ms).
+    // en el peor caso (1800 + 600 = 2400ms).
     const FONT_WAIT_CEILING = 600; // ms
     const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     const fontsOutcome = Promise.race([
