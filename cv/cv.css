@@ -205,6 +205,95 @@ a{color:inherit}
   aspect-ratio:var(--panel-ar);
 }
 
+/* ---------- por dónde pasó (trayectoria) ----------
+   Antes era una fila más de la ficha, un renglón con los clubes
+   separados por puntos medios — con seis clubes (el caso de Axel
+   Abet) no se leía, y era justo el primer dato que mira quien evalúa
+   a un jugador. Ahora es su propio bloque de ancho completo, entre la
+   grilla y la franja de contacto: tiene lugar para respirar en vez de
+   competir por espacio dentro de la ficha, que además mide siempre lo
+   mismo (--panel-ar) — no se podía estirar para una lista larga sin
+   arriesgar que se cortara. */
+.trajectory{
+  flex:none;
+  background:var(--club-mid);
+  border-radius:var(--radius);
+  padding:24px clamp(20px,3vw,34px);
+}
+.trajectory__label{
+  margin:0 0 20px;
+  font-family:var(--font-display);
+  font-size:13px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--club-label);
+}
+.trajectory__list{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+/* El punto y la línea son ::before/::after del propio <li>, anclados
+   con top/left y bottom/left fijos (no un cálculo de porcentaje
+   contra la altura del item, que con texto de una sola línea y
+   padding constante no hacía falta y resultaba frágil). El punto
+   queda a una distancia fija del techo del renglón; la línea arranca
+   justo debajo del punto y se extiende hasta el borde inferior del
+   padding, que es exactamente donde empieza el próximo item — como
+   los <li> se apilan sin gap entre ellos, ese punto coincide con el
+   techo del próximo punto, y la línea queda continua. Con un solo
+   club en la lista, el último item es también el primero: la regla de
+   :last-child ya alcanza, sin caso especial. */
+.trajectory__item{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 0 22px 24px;
+  font-size:16px;
+  font-weight:600;
+  color:var(--ink-soft);
+}
+.trajectory__item:last-child{padding-bottom:0}
+.trajectory__item::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:6px;
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:var(--ink-faint);
+}
+.trajectory__item:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  left:5px;
+  top:17px;
+  bottom:0;
+  width:1px;
+  background:var(--line);
+}
+.trajectory__club{flex:1}
+.trajectory__item--current{color:var(--ink);font-weight:700}
+.trajectory__item--current::before{
+  width:13px;
+  height:13px;
+  top:5px;
+  background:var(--club-accent);
+}
+.trajectory__badge{
+  flex:none;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--club-deep);
+  background:var(--club-accent);
+  padding:4px 10px;
+  border-radius:999px;
+}
+
 /* ---------- franja de contacto ----------
    El cierre de la página, no un banner pegado encima: mismos colores
    de club que el resto (--club-mid, --club-accent), misma familia
@@ -299,12 +388,26 @@ a{color:inherit}
    referencia (chica, apagada, en ink-faint — ya no en el color de
    acento del club, que le daba demasiada presencia), el valor es el
    contenido real (más grande, más peso, blanco pleno). */
+/* La trayectoria (antes una fila más acá) se fue a su propio bloque
+   ("por dónde pasó", ver más abajo), así que a la ficha le quedó
+   menos contenido para el mismo alto fijo (--panel-ar). En vez de
+   dejar ese sobrante como un hueco abajo de la lista, flex:1 hace que
+   .facts ocupe todo el alto que le sobra a la tarjeta, y
+   justify-content:space-between reparte esa demasía entre las filas
+   (el gap de 9px queda como piso mínimo si además hiciera falta
+   achicarse) — la primera fila arranca pegada a la etiqueta y la
+   última llega hasta abajo, la ficha se sigue viendo completa, no
+   vacía. min-height:0 es lo que deja que, si algún día no entrara,
+   overflow-y:auto pueda scrollear en vez de desbordar la tarjeta. */
 .facts{
   list-style:none;
   margin:0;
   padding:0;
   display:flex;
   flex-direction:column;
+  flex:1;
+  min-height:0;
+  justify-content:space-between;
   gap:9px;
   overflow-y:auto;
 }
@@ -694,6 +797,44 @@ a{color:inherit}
   }
   .pitch-stats__value{font-size:22px}
   .pitch-stats__label{font-size:10px}
+
+  /* "Por dónde pasó" en papel: se probó primero la misma línea
+     vertical de pantalla, compacta — con seis clubes (Abet) igual se
+     iba a una segunda hoja en los cuatro jugadores (medido generando
+     el PDF real, no alcanzaba con mirar el CSS). Acá sí vuelve a una
+     línea horizontal, como pedía la consigna para ese caso: los
+     clubes en un renglón separados por puntos medios, el actual en
+     negrita con su etiqueta — sin puntos ni línea vertical, que no
+     hacen falta en una sola línea de texto. */
+  .trajectory{padding:14px 20px;margin-bottom:10px}
+  .trajectory__label{margin-bottom:8px;font-size:11px}
+  .trajectory__list{display:block}
+  .trajectory__item{
+    display:inline;
+    padding:0;
+    font-size:11px;
+    font-weight:600;
+  }
+  .trajectory__item::before{display:none}
+  /* Mismo selector que la regla de pantalla (.trajectory__item:not
+     (:last-child)::after), no sólo .trajectory__item::after — si no,
+     la de pantalla le gana por especificidad aunque esté en otra
+     media query, y el separador nunca aparece (pasó: el content:'' de
+     pantalla seguía ganando acá adentro). */
+  .trajectory__item:not(:last-child)::after{
+    content:' · ';
+    position:static;
+    width:auto;
+    height:auto;
+    background:none;
+  }
+  .trajectory__item--current{font-weight:700}
+  .trajectory__badge{
+    display:inline-block;
+    margin-left:5px;
+    font-size:7px;
+    padding:1px 6px;
+  }
 
   .cv-contact{padding:20px 24px;gap:10px;margin-bottom:10px}
   .cv-contact__lede{font-size:12px}

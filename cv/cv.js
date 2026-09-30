@@ -104,7 +104,6 @@
     const rows = [
       { k: 'Club', v: data.club && data.club.name },
       { k: 'Posición', v: data.position },
-      { k: 'Trayectoria', v: (data.career || []).join(' · ') || null, feature: true },
       { k: 'Nacionalidad', v: data.nationality },
       { k: 'Fecha de nacimiento', v: data.birth },
       { k: 'Pie hábil', v: data.foot },
@@ -149,6 +148,40 @@
       note.textContent = `Dato${plural ? 's' : ''} pendiente${plural ? 's' : ''} de confirmar: ${pendingLabels.join(', ')}.`;
       list.appendChild(note);
     }
+  }
+
+  // "Por dónde pasó": antes era una fila más de la ficha, un renglón
+  // con los clubes separados por puntos medios — con una trayectoria
+  // larga (seis clubes, el caso de Axel Abet) no se leía. Es el primer
+  // dato que mira quien evalúa a un jugador, así que tiene su propio
+  // bloque de ancho completo, entre la grilla y la franja de contacto:
+  // ahí tiene lugar para respirar, en vez de competir por espacio
+  // dentro de la ficha (que además mide siempre lo mismo — ver
+  // --panel-ar en cv.css — así que no se podía estirar para una lista
+  // larga sin arriesgar que se cortara).
+  //
+  // data.career son los clubes anteriores, en orden; el club actual
+  // (data.club.name) no está ahí — se agrega al final y se destaca.
+  // "(formativas)" ya viene escrito en el texto de cada club en
+  // CV_DATA, así que no hace falta detectarlo acá: se muestra tal cual.
+  function renderTrajectory(data) {
+    const list = document.querySelector('[data-cv="trajectory-list"]');
+    if (!list) return;
+
+    const clubs = [...(data.career || [])];
+    const currentClub = data.club && data.club.name;
+    if (currentClub) clubs.push(currentClub);
+    if (!clubs.length) return;
+
+    list.innerHTML = clubs.map((club, i) => {
+      const isCurrent = i === clubs.length - 1 && currentClub;
+      return `
+        <li class="trajectory__item${isCurrent ? ' trajectory__item--current' : ''}">
+          <span class="trajectory__club">${escapeHtml(club)}</span>
+          ${isCurrent ? '<span class="trajectory__badge">Actual</span>' : ''}
+        </li>
+      `;
+    }).join('');
   }
 
   function renderPitch(data) {
@@ -794,6 +827,7 @@
     renderHeader(data);
     renderPhoto(data);
     renderFacts(data);
+    renderTrajectory(data);
     renderPitch(data);
     renderPitchStats(data);
     renderVideo(data);
