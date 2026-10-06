@@ -249,14 +249,23 @@
   // muestra el video completo sin recortarlo ni deformarlo, sea cual
   // sea su proporción real.
   //
-  // data.video.moments (opcional): no se corta el archivo, se marcan
-  // segundos. Cada momento es {label, minute, start, end?} — minute es
-  // sólo lo que se muestra (el minuto del partido), start/end son
-  // segundos reales dentro del archivo. Sin end, saltar ahí y seguir
+  // data.video.moments (opcional) — MOMENTOS MARCADOS: función
+  // construida y probada (incluido el salto real dentro del archivo,
+  // el pausado en "end" y la reactivación), apagada por default en
+  // los cuatro jugadores hasta que haya jugadas reales confirmadas
+  // para cargar. Para activarla en un jugador, agregar esta clave a
+  // su data.video en el HTML:
+  //   moments: [
+  //     { label: "Nombre de la jugada", minute: "61", start: 125, end: 132 },
+  //     { label: "Otra jugada, sin fin marcado", minute: "74", start: 210 }
+  //   ]
+  // No se corta el archivo, se marcan segundos: minute es sólo lo que
+  // se muestra (el minuto del partido), start/end son segundos reales
+  // dentro del archivo de video. Sin end, saltar ahí y seguir
   // reproduciendo; con end, pausa al llegar. Sin data.video.moments
-  // (o vacío), el cuadrante no arma ninguna lista — se ve exactamente
-  // como un video sin momentos, nada de "próximamente" ni listas
-  // vacías.
+  // (o con la lista vacía), el cuadrante no arma ninguna lista — se ve
+  // exactamente como un video sin momentos, nada de "próximamente" ni
+  // listas vacías: no hace falta tocar nada más que esta clave.
   function renderVideo(data) {
     const zone = document.querySelector('[data-cv="video"]');
     if (!zone) return;
