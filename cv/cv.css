@@ -528,11 +528,26 @@ a{color:inherit}
    La relación de aspecto sale de --panel-ar (compartida con los otros
    tres paneles): el cuadrante no depende de si el archivo ya cargó ni
    de su proporción real — eso lo resuelve adentro object-fit:contain,
-   sin recortar ni deformar. */
+   sin recortar ni deformar.
+
+   .video-stage envuelve el video (antes esos hijos — video, botón de
+   sonido — vivían directo en .zone--video): así, cuando hay momentos,
+   el video puede ocupar menos que el 100% del cuadrante sin que la
+   lista le pise el lado. Sin momentos, .video-stage con flex:1 como
+   único hijo ocupa el 100% igual que antes — el cuadrante se ve
+   exactamente como siempre, sin ninguna regla condicional. */
 .zone--video{
   position:relative;
+  display:flex;
   border-radius:var(--radius);
   background:var(--club-base);
+  overflow:hidden;
+}
+.video-stage{
+  position:relative;
+  flex:1;
+  min-width:0;
+  min-height:0;
   overflow:hidden;
 }
 .zone--video video{width:100%;height:100%;object-fit:contain;display:block;background:var(--club-base)}
@@ -594,6 +609,50 @@ a{color:inherit}
   letter-spacing:.05em;
 }
 
+/* ---------- momentos destacados (opcional, data.video.moments) ----------
+   Botones de verdad (no un carrusel decorativo): foco visible con el
+   mismo :focus-visible del resto del sitio, aria-pressed anuncia el
+   activo además del color — el color solo no alcanza. */
+.video-moments{
+  flex:none;
+  width:168px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:14px;
+  overflow-y:auto;
+  background:var(--club-mid);
+}
+.video-moments__item{
+  flex:none;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--ink-soft);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:600;
+  line-height:1.3;
+  text-align:left;
+  cursor:pointer;
+}
+@media(prefers-reduced-motion:no-preference){
+  .video-moments__item{transition:background .15s ease, border-color .15s ease, color .15s ease}
+}
+.video-moments__item:hover{border-color:var(--ink-soft);color:var(--ink)}
+/* El activo se distingue por algo más que el color (que puede fallar
+   para daltonismo o pantallas B/N): borde más grueso, además del
+   color de acento y de aria-pressed. */
+.video-moments__item[aria-pressed="true"]{
+  background:var(--club-accent);
+  border-color:var(--club-accent);
+  border-width:2px;
+  padding:9px 11px;
+  color:var(--club-deep);
+  font-weight:700;
+}
+
 /* ---------- mobile: una columna ----------
    --panel-ar iguala los cuatro paneles en la grilla de dos columnas de
    escritorio; en una sola columna angosta esa misma proporción da una
@@ -614,6 +673,14 @@ a{color:inherit}
   .pitch{flex:none}
   .zone--video{order:4;aspect-ratio:4/5}
   .zone--photo{order:1;aspect-ratio:4/5}
+
+  /* Con momentos, la lista va debajo del video (no al lado — no entra
+     en el ancho de celular) y el cuadrante deja de medir por
+     aspect-ratio fijo: ahora es video + lista apiladas, así que mide
+     por su contenido. El video conserva su propia proporción. */
+  .zone--video--moments{aspect-ratio:auto;flex-direction:column}
+  .zone--video--moments .video-stage{flex:none;aspect-ratio:4/5}
+  .zone--video--moments .video-moments{width:auto}
 }
 
 @media(prefers-reduced-motion:no-preference){

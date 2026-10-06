@@ -67,7 +67,18 @@ window.CV_DATA = {
   video: {
     src: "../assets/neira-hrk.mp4",
     poster: "../assets/neira-hrk.jpg",
-    alt: "Highlights de Ezequiel Neira"
+    alt: "Highlights de Ezequiel Neira",
+    // PROVISORIO — momentos de prueba para revisar el diseño de la
+    // lista, repartidos parejo a lo largo del video de muestra
+    // (~10,6s). Reemplazar por los momentos reales de Neira (nombre
+    // de la jugada, minuto del partido, segundos reales del archivo
+    // definitivo) antes de publicar en serio. No son jugadas de
+    // fútbol reales, a propósito: todavía no hay datos confirmados.
+    moments: [
+      { label: "Momento de prueba 1", minute: "12", start: 1, end: 3.3 },
+      { label: "Momento de prueba 2", minute: "45", start: 4.3, end: 6.6 },
+      { label: "Momento de prueba 3", minute: "78", start: 7.3 }
+    ]
   }
 };
 </script>

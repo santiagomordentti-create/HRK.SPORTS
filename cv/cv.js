@@ -248,11 +248,23 @@
   // depende de si el archivo ya cargó) — adentro, object-fit:contain
   // muestra el video completo sin recortarlo ni deformarlo, sea cual
   // sea su proporción real.
+  //
+  // data.video.moments (opcional): no se corta el archivo, se marcan
+  // segundos. Cada momento es {label, minute, start, end?} — minute es
+  // sólo lo que se muestra (el minuto del partido), start/end son
+  // segundos reales dentro del archivo. Sin end, saltar ahí y seguir
+  // reproduciendo; con end, pausa al llegar. Sin data.video.moments
+  // (o vacío), el cuadrante no arma ninguna lista — se ve exactamente
+  // como un video sin momentos, nada de "próximamente" ni listas
+  // vacías.
   function renderVideo(data) {
     const zone = document.querySelector('[data-cv="video"]');
     if (!zone) return;
     if (data.video && data.video.src) {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const stage = document.createElement('div');
+      stage.className = 'video-stage';
 
       const video = document.createElement('video');
       video.src = data.video.src;
@@ -280,8 +292,8 @@
         updateSoundBtn();
       });
 
-      zone.appendChild(video);
-      zone.appendChild(soundBtn);
+      stage.appendChild(video);
+      stage.appendChild(soundBtn);
 
       // Con movimiento reducido no arranca solo: se ve la portada y un
       // botón grande de reproducir. Ese primer play sí es un gesto del
@@ -297,7 +309,49 @@
           video.play();
           playBtn.remove();
         });
-        zone.appendChild(playBtn);
+        stage.appendChild(playBtn);
+      }
+
+      zone.appendChild(stage);
+
+      const moments = Array.isArray(data.video.moments) ? data.video.moments : [];
+      if (moments.length) {
+        zone.classList.add('zone--video--moments');
+
+        const nav = document.createElement('nav');
+        nav.className = 'video-moments';
+        nav.setAttribute('aria-label', `Momentos destacados de ${data.name}`);
+
+        // timeupdate, no timeout: un timeout sobrevive a que el usuario
+        // salte a otro momento antes de llegar al final del primero, y
+        // terminaría pausando el video en el segundo momento a destiempo.
+        // Comparar contra currentTime en cada frame se cancela solo.
+        let pauseAt = null;
+        video.addEventListener('timeupdate', () => {
+          if (pauseAt !== null && video.currentTime >= pauseAt) {
+            video.pause();
+            pauseAt = null;
+          }
+        });
+
+        const buttons = moments.map((m) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'video-moments__item';
+          btn.setAttribute('aria-pressed', 'false');
+          btn.setAttribute('aria-label', `Saltar al minuto ${m.minute} del partido: ${m.label}`);
+          btn.textContent = `${m.label} · ${m.minute}'`;
+          btn.addEventListener('click', () => {
+            pauseAt = (m.end !== undefined && m.end !== null) ? m.end : null;
+            video.currentTime = m.start;
+            video.play();
+            buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+          });
+          nav.appendChild(btn);
+          return btn;
+        });
+
+        zone.appendChild(nav);
       }
     } else {
       zone.classList.add('zone--pending');
