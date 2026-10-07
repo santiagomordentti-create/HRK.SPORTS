@@ -265,7 +265,16 @@ a:hover{color:var(--texto-sec)}
    detalle lleva número grande y etiqueta chica (mismo criterio que
    las estadísticas de temporada, cuando estaban) para que el dato
    pese más que la descripción. */
-.tactica-player{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.tactica-title{margin:0 0 32px;font-family:var(--display);font-weight:400;font-size:clamp(56px,9vw,104px);line-height:.95;text-transform:uppercase}
+.tactica-player{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  overflow:hidden;
+  border-radius:10px;
+  border:2px solid var(--acento);
+  box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 32px rgba(255,255,255,.2);
+}
 .tactica-player__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .tactica-player__label{
   position:absolute;
@@ -286,8 +295,8 @@ a:hover{color:var(--texto-sec)}
 .tactica-thumb{
   display:flex;
   flex-direction:column;
-  gap:8px;
-  flex:0 0 clamp(140px,34vw,200px);
+  gap:10px;
+  flex:0 0 260px;
   scroll-snap-align:start;
   background:transparent;
   border:none;
@@ -297,8 +306,15 @@ a:hover{color:var(--texto-sec)}
   color:inherit;
   font-family:inherit;
 }
-.tactica-thumb__name{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--texto-sec)}
-.tactica-thumb__media{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.tactica-thumb__name{font-size:15px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-thumb__media{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  overflow:hidden;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.4);
+}
 .tactica-thumb__media img{width:100%;height:100%;object-fit:cover;display:block}
 .tactica-thumb__play{
   position:absolute;
@@ -316,20 +332,30 @@ a:hover{color:var(--texto-sec)}
 }
 .tactica-thumb__play svg{width:18px;height:18px;margin-left:1px}
 @media(prefers-reduced-motion:no-preference){
-  .tactica-thumb__media{transition:outline-color 120ms ease-out}
+  .tactica-thumb__media{transition:border-color 120ms ease-out,box-shadow 120ms ease-out}
 }
 .tactica-thumb:hover .tactica-thumb__media,
-.tactica-thumb:focus-visible .tactica-thumb__media{outline:2px solid var(--acento);outline-offset:2px}
+.tactica-thumb:focus-visible .tactica-thumb__media{border-color:var(--acento);box-shadow:0 0 0 1px var(--acento)}
 .tactica-thumb:focus-visible{outline:none}
-.tactica-detail{display:flex;gap:16px;align-items:flex-start;margin-top:32px;padding-top:32px;border-top:1px solid var(--linea)}
+.tactica-detail{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+  margin-top:32px;
+  padding:28px;
+  background:var(--superficie);
+  border-radius:10px;
+  border:1px solid var(--acento);
+}
 .tactica-detail[hidden]{display:none}
-.tactica-detail__photo{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none}
-.tactica-detail__body{display:flex;flex-direction:column;gap:12px;min-width:0}
-.tactica-detail__name{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-sec)}
-.tactica-stat__top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tactica-detail__photo{width:80px;height:80px;border-radius:50%;object-fit:cover;flex:none}
+.tactica-detail__body{display:flex;flex-direction:column;min-width:0}
+.tactica-detail__name{margin:0 0 16px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-sec)}
+#tactica-detail-stat{margin:0 0 28px}
+#tactica-detail-stat:empty{margin:0}
 .tactica-stat__value{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,40px);line-height:1;color:var(--acento)}
-.tactica-stat__competition{font-size:12px;font-style:italic;color:var(--texto-sec);opacity:.8}
 .tactica-stat__label{margin:4px 0 0;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-stat__competition{display:inline-block;margin-top:10px;padding:3px 9px;border:1px solid var(--linea);font-size:11px;font-style:italic;color:var(--texto-sec)}
 .tactica-detail__desc{margin:0;font-size:14px;line-height:1.5;color:var(--texto-sec);font-style:italic}
 .tactica-print-list{display:none}
 
@@ -665,7 +691,7 @@ a:hover{color:var(--texto-sec)}
        lugares a la vez. -->
   <section aria-labelledby="t-tactica" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
-      <h2 id="t-tactica" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">TÁCTICA</h2>
+      <h2 id="t-tactica" data-reveal class="tactica-title">TÁCTICA</h2>
 
       <div data-reveal class="tactica-player">
         <video id="tactica-video" class="tactica-player__video" autoplay muted loop playsinline controls preload="metadata" poster="../assets/neira-highlight.jpg" src="../assets/neira-highlight.mp4" aria-label="Reproductor de video táctico — Highlight general"></video>
@@ -1189,8 +1215,9 @@ a:hover{color:var(--texto-sec)}
         detailClip.textContent = current.name.toUpperCase();
         if (current.value) {
           detailStat.innerHTML =
-            '<div class="tactica-stat__top"><p class="tactica-stat__value">' + escapeHtml(current.value) + '</p><span class="tactica-stat__competition">' + escapeHtml(current.competition) + '</span></div>' +
-            '<p class="tactica-stat__label">' + escapeHtml(current.label) + '</p>';
+            '<p class="tactica-stat__value">' + escapeHtml(current.value) + '</p>' +
+            '<p class="tactica-stat__label">' + escapeHtml(current.label) + '</p>' +
+            '<span class="tactica-stat__competition">' + escapeHtml(current.competition) + '</span>';
         } else {
           detailStat.innerHTML = '';
         }
