@@ -383,33 +383,54 @@ a:hover{color:var(--texto-sec)}
 .career-path{display:none;align-self:stretch;width:100%;height:112px;overflow:visible}
 .career-line{display:none;position:absolute;left:var(--career-line-left,35px);top:var(--career-line-top,88px);bottom:8px;width:2px;background:var(--linea);transform-origin:top}
 
-/* ---------- atributos clave ----------
-   El video NO tiene src hasta que se toca play (vive en data-src): así
-   el archivo no se descarga solo — con cinco videos de hasta 110MB en
-   una sola página, si cargaran todos de entrada sería carísimo en
-   datos y lentísimo. El poster (un cuadro real del propio archivo,
-   sacado con un frame real, no un placeholder) cubre el cuadrante
-   mientras tanto. El botón de sonido arranca oculto (hidden en el
-   HTML): no tiene sentido mostrarlo antes de que haya algo sonando. */
-.attribute-card{
+/* ---------- táctica: reproductor + miniaturas intercambiables ----------
+   Seis clips, uno siempre grande y los otros cinco de miniatura — ver
+   initTactica más abajo. Sólo el clip que está en el reproductor
+   grande se descarga: las miniaturas son <img> (el poster, un cuadro
+   real sacado del propio archivo), nunca <video>. El bloque de
+   detalle reutiliza el tratamiento de .season-stat (número grande,
+   etiqueta chica) para que el dato pese más que la descripción. */
+.tactica-player{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.tactica-player__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.tactica-player__label{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:1;
+  pointer-events:none;
+  padding:5px 10px;
+  background:var(--acento);
+  color:var(--bordo);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.tactica-subtitle{margin:40px 0 20px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-thumbs{display:flex;gap:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tactica-thumb{
   display:flex;
   flex-direction:column;
-  background:var(--superficie);
-  border:1px solid var(--linea);
+  gap:8px;
+  flex:0 0 clamp(140px,34vw,200px);
+  scroll-snap-align:start;
+  background:transparent;
+  border:none;
+  padding:0;
+  cursor:pointer;
+  text-align:left;
+  color:inherit;
+  font-family:inherit;
 }
-.attribute-media{
-  position:relative;
-  aspect-ratio:16/9;
-  background:#000;
-  overflow:hidden;
-}
-.attribute-media__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-.attribute-media__play{
+.tactica-thumb__name{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-thumb__media{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.tactica-thumb__media img{width:100%;height:100%;object-fit:cover;display:block}
+.tactica-thumb__play{
   position:absolute;
   inset:0;
   margin:auto;
-  width:56px;
-  height:56px;
+  width:40px;
+  height:40px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -417,37 +438,25 @@ a:hover{color:var(--texto-sec)}
   background:rgba(10,3,6,.6);
   border:1px solid rgba(255,255,255,.3);
   color:var(--acento);
-  cursor:pointer;
 }
-.attribute-media__play svg{width:24px;height:24px;margin-left:2px}
+.tactica-thumb__play svg{width:18px;height:18px;margin-left:1px}
 @media(prefers-reduced-motion:no-preference){
-  .attribute-media__play{transition:background 120ms ease-out}
+  .tactica-thumb__media{transition:outline-color 120ms ease-out}
 }
-.attribute-media__play:hover{background:rgba(10,3,6,.8)}
-.attribute-media__sound{
-  position:absolute;
-  top:10px;
-  right:10px;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(10,3,6,.6);
-  border:1px solid rgba(255,255,255,.25);
-  color:var(--acento);
-  cursor:pointer;
-}
-.attribute-media__sound svg{width:16px;height:16px}
-.attribute-media__sound[hidden]{display:none}
-.attribute-body{display:flex;flex-direction:column;gap:12px;padding:20px 20px 24px}
-.attribute-name{margin:0;font-family:var(--display);font-weight:400;font-size:22px;line-height:1.15;text-transform:uppercase}
-.attribute-stat{display:flex;flex-direction:column}
-.attribute-stat__value{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,40px);line-height:1;color:var(--acento)}
-.attribute-stat__label{margin:2px 0 0;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--texto-sec)}
-.attribute-stat__competition{margin:1px 0 0;font-size:11px;font-style:italic;color:var(--texto-sec);opacity:.75}
-.attribute-desc{margin:0;font-size:14px;line-height:1.5;color:var(--texto-sec);font-style:italic}
+.tactica-thumb:hover .tactica-thumb__media,
+.tactica-thumb:focus-visible .tactica-thumb__media{outline:2px solid var(--acento);outline-offset:2px}
+.tactica-thumb:focus-visible{outline:none}
+.tactica-detail{display:flex;gap:16px;align-items:flex-start;margin-top:32px;padding-top:32px;border-top:1px solid var(--linea)}
+.tactica-detail[hidden]{display:none}
+.tactica-detail__photo{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none}
+.tactica-detail__body{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tactica-detail__name{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-stat__top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tactica-stat__value{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,40px);line-height:1;color:var(--acento)}
+.tactica-stat__competition{font-size:12px;font-style:italic;color:var(--texto-sec);opacity:.8}
+.tactica-stat__label{margin:4px 0 0;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-detail__desc{margin:0;font-size:14px;line-height:1.5;color:var(--texto-sec);font-style:italic}
+.tactica-print-list{display:none}
 
 /* ---------- lista de compartir (reusada tal cual del CV actual: cv.css, sección
    "lista de compartir (computadora)" — mismo mecanismo, misma lógica
@@ -498,13 +507,13 @@ a:hover{color:var(--texto-sec)}
 /* ---------- impresión (tal como venía en el archivo de Claude Design) ---------- */
 @media print{
   video,[data-no-print],[data-career-wide]{display:none!important}
-  /* .attribute-media entero, no sólo el <video> de adentro: tiene su
-     propio aspect-ratio:16/9 fijo en el contenedor, así que ocultar
-     sólo el video dejaría la caja vacía del mismo tamaño — el hueco
-     que la consigna pedía evitar. Sin ese primer hijo, .attribute-card
-     (flex column) se achica solo al alto real de nombre+dato+
-     descripción, nada que reacomodar a mano. */
-  .attribute-media{display:none!important}
+  /* El reproductor, las miniaturas y el bloque de detalle son todos
+     JS/interactivos y sólo muestran un clip a la vez — en papel no
+     sirven. Se reemplazan enteros por .tactica-print-list, una lista
+     estática con los cinco atributos (dato + descripción) siempre
+     completa, sin depender de cuál clip quedó elegido en pantalla. */
+  .tactica-player,.tactica-subtitle,.tactica-thumbs,.tactica-detail{display:none!important}
+  .tactica-print-list{display:block!important}
   body{background:#fff;color:#000}
   [data-reveal]{opacity:1!important;transform:none!important}
   [data-career-stage]{align-items:flex-start!important;padding-bottom:24px!important;break-inside:avoid}
@@ -766,111 +775,50 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <!-- 4 · ATRIBUTOS CLAVE — mismo fondo que Comparativa (bordo), sin ola
-       entre las dos. Cinco tarjetas: nombre, dato (número grande +
-       competencia chica, mismo tratamiento que las estadísticas de
-       temporada), descripción y video. Ninguno de los cinco arranca
-       solo — ver data-src más abajo: el <video> no tiene src hasta
-       que se toca el play, así el archivo no se descarga solo. Pases
-       progresivos no tiene dato todavía: su tarjeta no arma
-       .attribute-stat en absoluto (ni "pendiente" ni un guion, como
-       pedía la consigna). -->
-  <section aria-labelledby="t-atributos" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <!-- 4 · TÁCTICA — reproductor grande + miniaturas intercambiables,
+       ver initTactica en el script. Arranca con el highlight general
+       en el reproductor y los otros cinco clips de miniatura; al
+       elegir una miniatura, intercambia lugar con lo que estaba en el
+       reproductor grande, así siempre hay exactamente cinco
+       miniaturas y un video grande, nunca un clip repetido en los dos
+       lugares a la vez. -->
+  <section aria-labelledby="t-tactica" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
-      <h2 id="t-atributos" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">ATRIBUTOS CLAVE</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px;">
+      <h2 id="t-tactica" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">TÁCTICA</h2>
 
-        <article data-reveal class="attribute-card">
-          <div class="attribute-media">
-            <video class="attribute-media__video" poster="../assets/neira-anticipacion.jpg" muted playsinline preload="none" data-src="../assets/neira-anticipacion.mp4" aria-label="Video — Anticipación, Ezequiel Neira"></video>
-            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Anticipación">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
-          </div>
-          <div class="attribute-body">
-            <h3 class="attribute-name">Anticipación</h3>
-            <div class="attribute-stat">
-              <p class="attribute-stat__value">0,3</p>
-              <p class="attribute-stat__label">Intercepciones por partido</p>
-              <p class="attribute-stat__competition">Copa Sudamericana</p>
-            </div>
-            <p class="attribute-desc">“Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”</p>
-          </div>
-        </article>
+      <div data-reveal class="tactica-player">
+        <video id="tactica-video" class="tactica-player__video" autoplay muted loop playsinline controls preload="metadata" poster="../assets/neira-highlight.jpg" src="../assets/neira-highlight.mp4" aria-label="Reproductor de video táctico — Highlight general"></video>
+        <span id="tactica-player-label" class="tactica-player__label" aria-hidden="true">HIGHLIGHT GENERAL</span>
+      </div>
 
-        <article data-reveal class="attribute-card">
-          <div class="attribute-media">
-            <video class="attribute-media__video" poster="../assets/neira-juego-aereo.jpg" muted playsinline preload="none" data-src="../assets/neira-juego-aereo.mp4" aria-label="Video — Juego aéreo, Ezequiel Neira"></video>
-            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Juego aéreo">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
-          </div>
-          <div class="attribute-body">
-            <h3 class="attribute-name">Juego aéreo</h3>
-            <div class="attribute-stat">
-              <p class="attribute-stat__value">83%</p>
-              <p class="attribute-stat__label">De duelos aéreos ganados</p>
-              <p class="attribute-stat__competition">Copa Sudamericana</p>
-            </div>
-            <p class="attribute-desc">“Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”</p>
-          </div>
-        </article>
+      <h3 data-reveal class="tactica-subtitle">CLIPS DE DESEMPEÑO</h3>
+      <div id="tactica-thumbs" class="tactica-thumbs" data-reveal></div>
 
-        <article data-reveal class="attribute-card">
-          <div class="attribute-media">
-            <video class="attribute-media__video" poster="../assets/neira-pases.jpg" muted playsinline preload="none" data-src="../assets/neira-pases.mp4" aria-label="Video — Pases, Ezequiel Neira"></video>
-            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Pases">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
-          </div>
-          <div class="attribute-body">
-            <h3 class="attribute-name">Pases</h3>
-            <div class="attribute-stat">
-              <p class="attribute-stat__value">84%</p>
-              <p class="attribute-stat__label">De precisión de pase</p>
-              <p class="attribute-stat__competition">Liga FUTVE</p>
-            </div>
-            <p class="attribute-desc">“Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”</p>
-          </div>
-        </article>
+      <div id="tactica-detail" class="tactica-detail" hidden>
+        <img src="../assets/neira.jpg" alt="" class="tactica-detail__photo">
+        <div class="tactica-detail__body">
+          <p class="tactica-detail__name">EZEQUIEL NEIRA — <span id="tactica-detail-clip"></span></p>
+          <div id="tactica-detail-stat"></div>
+          <p id="tactica-detail-desc" class="tactica-detail__desc"></p>
+        </div>
+      </div>
 
-        <article data-reveal class="attribute-card">
-          <div class="attribute-media">
-            <video class="attribute-media__video" poster="../assets/neira-1v1.jpg" muted playsinline preload="none" data-src="../assets/neira-1v1.mp4" aria-label="Video — 1 vs 1 defensivo, Ezequiel Neira"></video>
-            <button type="button" class="attribute-media__play" aria-label="Reproducir video de 1 vs 1 defensivo">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
-          </div>
-          <div class="attribute-body">
-            <h3 class="attribute-name">1 vs 1 defensivo</h3>
-            <div class="attribute-stat">
-              <p class="attribute-stat__value">0,0</p>
-              <p class="attribute-stat__label">Veces regateado por partido</p>
-              <p class="attribute-stat__competition">Copa Sudamericana</p>
-            </div>
-            <p class="attribute-desc">“Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”</p>
-          </div>
-        </article>
+      <div id="tactica-announcer" aria-live="polite" class="sr-only"></div>
 
-        <article data-reveal class="attribute-card">
-          <div class="attribute-media">
-            <video class="attribute-media__video" poster="../assets/neira-pases-progresivos.jpg" muted playsinline preload="none" data-src="../assets/neira-pases-progresivos.mp4" aria-label="Video — Pases progresivos, Ezequiel Neira"></video>
-            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Pases progresivos">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
-          </div>
-          <div class="attribute-body">
-            <h3 class="attribute-name">Pases progresivos</h3>
-            <!-- sin dato todavía: sin .attribute-stat, nada de "pendiente" ni guion -->
-            <p class="attribute-desc">“Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”</p>
-          </div>
-        </article>
-
+      <!-- Sólo para impresión: ver @media print. El reproductor, las
+           miniaturas y el detalle no imprimen (son interactivos y
+           muestran un clip a la vez); esta lista estática trae los
+           cinco atributos completos, para que el dato no se pierda
+           en papel. -->
+      <div class="tactica-print-list">
+        <h3 style="margin:0 0 16px;font-family:var(--display);font-weight:400;font-size:22px;text-transform:uppercase;">Atributos</h3>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px;">
+          <li><strong>Anticipación — 0,3 intercepciones por partido (Copa Sudamericana).</strong> “Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”</li>
+          <li><strong>Juego aéreo — 83% de duelos aéreos ganados (Copa Sudamericana).</strong> “Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”</li>
+          <li><strong>Pases — 84% de precisión de pase (Liga FUTVE).</strong> “Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”</li>
+          <li><strong>1 vs 1 defensivo — 0,0 veces regateado por partido (Copa Sudamericana).</strong> “Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”</li>
+          <li><strong>Pases progresivos.</strong> “Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -1303,47 +1251,96 @@ a:hover{color:var(--texto-sec)}
     }
   })();
 
-  // ---------- atributos clave: video diferido, sin autoplay ----------
-  // El <video> no tiene src en el HTML (vive en data-src) — recién se
-  // asigna al primer click en play, que es el momento en que el
-  // archivo empieza a descargarse de verdad. Antes de eso sólo se ve
-  // el poster (un cuadro real del archivo). El botón de sonido
-  // arranca oculto y aparece recién cuando el video empieza a sonar
-  // (mudo, como arranca siempre) — no tiene sentido mostrarlo antes.
-  (function initAttributeCards() {
-    var ICON_UNMUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';
-    var ICON_MUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>';
+  // ---------- táctica: reproductor + miniaturas intercambiables ----------
+  // Un solo <video> real en toda la sección — el que está "grande".
+  // Las miniaturas son <img> (el poster, un cuadro real del propio
+  // archivo): nunca cargan su .mp4 hasta que se eligen, momento en el
+  // que pasan a ser el video grande y a la vez el anterior se vuelve
+  // miniatura. CLIPS fija el orden canónico; las miniaturas en
+  // pantalla son siempre CLIPS menos el que está arriba, así que el
+  // conteo de cinco es automático y no hace falta llevar índices de
+  // "huecos" a mano.
+  (function initTactica() {
+    var video = document.getElementById('tactica-video');
+    var playerLabel = document.getElementById('tactica-player-label');
+    var thumbsWrap = document.getElementById('tactica-thumbs');
+    var detail = document.getElementById('tactica-detail');
+    var detailClip = document.getElementById('tactica-detail-clip');
+    var detailStat = document.getElementById('tactica-detail-stat');
+    var detailDesc = document.getElementById('tactica-detail-desc');
+    var announcer = document.getElementById('tactica-announcer');
+    if (!video || !thumbsWrap) return;
 
-    document.querySelectorAll('.attribute-card').forEach(function (card) {
-      var video = card.querySelector('.attribute-media__video');
-      var playBtn = card.querySelector('.attribute-media__play');
-      var soundBtn = card.querySelector('.attribute-media__sound');
-      if (!video || !playBtn || !soundBtn) return;
+    var PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 
-      video.loop = true;
+    var CLIPS = [
+      { id: 'highlight', name: 'Highlight general', video: '../assets/neira-highlight.mp4', poster: '../assets/neira-highlight.jpg', isHighlight: true },
+      { id: 'anticipacion', name: 'Anticipación', video: '../assets/neira-anticipacion.mp4', poster: '../assets/neira-anticipacion.jpg', value: '0,3', label: 'Intercepciones por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”' },
+      { id: 'juego-aereo', name: 'Juego aéreo', video: '../assets/neira-juego-aereo.mp4', poster: '../assets/neira-juego-aereo.jpg', value: '83%', label: 'De duelos aéreos ganados', competition: 'Copa Sudamericana', desc: '“Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”' },
+      { id: 'pases', name: 'Pases', video: '../assets/neira-pases.mp4', poster: '../assets/neira-pases.jpg', value: '84%', label: 'De precisión de pase', competition: 'Liga FUTVE', desc: '“Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”' },
+      { id: '1v1', name: '1 vs 1 defensivo', video: '../assets/neira-1v1.mp4', poster: '../assets/neira-1v1.jpg', value: '0,0', label: 'Veces regateado por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”' },
+      { id: 'pases-progresivos', name: 'Pases progresivos', video: '../assets/neira-pases-progresivos.mp4', poster: '../assets/neira-pases-progresivos.jpg', desc: '“Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”' }
+    ];
 
-      function updateSoundBtn() {
-        soundBtn.setAttribute('aria-label', video.muted ? 'Activar el sonido' : 'Silenciar el video');
-        soundBtn.innerHTML = video.muted ? ICON_MUTED : ICON_UNMUTED;
+    var currentId = 'highlight';
+
+    function renderThumbsAndDetail(announce) {
+      var current = CLIPS.filter(function (c) { return c.id === currentId; })[0];
+
+      thumbsWrap.innerHTML = '';
+      CLIPS.forEach(function (clip) {
+        if (clip.id === currentId) return;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tactica-thumb';
+        btn.setAttribute('aria-label', 'Reproducir clip: ' + clip.name);
+        btn.innerHTML =
+          '<span class="tactica-thumb__name">' + escapeHtml(clip.name) + '</span>' +
+          '<span class="tactica-thumb__media"><img src="' + clip.poster + '" alt="" loading="lazy"><span class="tactica-thumb__play">' + PLAY_ICON + '</span></span>';
+        btn.addEventListener('click', function () { selectClip(clip.id); });
+        thumbsWrap.appendChild(btn);
+      });
+
+      if (current.isHighlight) {
+        detail.hidden = true;
+      } else {
+        detail.hidden = false;
+        detailClip.textContent = current.name.toUpperCase();
+        if (current.value) {
+          detailStat.innerHTML =
+            '<div class="tactica-stat__top"><p class="tactica-stat__value">' + escapeHtml(current.value) + '</p><span class="tactica-stat__competition">' + escapeHtml(current.competition) + '</span></div>' +
+            '<p class="tactica-stat__label">' + escapeHtml(current.label) + '</p>';
+        } else {
+          detailStat.innerHTML = '';
+        }
+        detailDesc.textContent = current.desc;
       }
 
-      playBtn.addEventListener('click', function () {
-        if (!video.src) {
-          video.src = video.dataset.src;
-          video.load();
+      if (announce && announcer) {
+        var msg = 'Mostrando clip: ' + current.name + '.';
+        if (!current.isHighlight && current.value) {
+          msg += ' ' + current.value + ' ' + current.label + ', ' + current.competition + '.';
         }
-        video.muted = true;
-        video.play().catch(function () {});
-        playBtn.hidden = true;
-        soundBtn.hidden = false;
-        updateSoundBtn();
-      });
+        announcer.textContent = msg;
+      }
+    }
 
-      soundBtn.addEventListener('click', function () {
-        video.muted = !video.muted;
-        updateSoundBtn();
-      });
-    });
+    function selectClip(id) {
+      if (id === currentId) return;
+      currentId = id;
+      var clip = CLIPS.filter(function (c) { return c.id === id; })[0];
+      video.pause();
+      video.src = clip.video;
+      video.poster = clip.poster;
+      video.setAttribute('aria-label', 'Reproductor de video táctico — ' + clip.name);
+      video.load();
+      video.muted = true;
+      video.play().catch(function () {});
+      if (playerLabel) playerLabel.textContent = clip.name.toUpperCase();
+      renderThumbsAndDetail(true);
+    }
+
+    renderThumbsAndDetail(false);
   })();
 
   // ---------- compartir: el mismo mecanismo del CV actual (ver
