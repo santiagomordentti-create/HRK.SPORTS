@@ -173,138 +173,12 @@ a:hover{color:var(--texto-sec)}
 }
 .press-card__meta strong{color:var(--texto);font-weight:600}
 
-/* ---------- estadísticas de temporada ----------
-   Mismo tratamiento que los valores del radar: número grande en
-   --display, etiqueta chica abajo en mayúsculas. */
-.season-stats{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:32px 56px;
-}
-.season-stat{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  text-align:center;
-  max-width:168px;
-}
-.season-stat__value{
-  margin:0;
-  font-family:var(--display);
-  font-weight:400;
-  font-size:clamp(36px,5vw,48px);
-  line-height:1;
-  color:var(--acento);
-}
-.season-stat__label{
-  margin:0;
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--texto-sec);
-}
-
-/* ---------- comparativa Liga FUTVE / Copa Sudamericana ----------
-   Tabla de verdad (no una grilla disfrazada): la métrica es un <th
-   scope="row">, cada valor un <td> — un lector de pantalla puede
-   navegarla por columna, no sólo leerla de corrido. Las filas donde
-   Sudamericana rinde claramente mejor llevan fondo claro + un check
-   junto al valor: así se ve la diferencia sin comparar número por
-   número, que es justo lo que pedía la consigna. Partidos/Minutos
-   (contexto, no comparación) y Precisión de pase (la única métrica
-   que baja) quedan con el mismo estilo neutro entre sí — no se
-   esconde ni se maquilla la que baja, simplemente no se festeja como
-   las otras cuatro. En celular (desde 700px) la tabla se apila: cada
-   fila pasa a ser un bloque con la métrica arriba y los dos valores
-   debajo, con su etiqueta de columna puesta por CSS (content:
-   attr(data-label)) — nada de scroll horizontal. */
-.compare-wrap{overflow-x:auto}
-.compare-table{width:100%;border-collapse:collapse}
-.compare-table thead th{
-  padding:12px 16px;
-  text-align:left;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--texto-sec);
-  border-bottom:2px solid var(--linea);
-}
-.compare-table thead th:not(:first-child){text-align:center}
-.compare-table tbody th,
-.compare-table tbody td{
-  padding:16px;
-  border-bottom:1px solid var(--linea);
-  font-size:17px;
-}
-.compare-table tbody th{text-align:left;font-weight:600}
-.compare-table tbody td{
-  text-align:center;
-  font-family:var(--display);
-  font-weight:400;
-  font-size:22px;
-}
-.compare-row--up{background:rgba(255,255,255,.07)}
-.compare-row--up td:last-child{color:var(--acento);font-weight:400}
-/* El "▲" va en el ::after del <span> interno, no del <td>: en celular
-   el <td> es un flex container (label a la izquierda, valor a la
-   derecha, ver más abajo) — un ::after puesto directo en el <td>
-   cuenta como un tercer ítem del flex y space-between lo manda al
-   borde, lejos del número. Agrupado en el span, viaja pegado al
-   valor en los dos layouts. */
-.compare-value{display:inline-flex;align-items:baseline;gap:8px}
-.compare-row--up .compare-value::after{
-  content:'▲';
-  font-size:11px;
-  color:var(--acento);
-}
-
-@media(max-width:700px){
-  .compare-table thead{
-    position:absolute;
-    width:1px;height:1px;
-    padding:0;margin:-1px;
-    overflow:hidden;
-    clip:rect(0,0,0,0);
-    white-space:nowrap;
-    border:0;
-  }
-  .compare-table,.compare-table tbody,.compare-table tr{display:block;width:100%}
-  .compare-table tr{
-    margin-bottom:10px;
-    padding:14px 16px;
-    border:1px solid var(--linea);
-  }
-  .compare-row--up{border-color:rgba(255,255,255,.4)}
-  .compare-table tbody th,.compare-table tbody td{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    padding:5px 0;
-    border:none;
-    text-align:left;
-  }
-  .compare-table tbody th{
-    padding-bottom:10px;
-    font-size:13px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--texto-sec);
-  }
-  .compare-table tbody td{font-size:19px}
-  .compare-table tbody td::before{
-    content:attr(data-label);
-    font-family:var(--cuerpo);
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--texto-sec);
-  }
-}
+/* Estadísticas de temporada y comparativa Liga FUTVE / Copa
+   Sudamericana: fuera por ahora (mal ubicadas en la página). Los
+   datos quedan comentados en el HTML, donde vivía cada bloque, para
+   reponerlos sin tener que volver a cargarlos. Este CSS (.season-*,
+   .compare-*) se borró entero por quedar sin uso — si se repone el
+   HTML, hay que reponer también las reglas, no sólo descomentar. */
 
 .contact-cta{
   margin-top:16px;
@@ -388,8 +262,9 @@ a:hover{color:var(--texto-sec)}
    initTactica más abajo. Sólo el clip que está en el reproductor
    grande se descarga: las miniaturas son <img> (el poster, un cuadro
    real sacado del propio archivo), nunca <video>. El bloque de
-   detalle reutiliza el tratamiento de .season-stat (número grande,
-   etiqueta chica) para que el dato pese más que la descripción. */
+   detalle lleva número grande y etiqueta chica (mismo criterio que
+   las estadísticas de temporada, cuando estaban) para que el dato
+   pese más que la descripción. */
 .tactica-player{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
 .tactica-player__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .tactica-player__label{
@@ -639,6 +514,10 @@ a:hover{color:var(--texto-sec)}
           <figcaption style="font-size: 14px; color: var(--texto-sec); text-align: center;">Atributos según Sofascore · escala 0 a 100</figcaption>
         </figure>
       </div>
+      <!-- Estadísticas de temporada: afuera por estar mal ubicadas en
+           la página (pedido explícito). Dato preservado para reponer
+           sin recargarlo — falta también el CSS .season-stats/
+           .season-stat*, borrado por quedar sin uso.
       <div data-reveal class="season-stats">
         <div class="season-stat">
           <p class="season-stat__value">27</p>
@@ -657,6 +536,7 @@ a:hover{color:var(--texto-sec)}
           <p class="season-stat__label">Veces en el Equipo de la Semana</p>
         </div>
       </div>
+      -->
       <div data-reveal style="margin-top: 32px; display: flex; justify-content: center;">
         <nav aria-labelledby="t-encontrarlo" style="max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 24px; padding: 8px 16px 8px 32px; border: 1px solid #FFFFFF; border-radius: 9999px; background: #47101D;">
           <h2 id="t-encontrarlo" style="margin: 0; font-family: var(--cuerpo); font-weight: 600; font-size: 12px; line-height: 1.5; letter-spacing: .16em; text-transform: uppercase; color: #FFFFFF; text-align: center;">DÓNDE ENCONTRARLO</h2>
@@ -708,14 +588,14 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <!-- 3 · COMPARATIVA INTERNACIONAL — mismo fondo que Ficha (bordo), sin
-       ola entre las dos: siguen una a la otra sin corte de color. Es el
-       contenido más valioso de la página: las filas donde Sudamericana
-       rinde claramente mejor (duelos ganados, duelos aéreos,
-       despejes/partido, veces regateado) se destacan con fondo y check;
-       partidos/minutos quedan neutros (son contexto, no comparación); y
-       precisión de pase —la única que baja— se muestra en ese mismo
-       estilo neutro, ni escondida ni maquillada. -->
+  <!-- 3 · COMPARATIVA INTERNACIONAL: afuera por ahora (mal ubicada en
+       la página, pedido explícito). Sección entera comentada para
+       reponer el dato sin recargarlo — falta también el CSS
+       .compare-wrap / .compare-table / .compare-row (modificador
+       "up") / .compare-value, borrado por quedar sin uso. Ficha y
+       Táctica comparten fondo y ya seguían una a la otra sin ola
+       entre medio, así que sacar esta sección no deja hueco ni dos
+       ondas pegadas.
   <section aria-labelledby="t-comparativa" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-comparativa" data-reveal style="margin: 0 0 16px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">DEL ÁMBITO LOCAL AL INTERNACIONAL</h2>
@@ -774,6 +654,7 @@ a:hover{color:var(--texto-sec)}
       <p data-reveal style="margin: 24px 0 0; font-size: 16px; line-height: 1.6; color: var(--texto); max-width: 68ch;">El rendimiento defensivo de Eze mantiene un alto nivel de eficacia ante competencia internacional, especialmente en duelos individuales y juego aéreo.</p>
     </div>
   </section>
+  -->
 
   <!-- 4 · TÁCTICA — reproductor grande + miniaturas intercambiables,
        ver initTactica en el script. Arranca con el highlight general
