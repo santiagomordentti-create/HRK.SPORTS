@@ -184,6 +184,67 @@ a:hover{color:var(--texto-sec)}
 .news-card--social .news-card__social-account{font-size:15px;font-weight:600}
 .news-card--social .news-card__social-date{font-size:13px;color:var(--texto-sec)}
 
+/* ---------- galería: carrusel horizontal con autoavance ----------
+   La caja del epígrafe es blanca a propósito (lo único blanco de la
+   página) con el texto en --bordo: 16.94:1 de contraste, pasa AA y
+   AAA de sobra. Va pegada a la foto, sin gap entre .gallery__img y
+   .gallery__caption, para que se lean como una sola pieza. El
+   autoavance (ver initGallery) se frena para siempre en el primer
+   hover/foco/touch/drag y no vuelve a arrancar; con movimiento
+   reducido no arranca nunca. */
+.gallery{position:relative}
+.gallery__track{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+  list-style:none;
+  margin:0;
+  padding:0 0 4px;
+}
+.gallery__track:focus-visible{outline:2px solid var(--acento);outline-offset:4px}
+.gallery__item{flex:0 0 clamp(170px,22vw,260px);scroll-snap-align:start}
+.gallery__figure{margin:0;display:flex;flex-direction:column}
+.gallery__img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#000}
+.gallery__caption{
+  display:block;
+  width:100%;
+  padding:10px 12px;
+  background:#FFFFFF;
+  color:var(--bordo);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.02em;
+  text-align:left;
+}
+.gallery__arrow{
+  position:absolute;
+  top:calc(50% - 20px);
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,3,6,.7);
+  border:1px solid rgba(255,255,255,.4);
+  color:var(--acento);
+  cursor:pointer;
+  z-index:2;
+}
+.gallery__arrow svg{width:20px;height:20px}
+.gallery__arrow:hover,.gallery__arrow:focus-visible{border-color:var(--acento)}
+.gallery__arrow--prev{left:-8px}
+.gallery__arrow--next{right:-8px}
+@media(max-width:700px){
+  .gallery__arrow{display:none}
+}
+.gallery-print{display:none;grid-template-columns:repeat(3,1fr);gap:16px;list-style:none;margin:0;padding:0}
+.gallery-print li{display:flex;flex-direction:column}
+.gallery-print img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.gallery-print figcaption{padding:8px 10px;background:#FFFFFF;color:var(--bordo);font-size:12px;font-weight:700}
+
 /* Estadísticas de temporada y comparativa Liga FUTVE / Copa
    Sudamericana: fuera por ahora (mal ubicadas en la página). Los
    datos quedan comentados en el HTML, donde vivía cada bloque, para
@@ -426,6 +487,11 @@ a:hover{color:var(--texto-sec)}
      completa, sin depender de cuál clip quedó elegido en pantalla. */
   .tactica-player,.tactica-subtitle,.tactica-thumbs,.tactica-detail{display:none!important}
   .tactica-print-list{display:block!important}
+  /* El carrusel no imprime (es interactivo y sólo muestra unas pocas
+     fotos a la vez); se reemplaza por una grilla estática con las
+     cinco fotos completas y su epígrafe. */
+  .gallery{display:none!important}
+  .gallery-print{display:grid!important}
   body{background:#fff;color:#000}
   [data-reveal]{opacity:1!important;transform:none!important}
   [data-career-stage]{align-items:flex-start!important;padding-bottom:24px!important;break-inside:avoid}
@@ -852,6 +918,70 @@ a:hover{color:var(--texto-sec)}
         </li>
 
       </ol>
+    </div>
+  </section>
+
+  <!-- 5b · GALERÍA — mismo fondo que Carrera (superficie), sin ola
+       entre las dos. Carrusel horizontal con autoavance (ver
+       initGallery): se frena para siempre en el primer hover, foco de
+       teclado, touch o drag, y nunca arranca si hay preferencia de
+       movimiento reducido. Las flechas y el arrastre nativo del
+       navegador cubren el resto del movimiento manual. -->
+  <section aria-labelledby="t-galeria" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+    <div style="max-width: 1152px; margin: 0 auto;">
+      <h2 id="t-galeria" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">GALERÍA</h2>
+
+      <div id="gallery" class="gallery" data-reveal>
+        <button type="button" id="gallery-prev" class="gallery__arrow gallery__arrow--prev" aria-label="Foto anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <ul id="gallery-track" class="gallery__track" tabindex="0" aria-label="Fotos de Ezequiel Neira">
+          <li class="gallery__item">
+            <figure class="gallery__figure">
+              <img class="gallery__img" src="../assets/galeria-01.jpg" alt="Ezequiel Neira besa el trofeo de campeón, con la medalla del Clausura 2025 colgada al cuello." loading="eager">
+              <figcaption class="gallery__caption">Campeón Clausura 2025</figcaption>
+            </figure>
+          </li>
+          <li class="gallery__item">
+            <figure class="gallery__figure">
+              <img class="gallery__img" src="../assets/galeria-02.jpg" alt="Ezequiel Neira entrena con una pechera de la Copa Libertadores, dominando la pelota en la entrada en calor." loading="lazy">
+              <figcaption class="gallery__caption">Libertadores 2026</figcaption>
+            </figure>
+          </li>
+          <li class="gallery__item">
+            <figure class="gallery__figure">
+              <img class="gallery__img" src="../assets/galeria-03.jpg" alt="Ezequiel Neira celebra un gol corriendo junto a un compañero, con la tribuna de fondo." loading="lazy">
+              <figcaption class="gallery__caption">Gol vs Bragantino</figcaption>
+            </figure>
+          </li>
+          <li class="gallery__item">
+            <figure class="gallery__figure">
+              <img class="gallery__img" src="../assets/galeria-04.jpg" alt="Ezequiel Neira se desliza en una entrada defensiva frente a un jugador de River Plate." loading="lazy">
+              <figcaption class="gallery__caption">Vs River</figcaption>
+            </figure>
+          </li>
+          <li class="gallery__item">
+            <figure class="gallery__figure">
+              <img class="gallery__img" src="../assets/galeria-05.jpg" alt="Ezequiel Neira sonríe sosteniendo el trofeo de campeón del Apertura 2026, con la medalla al cuello." loading="lazy">
+              <figcaption class="gallery__caption">Campeón Apertura</figcaption>
+            </figure>
+          </li>
+        </ul>
+        <button type="button" id="gallery-next" class="gallery__arrow gallery__arrow--next" aria-label="Foto siguiente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <!-- Sólo para impresión: ver @media print. El carrusel es
+           interactivo y sólo muestra unas pocas fotos a la vez; en
+           papel van las cinco en grilla, cada una con su epígrafe. -->
+      <ul class="gallery-print">
+        <li><img src="../assets/galeria-01.jpg" alt="Ezequiel Neira besa el trofeo de campeón, con la medalla del Clausura 2025 colgada al cuello." loading="lazy"><figcaption>Campeón Clausura 2025</figcaption></li>
+        <li><img src="../assets/galeria-02.jpg" alt="Ezequiel Neira entrena con una pechera de la Copa Libertadores, dominando la pelota en la entrada en calor." loading="lazy"><figcaption>Libertadores 2026</figcaption></li>
+        <li><img src="../assets/galeria-03.jpg" alt="Ezequiel Neira celebra un gol corriendo junto a un compañero, con la tribuna de fondo." loading="lazy"><figcaption>Gol vs Bragantino</figcaption></li>
+        <li><img src="../assets/galeria-04.jpg" alt="Ezequiel Neira se desliza en una entrada defensiva frente a un jugador de River Plate." loading="lazy"><figcaption>Vs River</figcaption></li>
+        <li><img src="../assets/galeria-05.jpg" alt="Ezequiel Neira sonríe sosteniendo el trofeo de campeón del Apertura 2026, con la medalla al cuello." loading="lazy"><figcaption>Campeón Apertura</figcaption></li>
+      </ul>
     </div>
   </section>
 
@@ -1299,6 +1429,73 @@ a:hover{color:var(--texto-sec)}
     }
 
     renderThumbsAndDetail(false);
+  })();
+
+  // ---------- galería: carrusel con autoavance ----------
+  // El autoavance se frena para siempre (no sólo "pausa") en la
+  // primera señal de interacción humana — hover, foco de teclado,
+  // touch o drag — porque un carrusel que vuelve a arrancar solo
+  // después de que alguien lo paró es peor que uno que nunca arrancó.
+  // Con prefers-reduced-motion directamente no se arma el intervalo.
+  (function initGallery() {
+    var root = document.getElementById('gallery');
+    var track = document.getElementById('gallery-track');
+    var prevBtn = document.getElementById('gallery-prev');
+    var nextBtn = document.getElementById('gallery-next');
+    if (!root || !track || !prevBtn || !nextBtn) return;
+
+    var AUTOPLAY_MS = 3500;
+    var timer = null;
+    var stopped = reduce;
+
+    function itemStep() {
+      var item = track.querySelector('.gallery__item');
+      if (!item) return 0;
+      var style = getComputedStyle(track);
+      var gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+      return item.getBoundingClientRect().width + gap;
+    }
+
+    function atEnd() {
+      return track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    }
+
+    function advance(dir) {
+      var behavior = reduce ? 'auto' : 'smooth';
+      if (dir > 0 && atEnd()) {
+        track.scrollTo({ left: 0, behavior: behavior });
+        return;
+      }
+      track.scrollBy({ left: dir * itemStep(), behavior: behavior });
+    }
+
+    function stopAutoplay() {
+      stopped = true;
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    function startAutoplay() {
+      if (stopped || timer) return;
+      timer = setInterval(function () { advance(1); }, AUTOPLAY_MS);
+    }
+
+    prevBtn.addEventListener('click', function () { stopAutoplay(); advance(-1); });
+    nextBtn.addEventListener('click', function () { stopAutoplay(); advance(1); });
+
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { stopAutoplay(); advance(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { stopAutoplay(); advance(-1); e.preventDefault(); }
+    });
+
+    // Cualquiera de estas cuatro señales frena el autoavance para
+    // siempre: mouseenter (cursor), focusin (teclado — Tab hasta una
+    // flecha o hasta el propio carrusel), touchstart y pointerdown
+    // (arrastre).
+    ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(function (evt) {
+      root.addEventListener(evt, stopAutoplay, { passive: true });
+    });
+
+    if (!reduce) startAutoplay();
   })();
 
   // ---------- compartir: el mismo mecanismo del CV actual (ver
