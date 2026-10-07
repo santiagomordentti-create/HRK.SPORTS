@@ -76,27 +76,6 @@ a:hover{color:var(--texto-sec)}
 }
 .btn-chip--ghost:hover{border-color:#FFFFFF;background:rgba(255,255,255,.08)}
 
-.scroll-cue{
-  position:absolute;
-  z-index:3;
-  right:clamp(24px,6vw,64px);
-  bottom:72px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  min-width:44px;
-  min-height:44px;
-  padding:8px;
-  color:var(--acento);
-  text-decoration:none;
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:.2em;
-  transition:opacity 120ms ease-out;
-}
-.scroll-cue:hover{opacity:.7}
-
 .profile-link{
   display:grid;
   place-items:center;
@@ -519,15 +498,15 @@ a:hover{color:var(--texto-sec)}
       <p data-hero-item style="margin: 16px 0 0; font-size: 16px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;">DEFENSOR CENTRAL · CARABOBO FC</p>
     </div>
 
-    <div data-no-print style="position: absolute; z-index: 3; right: clamp(24px, 6vw, 64px); top: 24px; display: flex; gap: 8px;">
-      <button type="button" id="btn-play" class="btn-chip" aria-pressed="false">Pausar</button>
-      <button type="button" id="btn-sound" class="btn-chip" aria-pressed="false">Activar sonido</button>
+    <!-- El video de fondo arranca solo, mudo, en bucle, sin controles
+         visibles. Excepción deliberada: con prefers-reduced-motion
+         activado el video NO arranca solo (ver initVideo), así que
+         sin este botón quedaría una imagen fija sin forma de verlo —
+         por eso existe, parte "hidden" en el HTML, y JS lo muestra
+         sólo en ese caso puntual. -->
+    <div data-no-print style="position: absolute; z-index: 3; right: clamp(24px, 6vw, 64px); top: 24px;">
+      <button type="button" id="btn-play" class="btn-chip" hidden aria-pressed="false">Reproducir</button>
     </div>
-
-    <a href="#ficha" data-no-print id="scroll-cue" class="scroll-cue">
-      <span>BAJÁ</span>
-      <span aria-hidden="true" style="display: block; width: 1px; height: 32px; background: var(--acento);"></span>
-    </a>
 
     <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="position: absolute; z-index: 2; left: 0; bottom: -1px; display: block; width: 100%; height: 56px;">
       <path d="M0,48 C320,8 720,88 1080,40 C1240,20 1360,28 1440,40 L1440,80 L0,80 Z" fill="#3B0A14"></path>
@@ -921,8 +900,17 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <!-- 5b · GALERÍA — mismo fondo que Carrera (superficie), sin ola
-       entre las dos. Carrusel horizontal con autoavance (ver
+  <!-- Carrera y Galería son del mismo color (superficie): la ola es
+       puramente decorativa acá (fill = mismo superficie que el
+       fondo), sólo para que la línea de acento marque la unión como
+       en el resto de la página. Curva propia, distinta a las demás,
+       para que no se note repetida. -->
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--superficie); margin-bottom: -1px;">
+    <path d="M0,36 C280,84 620,-4 980,44 C1180,72 1320,24 1440,48 L1440,80 L0,80 Z" fill="#521423"></path>
+    <path d="M0,36 C280,84 620,-4 980,44 C1180,72 1320,24 1440,48" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+  </svg>
+
+  <!-- 5b · GALERÍA — carrusel horizontal con autoavance (ver
        initGallery): se frena para siempre en el primer hover, foco de
        teclado, touch o drag, y nunca arranca si hay preferencia de
        movimiento reducido. Las flechas y el arrastre nativo del
@@ -1158,42 +1146,33 @@ a:hover{color:var(--texto-sec)}
   (function initVideo() {
     var video = document.getElementById('hero-video');
     var playBtn = document.getElementById('btn-play');
-    var soundBtn = document.getElementById('btn-sound');
-    if (!video || !playBtn || !soundBtn) return;
+    if (!video || !playBtn) return;
 
     function updatePlayBtn() {
       var paused = video.paused;
       playBtn.textContent = paused ? 'Reproducir' : 'Pausar';
       playBtn.setAttribute('aria-pressed', String(paused));
     }
-    function updateSoundBtn() {
-      soundBtn.textContent = video.muted ? 'Activar sonido' : 'Silenciar';
-      soundBtn.setAttribute('aria-pressed', String(!video.muted));
-    }
 
     video.muted = true;
-    updatePlayBtn();
-    updateSoundBtn();
-    if (!reduce) {
-      video.play().then(updatePlayBtn).catch(function () {});
+    if (reduce) {
+      // Único caso donde el botón existe: sin autoplay y sin este
+      // botón, el video quedaría congelado en el poster para siempre.
+      playBtn.hidden = false;
+      updatePlayBtn();
+      playBtn.addEventListener('click', function () {
+        if (video.paused) video.play().then(updatePlayBtn).catch(function () {});
+        else { video.pause(); updatePlayBtn(); }
+      });
+    } else {
+      video.play().catch(function () {});
     }
-
-    playBtn.addEventListener('click', function () {
-      if (video.paused) video.play().then(updatePlayBtn).catch(function () {});
-      else { video.pause(); updatePlayBtn(); }
-    });
-    soundBtn.addEventListener('click', function () {
-      video.muted = !video.muted;
-      if (!video.muted && video.paused) video.play().then(updatePlayBtn).catch(function () {});
-      updateSoundBtn();
-    });
 
     // Fundido del video y del texto del hero al scrollear — el texto
     // sólo empieza a atenuarse una vez terminada la entrada (igual con
     // movimiento reducido: ahí la entrada ni corre, así que el texto
     // nunca se atenúa con el scroll).
     var heroText = document.getElementById('hero-text');
-    var scrollCue = document.getElementById('scroll-cue');
     var introDone = false;
     var raf = null;
     window.addEventListener('scroll', function () {
@@ -1204,7 +1183,6 @@ a:hover{color:var(--texto-sec)}
         var t = Math.max(0, 1 - y / (h * 0.35));
         var vo = Math.max(0, 1 - y / (h * 0.9));
         if (heroText && introDone) heroText.style.opacity = t;
-        if (scrollCue) scrollCue.style.opacity = t;
         video.style.opacity = vo;
       });
     }, { passive: true });
