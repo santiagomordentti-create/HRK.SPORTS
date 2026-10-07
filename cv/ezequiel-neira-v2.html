@@ -383,6 +383,72 @@ a:hover{color:var(--texto-sec)}
 .career-path{display:none;align-self:stretch;width:100%;height:112px;overflow:visible}
 .career-line{display:none;position:absolute;left:var(--career-line-left,35px);top:var(--career-line-top,88px);bottom:8px;width:2px;background:var(--linea);transform-origin:top}
 
+/* ---------- atributos clave ----------
+   El video NO tiene src hasta que se toca play (vive en data-src): así
+   el archivo no se descarga solo — con cinco videos de hasta 110MB en
+   una sola página, si cargaran todos de entrada sería carísimo en
+   datos y lentísimo. El poster (un cuadro real del propio archivo,
+   sacado con un frame real, no un placeholder) cubre el cuadrante
+   mientras tanto. El botón de sonido arranca oculto (hidden en el
+   HTML): no tiene sentido mostrarlo antes de que haya algo sonando. */
+.attribute-card{
+  display:flex;
+  flex-direction:column;
+  background:var(--superficie);
+  border:1px solid var(--linea);
+}
+.attribute-media{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  overflow:hidden;
+}
+.attribute-media__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.attribute-media__play{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,3,6,.6);
+  border:1px solid rgba(255,255,255,.3);
+  color:var(--acento);
+  cursor:pointer;
+}
+.attribute-media__play svg{width:24px;height:24px;margin-left:2px}
+@media(prefers-reduced-motion:no-preference){
+  .attribute-media__play{transition:background 120ms ease-out}
+}
+.attribute-media__play:hover{background:rgba(10,3,6,.8)}
+.attribute-media__sound{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,3,6,.6);
+  border:1px solid rgba(255,255,255,.25);
+  color:var(--acento);
+  cursor:pointer;
+}
+.attribute-media__sound svg{width:16px;height:16px}
+.attribute-media__sound[hidden]{display:none}
+.attribute-body{display:flex;flex-direction:column;gap:12px;padding:20px 20px 24px}
+.attribute-name{margin:0;font-family:var(--display);font-weight:400;font-size:22px;line-height:1.15;text-transform:uppercase}
+.attribute-stat{display:flex;flex-direction:column}
+.attribute-stat__value{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,40px);line-height:1;color:var(--acento)}
+.attribute-stat__label{margin:2px 0 0;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--texto-sec)}
+.attribute-stat__competition{margin:1px 0 0;font-size:11px;font-style:italic;color:var(--texto-sec);opacity:.75}
+.attribute-desc{margin:0;font-size:14px;line-height:1.5;color:var(--texto-sec);font-style:italic}
+
 /* ---------- lista de compartir (reusada tal cual del CV actual: cv.css, sección
    "lista de compartir (computadora)" — mismo mecanismo, misma lógica
    en JS más abajo, sólo con los alias de variables de acá arriba) ---------- */
@@ -432,6 +498,13 @@ a:hover{color:var(--texto-sec)}
 /* ---------- impresión (tal como venía en el archivo de Claude Design) ---------- */
 @media print{
   video,[data-no-print],[data-career-wide]{display:none!important}
+  /* .attribute-media entero, no sólo el <video> de adentro: tiene su
+     propio aspect-ratio:16/9 fijo en el contenedor, así que ocultar
+     sólo el video dejaría la caja vacía del mismo tamaño — el hueco
+     que la consigna pedía evitar. Sin ese primer hijo, .attribute-card
+     (flex column) se achica solo al alto real de nombre+dato+
+     descripción, nada que reacomodar a mano. */
+  .attribute-media{display:none!important}
   body{background:#fff;color:#000}
   [data-reveal]{opacity:1!important;transform:none!important}
   [data-career-stage]{align-items:flex-start!important;padding-bottom:24px!important;break-inside:avoid}
@@ -448,8 +521,8 @@ a:hover{color:var(--texto-sec)}
 
   <!-- 1 · HERO -->
   <header aria-label="Ezequiel Neira" style="position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bordo);">
-    <video id="hero-video" muted loop playsinline preload="metadata" poster="../assets/neira-hrk.jpg" aria-label="Video de Ezequiel Neira en partido" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--bordo); will-change: opacity;">
-      <source src="../assets/neira-hrk.mp4" type="video/mp4">
+    <video id="hero-video" muted loop playsinline preload="metadata" poster="../assets/neira-highlight.jpg" aria-label="Mejores acciones de Ezequiel Neira en la temporada" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--bordo); will-change: opacity;">
+      <source src="../assets/neira-highlight.mp4" type="video/mp4">
     </video>
     <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(59,10,20,.55);"></div>
 
@@ -693,12 +766,121 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
+  <!-- 4 · ATRIBUTOS CLAVE — mismo fondo que Comparativa (bordo), sin ola
+       entre las dos. Cinco tarjetas: nombre, dato (número grande +
+       competencia chica, mismo tratamiento que las estadísticas de
+       temporada), descripción y video. Ninguno de los cinco arranca
+       solo — ver data-src más abajo: el <video> no tiene src hasta
+       que se toca el play, así el archivo no se descarga solo. Pases
+       progresivos no tiene dato todavía: su tarjeta no arma
+       .attribute-stat en absoluto (ni "pendiente" ni un guion, como
+       pedía la consigna). -->
+  <section aria-labelledby="t-atributos" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+    <div style="max-width: 1152px; margin: 0 auto;">
+      <h2 id="t-atributos" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">ATRIBUTOS CLAVE</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px;">
+
+        <article data-reveal class="attribute-card">
+          <div class="attribute-media">
+            <video class="attribute-media__video" poster="../assets/neira-anticipacion.jpg" muted playsinline preload="none" data-src="../assets/neira-anticipacion.mp4" aria-label="Video — Anticipación, Ezequiel Neira"></video>
+            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Anticipación">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
+          </div>
+          <div class="attribute-body">
+            <h3 class="attribute-name">Anticipación</h3>
+            <div class="attribute-stat">
+              <p class="attribute-stat__value">0,3</p>
+              <p class="attribute-stat__label">Intercepciones por partido</p>
+              <p class="attribute-stat__competition">Copa Sudamericana</p>
+            </div>
+            <p class="attribute-desc">“Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”</p>
+          </div>
+        </article>
+
+        <article data-reveal class="attribute-card">
+          <div class="attribute-media">
+            <video class="attribute-media__video" poster="../assets/neira-juego-aereo.jpg" muted playsinline preload="none" data-src="../assets/neira-juego-aereo.mp4" aria-label="Video — Juego aéreo, Ezequiel Neira"></video>
+            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Juego aéreo">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
+          </div>
+          <div class="attribute-body">
+            <h3 class="attribute-name">Juego aéreo</h3>
+            <div class="attribute-stat">
+              <p class="attribute-stat__value">83%</p>
+              <p class="attribute-stat__label">De duelos aéreos ganados</p>
+              <p class="attribute-stat__competition">Copa Sudamericana</p>
+            </div>
+            <p class="attribute-desc">“Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”</p>
+          </div>
+        </article>
+
+        <article data-reveal class="attribute-card">
+          <div class="attribute-media">
+            <video class="attribute-media__video" poster="../assets/neira-pases.jpg" muted playsinline preload="none" data-src="../assets/neira-pases.mp4" aria-label="Video — Pases, Ezequiel Neira"></video>
+            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Pases">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
+          </div>
+          <div class="attribute-body">
+            <h3 class="attribute-name">Pases</h3>
+            <div class="attribute-stat">
+              <p class="attribute-stat__value">84%</p>
+              <p class="attribute-stat__label">De precisión de pase</p>
+              <p class="attribute-stat__competition">Liga FUTVE</p>
+            </div>
+            <p class="attribute-desc">“Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”</p>
+          </div>
+        </article>
+
+        <article data-reveal class="attribute-card">
+          <div class="attribute-media">
+            <video class="attribute-media__video" poster="../assets/neira-1v1.jpg" muted playsinline preload="none" data-src="../assets/neira-1v1.mp4" aria-label="Video — 1 vs 1 defensivo, Ezequiel Neira"></video>
+            <button type="button" class="attribute-media__play" aria-label="Reproducir video de 1 vs 1 defensivo">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
+          </div>
+          <div class="attribute-body">
+            <h3 class="attribute-name">1 vs 1 defensivo</h3>
+            <div class="attribute-stat">
+              <p class="attribute-stat__value">0,0</p>
+              <p class="attribute-stat__label">Veces regateado por partido</p>
+              <p class="attribute-stat__competition">Copa Sudamericana</p>
+            </div>
+            <p class="attribute-desc">“Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”</p>
+          </div>
+        </article>
+
+        <article data-reveal class="attribute-card">
+          <div class="attribute-media">
+            <video class="attribute-media__video" poster="../assets/neira-pases-progresivos.jpg" muted playsinline preload="none" data-src="../assets/neira-pases-progresivos.mp4" aria-label="Video — Pases progresivos, Ezequiel Neira"></video>
+            <button type="button" class="attribute-media__play" aria-label="Reproducir video de Pases progresivos">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button type="button" class="attribute-media__sound" aria-label="Activar el sonido" hidden></button>
+          </div>
+          <div class="attribute-body">
+            <h3 class="attribute-name">Pases progresivos</h3>
+            <!-- sin dato todavía: sin .attribute-stat, nada de "pendiente" ni guion -->
+            <p class="attribute-desc">“Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
   <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
     <path d="M0,24 C360,88 1080,-8 1440,52 L1440,80 L0,80 Z" fill="#521423"></path>
     <path d="M0,24 C360,88 1080,-8 1440,52" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <!-- 4 · CARRERA — cinco etapas reales (antes una plantilla sc-for) -->
+  <!-- 5 · CARRERA — cinco etapas reales (antes una plantilla sc-for) -->
   <section aria-labelledby="t-carrera" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-carrera" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">CARRERA</h2>
@@ -812,7 +994,7 @@ a:hover{color:var(--texto-sec)}
     <path d="M0,56 C400,0 960,96 1440,24" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <!-- 5 · PRENSA — cuatro notas reales, verificadas contra la fuente
+  <!-- 6 · PRENSA — cuatro notas reales, verificadas contra la fuente
        (titular, medio y fecha tal como figuran publicados, no
        deducidos de la URL). -->
   <section aria-labelledby="t-prensa" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
@@ -868,7 +1050,7 @@ a:hover{color:var(--texto-sec)}
     <path d="M0,40 C240,72 600,72 900,36 C1140,8 1320,16 1440,40" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <!-- 6 · PERFILES OFICIALES -->
+  <!-- 7 · PERFILES OFICIALES -->
   <section aria-labelledby="t-perfiles" style="background: var(--superficie); padding: clamp(64px, 8vw, 96px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px 64px; align-items: center;">
       <div data-reveal>
@@ -895,7 +1077,7 @@ a:hover{color:var(--texto-sec)}
     <path d="M0,32 C360,-8 840,88 1440,32 L1440,80 L0,80 Z" fill="#3B0A14"></path>
   </svg>
 
-  <!-- 7 · CONTACTO -->
+  <!-- 8 · CONTACTO -->
   <section aria-labelledby="t-contacto" style="background: var(--acento); color: var(--bordo); padding: clamp(80px, 12vw, 144px) clamp(24px, 6vw, 64px);">
     <div data-reveal style="max-width: 1152px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
       <h2 id="t-contacto" style="margin: 0; max-width: 18ch; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 7vw, 72px); line-height: 1.05; text-transform: uppercase; text-wrap: balance;">¿QUERÉS SABER MÁS DE EZEQUIEL NEIRA?</h2>
@@ -913,7 +1095,7 @@ a:hover{color:var(--texto-sec)}
     <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <!-- 8 · PIE -->
+  <!-- 9 · PIE -->
   <footer style="background: var(--bordo); padding: 64px clamp(24px, 6vw, 64px) 48px;">
     <div style="max-width: 1152px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px;">
       <p style="margin: 0; font-size: 14px; color: var(--texto-sec);">Material producido por HRK Sports y Santiago Mordentti</p>
@@ -1119,6 +1301,49 @@ a:hover{color:var(--texto-sec)}
     } else {
       window.addEventListener('resize', layout);
     }
+  })();
+
+  // ---------- atributos clave: video diferido, sin autoplay ----------
+  // El <video> no tiene src en el HTML (vive en data-src) — recién se
+  // asigna al primer click en play, que es el momento en que el
+  // archivo empieza a descargarse de verdad. Antes de eso sólo se ve
+  // el poster (un cuadro real del archivo). El botón de sonido
+  // arranca oculto y aparece recién cuando el video empieza a sonar
+  // (mudo, como arranca siempre) — no tiene sentido mostrarlo antes.
+  (function initAttributeCards() {
+    var ICON_UNMUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg>';
+    var ICON_MUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>';
+
+    document.querySelectorAll('.attribute-card').forEach(function (card) {
+      var video = card.querySelector('.attribute-media__video');
+      var playBtn = card.querySelector('.attribute-media__play');
+      var soundBtn = card.querySelector('.attribute-media__sound');
+      if (!video || !playBtn || !soundBtn) return;
+
+      video.loop = true;
+
+      function updateSoundBtn() {
+        soundBtn.setAttribute('aria-label', video.muted ? 'Activar el sonido' : 'Silenciar el video');
+        soundBtn.innerHTML = video.muted ? ICON_MUTED : ICON_UNMUTED;
+      }
+
+      playBtn.addEventListener('click', function () {
+        if (!video.src) {
+          video.src = video.dataset.src;
+          video.load();
+        }
+        video.muted = true;
+        video.play().catch(function () {});
+        playBtn.hidden = true;
+        soundBtn.hidden = false;
+        updateSoundBtn();
+      });
+
+      soundBtn.addEventListener('click', function () {
+        video.muted = !video.muted;
+        updateSoundBtn();
+      });
+    });
   })();
 
   // ---------- compartir: el mismo mecanismo del CV actual (ver
