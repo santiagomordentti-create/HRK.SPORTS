@@ -185,21 +185,33 @@ a:hover{color:var(--texto-sec)}
   place-items:center;
   background:var(--superficie);
 }
-.career-crest__pending{
-  width:100%;
-  height:100%;
-  display:grid;
-  place-items:center;
-  border:1px dashed rgba(255,255,255,.5);
+/* El escudo de Carabobo es granate con rayas — casi el mismo color
+   que el fondo de la página (--bordo/--superficie), se perdía. En vez
+   de resolverlo sólo para ese, el disco claro va atrás de los cinco:
+   así quedan parejos — ninguno "distinto" porque le hizo falta el
+   refuerzo y a los demás no. Blanco (--acento), no un color nuevo:
+   reusa el mismo blanco que ya usa la insignia "ACTUAL" y las olas.
+   Los escudos llegan con proporciones y "aire" interno muy distintos
+   (un círculo que llena casi todo su lienzo vs. un escudo con mucho
+   margen alrededor) — así que el tamaño real de cada <img> es una
+   variable por escudo (--crest-scale), no un valor fijo para los
+   cinco, para que el peso visual quede parecido. Decorativos: el
+   nombre del club ya está en texto al lado, por eso alt="" y
+   aria-hidden en el HTML. */
+.career-crest__disc{
+  position:absolute;
+  inset:8%;
   border-radius:50%;
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:.12em;
-  color:var(--texto-sec);
+  background:var(--acento);
 }
-.career-crest img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;opacity:0;transition:opacity 200ms ease-out}
-.career-crest img.is-loaded{opacity:1}
-.career-crest img.is-loaded + .career-crest__pending{opacity:0}
+.career-crest img{
+  position:relative;
+  z-index:1;
+  width:calc(var(--crest-scale, 0.8) * 100%);
+  height:calc(var(--crest-scale, 0.8) * 100%);
+  object-fit:contain;
+  display:block;
+}
 .career-ring{position:absolute;inset:-8px;border:2px solid var(--acento);border-radius:50%}
 .career-info{display:flex;flex-direction:column;gap:8px;padding-top:8px;min-width:0}
 .career-info__top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
@@ -448,7 +460,9 @@ a:hover{color:var(--texto-sec)}
         <li class="career-stage" data-career-stage data-actual="false">
           <div data-reveal data-career-card class="career-card">
             <div class="career-crest">
-              <div class="career-crest__pending" role="img" aria-label="Escudo de Instituto (pendiente)">ESCUDO</div>
+              <div class="career-crest__disc" aria-hidden="true"></div>
+              <img src="../assets/escudo-instituto.svg" alt="" aria-hidden="true" style="--crest-scale:0.74">
+
             </div>
             <div class="career-info">
               <div class="career-info__top">
@@ -467,7 +481,9 @@ a:hover{color:var(--texto-sec)}
         <li class="career-stage" data-career-stage data-actual="false">
           <div data-reveal data-career-card class="career-card">
             <div class="career-crest">
-              <div class="career-crest__pending" role="img" aria-label="Escudo de Desamparados (pendiente)">ESCUDO</div>
+              <div class="career-crest__disc" aria-hidden="true"></div>
+              <img src="../assets/escudo-desamparados.svg" alt="" aria-hidden="true" style="--crest-scale:0.78">
+
             </div>
             <div class="career-info">
               <div class="career-info__top">
@@ -485,7 +501,9 @@ a:hover{color:var(--texto-sec)}
         <li class="career-stage" data-career-stage data-actual="false">
           <div data-reveal data-career-card class="career-card">
             <div class="career-crest">
-              <div class="career-crest__pending" role="img" aria-label="Escudo de Sol de América (pendiente)">ESCUDO</div>
+              <div class="career-crest__disc" aria-hidden="true"></div>
+              <img src="../assets/escudo-sol-de-america.png" alt="" aria-hidden="true" style="--crest-scale:0.84">
+
             </div>
             <div class="career-info">
               <div class="career-info__top">
@@ -503,7 +521,9 @@ a:hover{color:var(--texto-sec)}
         <li class="career-stage" data-career-stage data-actual="false">
           <div data-reveal data-career-card class="career-card">
             <div class="career-crest">
-              <div class="career-crest__pending" role="img" aria-label="Escudo de Gimnasia y Tiro (pendiente)">ESCUDO</div>
+              <div class="career-crest__disc" aria-hidden="true"></div>
+              <img src="../assets/escudo-gimnasia-y-tiro.png" alt="" aria-hidden="true" style="--crest-scale:0.78">
+
             </div>
             <div class="career-info">
               <div class="career-info__top">
@@ -521,7 +541,9 @@ a:hover{color:var(--texto-sec)}
         <li class="career-stage" data-career-stage data-actual="true">
           <div data-reveal data-career-card class="career-card">
             <div class="career-crest">
-              <div class="career-crest__pending" role="img" aria-label="Escudo de Carabobo FC (pendiente)">ESCUDO</div>
+              <div class="career-crest__disc" aria-hidden="true"></div>
+              <img src="../assets/escudo-carabobo.png" alt="" aria-hidden="true" style="--crest-scale:0.78">
+
               <span aria-hidden="true" class="career-ring"></span>
             </div>
             <div class="career-info">
