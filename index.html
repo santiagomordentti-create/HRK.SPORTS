@@ -861,6 +861,22 @@
      de la curva en ese punto. */
   .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-item);flex-wrap:wrap;padding:calc(36px + 90px) 0 36px}
   @media(max-width:640px){.foot{padding-top:calc(36px + 54px)}}
+  /* Medido: .foot (logo, copyright, Instagram/Mail) deja de entrar en
+     una sola fila y pasa a flex-wrap bastante antes de los 640px de
+     arriba (ya a partir de ~520px) y no vuelve a verse como una fila
+     prolija hasta los 700px — por eso esta centrada usa su propio
+     quiebre, más ancho, en vez de reusar el de 640 (se probó: a 641px y
+     a 680px todavía quedaba la misma fila angosta pegada a la
+     izquierda que el pedido reportaba, sólo por debajo de 700px se ve
+     prolija de nuevo en una sola fila). justify-content:space-between,
+     pensado para esa fila ancha, pegaba los tres contra el borde
+     izquierdo en cuanto pasaban a varios renglones en vez de centrarlos.
+     La banda de abajo (.foot-credit-band) no se toca: ya centra su
+     contenido con text-align:center propio, sin pasar por .foot. */
+  @media(max-width:700px){
+    .foot{flex-direction:column;justify-content:center;text-align:center}
+    .foot-social{justify-content:center}
+  }
   .foot .logo{color:var(--bg);font-size:1.1rem}
   .foot p{color:#57534d;font-size:var(--text-sm);line-height:var(--leading)}
   .foot-social{display:flex;gap:var(--space-item)}
@@ -1022,6 +1038,36 @@
     .foot-credit-band{padding-bottom:96px}
     .press{min-height:560px;height:auto;padding:var(--space-section) 0}
     .press-media::after{background:linear-gradient(to bottom,rgba(250,248,246,.55) 0%,rgba(250,248,246,.97) 100%)}
+    /* ---------- RESPLANDOR: aire antes de la curva, en celular ----------
+       Causa real del resplandor cruzando contenido en celular (reportado
+       en Nosotros, Servicios, Proyectos, Deportistas, Cómo trabajamos y
+       Contacto): nada tiene una posición "vieja" ni desactualizada — la
+       curva y el resplandor comparten el mismo path y el mismo anclaje
+       top:0/bottom:0 de cada sección, así que siguen el borde real de la
+       sección a cualquier alto, en cualquier ancho. Medido con captura +
+       muestreo de píxeles: el hueco entre el último bloque de contenido
+       y donde arranca la curva es --space-section (el padding propio de
+       cada sección) — en desktop, 96px dejan ~29px de sobra sobre lo que
+       el resplandor necesita para apagarse del todo antes de tocar
+       contenido. ACÁ MISMO, --space-section baja a 64px (-32px) — pero
+       --glow-reach (el alcance del resplandor) no se achica en la misma
+       media query: recién baja más abajo, a los 640px. Esos 32px de
+       diferencia son EXACTAMENTE la causa: en las seis secciones con
+       resplandor en el borde inferior, el margen medido pasa de +29px
+       (desktop) a -3px (acá) por igual — no es un problema de una
+       sección en particular, es el mismo padding compartido perdiendo
+       32px en todas a la vez.
+       La solución no es otro número fijo (volvería a desincronizarse en
+       cuanto --glow-reach o --space-section cambien de nuevo): el
+       padding de abajo de estas seis secciones pasa a sumar
+       var(--glow-reach) por encima de --space-section, así que si
+       --glow-reach cambia —acá, en una próxima vuelta de media query, o
+       el día que cambie el valor de base— este padding se recalcula
+       solo. .process no entra: no tiene resplandor en su borde inferior
+       (ver RESPLANDOR DE ONDA más arriba, sólo lleva #procesoTopGlow). */
+    #nosotros,#servicios,.projects,#deportistas,.faq-section,#contacto{
+      padding-bottom:calc(var(--space-section) + var(--glow-reach));
+    }
   }
 </style>
 </head>
