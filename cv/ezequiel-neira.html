@@ -290,6 +290,25 @@ a:hover{color:var(--texto-sec)}
 .contact-cta:hover{background:var(--texto-sec);box-shadow:0 8px 24px rgba(0,0,0,.28);color:var(--bordo)}
 .contact-cta:active{transform:scale(.97)}
 
+/* ---------- pie de página ----------
+   Misma estructura de tres partes que el pie de hrk-sports.com (onda
+   arriba, fila principal de tres zonas, banda de crédito angosta
+   abajo), con los colores del club en vez del crema del sitio. El
+   logo linkea a ../index.html, el mismo relativo que ya usa el botón
+   "Volver a HRK Sports" de los otros tres CV (Santi/Axel/Manu, ver
+   cv.js). El link a Santiago Mordentti en el sitio apunta a
+   [URL_PENDIENTE] — un placeholder sin resolver, marcado como tal en
+   el propio HTML del sitio — así que acá va como texto plano, no
+   como link a una URL que no existe. */
+.footer-row{max-width:1152px;margin:0 auto;padding:48px clamp(24px,6vw,64px) 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.footer-logo{display:inline-flex;align-items:center;font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.02em;text-transform:uppercase;color:var(--texto);text-decoration:none}
+.footer-logo span{color:var(--acento)}
+.footer-copy{margin:0;font-size:14px;color:var(--texto-sec);text-align:center}
+.footer-credit-band{border-top:1px solid var(--linea);padding:16px clamp(24px,6vw,64px);text-align:center}
+.footer-credit-label{margin:0;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--texto-sec)}
+.footer-credit-name{margin:4px 0 0;font-size:13px;font-style:italic;color:var(--texto)}
+.footer-credit-name .dash{color:var(--acento);font-style:normal}
+
 /* ---------- carrera: zigzag ancho / columna angosta ----------
    Las variables --career-* las setea initCareer() en JS según el
    ancho real del contenedor (ResizeObserver) — el layout zigzag
@@ -1207,14 +1226,21 @@ a:hover{color:var(--texto-sec)}
     <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <!-- 9 · PIE -->
-  <footer style="background: var(--bordo); padding: 64px clamp(24px, 6vw, 64px) 48px;">
-    <div style="max-width: 1152px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px;">
-      <p style="margin: 0; font-size: 14px; color: var(--texto-sec);">Material producido por HRK Sports y Santiago Mordentti</p>
+  <!-- 9 · PIE — misma estructura de tres partes que el pie del sitio
+       principal (onda, fila de tres zonas, banda de crédito), con los
+       colores del club. -->
+  <footer style="background: var(--bordo);">
+    <div class="footer-row">
+      <a href="../index.html" class="footer-logo">HRK<span aria-hidden="true">.</span>SPORTS</a>
+      <p class="footer-copy">© 2026 HRK Sports — Material producido para Ezequiel Neira</p>
       <div data-no-print style="display: flex; flex-wrap: wrap; gap: 8px;">
         <button type="button" id="btn-share" class="btn-chip btn-chip--ghost" aria-haspopup="menu" aria-expanded="false">Compartir</button>
         <button type="button" id="btn-pdf" class="btn-chip btn-chip--ghost">Descargar PDF</button>
       </div>
+    </div>
+    <div class="footer-credit-band">
+      <p class="footer-credit-label">Diseño y desarrollo</p>
+      <p class="footer-credit-name"><span class="dash" aria-hidden="true">—</span> Santiago Mordentti <span class="dash" aria-hidden="true">—</span></p>
     </div>
   </footer>
 </main>
