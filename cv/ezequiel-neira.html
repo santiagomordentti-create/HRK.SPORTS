@@ -19,6 +19,7 @@
 :root{
   --bordo:#3B0A14;
   --superficie:#521423;
+  --crema:#FAF8F7;
   --acento:#FFFFFF;
   --texto:#FFFFFF;
   --texto-sec:#E6CDD3;
@@ -43,6 +44,39 @@ a{color:var(--acento);text-decoration-thickness:1px;text-underline-offset:4px}
 a:hover{color:var(--texto-sec)}
 :focus-visible{outline:2px solid var(--acento);outline-offset:4px}
 [data-on-light]:focus-visible{outline-color:var(--bordo)}
+
+/* ---------- secciones claras (Carrera, Noticias, Contacto) ----------
+   En vez de buscar y pisar el color de cada título, párrafo y borde
+   de adentro uno por uno, esta clase redefine los tres tokens de los
+   que dependen (--texto, --texto-sec, --linea) EN EL SCOPE de la
+   sección: como son custom properties, cualquier var(--texto) de
+   cualquier hijo (por herencia normal de CSS, no por especificidad)
+   cae en el valor de acá en vez del de :root, sin tocar una sola
+   regla de las que ya existían. --acento queda afuera a propósito:
+   lo usan cosas muy distintas entre sí (botones, badges, el disco de
+   los escudos) que no deberían invertirse todas igual sólo porque la
+   sección cambió de fondo — esos se resuelven cada uno en su propio
+   lugar. --texto-sec usa un bordó más clarito (no el bordó puro):
+   7,1:1 de contraste contra --crema, pasa AA de sobra y se sigue
+   leyendo como "texto secundario", no como el texto principal.
+
+   OJO con esto si se vuelve a tocar: redefinir --texto acá NO
+   alcanza solo — <main> ya trae color:var(--texto) puesto una sola
+   vez, y la herencia de CSS propaga el COLOR YA RESUELTO (blanco)
+   para abajo, no la referencia var(). Un <h2> sin color propio (como
+   .career-club) hereda ese blanco ya resuelto y nunca vuelve a
+   preguntar por --texto, así que .theme-light no le cambia nada. Por
+   eso cada <section class="theme-light"> lleva TAMBIÉN su propio
+   color:var(--texto) inline — recién ahí, en ese punto del árbol, se
+   vuelve a evaluar var(--texto) con el valor nuevo, y eso es lo que
+   .career-club y compañía terminan heredando. Encontrado con --texto
+   quedando blanco sobre fondo crema (1,06:1 de contraste) pese a que
+   .theme-light ya estaba puesto. */
+.theme-light{
+  --texto:var(--bordo);
+  --texto-sec:#7A4550;
+  --linea:rgba(59,10,20,.22);
+}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 
@@ -175,6 +209,16 @@ a:hover{color:var(--texto-sec)}
   .news-row--three,.news-row--two{grid-template-columns:1fr}
 }
 .news-card{
+  /* Las cinco tarjetas son siempre "oscuras" (fotos con velo oscuro
+     detrás del título, o esta superficie para la de Instagram) sin
+     importar que Noticias ahora sea una sección clara — por eso
+     repinean acá --texto/--texto-sec/--linea a sus valores de
+     siempre: si heredaran los de .theme-light, el título quedaría
+     bordó sobre un velo oscuro (ilegible) y la tarjeta de Instagram
+     bordó sobre superficie (prácticamente invisible). */
+  --texto:#FFFFFF;
+  --texto-sec:#E6CDD3;
+  --linea:rgba(255,255,255,.22);
   position:relative;
   display:flex;
   flex-direction:column;
@@ -195,7 +239,7 @@ a:hover{color:var(--texto-sec)}
 }
 .news-card:hover .news-card__image,.news-card:focus-visible .news-card__image{transform:scale(1.04)}
 .news-card__veil{position:absolute;inset:0;z-index:1;background:linear-gradient(to top, rgba(10,3,6,.92) 0%, rgba(10,3,6,.55) 50%, rgba(10,3,6,0) 85%)}
-.news-card__body{position:relative;z-index:2;padding:20px;display:flex;flex-direction:column;gap:10px}
+.news-card__body{position:relative;z-index:2;padding:24px;display:flex;flex-direction:column;gap:10px}
 .news-card__title{font-size:17px;line-height:1.35;font-weight:500;text-wrap:pretty}
 .news-card__meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:13px;color:var(--texto-sec)}
 .news-card__meta strong{color:var(--texto);font-weight:600}
@@ -274,20 +318,20 @@ a:hover{color:var(--texto-sec)}
    HTML, hay que reponer también las reglas, no sólo descomentar. */
 
 .contact-cta{
-  margin-top:16px;
+  margin-top:24px;
   display:inline-flex;
   align-items:center;
   gap:16px;
   min-height:64px;
   padding:0 32px;
-  background:var(--acento);
-  color:var(--bordo);
+  background:var(--bordo);
+  color:var(--crema);
   font-size:20px;
   font-weight:600;
   text-decoration:none;
   transition:background 120ms ease-out, transform 80ms ease-out, box-shadow 120ms ease-out;
 }
-.contact-cta:hover{background:var(--texto-sec);box-shadow:0 8px 24px rgba(0,0,0,.28);color:var(--bordo)}
+.contact-cta:hover{background:var(--superficie);box-shadow:0 8px 24px rgba(59,10,20,.28);color:var(--crema)}
 .contact-cta:active{transform:scale(.97)}
 
 /* ---------- pie de página ----------
@@ -343,11 +387,15 @@ a:hover{color:var(--texto-sec)}
   background:var(--superficie);
 }
 /* El escudo de Carabobo es granate con rayas — casi el mismo color
-   que el fondo de la página (--bordo/--superficie), se perdía. En vez
-   de resolverlo sólo para ese, el disco claro va atrás de los cinco:
-   así quedan parejos — ninguno "distinto" porque le hizo falta el
-   refuerzo y a los demás no. Blanco (--acento), no un color nuevo:
-   reusa el mismo blanco que ya usa la insignia "ACTUAL" y las olas.
+   que .career-crest (--superficie), se perdía. En vez de resolverlo
+   sólo para ese, el disco claro va atrás de los cinco: así quedan
+   parejos — ninguno "distinto" porque le hizo falta el refuerzo y a
+   los demás no. Blanco fijo, no var(--acento): Carrera es una sección
+   clara ahora, pero este disco tiene que seguir dando el mismo
+   contraste contra el fondo OSCURO de .career-crest sin importar de
+   qué color sea la sección por fuera — si colgara de --acento se
+   volvería bordó acá adentro y el escudo de Carabobo volvería a
+   perderse, esta vez contra el disco en vez de contra la página.
    Los escudos llegan con proporciones y "aire" interno muy distintos
    (un círculo que llena casi todo su lienzo vs. un escudo con mucho
    margen alrededor) — así que el tamaño real de cada <img> es una
@@ -359,7 +407,7 @@ a:hover{color:var(--texto-sec)}
   position:absolute;
   inset:8%;
   border-radius:50%;
-  background:var(--acento);
+  background:#FFFFFF;
 }
 .career-crest img{
   position:relative;
@@ -369,11 +417,11 @@ a:hover{color:var(--texto-sec)}
   object-fit:contain;
   display:block;
 }
-.career-ring{position:absolute;inset:-8px;border:2px solid var(--acento);border-radius:50%}
+.career-ring{position:absolute;inset:-8px;border:2px solid var(--bordo);border-radius:50%}
 .career-info{display:flex;flex-direction:column;gap:8px;padding-top:8px;min-width:0}
 .career-info__top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
 .career-club{margin:0;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;text-transform:uppercase}
-.career-badge{display:inline-flex;align-items:center;padding:4px 8px;background:var(--acento);color:var(--bordo);font-size:12px;font-weight:700;letter-spacing:.14em}
+.career-badge{display:inline-flex;align-items:center;padding:4px 8px;background:var(--bordo);color:var(--crema);font-size:12px;font-weight:700;letter-spacing:.14em}
 .career-sub{margin:0;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-sec)}
 .career-path{display:none;align-self:stretch;width:100%;height:112px;overflow:visible}
 .career-line{display:none;position:absolute;left:var(--career-line-left,35px);top:var(--career-line-top,88px);bottom:8px;width:2px;background:var(--linea);transform-origin:top}
@@ -426,7 +474,7 @@ a:hover{color:var(--texto-sec)}
   letter-spacing:.1em;
   text-transform:uppercase;
 }
-.tactica-subtitle{margin:40px 0 20px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-sec)}
+.tactica-subtitle{margin:48px 0 16px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-sec)}
 .tactica-thumbs{display:flex;gap:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
 .tactica-thumb{
   display:flex;
@@ -478,7 +526,7 @@ a:hover{color:var(--texto-sec)}
   gap:24px;
   align-items:flex-start;
   margin-top:32px;
-  padding:28px;
+  padding:32px;
   background:var(--superficie);
   border-radius:10px;
   border:1px solid var(--acento);
@@ -566,6 +614,13 @@ a:hover{color:var(--texto-sec)}
   [data-career-narrow]{display:block!important;transform:none!important;top:88px!important;left:35px!important}
   [data-career-card]{grid-template-columns:72px minmax(0,1fr)!important;gap:16px!important}
   [data-career-card]>div:first-child{width:72px!important}
+  /* .career-card--right (ver línea ~378) espeja el orden visual en
+     escritorio invirtiendo order en .career-crest/.career-info. En
+     papel forzamos siempre la columna angosta de escudo primero
+     (arriba), así que ese order queda obsoleto y pisa la grilla
+     recién fijada: el escudo se renderizaba en la columna ancha y el
+     texto se apretaba en los 72px, superpuestos. Sin este reset. */
+  .career-card--right .career-crest,.career-card--right .career-info{order:0!important}
 }
 </style>
 </head>
@@ -707,7 +762,7 @@ a:hover{color:var(--texto-sec)}
         </div>
       </div>
       -->
-      <div data-reveal style="margin-top: 32px; display: flex; justify-content: center;">
+      <div data-reveal style="margin-top: 64px; display: flex; justify-content: center;">
         <nav aria-labelledby="t-encontrarlo" style="max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 24px; padding: 8px 16px 8px 32px; border: 1px solid #FFFFFF; border-radius: 9999px; background: #47101D;">
           <h2 id="t-encontrarlo" style="margin: 0; font-family: var(--cuerpo); font-weight: 600; font-size: 12px; line-height: 1.5; letter-spacing: .16em; text-transform: uppercase; color: #FFFFFF; text-align: center;">DÓNDE ENCONTRARLO</h2>
           <ul id="profiles-list" style="list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 8px;">
@@ -828,10 +883,10 @@ a:hover{color:var(--texto-sec)}
 
   <!-- Ficha y Táctica son del mismo color (bordó): la ola acá es
        puramente decorativa (el relleno es el mismo color que el
-       fondo), igual que la de Carrera→Galería — sólo la línea de
-       acento marca la unión, con curva propia para no repetirla.
-       Faltaba del todo: Ficha y Táctica quedaban pegadas, sin los
-       55px de separación que tiene el resto de las uniones. -->
+       fondo) — sólo la línea de acento marca la unión, con curva
+       propia para no repetirla. Faltaba del todo: Ficha y Táctica
+       quedaban pegadas, sin los 55px de separación que tiene el
+       resto de las uniones. -->
   <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
     <path d="M0,28 C300,80 680,-8 1040,48 C1220,76 1340,20 1440,44 L1440,80 L0,80 Z" fill="#3B0A14"></path>
     <path d="M0,28 C300,80 680,-8 1040,48 C1220,76 1340,20 1440,44" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
@@ -886,12 +941,12 @@ a:hover{color:var(--texto-sec)}
   </section>
 
   <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
-    <path d="M0,24 C360,88 1080,-8 1440,52 L1440,80 L0,80 Z" fill="#521423"></path>
-    <path d="M0,24 C360,88 1080,-8 1440,52" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,24 C360,88 1080,-8 1440,52 L1440,80 L0,80 Z" fill="var(--crema)"></path>
+    <path d="M0,24 C360,88 1080,-8 1440,52" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 5 · CARRERA — cinco etapas reales (antes una plantilla sc-for) -->
-  <section aria-labelledby="t-carrera" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section aria-labelledby="t-carrera" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-carrera" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">CARRERA</h2>
       <ol id="career-list" class="career-list" aria-label="Clubes, en orden cronológico">
@@ -999,14 +1054,11 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <!-- Carrera y Galería son del mismo color (superficie): la ola es
-       puramente decorativa acá (fill = mismo superficie que el
-       fondo), sólo para que la línea de acento marque la unión como
-       en el resto de la página. Curva propia, distinta a las demás,
-       para que no se note repetida. -->
-  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--superficie); margin-bottom: -1px;">
+  <!-- Carrera (clara) a Galería (oscura, superficie): curva propia,
+       distinta a las demás, para que no se note repetida. -->
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--crema); margin-bottom: -1px;">
     <path d="M0,36 C280,84 620,-4 980,44 C1180,72 1320,24 1440,48 L1440,80 L0,80 Z" fill="#521423"></path>
-    <path d="M0,36 C280,84 620,-4 980,44 C1180,72 1320,24 1440,48" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,36 C280,84 620,-4 980,44 C1180,72 1320,24 1440,48" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 5b · GALERÍA — carrusel horizontal con autoavance (ver
@@ -1073,8 +1125,8 @@ a:hover{color:var(--texto-sec)}
   </section>
 
   <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--superficie); margin-bottom: -1px;">
-    <path d="M0,56 C400,0 960,96 1440,24 L1440,80 L0,80 Z" fill="#3B0A14"></path>
-    <path d="M0,56 C400,0 960,96 1440,24" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,56 C400,0 960,96 1440,24 L1440,80 L0,80 Z" fill="var(--crema)"></path>
+    <path d="M0,56 C400,0 960,96 1440,24" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 6 · NOTICIAS — cinco publicaciones reales, verificadas contra la
@@ -1085,7 +1137,7 @@ a:hover{color:var(--texto-sec)}
        ser la más reciente, cae en la fila de abajo y no lleva foto
        (Instagram bloquea el uso de sus imágenes fuera de su sitio, y
        su embed oficial instala rastreadores). -->
-  <section aria-labelledby="t-prensa" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section aria-labelledby="t-prensa" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-prensa" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">NOTICIAS</h2>
       <div class="news-rows">
@@ -1167,14 +1219,14 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--crema); margin-bottom: -1px;">
     <path d="M0,40 C240,72 600,72 900,36 C1140,8 1320,16 1440,40 L1440,80 L0,80 Z" fill="#521423"></path>
-    <path d="M0,40 C240,72 600,72 900,36 C1140,8 1320,16 1440,40" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,40 C240,72 600,72 900,36 C1140,8 1320,16 1440,40" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 7 · PERFILES OFICIALES -->
   <section aria-labelledby="t-perfiles" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
-    <div style="max-width: 1152px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px 64px; align-items: center;">
+    <div style="max-width: 1152px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px 64px; align-items: start;">
       <div data-reveal>
         <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: .16em; color: var(--texto-sec);">VERIFICACIÓN EXTERNA</p>
         <h2 id="t-perfiles" style="margin: 0; font-family: var(--display); font-weight: 400; font-size: 28px; line-height: 1.2; text-transform: uppercase;">LOS DATOS, VERIFICABLES DONDE QUIERAS.</h2>
@@ -1196,24 +1248,23 @@ a:hover{color:var(--texto-sec)}
   </section>
 
   <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--superficie); margin-bottom: -1px;">
-    <path d="M0,32 C360,-8 840,88 1440,32 L1440,80 L0,80 Z" fill="#3B0A14"></path>
+    <path d="M0,32 C360,-8 840,88 1440,32 L1440,80 L0,80 Z" fill="var(--crema)"></path>
   </svg>
 
-  <!-- 8 · CONTACTO — bordó como el resto de la página, no blanco: el
-       blanco era de --acento, pensado como inversión deliberada (un
-       cierre "invertido"), pero rompía la alternancia bordó/
-       superficie del resto de las secciones. El botón se invierte
-       (fondo blanco, texto bordó) para seguir leyéndose como la
-       acción principal sobre el fondo oscuro — mismo criterio que
-       .sofascore-link en Perfiles, sólo que sólido en vez de
-       apenas con borde, porque este es el CTA más importante de la
-       página. data-on-light se saca: el anillo de foco por defecto
-       (blanco) ya se ve bien sobre el bordó nuevo. -->
-  <section aria-labelledby="t-contacto" style="background: var(--bordo); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <!-- 8 · CONTACTO — clara (crema), como Carrera y Noticias: la
+       página alterna oscuro/claro en vez de quedarse en dos bordós
+       casi iguales. El botón vuelve a ser sólido bordó con texto
+       crema (como al principio, antes de que esta sección pasara por
+       bordó-con-botón-blanco en el medio) — mismo criterio que
+       .sofascore-link en Perfiles, sólo que sólido en vez de apenas
+       con borde, porque este es el CTA más importante de la página.
+       data-on-light vuelve: el anillo de foco por defecto (blanco)
+       desaparecería contra el crema nuevo. -->
+  <section aria-labelledby="t-contacto" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div data-reveal style="max-width: 1152px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
       <h2 id="t-contacto" style="margin: 0; max-width: 18ch; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 7vw, 72px); line-height: 1.05; text-transform: uppercase; text-wrap: balance;">¿QUERÉS SABER MÁS DE EZEQUIEL NEIRA?</h2>
       <p style="margin: 0; font-size: 20px; line-height: 1.5;">Escribinos y te contamos.</p>
-      <a href="https://wa.me/5492494577556" target="_blank" rel="noopener noreferrer" class="contact-cta">
+      <a href="https://wa.me/5492494577556" target="_blank" rel="noopener noreferrer" data-on-light class="contact-cta">
         <span>Hablar con HRK Sports</span>
         <span aria-hidden="true">→</span>
         <span class="sr-only">(abre WhatsApp en una pestaña nueva)</span>
@@ -1221,9 +1272,9 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--crema); margin-bottom: -1px;">
     <path d="M0,48 C480,0 960,80 1440,24 L1440,80 L0,80 Z" fill="#3B0A14"></path>
-    <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 9 · PIE — misma estructura de tres partes que el pie del sitio
@@ -1640,8 +1691,10 @@ a:hover{color:var(--texto-sec)}
           var leftX = 48, rightX = w - 48;
           var xa = left ? leftX : rightX, xb = left ? rightX : leftX;
           var y0 = 4, y1 = 100;
+          // Bordó, no blanco: Carrera es una sección clara, la línea
+          // necesita oscurecer contra --crema, no aclarar.
           var nextActual = stages[i + 1] && stages[i + 1].getAttribute('data-actual') === 'true';
-          var stroke = nextActual ? '#FFFFFF' : 'rgba(255,255,255,.55)';
+          var stroke = nextActual ? '#3B0A14' : 'rgba(59,10,20,.55)';
           var paths = svgWide.querySelectorAll('path');
           if (paths[0]) {
             paths[0].setAttribute('d', 'M' + xa + ',' + y0 + ' C' + xa + ',' + (y0 + 72) + ' ' + xb + ',' + (y1 - 72) + ' ' + xb + ',' + y1);
@@ -1822,6 +1875,30 @@ a:hover{color:var(--texto-sec)}
     });
 
     if (!reduce) startAutoplay();
+  })();
+
+  // ---------- galería de impresión: forzar carga antes de imprimir ----------
+  // Las 5 imágenes de .gallery-print llevan loading="lazy" para no
+  // descargarse nunca en pantalla (el <ul> está siempre display:none
+  // ahí — el carrusel .gallery ya muestra las mismas fotos). Pero por
+  // eso mismo, al imprimir, nunca estuvieron cerca del viewport y el
+  // navegador no dispara su carga: la sección sale vacía en el PDF.
+  // matchMedia('print') dispara de forma fiable tanto con Ctrl+P/
+  // window.print() real como con la emulación de medios usada para
+  // generar PDFs de forma automática; beforeprint queda de respaldo
+  // para motores donde el cambio de matchMedia no alcance a tiempo.
+  (function initPrintGallery() {
+    var imgs = document.querySelectorAll('.gallery-print img[loading="lazy"]');
+    if (!imgs.length) return;
+    function forceEager() {
+      imgs.forEach(function (img) { img.loading = 'eager'; });
+    }
+    if (window.matchMedia) {
+      var mql = window.matchMedia('print');
+      if (mql.addEventListener) mql.addEventListener('change', function (e) { if (e.matches) forceEager(); });
+      else if (mql.addListener) mql.addListener(function (e) { if (e.matches) forceEager(); });
+    }
+    window.addEventListener('beforeprint', forceEager);
   })();
 
   // ---------- compartir: el mismo mecanismo del CV actual (ver
