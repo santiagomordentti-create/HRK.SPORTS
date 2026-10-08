@@ -280,14 +280,14 @@ a:hover{color:var(--texto-sec)}
   gap:16px;
   min-height:64px;
   padding:0 32px;
-  background:var(--bordo);
-  color:#FFFFFF;
+  background:var(--acento);
+  color:var(--bordo);
   font-size:20px;
   font-weight:600;
   text-decoration:none;
   transition:background 120ms ease-out, transform 80ms ease-out, box-shadow 120ms ease-out;
 }
-.contact-cta:hover{background:#521423;box-shadow:0 8px 24px rgba(59,10,20,.28);color:#FFFFFF}
+.contact-cta:hover{background:var(--texto-sec);box-shadow:0 8px 24px rgba(0,0,0,.28);color:var(--bordo)}
 .contact-cta:active{transform:scale(.97)}
 
 /* ---------- carrera: zigzag ancho / columna angosta ----------
@@ -305,6 +305,15 @@ a:hover{color:var(--texto-sec)}
   gap:var(--career-esc-gap,16px);
   align-items:start;
 }
+/* Tarjetas del lado derecho (desktop, ver initCareer): el escudo
+   pasa a ser la ÚLTIMA columna, no la primera, para que quede pegado
+   al borde derecho del contenedor en vez de pegado al centro de la
+   página. Sin este espejo, las dos columnas de escudos medían lo
+   mismo desde su propio borde izquierdo (48px desde 144 y 48px desde
+   720), nunca simétricas respecto del centro real (720). */
+.career-card--right{grid-template-columns:minmax(0,1fr) var(--career-esc-col,72px)}
+.career-card--right .career-crest{order:2}
+.career-card--right .career-info{order:1}
 .career-crest{
   position:relative;
   z-index:1;
@@ -798,6 +807,17 @@ a:hover{color:var(--texto-sec)}
   </section>
   -->
 
+  <!-- Ficha y Táctica son del mismo color (bordó): la ola acá es
+       puramente decorativa (el relleno es el mismo color que el
+       fondo), igual que la de Carrera→Galería — sólo la línea de
+       acento marca la unión, con curva propia para no repetirla.
+       Faltaba del todo: Ficha y Táctica quedaban pegadas, sin los
+       55px de separación que tiene el resto de las uniones. -->
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
+    <path d="M0,28 C300,80 680,-8 1040,48 C1220,76 1340,20 1440,44 L1440,80 L0,80 Z" fill="#3B0A14"></path>
+    <path d="M0,28 C300,80 680,-8 1040,48 C1220,76 1340,20 1440,44" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+  </svg>
+
   <!-- 4 · TÁCTICA — reproductor grande + miniaturas intercambiables,
        ver initTactica en el script. Arranca con el highlight general
        en el reproductor y los otros cinco clips de miniatura; al
@@ -1156,16 +1176,25 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: #FFFFFF; margin-bottom: -1px;">
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--superficie); margin-bottom: -1px;">
     <path d="M0,32 C360,-8 840,88 1440,32 L1440,80 L0,80 Z" fill="#3B0A14"></path>
   </svg>
 
-  <!-- 8 · CONTACTO -->
-  <section aria-labelledby="t-contacto" style="background: var(--acento); color: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <!-- 8 · CONTACTO — bordó como el resto de la página, no blanco: el
+       blanco era de --acento, pensado como inversión deliberada (un
+       cierre "invertido"), pero rompía la alternancia bordó/
+       superficie del resto de las secciones. El botón se invierte
+       (fondo blanco, texto bordó) para seguir leyéndose como la
+       acción principal sobre el fondo oscuro — mismo criterio que
+       .sofascore-link en Perfiles, sólo que sólido en vez de
+       apenas con borde, porque este es el CTA más importante de la
+       página. data-on-light se saca: el anillo de foco por defecto
+       (blanco) ya se ve bien sobre el bordó nuevo. -->
+  <section aria-labelledby="t-contacto" style="background: var(--bordo); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div data-reveal style="max-width: 1152px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
       <h2 id="t-contacto" style="margin: 0; max-width: 18ch; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 7vw, 72px); line-height: 1.05; text-transform: uppercase; text-wrap: balance;">¿QUERÉS SABER MÁS DE EZEQUIEL NEIRA?</h2>
       <p style="margin: 0; font-size: 20px; line-height: 1.5;">Escribinos y te contamos.</p>
-      <a href="https://wa.me/5492494577556" target="_blank" rel="noopener noreferrer" data-on-light class="contact-cta">
+      <a href="https://wa.me/5492494577556" target="_blank" rel="noopener noreferrer" class="contact-cta">
         <span>Hablar con HRK Sports</span>
         <span aria-hidden="true">→</span>
         <span class="sr-only">(abre WhatsApp en una pestaña nueva)</span>
@@ -1173,9 +1202,9 @@ a:hover{color:var(--texto-sec)}
     </div>
   </section>
 
-  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: #FFFFFF; margin-bottom: -1px;">
+  <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display: block; width: 100%; height: 56px; background: var(--bordo); margin-bottom: -1px;">
     <path d="M0,48 C480,0 960,80 1440,24 L1440,80 L0,80 Z" fill="#3B0A14"></path>
-    <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#3B0A14" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    <path d="M0,48 C480,0 960,80 1440,24" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
   <!-- 9 · PIE -->
@@ -1566,14 +1595,23 @@ a:hover{color:var(--texto-sec)}
         stage.style.alignItems = wide ? (left ? 'flex-start' : 'flex-end') : 'stretch';
         stage.style.paddingBottom = i < stages.length - 1 ? (wide ? '8px' : '48px') : '0px';
 
+        var cardEl = stage.querySelector('[data-career-card]');
+        if (cardEl) cardEl.classList.toggle('career-card--right', wide && !left);
+
         var svgWide = stage.querySelector('[data-career-wide]');
         var lineNarrow = stage.querySelector('[data-career-narrow]');
         if (svgWide) svgWide.style.display = wide ? 'block' : 'none';
         if (lineNarrow) lineNarrow.style.display = wide ? 'none' : 'block';
 
         if (svgWide && i < stages.length - 1) {
-          var cardW = w * 0.5;
-          var leftX = 48, rightX = w - cardW + 48;
+          // leftX/rightX son el centro del escudo en cada lado, en
+          // coordenadas del propio viewBox (0 a w): 48px adentro del
+          // borde izquierdo y 48px adentro del borde derecho — mitad
+          // de --career-esc-col (96px en desktop). Antes rightX usaba
+          // w - cardW + 48 (la mitad de la tarjeta), que apuntaba al
+          // centro de la página, no al borde derecho — coincidía con
+          // el mismo bug de los escudos sin espejar.
+          var leftX = 48, rightX = w - 48;
           var xa = left ? leftX : rightX, xb = left ? rightX : leftX;
           var y0 = 4, y1 = 100;
           var nextActual = stages[i + 1] && stages[i + 1].getAttribute('data-actual') === 'true';
