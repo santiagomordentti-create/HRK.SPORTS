@@ -384,30 +384,31 @@ a:hover{color:var(--texto-sec)}
   aspect-ratio:1/1;
   display:grid;
   place-items:center;
-  background:var(--superficie);
 }
-/* El escudo de Carabobo es granate con rayas — casi el mismo color
-   que .career-crest (--superficie), se perdía. En vez de resolverlo
-   sólo para ese, el disco claro va atrás de los cinco: así quedan
-   parejos — ninguno "distinto" porque le hizo falta el refuerzo y a
-   los demás no. Blanco fijo, no var(--acento): Carrera es una sección
-   clara ahora, pero este disco tiene que seguir dando el mismo
-   contraste contra el fondo OSCURO de .career-crest sin importar de
-   qué color sea la sección por fuera — si colgara de --acento se
-   volvería bordó acá adentro y el escudo de Carabobo volvería a
-   perderse, esta vez contra el disco en vez de contra la página.
-   Los escudos llegan con proporciones y "aire" interno muy distintos
-   (un círculo que llena casi todo su lienzo vs. un escudo con mucho
-   margen alrededor) — así que el tamaño real de cada <img> es una
-   variable por escudo (--crest-scale), no un valor fijo para los
-   cinco, para que el peso visual quede parecido. Decorativos: el
-   nombre del club ya está en texto al lado, por eso alt="" y
-   aria-hidden en el HTML. */
+/* Antes había un recuadro oscuro (--superficie) detrás de cada
+   escudo, pensado para cuando Carrera era una sección oscura — sobre
+   --crema sobraba: quedaban cinco rectángulos bordó pegados sobre
+   fondo claro. Se saca del todo; los escudos se distinguen solos
+   contra crema. El disco se queda, pero ahora es "del color de la
+   sección" (var(--crema), casi invisible) con un borde fino: dejó de
+   ser el recurso de contraste de un fondo oscuro y pasó a ser el
+   único refuerzo —muy sutil, igual para los cinco— por si alguno
+   pierde definición (Gimnasia y Tiro, celeste y blanco, es el caso
+   más débil). Antes sólo Carabobo tenía un anillo aparte
+   (.career-ring): ahora los cinco reciben el mismo borde desde acá,
+   sin excepciones. Los escudos llegan con proporciones y "aire"
+   interno muy distintos (un círculo que llena casi todo su lienzo vs.
+   un escudo con mucho margen alrededor) — así que el tamaño real de
+   cada <img> es una variable por escudo (--crest-scale), no un valor
+   fijo para los cinco, para que el peso visual quede parecido.
+   Decorativos: el nombre del club ya está en texto al lado, por eso
+   alt="" y aria-hidden en el HTML. */
 .career-crest__disc{
   position:absolute;
   inset:8%;
   border-radius:50%;
-  background:#FFFFFF;
+  background:var(--crema);
+  border:1px solid var(--linea);
 }
 .career-crest img{
   position:relative;
@@ -417,14 +418,18 @@ a:hover{color:var(--texto-sec)}
   object-fit:contain;
   display:block;
 }
-.career-ring{position:absolute;inset:-8px;border:2px solid var(--bordo);border-radius:50%}
 .career-info{display:flex;flex-direction:column;gap:8px;padding-top:8px;min-width:0}
 .career-info__top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
 .career-club{margin:0;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;text-transform:uppercase}
 .career-badge{display:inline-flex;align-items:center;padding:4px 8px;background:var(--bordo);color:var(--crema);font-size:12px;font-weight:700;letter-spacing:.14em}
 .career-sub{margin:0;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-sec)}
 .career-path{display:none;align-self:stretch;width:100%;height:112px;overflow:visible}
-.career-line{display:none;position:absolute;left:var(--career-line-left,35px);top:var(--career-line-top,88px);bottom:8px;width:2px;background:var(--linea);transform-origin:top}
+/* No var(--linea): ese token es el divisor genérico (.22 de opacidad,
+   pensado para líneas apenas insinuadas) y daba 1.5:1 contra --crema
+   — invisible. Esta línea cumple el mismo rol que el trazo ancho de
+   zigzag (conectar etapas), así que lleva su misma opacidad (.72,
+   6.9:1 contra --crema), no la del divisor. */
+.career-line{display:none;position:absolute;left:var(--career-line-left,35px);top:var(--career-line-top,88px);bottom:8px;width:2px;background:rgba(59,10,20,.72);transform-origin:top}
 
 /* ---------- táctica: reproductor + miniaturas intercambiables ----------
    Seis clips, uno siempre grande y los otros cinco de miniatura — ver
@@ -1037,8 +1042,6 @@ a:hover{color:var(--texto-sec)}
             <div class="career-crest">
               <div class="career-crest__disc" aria-hidden="true"></div>
               <img src="../assets/escudo-carabobo.png" alt="" aria-hidden="true" style="--crest-scale:0.78">
-
-              <span aria-hidden="true" class="career-ring"></span>
             </div>
             <div class="career-info">
               <div class="career-info__top">
@@ -1692,9 +1695,11 @@ a:hover{color:var(--texto-sec)}
           var xa = left ? leftX : rightX, xb = left ? rightX : leftX;
           var y0 = 4, y1 = 100;
           // Bordó, no blanco: Carrera es una sección clara, la línea
-          // necesita oscurecer contra --crema, no aclarar.
+          // necesita oscurecer contra --crema, no aclarar. .55 medía
+          // 3.94:1 contra --crema — pasaba el mínimo de 3:1 pero se
+          // veía "del mismo tono que el fondo"; .72 da 6.9:1.
           var nextActual = stages[i + 1] && stages[i + 1].getAttribute('data-actual') === 'true';
-          var stroke = nextActual ? '#3B0A14' : 'rgba(59,10,20,.55)';
+          var stroke = nextActual ? '#3B0A14' : 'rgba(59,10,20,.72)';
           var paths = svgWide.querySelectorAll('path');
           if (paths[0]) {
             paths[0].setAttribute('d', 'M' + xa + ',' + y0 + ' C' + xa + ',' + (y0 + 72) + ' ' + xb + ',' + (y1 - 72) + ' ' + xb + ',' + y1);
