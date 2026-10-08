@@ -80,6 +80,213 @@ a:hover{color:var(--texto-sec)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 
+/* Compensa la barra fija: sin esto, un salto a #tactica (etc.) deja
+   el h2 tapado detrás de la píldora. Mismo valor para las cinco
+   secciones — la altura de la barra no cambia entre ellas. */
+#ficha,#tactica,#carrera,#galeria,#prensa{scroll-margin-top:88px}
+
+/* ---------- saltar al contenido ----------
+   Primer elemento del body: invisible hasta que recibe foco por
+   teclado (Tab), ahí se vuelve el primer elemento visible de la
+   página y salta directo a Ficha, esquivando la barra entera. */
+.skip-link{
+  position:absolute;
+  z-index:1000;
+  top:-100px;
+  left:16px;
+  padding:12px 20px;
+  background:var(--acento);
+  color:var(--bordo);
+  font-weight:700;
+  text-decoration:none;
+  border-radius:4px;
+  transition:top 150ms ease-out;
+}
+.skip-link:focus{top:16px}
+
+/* ---------- volver a HRK Sports ----------
+   El mismo enlace de los otros tres CV (cv.css, .back) pero flotante:
+   acá no hay una fila de header no-fija donde vivir, así que queda
+   fijo arriba a la izquierda, fuera de la píldora de navegación.
+   Fondo sólido siempre (no sólo sobre el hero) porque se mantiene
+   encima de TODAS las secciones al scrollear, claras y oscuras por
+   igual (ver Carrera/Noticias/Contacto, ahora crema) — translúcido
+   fallaría contraste apenas pasara una de esas. */
+.back-link{
+  position:fixed;
+  z-index:60;
+  top:16px;
+  left:clamp(16px,4vw,32px);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  padding:0 16px;
+  border-radius:9999px;
+  background:rgba(59,10,20,.85);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  color:var(--texto);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-decoration:none;
+}
+.back-link svg{width:16px;height:16px;flex:none}
+.back-link:hover{color:var(--texto-sec)}
+/* El texto completo no entra junto a la píldora de navegación por
+   debajo de 1200px. Dos zonas de choque medidas, no una sola: de
+   550 a 800px (píldora en modo angosto, foto+"Secciones"+separador+
+   Compartir, empieza antes de donde el texto completo del enlace
+   termina) Y de 861 a 1024px (la píldora ya en modo ancho —cinco
+   enlaces de texto completo, 632px fijos— pero el viewport todavía no
+   da el ancho que ese modo necesita sin pisar el enlace). 1200px es
+   el mismo quiebre en el que la píldora pasa a su modo ancho (ver
+   @media(max-width:1200px) de .cv-nav__links más abajo) — los dos
+   cambian juntos a propósito, para no dejar un rango sin probar entre
+   ambos breakpoints. Abajo de ese ancho el enlace queda sólo con el
+   ícono; el nombre sigue accesible vía aria-label en el <a> (arriba),
+   no se pierde para lectores de pantalla. */
+@media(max-width:1200px){
+  .back-link{padding:0;width:44px;justify-content:center}
+  .back-link__text{display:none}
+}
+
+/* ---------- barra de navegación fija ----------
+   Píldora centrada arriba, fija durante todo el recorrido (no sólo
+   sobre el hero). Dos estados de fondo: translúcida+blur sobre el
+   hero (hay video detrás, necesita "flotar"), sólida apenas el hero
+   termina de salir de pantalla (.is-solid, ver initNav/IntersectionObserver
+   sobre .hero) — de ahí en más pasa por Carrera/Noticias/Contacto,
+   secciones claras, y translúcido ahí se leería mal sin importar el
+   blur. Reusa el mecanismo de .cv-share tal cual (mismo botón
+   #btn-share, mismo JS) — sólo cambia dónde vive en el DOM y hacia
+   qué lado abre el menú (ver .cv-share__menu más abajo). */
+.cv-nav{position:fixed;z-index:50;top:16px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px)}
+.cv-nav__inner{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  height:60px;
+  padding:4px 6px 4px 4px;
+  border-radius:9999px;
+  background:rgba(59,10,20,.5);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.18);
+  transition:background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+.cv-nav.is-solid .cv-nav__inner{
+  background:var(--bordo);
+  border-color:var(--linea);
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+.cv-nav__photo{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;border:1px solid rgba(255,255,255,.3)}
+.cv-nav__links{display:flex;align-items:center;gap:2px;list-style:none;margin:0;padding:0 4px}
+.cv-nav__links li{display:flex}
+.cv-nav__link{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 14px;
+  border-radius:9999px;
+  color:var(--texto);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.cv-nav__link:hover{background:rgba(255,255,255,.12);color:var(--texto)}
+.cv-nav__link[aria-current]{background:rgba(255,255,255,.18);text-decoration:underline;text-underline-offset:5px}
+.cv-nav__sep{width:1px;height:28px;background:rgba(255,255,255,.25);flex:none;margin:0 2px}
+.cv-nav__toggle{
+  display:none;
+  align-items:center;
+  gap:6px;
+  min-height:44px;
+  padding:0 16px;
+  border:none;
+  border-radius:9999px;
+  background:transparent;
+  color:var(--texto);
+  font-family:var(--cuerpo);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.cv-nav__toggle svg{width:14px;height:14px;transition:transform 150ms ease-out}
+.cv-nav__toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.cv-nav__share{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  padding:0 16px;
+  border:none;
+  border-radius:9999px;
+  background:transparent;
+  color:var(--texto);
+  font-family:var(--cuerpo);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.cv-nav__share svg{width:16px;height:16px;flex:none}
+.cv-nav__share:hover{background:rgba(255,255,255,.12)}
+@media(max-width:1200px){
+  .cv-nav__links{
+    display:none;
+    position:absolute;
+    z-index:1;
+    top:calc(100% + 8px);
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:stretch;
+    gap:2px;
+    margin:0;
+    padding:8px;
+    border-radius:16px;
+    background:var(--bordo);
+    border:1px solid var(--linea);
+    box-shadow:0 16px 36px rgba(0,0,0,.4);
+  }
+  .cv-nav__links[data-expanded]{display:flex}
+  .cv-nav__link{min-height:44px;padding:0 16px;justify-content:flex-start}
+  .cv-nav__toggle{display:inline-flex}
+}
+/* Medido: de 360 a 480px la píldora (ya angosta: foto+"Secciones"+
+   separador+Compartir) sigue empezando tan a la izquierda que toca el
+   ícono de "volver" — se saca la foto (es decorativa, no pierde
+   función) y se ajustan paddings para ganar el margen que falta. Va
+   hasta 480 (no 430) para no dejar un salto brusco de ancho justo
+   arriba de donde el enlace vuelve a mostrar su texto completo (ver
+   @media(max-width:1200px) de .back-link): con el corte en 430 quedó
+   un hueco de 431 a 479px donde la píldora volvía a su ancho completo
+   de golpe y chocaba de nuevo. */
+@media(max-width:480px){
+  .cv-nav__photo{display:none}
+  .cv-nav__inner{padding:4px 4px 4px 6px;gap:0}
+  .cv-nav__toggle{padding:0 10px}
+  .cv-nav__share{padding:0 10px}
+}
+/* Por debajo de 360px ni siquiera así entra: "Secciones" y "Compartir"
+   pierden su etiqueta de texto y quedan como ícono solo (el nombre
+   sigue accesible vía aria-label en cada botón, puesto siempre, no
+   sólo acá). */
+@media(max-width:360px){
+  .cv-nav__toggle-label,.cv-nav__share-label{display:none}
+  .cv-nav__toggle{padding:0 10px}
+  .cv-nav__share{padding:0 10px}
+}
+
 /* ---------- entrada "el nombre que se arma" ----------
    Portado de cv.js/cv.css (initIntro, la plantilla que comparten
    Santi/Axel/Manu) — ahí vive como clase compartida .cv-header__name;
@@ -123,6 +330,142 @@ a:hover{color:var(--texto-sec)}
    overlay llegara a crearse con esta preferencia activa, no se ve. */
 @media(prefers-reduced-motion:reduce){
   .cv-intro{display:none}
+}
+
+/* ---------- hero: tres capas ----------
+   De atrás hacia adelante: 1) el video, tratado como atmósfera (blur
+   + brightness por CSS, sin re-codificar el archivo, más playbackRate
+   bajo por JS — ver initVideo); 2) el apellido gigante en SÓLO
+   CONTORNO, permanente, "marca de agua" (mismo recurso que
+   .cv-intro__watermark: -webkit-text-stroke con relleno transparente;
+   mismo tamaño, 32vw, para que al terminar la entrada el watermark de
+   la entrada y éste queden del mismo tamaño y no se note el empalme);
+   3) la foto recortada, centrada, por delante del watermark.
+   Encima de todo: el bloque "— EZEQUIEL / NEIRA" (ver .hero__name-block
+   más abajo: envoltorio sin z-index propio a propósito, para que
+   #hero-name pueda quedar POR DETRÁS de la foto —z:2 contra z:3— pero
+   el epígrafe arriba, EZEQUIEL, por DELANTE —z:4— sin que el
+   contenedor común fuerce un único nivel para los dos) y el bloque de
+   posición/club a la derecha. */
+.hero{position:relative;min-height:100svh;display:flex;overflow:hidden;background:var(--bordo)}
+.hero__bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero__bg video{
+  position:absolute;
+  top:50%;left:50%;
+  width:120%;height:120%;
+  transform:translate(-50%,-50%);
+  object-fit:cover;
+  background:var(--bordo);
+  /* Desenfoque fuerte + bien oscurecido: tiene que leerse como
+     ambiente, no como jugada — si se llegan a distinguir jugadores o
+     la pelota, subir blur. 120% de ancho/alto + centrado por transform
+     para que el desenfoque no deje ver el borde recortado del video. */
+  filter:blur(20px) brightness(.38) saturate(.85);
+  will-change:opacity;
+}
+.hero__bg::after{content:'';position:absolute;inset:0;background:rgba(59,10,20,.45)}
+.hero__watermark{
+  position:absolute;
+  z-index:1;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  margin:0;
+  font-family:var(--display);
+  font-weight:400;
+  font-size:32vw;
+  line-height:1;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:1.5px var(--acento);
+  opacity:.16;
+  text-transform:uppercase;
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+}
+.hero__cutout{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  height:min(86svh,880px);
+  width:auto;
+  max-width:92vw;
+  object-fit:contain;
+  object-position:bottom center;
+  pointer-events:none;
+  user-select:none;
+}
+/* Sin position/z-index propio: ver comentario de arriba — así no crea
+   su propio contexto de apilamiento y los z-index de sus hijos
+   compitran directo contra .hero__cutout (z:3), no sólo entre sí. */
+.hero__name-block{
+  position:absolute;
+  left:clamp(24px,6vw,64px);
+  bottom:16vh;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  max-width:60vw;
+}
+.hero__eyebrow{
+  position:relative;
+  z-index:4;
+  margin:0 0 6px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--texto);
+}
+.hero__name{
+  position:relative;
+  z-index:2;
+  margin:0;
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(64px,15vw,200px);
+  line-height:.9;
+  letter-spacing:0;
+  text-transform:uppercase;
+  color:var(--texto);
+}
+.hero__meta{
+  position:absolute;
+  z-index:4;
+  right:clamp(24px,6vw,64px);
+  bottom:18vh;
+  max-width:260px;
+  margin:0;
+  text-align:right;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--texto);
+}
+.hero__scroll-cue{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  color:var(--texto-sec);
+}
+.hero__scroll-cue svg{width:18px;height:18px;display:block}
+@media(prefers-reduced-motion:no-preference){
+  .hero__scroll-cue svg{animation:hero-bounce 1.8s ease-in-out infinite}
+}
+@keyframes hero-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@media(max-width:700px){
+  .hero__name-block{max-width:84vw;bottom:30vh}
+  .hero__meta{left:clamp(24px,6vw,64px);right:auto;bottom:21vh;text-align:left;max-width:84vw}
+  .hero__cutout{height:min(58svh,620px)}
 }
 
 /* ---------- botones chip (reproducir/sonido del hero, compartir/pdf del pie) ---------- */
@@ -550,11 +893,15 @@ a:hover{color:var(--texto-sec)}
 
 /* ---------- lista de compartir (reusada tal cual del CV actual: cv.css, sección
    "lista de compartir (computadora)" — mismo mecanismo, misma lógica
-   en JS más abajo, sólo con los alias de variables de acá arriba) ---------- */
+   en JS más abajo, sólo con los alias de variables de acá arriba).
+   Abre hacia ABAJO (top:100%): el botón ahora vive en la píldora fija
+   arriba de la página, no en el pie — con bottom:100% (como estaba
+   cuando vivía ahí abajo) el menú se abriría hacia arriba, fuera de
+   la pantalla. */
 .cv-share{position:relative}
 .cv-share__menu{
   position:absolute;
-  bottom:calc(100% + 8px);
+  top:calc(100% + 8px);
   right:0;
   z-index:2;
   margin:0;
@@ -600,6 +947,21 @@ a:hover{color:var(--texto-sec)}
   /* Por si alguien imprime justo en medio de la entrada: no tiene
      sentido en papel, y sin esto quedaría encima de todo lo demás. */
   .cv-intro{display:none!important}
+  /* La barra fija y "volver a HRK Sports" ya caen con [data-no-print]
+     (la marca tienen en el HTML). El resto del hero —video, watermark
+     gigante, foto recortada, flecha de scroll— usa posiciones
+     absolutas pensadas para pantalla completa (vh/svh): en una página
+     A4 no hay "pantalla completa", así que se sacan y el hero queda
+     como texto simple en flujo normal (nombre y meta, uno debajo del
+     otro), igual que el resto del CV impreso. */
+  .hero{min-height:auto!important;display:block!important;padding:48px clamp(24px,6vw,64px)!important}
+  .hero__bg,.hero__watermark,.hero__cutout,.hero__scroll-cue{display:none!important}
+  .hero__name-block,.hero__meta{
+    position:static!important;
+    max-width:100%!important;
+    text-align:left!important;
+    margin:0 0 16px!important;
+  }
   /* El reproductor, las miniaturas y el bloque de detalle son todos
      JS/interactivos y sólo muestran un clip a la vez — en papel no
      sirven. Se reemplazan enteros por .tactica-print-list, una lista
@@ -631,19 +993,61 @@ a:hover{color:var(--texto-sec)}
 </head>
 <body>
 
+<a class="skip-link" href="#ficha">Saltar al contenido</a>
+
+<a class="back-link" href="../index.html" data-no-print aria-label="Volver a HRK Sports">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  <span class="back-link__text">VOLVER A HRK SPORTS</span>
+</a>
+
+<nav id="cv-nav" class="cv-nav" aria-label="Secciones del CV" data-no-print>
+  <div class="cv-nav__inner">
+    <img class="cv-nav__photo" src="../assets/neira.jpg" alt="" aria-hidden="true">
+    <ul id="nav-links" class="cv-nav__links">
+      <li><a href="#ficha" class="cv-nav__link" data-nav-link>Ficha</a></li>
+      <li><a href="#tactica" class="cv-nav__link" data-nav-link>Táctica</a></li>
+      <li><a href="#carrera" class="cv-nav__link" data-nav-link>Carrera</a></li>
+      <li><a href="#galeria" class="cv-nav__link" data-nav-link>Galería</a></li>
+      <li><a href="#prensa" class="cv-nav__link" data-nav-link>Noticias</a></li>
+    </ul>
+    <button type="button" id="nav-toggle" class="cv-nav__toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Secciones">
+      <span class="cv-nav__toggle-label" aria-hidden="true">Secciones</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <span class="cv-nav__sep" aria-hidden="true"></span>
+    <button type="button" id="btn-share" class="cv-nav__share" aria-haspopup="menu" aria-expanded="false" aria-label="Compartir">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
+      <span class="cv-nav__share-label" aria-hidden="true">Compartir</span>
+    </button>
+  </div>
+</nav>
+
 <main style="background: var(--bordo); color: var(--texto); font-family: var(--cuerpo); overflow-x: hidden;">
 
-  <!-- 1 · HERO -->
-  <header aria-label="Ezequiel Neira" style="position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bordo);">
-    <video id="hero-video" muted loop playsinline preload="metadata" poster="../assets/neira-highlight.jpg" aria-label="Mejores acciones de Ezequiel Neira en la temporada" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--bordo); will-change: opacity;">
-      <source src="../assets/neira-highlight.mp4" type="video/mp4">
-    </video>
-    <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(59,10,20,.55);"></div>
+  <!-- 1 · HERO — tres capas (ver CSS .hero*): video-atmósfera, NEIRA
+       gigante en contorno (marca de agua permanente) y la foto
+       recortada por delante, con el bloque de texto encima de todo.
+       -->
+  <header class="hero" aria-label="Ezequiel Neira">
+    <div class="hero__bg" aria-hidden="true">
+      <video id="hero-video" muted loop playsinline preload="metadata" poster="../assets/neira-highlight.jpg" aria-label="Mejores acciones de Ezequiel Neira en la temporada">
+        <source src="../assets/neira-highlight.mp4" type="video/mp4">
+      </video>
+    </div>
 
-    <div id="hero-text" style="position: relative; z-index: 2; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 clamp(96px, 12vw, 160px) 128px clamp(24px, 6vw, 64px); will-change: opacity;">
-      <p data-hero-item aria-label="Número 32" style="margin: 0; font-family: var(--display); font-size: 72px; line-height: 1; color: var(--acento);">32</p>
-      <h1 id="hero-name" data-hero-item style="margin: 0 0 0 -4px; font-family: var(--display); font-weight: 400; font-size: clamp(72px, 19vw, 216px); line-height: .9; letter-spacing: 0; text-transform: uppercase;">NEIRA</h1>
-      <p data-hero-item style="margin: 16px 0 0; font-size: 16px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;">DEFENSOR CENTRAL · CARABOBO FC</p>
+    <p id="hero-watermark" class="hero__watermark" aria-hidden="true">NEIRA</p>
+
+    <img class="hero__cutout" src="../assets/neira-recorte.png" alt="Ezequiel Neira, defensor central de Carabobo FC, de cuerpo entero con su camiseta." data-hero-item>
+
+    <div class="hero__name-block">
+      <p class="hero__eyebrow" data-hero-item>— EZEQUIEL</p>
+      <h1 id="hero-name" class="hero__name" data-hero-item>NEIRA</h1>
+    </div>
+
+    <p class="hero__meta" data-hero-item>DEFENSOR CENTRAL · 32 · CARABOBO FC</p>
+
+    <div class="hero__scroll-cue" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </div>
 
     <!-- El video de fondo arranca solo, mudo, en bucle, sin controles
@@ -652,11 +1056,14 @@ a:hover{color:var(--texto-sec)}
          sin este botón quedaría una imagen fija sin forma de verlo —
          por eso existe, parte "hidden" en el HTML, y JS lo muestra
          sólo en ese caso puntual. -->
-    <div data-no-print style="position: absolute; z-index: 3; right: clamp(24px, 6vw, 64px); top: 24px;">
+    <!-- top:92px, no 24px: debajo de la banda de la píldora de
+         navegación (16px + 60px de alto), no a su misma altura — a
+         24px chocaba con ella de 390 a ~700px de ancho (medido). -->
+    <div data-no-print style="position: absolute; z-index: 5; right: clamp(24px, 6vw, 64px); top: 92px;">
       <button type="button" id="btn-play" class="btn-chip" hidden aria-pressed="false">Reproducir</button>
     </div>
 
-    <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="position: absolute; z-index: 2; left: 0; bottom: -1px; display: block; width: 100%; height: 56px;">
+    <svg aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" style="position: absolute; z-index: 4; left: 0; bottom: -1px; display: block; width: 100%; height: 56px;">
       <path d="M0,48 C320,8 720,88 1080,40 C1240,20 1360,28 1440,40 L1440,80 L0,80 Z" fill="#3B0A14"></path>
       <path d="M0,48 C320,8 720,88 1080,40 C1240,20 1360,28 1440,40" fill="none" stroke="#FFFFFF" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
     </svg>
@@ -904,7 +1311,7 @@ a:hover{color:var(--texto-sec)}
        reproductor grande, así siempre hay exactamente cinco
        miniaturas y un video grande, nunca un clip repetido en los dos
        lugares a la vez. -->
-  <section aria-labelledby="t-tactica" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section id="tactica" aria-labelledby="t-tactica" style="background: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-tactica" data-reveal class="tactica-title">TÁCTICA</h2>
 
@@ -951,7 +1358,7 @@ a:hover{color:var(--texto-sec)}
   </svg>
 
   <!-- 5 · CARRERA — cinco etapas reales (antes una plantilla sc-for) -->
-  <section aria-labelledby="t-carrera" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section id="carrera" aria-labelledby="t-carrera" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-carrera" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">CARRERA</h2>
       <ol id="career-list" class="career-list" aria-label="Clubes, en orden cronológico">
@@ -1069,7 +1476,7 @@ a:hover{color:var(--texto-sec)}
        teclado, touch o drag, y nunca arranca si hay preferencia de
        movimiento reducido. Las flechas y el arrastre nativo del
        navegador cubren el resto del movimiento manual. -->
-  <section aria-labelledby="t-galeria" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section id="galeria" aria-labelledby="t-galeria" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-galeria" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">GALERÍA</h2>
 
@@ -1140,7 +1547,7 @@ a:hover{color:var(--texto-sec)}
        ser la más reciente, cae en la fila de abajo y no lleva foto
        (Instagram bloquea el uso de sus imágenes fuera de su sitio, y
        su embed oficial instala rastreadores). -->
-  <section aria-labelledby="t-prensa" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
+  <section id="prensa" aria-labelledby="t-prensa" class="theme-light" style="background: var(--crema); color: var(--texto); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto;">
       <h2 id="t-prensa" data-reveal style="margin: 0 0 48px; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.1; text-transform: uppercase;">NOTICIAS</h2>
       <div class="news-rows">
@@ -1288,7 +1695,6 @@ a:hover{color:var(--texto-sec)}
       <a href="../index.html" class="footer-logo">HRK<span aria-hidden="true">.</span>SPORTS</a>
       <p class="footer-copy">© 2026 HRK Sports — Material producido para Ezequiel Neira</p>
       <div data-no-print style="display: flex; flex-wrap: wrap; gap: 8px;">
-        <button type="button" id="btn-share" class="btn-chip btn-chip--ghost" aria-haspopup="menu" aria-expanded="false">Compartir</button>
         <button type="button" id="btn-pdf" class="btn-chip btn-chip--ghost">Descargar PDF</button>
       </div>
     </div>
@@ -1526,6 +1932,10 @@ a:hover{color:var(--texto-sec)}
     }
 
     video.muted = true;
+    // "Ralentizalo": la atmósfera de fondo se lee más como ambiente en
+    // cámara lenta que como una jugada — el blur/brightness van por
+    // CSS (filter en .hero__bg video), esto es sólo la velocidad.
+    video.playbackRate = 0.5;
     if (reduce) {
       // Único caso donde el botón existe: sin autoplay y sin este
       // botón, el video quedaría congelado en el poster para siempre.
@@ -1539,11 +1949,18 @@ a:hover{color:var(--texto-sec)}
       video.play().catch(function () {});
     }
 
-    // Fundido del video y del texto del hero al scrollear — el texto
-    // sólo empieza a atenuarse una vez terminada la entrada (igual con
-    // movimiento reducido: ahí la entrada ni corre, así que el texto
-    // nunca se atenúa con el scroll).
-    var heroText = document.getElementById('hero-text');
+    // Fundido del video y del contenido del hero al scrollear — el
+    // contenido sólo empieza a atenuarse una vez terminada la entrada
+    // (igual con movimiento reducido: ahí la entrada ni corre, así que
+    // el contenido nunca se atenúa con el scroll hasta que introDone
+    // se marca true más abajo, de forma sincrónica).
+    var fadeEls = [
+      document.querySelector('.hero__cutout'),
+      document.querySelector('.hero__name-block'),
+      document.getElementById('hero-watermark'),
+      document.querySelector('.hero__meta'),
+      document.querySelector('.hero__scroll-cue')
+    ].filter(Boolean);
     var introDone = false;
     var raf = null;
     window.addEventListener('scroll', function () {
@@ -1553,18 +1970,27 @@ a:hover{color:var(--texto-sec)}
         var h = window.innerHeight, y = window.scrollY;
         var t = Math.max(0, 1 - y / (h * 0.35));
         var vo = Math.max(0, 1 - y / (h * 0.9));
-        if (heroText && introDone) heroText.style.opacity = t;
+        if (introDone) fadeEls.forEach(function (el) { el.style.opacity = t; });
         video.style.opacity = vo;
       });
     }, { passive: true });
 
-    // ---------- entrada del hero (número, nombre, subtítulo) ----------
+    // ---------- entrada del hero (foto, epígrafe, nombre, meta) ----------
     // Si "el nombre que se arma" va a correr, #hero-name queda afuera
     // de este fade-up de siempre — lo tapa y lo revela la propia
-    // initNameIntro, y recién cuando termina (onReveal) entran el
-    // número y el subtítulo. Si no corre (ya vista esta sesión, sin
-    // Web Animations API, etc.), los tres entran juntos como siempre.
+    // initNameIntro, y recién cuando termina (onReveal) entran la
+    // foto, el epígrafe y el renglón de posición/club. Si no corre (ya
+    // vista esta sesión, sin Web Animations API, etc.), los cuatro
+    // entran juntos como siempre.
+    //
+    // El watermark permanente (#hero-watermark) sigue el mismo criterio
+    // que el resto: si la entrada va a correr, arranca invisible y
+    // recién se desvanece hacia adentro en onReveal, sincronizado con
+    // el watermark propio de la entrada (.cv-intro__watermark, mismo
+    // 32vw) que se desvanece hacia afuera en ese mismo instante — así
+    // no se ven dos "NEIRA" gigantes superpuestos a la vez.
     var items = Array.prototype.slice.call(document.querySelectorAll('[data-hero-item]'));
+    var watermarkEl = document.getElementById('hero-watermark');
 
     function fadeUpStagger(list, onDone) {
       list.forEach(function (el) { el.style.opacity = '0'; el.style.transform = 'translateY(24px)'; });
@@ -1588,17 +2014,22 @@ a:hover{color:var(--texto-sec)}
       var secondaryItems = items.filter(function (el) { return el !== nameEl; });
       // Tapados ya mismo, antes de llamar a initNameIntro: si la
       // entrada grande corre, quedan ocultos detrás del overlay el
-      // mismo tiempo que #hero-name, y recién se revelan los tres
-      // juntos cuando el overlay se va (si no se tapan acá, "32" y el
-      // subtítulo quedan de punta en blanco un rato largo bajo un
-      // overlay opaco y se ven de golpe apenas el overlay empieza a
-      // transparentarse, en vez de aparecer después como corresponde).
+      // mismo tiempo que #hero-name, y recién se revelan juntos cuando
+      // el overlay se va (si no se tapan acá, se ven de golpe apenas
+      // el overlay empieza a transparentarse, en vez de aparecer
+      // después como corresponde).
       secondaryItems.forEach(function (el) { el.style.opacity = '0'; el.style.transform = 'translateY(24px)'; });
+      if (watermarkEl) watermarkEl.style.opacity = '0';
       var playingNameIntro = initNameIntro(nameEl, function () {
         fadeUpStagger(secondaryItems, function () { introDone = true; });
+        if (watermarkEl) {
+          watermarkEl.style.transition = 'opacity 700ms ease-out';
+          requestAnimationFrame(function () { watermarkEl.style.opacity = '.16'; });
+        }
       });
       if (!playingNameIntro) {
         fadeUpStagger(items, function () { introDone = true; });
+        if (watermarkEl) watermarkEl.style.opacity = '.16';
       }
     }
   })();
@@ -2043,6 +2474,82 @@ a:hover{color:var(--texto-sec)}
         return;
       }
       if (isOpen()) closeMenu(); else openMenu();
+    });
+  })();
+
+  // ---------- barra de navegación fija ----------
+  // Tres responsabilidades: 1) fondo translúcido mientras se ve el
+  // hero, sólido apenas termina de salir de pantalla (sección clara u
+  // oscura detrás, un fondo sólido se lee bien contra cualquiera; uno
+  // translúcido con blur no garantiza contraste contra --crema); 2)
+  // marcar qué sección está activa, con aria-current (se anuncia a
+  // lectores de pantalla, no sólo un cambio de color) via
+  // IntersectionObserver; 3) en celular, desplegar/plegar la lista de
+  // secciones (la píldora no entra con las cinco). El scroll suave de
+  // los enlaces no necesita JS: son <a href="#id"> comunes y
+  // html{scroll-behavior:smooth} ya está puesto arriba (con su propio
+  // fallback a "auto" en prefers-reduced-motion).
+  (function initNav() {
+    var nav = document.getElementById('cv-nav');
+    var hero = document.querySelector('.hero');
+    if (!nav || !hero) return;
+
+    if ('IntersectionObserver' in window) {
+      var heroObserver = new IntersectionObserver(function (entries) {
+        nav.classList.toggle('is-solid', !entries[0].isIntersecting);
+      }, { threshold: 0 });
+      heroObserver.observe(hero);
+    }
+
+    var navLinks = Array.prototype.slice.call(nav.querySelectorAll('[data-nav-link]'));
+    var sections = navLinks.map(function (a) {
+      return document.getElementById(a.getAttribute('href').slice(1));
+    }).filter(Boolean);
+
+    function setActive(id) {
+      navLinks.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    if ('IntersectionObserver' in window && sections.length) {
+      var navH = Math.ceil(nav.getBoundingClientRect().height) || 76;
+      var sectionObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: '-' + (navH + 16) + 'px 0px -70% 0px', threshold: 0 });
+      sections.forEach(function (s) { sectionObserver.observe(s); });
+    }
+
+    // ---------- celular: desplegar/plegar la lista de secciones ----------
+    var toggle = document.getElementById('nav-toggle');
+    var links = document.getElementById('nav-links');
+    if (!toggle || !links) return;
+
+    function collapse(refocus) {
+      links.removeAttribute('data-expanded');
+      toggle.setAttribute('aria-expanded', 'false');
+      if (refocus) toggle.focus();
+    }
+    function expand() {
+      links.setAttribute('data-expanded', '');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    toggle.addEventListener('click', function () {
+      if (toggle.getAttribute('aria-expanded') === 'true') collapse(false);
+      else expand();
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.closest('[data-nav-link]')) collapse(false);
+    });
+    document.addEventListener('pointerdown', function (e) {
+      if (toggle.getAttribute('aria-expanded') === 'true' && !nav.contains(e.target)) collapse(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') collapse(true);
     });
   })();
 })();
