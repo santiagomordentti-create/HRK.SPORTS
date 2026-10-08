@@ -199,9 +199,9 @@ a:hover{color:var(--texto-sec)}
 }
 .gallery__arrow{
   position:absolute;
-  top:calc(50% - 20px);
-  width:40px;
-  height:40px;
+  top:calc(50% - 22px);
+  width:44px;
+  height:44px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -323,8 +323,23 @@ a:hover{color:var(--texto-sec)}
   background:#000;
   overflow:hidden;
   border-radius:10px;
-  border:2px solid var(--acento);
   box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 32px rgba(255,255,255,.2);
+}
+/* El borde va de ::after, no de border: un border acá le resta su
+   ancho al <video> de adentro (100% del content-box del padre), así
+   que el video terminaba 4px más angosto que el contenedor de
+   1152px. Un outline con offset negativo tampoco sirve: Chromium lo
+   recorta junto con el resto del contenido por el overflow:hidden
+   del propio elemento. El ::after, en cambio, es un hijo más: su
+   borde queda adentro del área ya recortada y no le resta ancho a
+   nada. */
+.tactica-player::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:2px solid var(--acento);
+  pointer-events:none;
 }
 .tactica-player__video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .tactica-player__label{
@@ -758,7 +773,7 @@ a:hover{color:var(--texto-sec)}
       <div id="tactica-thumbs" class="tactica-thumbs" data-reveal></div>
 
       <div id="tactica-detail" class="tactica-detail" hidden>
-        <img src="../assets/neira.jpg" alt="" class="tactica-detail__photo">
+        <img src="../assets/neira.jpg" alt="Retrato de Ezequiel Neira con la camiseta de Carabobo FC." class="tactica-detail__photo">
         <div class="tactica-detail__body">
           <p class="tactica-detail__name">EZEQUIEL NEIRA — <span id="tactica-detail-clip"></span></p>
           <div id="tactica-detail-stat"></div>
@@ -774,7 +789,7 @@ a:hover{color:var(--texto-sec)}
            cinco atributos completos, para que el dato no se pierda
            en papel. -->
       <div class="tactica-print-list">
-        <h3 style="margin:0 0 16px;font-family:var(--display);font-weight:400;font-size:22px;text-transform:uppercase;">Atributos</h3>
+        <h3 style="margin:0 0 16px;font-family:var(--display);font-weight:400;font-size:28px;text-transform:uppercase;">Atributos</h3>
         <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px;">
           <li><strong>Anticipación — 0,3 intercepciones por partido (Copa Sudamericana).</strong> “Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”</li>
           <li><strong>Juego aéreo — 83% de duelos aéreos ganados (Copa Sudamericana).</strong> “Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”</li>
@@ -1074,7 +1089,7 @@ a:hover{color:var(--texto-sec)}
   </svg>
 
   <!-- 7 · PERFILES OFICIALES -->
-  <section aria-labelledby="t-perfiles" style="background: var(--superficie); padding: clamp(64px, 8vw, 96px) clamp(24px, 6vw, 64px);">
+  <section aria-labelledby="t-perfiles" style="background: var(--superficie); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div style="max-width: 1152px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px 64px; align-items: center;">
       <div data-reveal>
         <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: .16em; color: var(--texto-sec);">VERIFICACIÓN EXTERNA</p>
@@ -1101,7 +1116,7 @@ a:hover{color:var(--texto-sec)}
   </svg>
 
   <!-- 8 · CONTACTO -->
-  <section aria-labelledby="t-contacto" style="background: var(--acento); color: var(--bordo); padding: clamp(80px, 12vw, 144px) clamp(24px, 6vw, 64px);">
+  <section aria-labelledby="t-contacto" style="background: var(--acento); color: var(--bordo); padding: clamp(64px, 10vw, 128px) clamp(24px, 6vw, 64px);">
     <div data-reveal style="max-width: 1152px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
       <h2 id="t-contacto" style="margin: 0; max-width: 18ch; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 7vw, 72px); line-height: 1.05; text-transform: uppercase; text-wrap: balance;">¿QUERÉS SABER MÁS DE EZEQUIEL NEIRA?</h2>
       <p style="margin: 0; font-size: 20px; line-height: 1.5;">Escribinos y te contamos.</p>
@@ -1275,12 +1290,8 @@ a:hover{color:var(--texto-sec)}
 
       stages.forEach(function (stage, i) {
         var left = i % 2 === 0;
-        var actual = stage.getAttribute('data-actual') === 'true';
         stage.style.alignItems = wide ? (left ? 'flex-start' : 'flex-end') : 'stretch';
         stage.style.paddingBottom = i < stages.length - 1 ? (wide ? '8px' : '48px') : '0px';
-
-        var nameEl = stage.querySelector('.career-club');
-        if (nameEl) nameEl.style.fontSize = (actual && wide) ? '40px' : '28px';
 
         var svgWide = stage.querySelector('[data-career-wide]');
         var lineNarrow = stage.querySelector('[data-career-narrow]');
@@ -1339,12 +1350,12 @@ a:hover{color:var(--texto-sec)}
     var PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 
     var CLIPS = [
-      { id: 'highlight', name: 'Highlight general', video: '../assets/neira-highlight.mp4', poster: '../assets/neira-highlight.jpg', isHighlight: true },
-      { id: 'anticipacion', name: 'Anticipación', video: '../assets/neira-anticipacion.mp4', poster: '../assets/neira-anticipacion.jpg', value: '0,3', label: 'Intercepciones por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”' },
-      { id: 'juego-aereo', name: 'Juego aéreo', video: '../assets/neira-juego-aereo.mp4', poster: '../assets/neira-juego-aereo.jpg', value: '83%', label: 'De duelos aéreos ganados', competition: 'Copa Sudamericana', desc: '“Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”' },
-      { id: 'pases', name: 'Pases', video: '../assets/neira-pases.mp4', poster: '../assets/neira-pases.jpg', value: '84%', label: 'De precisión de pase', competition: 'Liga FUTVE', desc: '“Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”' },
-      { id: '1v1', name: '1 vs 1 defensivo', video: '../assets/neira-1v1.mp4', poster: '../assets/neira-1v1.jpg', value: '0,0', label: 'Veces regateado por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”' },
-      { id: 'pases-progresivos', name: 'Pases progresivos', video: '../assets/neira-pases-progresivos.mp4', poster: '../assets/neira-pases-progresivos.jpg', desc: '“Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”' }
+      { id: 'highlight', name: 'Highlight general', video: '../assets/neira-highlight.mp4', poster: '../assets/neira-highlight.jpg', posterAlt: 'Fotograma del video de mejores momentos de la temporada: jugada en mitad de cancha con el estadio lleno de fondo.', isHighlight: true },
+      { id: 'anticipacion', name: 'Anticipación', video: '../assets/neira-anticipacion.mp4', poster: '../assets/neira-anticipacion.jpg', posterAlt: 'Fotograma de un partido: la pelota queda suelta en mitad de cancha mientras varios jugadores corren a disputarla.', value: '0,3', label: 'Intercepciones por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para leer el desarrollo de la jugada, anticiparse al rival y cortar acciones antes de que generen peligro.”' },
+      { id: 'juego-aereo', name: 'Juego aéreo', video: '../assets/neira-juego-aereo.mp4', poster: '../assets/neira-juego-aereo.jpg', posterAlt: 'Fotograma de un partido: la pelota viaja por el aire mientras dos jugadores se preparan para disputarla de cabeza.', value: '83%', label: 'De duelos aéreos ganados', competition: 'Copa Sudamericana', desc: '“Capacidad para imponerse en disputas aéreas mediante posicionamiento, timing y fortaleza física.”' },
+      { id: 'pases', name: 'Pases', video: '../assets/neira-pases.mp4', poster: '../assets/neira-pases.jpg', posterAlt: 'Fotograma de un partido: un jugador de Carabobo FC domina la pelota y se prepara para dar un pase.', value: '84%', label: 'De precisión de pase', competition: 'Liga FUTVE', desc: '“Seguridad y precisión en la circulación desde la última línea, especialmente en situaciones de construcción en campo propio.”' },
+      { id: '1v1', name: '1 vs 1 defensivo', video: '../assets/neira-1v1.mp4', poster: '../assets/neira-1v1.jpg', posterAlt: 'Fotograma de un partido: un jugador persigue de cerca a un rival que conduce la pelota.', value: '0,0', label: 'Veces regateado por partido', competition: 'Copa Sudamericana', desc: '“Capacidad para defender directamente al rival, sostener el duelo individual y evitar ser superado en situaciones de uno contra uno.”' },
+      { id: 'pases-progresivos', name: 'Pases progresivos', video: '../assets/neira-pases-progresivos.mp4', poster: '../assets/neira-pases-progresivos.jpg', posterAlt: 'Fotograma de un partido: un jugador recibe la pelota en carrera mientras un rival lo marca de cerca.', desc: '“Capacidad para avanzar el juego desde la última línea mediante pases que superan líneas de presión y permiten al equipo progresar en el campo.”' }
     ];
 
     var currentId = 'highlight';
@@ -1361,7 +1372,7 @@ a:hover{color:var(--texto-sec)}
         btn.setAttribute('aria-label', 'Reproducir clip: ' + clip.name);
         btn.innerHTML =
           '<span class="tactica-thumb__name">' + escapeHtml(clip.name) + '</span>' +
-          '<span class="tactica-thumb__media"><img src="' + clip.poster + '" alt="" loading="lazy"><span class="tactica-thumb__play">' + PLAY_ICON + '</span></span>';
+          '<span class="tactica-thumb__media"><img src="' + clip.poster + '" alt="' + escapeHtml(clip.posterAlt) + '" loading="lazy"><span class="tactica-thumb__play">' + PLAY_ICON + '</span></span>';
         btn.addEventListener('click', function () { selectClip(clip.id); });
         thumbsWrap.appendChild(btn);
       });
