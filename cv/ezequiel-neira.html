@@ -403,12 +403,21 @@ a:hover{color:var(--texto-sec)}
    cuenta, no dos cuentas que coinciden "hoy". width/height:auto +
    object-fit:contain hacen que el navegador escale proporcional
    contra lo que ligue primero (alto o ancho) sin deformar. */
+/* left:0;right:0;margin-inline:auto en vez de left:50%+transform:
+   translateX(-50%) — el centrado no puede depender de transform
+   porque initVideo() (más abajo) usa transform EN ESTE MISMO elemento
+   para la animación de entrada (translateY al aparecer) y para el
+   fundido al scrollear, pisando cualquier transform puesto por CSS.
+   Con transform libre para eso, el centrado horizontal no se mueve
+   pase lo que pase con la animación — ni en el primer frame, antes de
+   que el JS corra, ni si el JS no llega a correr. */
 .hero__cutout{
   position:absolute;
   z-index:3;
-  left:50%;
+  left:0;
+  right:0;
   bottom:0;
-  transform:translateX(-50%);
+  margin-inline:auto;
   width:auto;
   height:auto;
   max-height:84%;
@@ -486,6 +495,16 @@ a:hover{color:var(--texto-sec)}
 @media(max-width:700px){
   .hero__name-block{max-width:84vw;bottom:30vh}
   .hero__meta{left:clamp(24px,6vw,64px);right:auto;bottom:21vh;text-align:left;max-width:84vw}
+  /* En desktop el recorte se superpone a la onda gigante de fondo a
+     propósito (el efecto de profundidad), pero NEIRA (relleno) y
+     .hero__meta quedan a los costados, lejos del centro — acá, en
+     cambio, los dos pasan a estar a la izquierda (arriba) mientras el
+     recorte sigue centrado: con el 84%/88% de siempre, el recorte
+     tapaba letras de NEIRA (que va DETRÁS suyo, z:2 contra z:3 — ahí
+     sí lo esconde de verdad, no es sólo la caja) y quedaba pegado al
+     renglón de "Defensor central...". Se achica a un tamaño que entra
+     entero abajo de los dos sin tocarlos. */
+  .hero__cutout{max-height:38vh;max-width:60vw}
 }
 
 /* ---------- botones chip (reproducir/sonido del hero, compartir/pdf del pie) ---------- */
@@ -725,10 +744,7 @@ a:hover{color:var(--texto-sec)}
    abajo), con los colores del club en vez del crema del sitio. El
    logo linkea a ../index.html, el mismo relativo que ya usa el botón
    "Volver a HRK Sports" de los otros tres CV (Santi/Axel/Manu, ver
-   cv.js). El link a Santiago Mordentti en el sitio apunta a
-   [URL_PENDIENTE] — un placeholder sin resolver, marcado como tal en
-   el propio HTML del sitio — así que acá va como texto plano, no
-   como link a una URL que no existe. */
+   cv.js). */
 .footer-row{max-width:1152px;margin:0 auto;padding:48px clamp(24px,6vw,64px) 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
 /* min-height:44px — sin esto medía 30px (sólo lo que ocupaba el
    texto a font-size:20px), por debajo del mínimo táctil del resto
@@ -740,6 +756,12 @@ a:hover{color:var(--texto-sec)}
 .footer-credit-label{margin:0;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--texto-sec)}
 .footer-credit-name{margin:4px 0 0;font-size:13px;font-style:italic;color:var(--texto)}
 .footer-credit-name .dash{color:var(--acento);font-style:normal}
+/* padding+margin negativos del mismo valor: el área táctil del
+   nombre crece a 44px sin mover nada visualmente (se cancelan en el
+   layout). Subrayado propio porque el itálico de alrededor no alcanza
+   para que se note que es tocable. */
+.footer-credit-name a{color:inherit;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:2px;padding:16px 4px;margin:-16px -4px;border-radius:3px;transition:color .2s}
+.footer-credit-name a:hover{color:var(--acento)}
 
 /* ---------- carrera: zigzag ancho / columna angosta ----------
    Las variables --career-* las setea initCareer() en JS según el
@@ -1033,6 +1055,9 @@ a:hover{color:var(--texto-sec)}
      recién fijada: el escudo se renderizaba en la columna ancha y el
      texto se apretaba en los 72px, superpuestos. Sin este reset. */
   .career-card--right .career-crest,.career-card--right .career-info{order:0!important}
+  /* En papel el enlace no se toca: mismo color que el resto de la
+     firma y sin subrayado, para que no quede un link roto a la vista. */
+  .footer-credit-name a{color:inherit;text-decoration:none;padding:0;margin:0}
 }
 </style>
 </head>
@@ -1761,7 +1786,7 @@ a:hover{color:var(--texto-sec)}
     </div>
     <div class="footer-credit-band">
       <p class="footer-credit-label">Diseño y desarrollo</p>
-      <p class="footer-credit-name"><span class="dash" aria-hidden="true">—</span> Santiago Mordentti <span class="dash" aria-hidden="true">—</span></p>
+      <p class="footer-credit-name"><span class="dash" aria-hidden="true">—</span> <a href="https://portfolio-weld-nine-48.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver el portfolio de Santiago Mordentti (abre en una pestaña nueva)">Santiago Mordentti</a> <span class="dash" aria-hidden="true">—</span></p>
     </div>
   </footer>
 </main>

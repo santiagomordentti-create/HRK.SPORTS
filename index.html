@@ -900,8 +900,13 @@
   .foot-credit-label{font-size:var(--text-sm);letter-spacing:.18em;text-transform:uppercase;color:#57534d}
   .foot-credit-name{margin-top:2px;font-style:italic;color:var(--bg)}
   .foot-credit-name .dash{color:var(--accent)}
-  .foot-credit-name a{color:inherit;text-decoration:none;transition:color .2s}
+  /* padding+margin negativos del mismo valor: el área táctil del
+     nombre crece a 44px sin mover nada visualmente (se cancelan en el
+     layout). Subrayado propio porque el itálico de alrededor no
+     alcanza para que se note que es tocable. */
+  .foot-credit-name a{color:inherit;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:2px;padding:16px 4px;margin:-16px -4px;border-radius:3px;transition:color .2s}
   .foot-credit-name a:hover{color:var(--accent)}
+  .foot-credit-name a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   /* ---------- WHATSAPP FLOTANTE ---------- */
   .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-primary-rest);transition:box-shadow .2s ease;z-index:90}
@@ -1759,8 +1764,7 @@
   <div class="foot-credit-band">
     <div class="wrap">
       <p class="foot-credit-label" data-i18n="footer_credit_label">Diseño y desarrollo</p>
-      <!-- ⚠ Reemplazar [URL_PENDIENTE] por la URL real del sitio/portfolio de Santiago Mordentti. -->
-      <p class="foot-credit-name"><span class="dash" aria-hidden="true">—</span> <a href="[URL_PENDIENTE]" target="_blank" rel="noopener">Santiago Mordentti</a> <span class="dash" aria-hidden="true">—</span></p>
+      <p class="foot-credit-name"><span class="dash" aria-hidden="true">—</span> <a href="https://portfolio-weld-nine-48.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver el portfolio de Santiago Mordentti (abre en una pestaña nueva)">Santiago Mordentti</a> <span class="dash" aria-hidden="true">—</span></p>
     </div>
   </div>
 </footer>
