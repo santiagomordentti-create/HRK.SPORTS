@@ -1394,8 +1394,8 @@
       </button>
       <div class="carousel-viewport" id="athletesViewport" tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Deportistas que confían en HRK">
         <!-- Instagram de cada jugador (va a vivir en su CV individual, no acá):
-             santi → @santirazzeto_1
              eze   → @ezeneira2
+             santi → @santirazzeto_1
              axel  → @axel_abet
              manu  → @manuelcuestasp
 
@@ -1405,11 +1405,13 @@
              al <a> correspondiente; el CSS y el JS del carrusel no se
              tocan, ya saben mostrar la señal y activar el enlace solo
              cuando esa tarjeta está centrada y quieta, y ya la ocultan
-             cuando data-cv-url no está. -->
+             cuando data-cv-url no está. El orden de las tarjetas en este
+             <ul> es el orden del carrusel: la primera (data-index="0")
+             es la que arranca centrada (current = 0 en el JS). -->
         <ul class="carousel-track" id="athletesTrack">
           <li class="carousel-slide" data-index="0">
-            <a class="carousel-slide-link" data-cv-url="/cv/santiago-razzeto" aria-label="Ver el CV de Santiago Razzeto">
-              <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-cv-url="/cv/ezequiel-neira" aria-label="Ver el CV de Ezequiel Neira">
+              <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
               <span class="carousel-cv-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 <span>Ver CV</span>
@@ -1417,8 +1419,8 @@
             </a>
           </li>
           <li class="carousel-slide" data-index="1">
-            <a class="carousel-slide-link" data-cv-url="/cv/ezequiel-neira" aria-label="Ver el CV de Ezequiel Neira">
-              <img src="assets/eze.jpg" alt="Credencial de Ezequiel Neira, número 32, defensor central de Carabobo FC" loading="lazy" width="1080" height="1350">
+            <a class="carousel-slide-link" data-cv-url="/cv/santiago-razzeto" aria-label="Ver el CV de Santiago Razzeto">
+              <img src="assets/santi.jpg" alt="Credencial de Santiago Razzeto, número 01, arquero de Técnico Universitario" loading="lazy" width="1080" height="1350">
               <span class="carousel-cv-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 <span>Ver CV</span>
