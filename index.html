@@ -544,15 +544,16 @@
   .carousel-arrow:focus-visible,.carousel-viewport:focus-visible,.carousel-dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
   /* Enlace al CV: sólo la centrada, sólo una vez QUIETA, y sólo si esa
-     tarjeta tiene data-cv-url (hoy nada más Eze). El <a> no lleva href
-     por defecto — ni foco, ni menú contextual, ni clic posible — hasta
-     que JS se lo agrega, al terminar la transición, en la tarjeta que
-     sigue centrada Y tiene data-cv-url. Mismo mecanismo que se usó para
-     el enlace a Instagram: un arrastre que suelta sobre la centrada, o
-     un clic justo cuando otra tarjeta está llegando al medio, no puede
-     abrir nada, porque el href todavía no existe en ese momento. Las
-     tarjetas sin data-cv-url (santi, axel, manu) nunca reciben href:
-     quedan inertes para siempre, sin importar el estado.
+     tarjeta tiene data-cv-url (hoy todas menos Facu). El <a> no lleva
+     href por defecto — ni foco, ni menú contextual, ni clic posible —
+     hasta que JS se lo agrega, al terminar la transición, en la tarjeta
+     que sigue centrada Y tiene data-cv-url. Mismo mecanismo que se usó
+     para el enlace a Instagram: un arrastre que suelta sobre la
+     centrada, o un clic justo cuando otra tarjeta está llegando al
+     medio, no puede abrir nada, porque el href todavía no existe en ese
+     momento. La tarjeta sin data-cv-url (Facu, hasta que tenga su CV)
+     nunca recibe href: queda inerte para siempre, sin importar el
+     estado.
      pointer-events:none de base + auto sólo con .is-settled es una
      segunda barrera para que las laterales nunca reciban el clic ahí. */
   .carousel-slide-link{position:absolute;inset:0;display:block;pointer-events:none}
@@ -1403,16 +1404,20 @@
              santi → @santirazzeto_1
              axel  → @axel_abet
              manu  → @manuelcuestasp
+             facu  → (todavía sin CV, ver nota abajo)
 
-             Las cuatro tarjetas tienen CV. La estructura es idéntica a
-             propósito — sumar el CV de un jugador nuevo es agregarle
-             data-cv-url y su aria-label (mismo formato que estos cuatro)
-             al <a> correspondiente; el CSS y el JS del carrusel no se
-             tocan, ya saben mostrar la señal y activar el enlace solo
-             cuando esa tarjeta está centrada y quieta, y ya la ocultan
-             cuando data-cv-url no está. El orden de las tarjetas en este
-             <ul> es el orden del carrusel: la primera (data-index="0")
-             es la que arranca centrada (current = 0 en el JS). -->
+             La estructura es idéntica a propósito — sumar el CV de un
+             jugador nuevo es agregarle data-cv-url y su aria-label
+             (mismo formato que los otros cuatro) al <a> correspondiente;
+             el CSS y el JS del carrusel no se tocan, ya saben mostrar la
+             señal y activar el enlace solo cuando esa tarjeta está
+             centrada y quieta, y ya la ocultan cuando data-cv-url no
+             está. Facu todavía no tiene CV: su <a> no lleva data-cv-url
+             ni aria-label por ahora — agregarlos ahí es lo único que
+             hace falta cuando su CV exista. El orden de las tarjetas en
+             este <ul> es el orden del carrusel: la primera
+             (data-index="0") es la que arranca centrada (current = 0 en
+             el JS). -->
         <ul class="carousel-track" id="athletesTrack">
           <li class="carousel-slide" data-index="0">
             <a class="carousel-slide-link" data-cv-url="/cv/ezequiel-neira" aria-label="Ver el CV de Ezequiel Neira">
@@ -1450,6 +1455,15 @@
               </span>
             </a>
           </li>
+          <li class="carousel-slide" data-index="4">
+            <a class="carousel-slide-link">
+              <img src="assets/facu.jpg" alt="Credencial de Facundo Da Costa, número 19, delantero de LDU Portoviejo" loading="lazy" width="1080" height="1350">
+              <span class="carousel-cv-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Ver CV</span>
+              </span>
+            </a>
+          </li>
         </ul>
       </div>
       <button class="carousel-arrow carousel-arrow--next" id="athletesNextBtn" type="button" aria-label="Deportista siguiente">
@@ -1457,10 +1471,11 @@
       </button>
     </div>
     <div class="carousel-dots" id="athletesDots" role="group" aria-label="Elegir deportista">
-      <button class="carousel-dot" type="button" data-index="0" aria-label="Deportista 1 de 4" aria-current="false"></button>
-      <button class="carousel-dot" type="button" data-index="1" aria-label="Deportista 2 de 4" aria-current="false"></button>
-      <button class="carousel-dot" type="button" data-index="2" aria-label="Deportista 3 de 4" aria-current="false"></button>
-      <button class="carousel-dot" type="button" data-index="3" aria-label="Deportista 4 de 4" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="0" aria-label="Deportista 1 de 5" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="1" aria-label="Deportista 2 de 5" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="2" aria-label="Deportista 3 de 5" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="3" aria-label="Deportista 4 de 5" aria-current="false"></button>
+      <button class="carousel-dot" type="button" data-index="4" aria-label="Deportista 5 de 5" aria-current="false"></button>
     </div>
     <p class="visually-hidden" id="athletesLive" aria-live="polite"></p>
   </div>
