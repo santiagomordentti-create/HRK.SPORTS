@@ -445,13 +445,18 @@
   .projects-compare-name{color:#f5f6f2}
   .projects-compare-desc{font-size:var(--text-md);font-weight:500;line-height:var(--leading);color:var(--accent);max-width:480px;margin-top:var(--space-tight)}
 
-  /* Columna derecha: dos tarjetas apiladas, mismo lenguaje visual que el
-     resto del sitio (fondo --surface plano), sin fotos. Sólo título y
-     descripción — sin meta, tags ni foto, así que se centran en el alto
-     reducido de la tarjeta en vez de anclarse contra un borde. */
+  /* Columna derecha: dos tarjetas apiladas con foto de fondo (mismo
+     recurso que el comparador: <img> cover + scrim degradado para que
+     el texto siga legible encima) — fondo --surface queda como relleno
+     mientras la imagen carga. Sólo título y descripción — sin meta,
+     tags ni CTA, así que se centran en el alto reducido de la tarjeta
+     en vez de anclarse contra un borde. */
   .projects-side{display:grid;grid-template-rows:1fr 1fr;gap:var(--space-item)}
   .projects-card{position:relative;overflow:hidden;background:var(--surface);border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 18px 44px rgba(11,18,7,.16);padding:28px;min-height:160px;display:flex;flex-direction:column;justify-content:center}
-  .projects-card-body{position:relative;z-index:1}
+  .projects-card-media{position:absolute;inset:0}
+  .projects-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+  .projects-card-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(6,8,7,.3) 0%,rgba(6,8,7,.9) 100%);pointer-events:none}
+  .projects-card-body{position:relative;z-index:2}
   .projects-card-name{color:#f5f6f2;margin-bottom:var(--space-tight)}
   .projects-card-desc{font-size:var(--text-md);line-height:var(--leading);color:var(--accent)}
 
@@ -2496,12 +2501,15 @@
   })();
 
   // Proyectos: tarjetas de la columna derecha, generadas desde este array
-  // (sólo título y descripción, vía claves i18n) más el comparador de
-  // Eze Neira con su arrastre propio.
+  // (título, descripción vía clave i18n y foto de fondo) más el
+  // comparador de Eze Neira con su arrastre propio. El nombre del
+  // proyecto ya está en el <h3> de al lado, así que la imagen es
+  // puramente decorativa (alt vacío) para no duplicar el mismo texto
+  // dos veces para un lector de pantalla.
   (function () {
     const PROJECTS_DATA = [
-      { name: 'La Legión Producciones', descKey: 'work_legion_p' },
-      { name: 'Street Clash', descKey: 'work_street_p' }
+      { name: 'La Legión Producciones', descKey: 'work_legion_p', img: 'assets/legion.jpg' },
+      { name: 'Street Clash', descKey: 'work_street_p', img: 'assets/street-clash.jpg' }
     ];
 
     const side = document.getElementById('projectsSide');
@@ -2509,6 +2517,18 @@
       PROJECTS_DATA.forEach(project => {
         const card = document.createElement('div');
         card.className = 'projects-card reveal-up';
+
+        const media = document.createElement('div');
+        media.className = 'projects-card-media';
+        const img = document.createElement('img');
+        img.src = project.img;
+        img.alt = '';
+        img.loading = 'lazy';
+        media.appendChild(img);
+
+        const scrim = document.createElement('div');
+        scrim.className = 'projects-card-scrim';
+        scrim.setAttribute('aria-hidden', 'true');
 
         const body = document.createElement('div');
         body.className = 'projects-card-body';
@@ -2520,7 +2540,7 @@
         desc.setAttribute('data-i18n', project.descKey);
         body.append(name, desc);
 
-        card.append(body);
+        card.append(media, scrim, body);
         side.appendChild(card);
       });
     }
