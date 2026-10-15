@@ -425,8 +425,17 @@
   @media(max-width:900px){.projects-grid{grid-template-columns:1fr}}
 
   /* Comparador Eze Neira: "después" abajo, sin recorte; "antes" encima,
-     desaturada y recortada por JS según el arrastre (ver script). */
-  .projects-compare{position:relative;overflow:hidden;border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:var(--surface);min-height:560px;cursor:ew-resize;user-select:none;touch-action:none}
+     desaturada y recortada por JS según el arrastre (ver script). Las
+     fotos son capturas de feed de Instagram, 1080x1920 (9:16) — si la
+     tarjeta ocupara todo el ancho de la columna a esa proporción
+     quedaría altísima (casi dos pantallas). aspect-ratio:1080/1920 +
+     height acotada (en vez de min-height fijo) + width:auto la dejan
+     angosta y centrada en su columna: la altura manda hasta cierto
+     punto, y si el contenedor es más angosto que eso (mobile), pasa a
+     mandar el ancho — sigue el mismo ratio en los dos casos. Como el
+     ratio del box coincide exacto con el de la imagen, object-fit:cover
+     no recorta nada de la grilla de Instagram. */
+  .projects-compare{position:relative;aspect-ratio:1080/1920;height:min(70vh,620px);width:auto;max-width:100%;margin-inline:auto;overflow:hidden;border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:var(--surface);cursor:ew-resize;user-select:none;touch-action:none}
   .projects-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .projects-compare-media{position:absolute;inset:0}
   .projects-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
@@ -472,7 +481,7 @@
   }
 
   @media(max-width:900px){
-    .projects-compare{min-height:360px}
+    .projects-compare{height:min(65vh,520px)}
     .projects-side{grid-template-rows:none}
     .projects-card{min-height:120px}
   }
@@ -1346,8 +1355,8 @@
     <div class="projects-grid">
       <div class="projects-compare reveal-up reveal" id="workCompare" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-i18n-aria="compare_aria">
         <div class="projects-compare-media">
-          <img class="projects-compare-after" src="assets/neira-despues.jpg" alt="Eze Neira con HRK" loading="lazy">
-          <img class="projects-compare-before" src="assets/neira-antes.jpg" alt="Eze Neira antes de trabajar con HRK" loading="lazy">
+          <img class="projects-compare-after" src="assets/neira-despues.jpg" alt="Feed de Instagram de Eze Neira con el contenido producido por HRK" loading="lazy">
+          <img class="projects-compare-before" src="assets/neira-antes.jpg" alt="Feed de Instagram de Eze Neira antes de trabajar con HRK" loading="lazy">
         </div>
         <span class="projects-tag projects-tag-before" data-i18n="compare_before">Antes</span>
         <span class="projects-tag projects-tag-after" data-i18n="compare_after">Con HRK</span>
