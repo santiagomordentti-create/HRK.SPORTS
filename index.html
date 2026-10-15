@@ -426,19 +426,28 @@
 
   /* Comparador Eze Neira: "después" abajo, sin recorte; "antes" encima,
      desaturada y recortada por JS según el arrastre (ver script). Las
-     fotos son capturas de feed de Instagram, 1080x1920 (9:16) — si la
-     tarjeta ocupara todo el ancho de la columna a esa proporción
-     quedaría altísima (casi dos pantallas). aspect-ratio:1080/1920 +
-     height acotada (en vez de min-height fijo) + width:auto la dejan
-     angosta y centrada en su columna: la altura manda hasta cierto
-     punto, y si el contenedor es más angosto que eso (mobile), pasa a
-     mandar el ancho — sigue el mismo ratio en los dos casos. Como el
-     ratio del box coincide exacto con el de la imagen, object-fit:cover
-     no recorta nada de la grilla de Instagram. */
-  .projects-compare{position:relative;aspect-ratio:1080/1920;height:min(70vh,620px);width:auto;max-width:100%;margin-inline:auto;overflow:hidden;border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:var(--surface);cursor:ew-resize;user-select:none;touch-action:none}
+     fotos son capturas de feed de Instagram, 1080x1920 (9:16) — mucho
+     más angostas que esta tarjeta ancha y baja, así que object-fit:cover
+     las recorta. Como el box es más ancho que alto y la imagen es más
+     alta que ancha, el recorte cae solo en alto (arriba/abajo) nunca en
+     ancho (costados): cover escala por el eje que menos sobra deja —
+     acá siempre el horizontal — así que el ancho de la imagen encaja
+     justo y lo que sobra es el alto, que es lo que se recorta. Ninguna
+     columna de la grilla se pierde, sólo filas. object-position (ver
+     siguiente regla) elige CUÁLES filas quedan — mismo recorte exacto
+     en las dos fotos porque miden lo mismo y usan el mismo box. */
+  .projects-compare{position:relative;overflow:hidden;border-radius:var(--radius-lg);border:1px solid rgba(11,18,7,.14);box-shadow:0 22px 60px rgba(11,18,7,.18);background:var(--surface);min-height:560px;cursor:ew-resize;user-select:none;touch-action:none}
   .projects-compare:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   .projects-compare-media{position:absolute;inset:0}
-  .projects-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}
+  /* object-position:center 20% — deja ver la fila de arriba entera (en
+     "después" cae ahí la tarjeta de cita, contenido claramente producido;
+     en "antes" cae una foto candid de cancha) más el arranque de la
+     siguiente fila (en "después", el plano con el número 32 al fondo
+     con marca de agua HRK) — el mejor contraste entre feed propio y feed
+     trabajado que se encontró mirando las dos imágenes enteras. Mismo
+     valor para las dos <img>, mismo box: el recorte cae exactamente
+     igual en las dos, que es lo que mantiene alineado el deslizador. */
+  .projects-compare-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;pointer-events:none}
   .projects-compare-before{filter:saturate(.5) brightness(.82)}
   .projects-compare-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 0%,transparent 42%,rgba(6,8,7,.9) 100%);pointer-events:none}
   .projects-compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent);box-shadow:0 0 22px rgba(215,245,81,.75);pointer-events:none;z-index:3}
@@ -481,7 +490,7 @@
   }
 
   @media(max-width:900px){
-    .projects-compare{height:min(65vh,520px)}
+    .projects-compare{min-height:360px}
     .projects-side{grid-template-rows:none}
     .projects-card{min-height:120px}
   }
